@@ -1,0 +1,42 @@
+GUI-klassen al in klassediagram zetten, echt wel !!!
+
+
+Abstract Factory sowieso gebruiken om een GUI te hebben die in de toekomst makkelijk van een andere API kan gebruik maken.
+-> abstracte GUI-factory en abstracte widgetklassen
+-> abstracte GUI-factory heeft methodes die pointers naar instanties van concrete widgetklassen teruggeeft, als een pointer naar de abstracte
+	widgetklasse
+-> factory-klassen zijn singletons
+-> de andere klassen m.b.v. factory method
+
+Builder zouden we voor Mens en AI kunnen gebruiken: makkelijk switchen tussen de twee als een Mens AI moet worden.
+-> MensBuilder en AIBuilder die elk een methode constructSpeler bevatten
+-> de concrete builders hebben constructoren die als parameters verwijzingen naar andere objecten (van een Mens bvb.) kunnen hebben
+-> Factory method zoals we het nu gebruiken heeft als nadeel dat we een Mens in AI omzetten door héél de AI te construeren
+
+Prototype is diegene die een clone-method voorziet, die een pointer naar een abstracte superklasse teruggeeft.
+
+Singleton gebruiken we voor Help en allerlei factory-klassen, evenals de builders van hierboven.
+
+Adapter en Bridge zijn interface-handlers. Gaan we niet gebruiken.
+
+Composite is een boomstructuur: mss gebruiken voor de hierarchische structuur van Tafel en Tegels en Pionnen ?
+Print tafel -> voor elke tegel: print tegel -> voor elke pion op de tegel: print.
+
+Decorator plaatst een laag "boven" op een bestaande klasse, zodat die klasse extra functionaliteit kan krijgen.
+Geen nut voor ons.
+
+Facade, hell no.
+Flyweight hebben we al laten vallen.
+Proxy idem.
+
+Chain-of-responsibility: gelinkte lijst die commando's blijft doorgeven totdat een element in de lijst het (mag) afhandelen.
+Geen nut voor ons.
+
+Command kunnen we gebruiken, maar dat kan 't wel eens ingewikkeld en onoverzichtelijk maken.
+Iterator kennen we al, kunnen we gebruiken voor spelers-container. (volgende speler = container.next() en zo)
+
+Memento = undo-functie. Gebruiken in een spel ?
+
+Observer sowieso voor connectie met GUI-klassen.
+State zou ik laten vallen.
+Template: kunnen we gebruiken voor het algemeen verloop van het spel al te definiëren.
