@@ -1,0 +1,11 @@
+public interface Strategy {
+
+	public Strategy() {
+		
+	}
+
+	public abstract 2DVector BerekenTegel ();
+
+	public abstract 2DVector BerekenPion ();
+
+}

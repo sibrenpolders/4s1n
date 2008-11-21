@@ -1,0 +1,14 @@
+public interface GWindow extends QTWindow {
+	protected GInfo* info;
+	protected GMenubalk* menubalk;
+	protected GSpeelVeld* speelveld;
+
+	public GWindow() {
+		
+	}
+
+	public void GWindow () {
+		
+	}
+
+}

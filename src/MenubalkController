@@ -1,0 +1,17 @@
+public interface MenubalkController implements Observable, Observer {
+	protected GMenubalk gMenubalk;
+
+	public MenubalkController() {
+		
+	}
+
+	public void Menubalk () {
+		
+	}
+
+	public void addObserver (Observer o) {
+		
+	}
+
+}
+

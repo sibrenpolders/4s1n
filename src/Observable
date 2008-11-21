@@ -1,0 +1,16 @@
+public interface Observable {
+	protected List<Observer> observers;
+
+	public Observable() {
+		
+	}
+
+	public void addObserver (Observer o) {
+		
+	}
+
+	public void notifyObservers () {
+		
+	}
+
+}
