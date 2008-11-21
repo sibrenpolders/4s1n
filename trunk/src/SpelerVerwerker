@@ -1,0 +1,35 @@
+public class SpelerVerwerker implements Observable, Observer {
+
+	public SpelerVerwerker() {
+		
+	}
+
+	public Speler geefHuidigeSpeler () {
+		
+	}
+
+	public void maakAI (Mens mens) {
+		
+	}
+
+	public void voegSpelerToe () {
+		
+	}
+
+	public void verwijderHuidigeSpeler () {
+		
+	}
+
+	public void verwijderSpeler (Mens mens) {
+		
+	}
+
+	public short vraagNiveau () {
+		
+	}
+
+	public void addObserver (Observer o) {
+		
+	}
+
+}
