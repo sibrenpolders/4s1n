@@ -1,0 +1,2 @@
+Speler,tegel,tafel,pion,punten,opties,spel,
+help(zoek),i/o(save/laad),AI,Landsdeel,camera
