@@ -16,5 +16,4 @@ public class Easy implements Strategy {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
