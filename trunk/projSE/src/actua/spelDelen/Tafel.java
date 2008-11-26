@@ -3,16 +3,16 @@ import actua.types.Vector2D;
 import actua.types.Vector3D;
 
 public class Tafel {
-	protected Tegel laatstGeplaatsteTegel;
-	protected Tegel[][] veld;
-	protected Camera oogpunt;
+	private Tegel laatstGeplaatsteTegel;
+	private Tegel[][] veld;
+	private Camera oogpunt;
 
 	public Tafel() {
 		
 	}
 
-	protected Vector3D beweegCamera () {
-		return null;
+	public void beweegCamera (Vector3D nieuwePositie) {
+		oogpunt.veranderStandpunt(nieuwePositie);
 	}
 
 	public boolean plaatsTegel (Tegel tegel, Vector2D coord) {
@@ -35,7 +35,7 @@ public class Tafel {
 		return null;
 	}
 
-	protected boolean isBoer (Pion pion) {
+	public boolean isBoer (Pion pion) {
 		return false;
 	}
 
