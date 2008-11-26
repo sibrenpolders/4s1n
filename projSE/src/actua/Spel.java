@@ -6,11 +6,11 @@ import actua.verwerkers.SpelerVerwerker;
 import actua.verwerkers.TafelVerwerker;
 
 public class Spel {
-	protected OptieVerwerker optieVerwerker;
-	protected TafelVerwerker tafelVerwerker;
-	protected BestandsVerwerker bestandVerwerker;
-	protected SpelerVerwerker spelerVerwerker;
-	protected HelpVerwerker helpVerwerker;
+	private OptieVerwerker optieVerwerker;
+	private TafelVerwerker tafelVerwerker;
+	private BestandsVerwerker bestandVerwerker;
+	private SpelerVerwerker spelerVerwerker;
+	 HelpVerwerker helpVerwerker;
 
 	public Spel() {
 		
