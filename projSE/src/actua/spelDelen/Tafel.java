@@ -1,7 +1,6 @@
 package actua.spelDelen;
 import actua.types.Vector2D;
 import actua.types.Vector3D;
-import actua.x.Camera;
 
 public class Tafel {
 	protected Tegel laatstGeplaatsteTegel;

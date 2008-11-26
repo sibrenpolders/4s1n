@@ -1,6 +1,6 @@
 package actua.verwerkers;
 import actua.UI.GOptie;
-import actua.x.Optie;
+import actua.fileIO.Optie;
 
 public class OptieVerwerker {
 	protected static String OPTIE_BESTAND;
