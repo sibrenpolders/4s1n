@@ -1,4 +1,4 @@
-package actua.x;
+package actua.fileIO;
 import actua.Spel;
 
 public class Bestand {

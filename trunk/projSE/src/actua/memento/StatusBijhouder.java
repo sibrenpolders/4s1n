@@ -1,9 +1,8 @@
-package actua.x;
+package actua.memento;
 
 
 import java.util.ArrayList;
 
-import actua.types.Memento;
 
 
 public class StatusBijhouder {

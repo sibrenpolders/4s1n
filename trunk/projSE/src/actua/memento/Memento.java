@@ -1,4 +1,4 @@
-package actua.types;
+package actua.memento;
 public class Memento {
 	public Object status;
 	public char speler;

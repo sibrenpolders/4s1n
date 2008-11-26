@@ -1,4 +1,4 @@
-package actua.x;
+package actua.spelDelen;
 import actua.types.Vector3D;
 
 public class Camera {

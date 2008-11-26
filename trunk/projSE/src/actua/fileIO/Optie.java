@@ -1,4 +1,4 @@
-package actua.x;
+package actua.fileIO;
 public class Optie {
 	protected String naam;
 	protected Object o;
