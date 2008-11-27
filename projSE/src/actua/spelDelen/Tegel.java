@@ -17,7 +17,7 @@ public class Tegel {
 		return null;
 	}
 
-	public Landsdeel bepaalLandsDeel(Vector2D coord) {
+	public Landsdeel bepaalLandsdeel(Vector2D coord) {
 		return null;
 	}
 
