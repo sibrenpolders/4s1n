@@ -19,7 +19,6 @@ abstract public class AITest extends TestCase {
 	abstract protected void enkelVeldTest();
 	abstract protected void geenPionPlaatsingTest();
 	abstract protected void pionPlaatsingTest();
-	
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
