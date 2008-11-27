@@ -1,10 +1,12 @@
 package actua.spelDelen;
+import java.util.Vector;
+
 import actua.types.Vector2D;
 import actua.types.Vector3D;
 
 public class Tafel {
 	private Tegel laatstGeplaatsteTegel;
-	private Tegel[][] veld;
+	private Vector<Vector<Tegel>> veld;
 	private Camera oogpunt;
 
 	public Tafel() {
