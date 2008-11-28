@@ -1,9 +1,4 @@
 package actua;
-import actua.verwerkers.BestandsVerwerker;
-import actua.verwerkers.HelpVerwerker;
-import actua.verwerkers.OptieVerwerker;
-import actua.verwerkers.SpelerVerwerker;
-import actua.verwerkers.TafelVerwerker;
 
 public class Spel {
 	private OptieVerwerker optieVerwerker;
