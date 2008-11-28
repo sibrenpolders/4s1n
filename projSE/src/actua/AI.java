@@ -19,12 +19,12 @@ public class AI extends Speler {
 		
 	}
 
-	public boolean plaatsTegel (Tegel tegel) {
+	public boolean plaatsTegel (Tegel tegel,Tafel tafel) {
 		return false;
 	}
 
-	public void plaatsPion() {
-		
+	public boolean plaatsPion(Tafel tafel) {
+		return false;
 	}
 }
 
