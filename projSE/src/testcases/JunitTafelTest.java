@@ -1,5 +1,6 @@
 package testcases;
 
+import actua.Pion;
 import actua.Tafel;
 import actua.Tegel;
 import actua.Vector2D;
@@ -9,6 +10,7 @@ import junit.framework.TestCase;
 public class JunitTafelTest extends TestCase {
 	Tafel tafel;
 	Tegel tegel;
+	Vector2D v;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -28,7 +30,7 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testPlaatsTegel() {
-		Vector2D v = new Vector2D(0, 0);
+		v = new Vector2D(0, 0);
 		Tegel t;
 
 		tafel.plaatsTegel(tegel, v);
@@ -38,7 +40,11 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testPlaatsPion() {
-		fail("Not yet implemented");
+		 v = new Vector2D(1, 1);
+		 Pion pion=new Pion();
+		 
+		 // probleem tegel coordinaten
+		 tafel.plaatsPion(v, pion);
 	}
 
 	public void testIsPlaatsingGeldig() {
@@ -46,7 +52,7 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testIsLaatste() {
-		Vector2D v = new Vector2D(0, 0);
+		v = new Vector2D(0, 0);
 
 		tafel.plaatsTegel(tegel, v);
 		assertTrue(tafel.isLaatste(tegel));
