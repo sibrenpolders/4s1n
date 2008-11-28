@@ -1,11 +1,20 @@
 package actua;
 
 public class Bestand {
-	protected String naam;
-	protected Spel spel;
+	private String naam;
+	private Spel spel;
+	private Memento memento;
 
 	public Bestand() {
 		
+	}
+	
+	public Spel getSpel() {
+		return spel;
+	}
+	
+	public Memento getMemento() {
+		return memento;
 	}
 
 	public void leesVanBestand (String naam) {

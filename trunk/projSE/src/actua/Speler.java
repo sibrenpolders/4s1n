@@ -1,9 +1,14 @@
 package actua;
+import actua.Pion;
+import actua.Tafel;
+import actua.Tegel;
+import actua.Vector2D;
 
 public abstract class Speler {
 	private String naam;
 	private long score;
 	private char kleur;
+	private int pionnen;
 
 	public Speler() {
 		
@@ -21,17 +26,17 @@ public abstract class Speler {
 		return null;
 	}
 
-	public abstract void plaatsPion ();
+	public abstract boolean plaatsPion (Tafel tafel);
 
 	public void pasScoreAan () {
 		
 	}
 
-	public void neemPionTerug () {
-		
+	public boolean neemPionTerug () {
+		return false;
 	}
 
-	public void draaiTegel (boolean richting) {
+	public void draaiTegel (Tegel tegel,boolean richting) {
 		
 	}
 
@@ -47,7 +52,7 @@ public abstract class Speler {
 		
 	}
 
-	public abstract boolean plaatsTegel (Tegel tegel);
+	public abstract boolean plaatsTegel (Tegel tegel, Tafel tafel);
 
 	public String getNaam () {
 		return "";
@@ -58,6 +63,10 @@ public abstract class Speler {
 	}
 
 	public long getScore () {
+		return 0;
+	}
+	
+	public int getPionnen () {
 		return 0;
 	}
 
@@ -71,6 +80,10 @@ public abstract class Speler {
 
 	public void setScore (long score) {
 		
+	}
+	
+	public void setPionnen (int pionnen) {
+		this.pionnen=pionnen;
 	}
 
 }
