@@ -1,5 +1,9 @@
-package actua;
+package testcases;
 
+import actua.Landsdeel;
+import actua.Pion;
+import actua.Tegel;
+import actua.Vector2D;
 import junit.framework.TestCase;
 
 public class JunitTegelTest extends TestCase {

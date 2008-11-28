@@ -1,6 +1,10 @@
-package actua;
+package testcases;
 
 import java.util.Vector;
+
+import actua.Hard;
+import actua.Tegel;
+import actua.Vector2D;
 
 
 public class HardTest extends AITest {

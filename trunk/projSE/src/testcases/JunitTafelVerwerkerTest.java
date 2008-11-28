@@ -1,5 +1,7 @@
-package actua;
+package testcases;
 
+import actua.TafelVerwerker;
+import actua.Vector3D;
 import junit.framework.TestCase;
 
 public class JunitTafelVerwerkerTest extends TestCase {
