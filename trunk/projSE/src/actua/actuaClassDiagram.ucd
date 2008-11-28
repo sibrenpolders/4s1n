@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="actuaClassDiagram" foregroundRGB="255,255,255" id="{UMLID=_Nsv5AL0wEd2F1socM5v5uw,JavaID=actua}" metadata="uml2-1.0" initialized="true" zoom="0.75" scrolledX="-41" tag="10" key="32303037303632392070726F6A5345">
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="actuaClassDiagram" foregroundRGB="255,255,255" id="{UMLID=_Nsv5AL0wEd2F1socM5v5uw,JavaID=actua}" metadata="uml2-1.0" initialized="true" zoom="0.75" scrolledX="83" scrolledY="775" tag="10" key="32303037303632392070726F6A5345">
   <children xsi:type="editmodel:ClassEditModel" name="QTMens" location="0,523" size="101,65" timstampe="3" stereotype="" id="{UMLID=_RixIUL0wEd2F1socM5v5uw,JavaID=actua/QTMens}" runTimeClassModel="QTMens()">
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="80,18">
@@ -296,15 +296,18 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="Bestand" location="669,1530" size="154,142" timstampe="3" stereotype="" id="{UMLID=_SSAM4L0wEd2F1socM5v5uw,JavaID=actua/Bestand}" runTimeClassModel="schrijfNaarBestand(Ljava.lang.String;),Bestand(),spel,leesVanBestand(Ljava.lang.String;),naam">
+  <children xsi:type="editmodel:ClassEditModel" name="Bestand" location="669,1530" size="154,211" timstampe="5" stereotype="" id="{UMLID=_SSAM4L0wEd2F1socM5v5uw,JavaID=actua/Bestand}" runTimeClassModel="schrijfNaarBestand(Ljava.lang.String;),getMemento(),Bestand(),getSpel(),spel,leesVanBestand(Ljava.lang.String;),memento,naam">
     <children xsi:type="editmodel:CompartmentEditModel" size="55,41">
       <children xsi:type="editmodel:AttributeEditModel" name="naam" size="55,16" id="{UMLID=_SSJ94r0wEd2F1socM5v5uw}"/>
       <children xsi:type="editmodel:AttributeEditModel" name="spel" size="55,21" id="{UMLID=_SSJ94L0wEd2F1socM5v5uw}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="memento" size="78,21" id="{UMLID=_i9pMUL1HEd2MkqMdWHMurg}"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="133,54">
-      <children xsi:type="editmodel:MethodEditModel" name="Bestand" size="80,16" id="{UMLID=_SSJ9570wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="leesVanBestand" size="120,16" id="{UMLID=_SSJ95L0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="schrijfNaarBestand" size="133,16" id="{UMLID=_SSJ96L0wEd2F1socM5v5uw}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Bestand" size="80,16" id="{UMLID=_SSJ9570wEd2F1socM5v5uw,JavaID=actua/Bestand#Bestand()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="leesVanBestand" size="120,16" id="{UMLID=_SSJ95L0wEd2F1socM5v5uw,JavaID=actua/Bestand#leesVanBestand(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="schrijfNaarBestand" size="133,16" id="{UMLID=_SSJ96L0wEd2F1socM5v5uw,JavaID=actua/Bestand#schrijfNaarBestand(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMemento" size="104,21" id="{UMLID=_i9y9UL1HEd2MkqMdWHMurg,JavaID=actua/Bestand#getMemento()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSpel" size="82,21" id="{UMLID=_i9y9U71HEd2MkqMdWHMurg,JavaID=actua/Bestand#getSpel()}"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
@@ -443,7 +446,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="Easy" location="277,1319" size="127,101" timstampe="3" stereotype="" id="{UMLID=_SDG1QL0wEd2F1socM5v5uw,JavaID=actua/Easy}" runTimeClassModel="BerekenPion(Lactua.Tegel;Lactua.Tegel;Lactua.Tegel;),BerekenTegel(Lactua.Tegel;Lactua.Vector2D;),Easy()">
+  <children xsi:type="editmodel:ClassEditModel" name="Easy" location="229,1671" size="127,101" timstampe="3" stereotype="" id="{UMLID=_SDG1QL0wEd2F1socM5v5uw,JavaID=actua/Easy}" runTimeClassModel="BerekenPion(Lactua.Tegel;Lactua.Tegel;Lactua.Tegel;),BerekenTegel(Lactua.Tegel;Lactua.Vector2D;),Easy()">
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="106,54">
       <children xsi:type="editmodel:MethodEditModel" name="BerekenPion" size="100,16" id="{UMLID=_SDZwM70wEd2F1socM5v5uw}"/>
@@ -466,11 +469,11 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="Hard" location="460,1323" size="127,101" timstampe="3" stereotype="" id="{UMLID=_SEcSAL0wEd2F1socM5v5uw,JavaID=actua/Hard}" runTimeClassModel="BerekenPion(Lactua.Tegel;Lactua.Vector2D;),BerekenTegel(Lactua.Tegel;Lactua.Tegel;Lactua.Tegel;),Hard()">
+  <children xsi:type="editmodel:ClassEditModel" name="Hard" location="469,1671" size="127,101" timstampe="3" stereotype="" id="{UMLID=_SEcSAL0wEd2F1socM5v5uw,JavaID=actua/Hard}" runTimeClassModel="BerekenPion(Lactua.Tegel;Lactua.Vector2D;),BerekenTegel(Lactua.Tegel;Lactua.Tegel;Lactua.Tegel;),Hard()">
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="106,54">
       <children xsi:type="editmodel:MethodEditModel" name="BerekenTegel" size="106,16" id="{UMLID=_SEcSBL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="Hard" size="63,16" id="{UMLID=_SEcSA70wEd2F1socM5v5uw}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Hard" location="503,1739" size="63,16" id="{UMLID=_SEcSA70wEd2F1socM5v5uw}"/>
       <children xsi:type="editmodel:MethodEditModel" name="BerekenPion" size="100,16" id="{UMLID=_SEmDCL0wEd2F1socM5v5uw}"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel"/>
@@ -480,17 +483,17 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="AI" location="163,989" size="116,173" timstampe="3" stereotype="" id="{UMLID=_R7NdgL0wEd2F1socM5v5uw,JavaID=actua/AI}" runTimeClassModel="getNiveau(),plaatsPion(),niveau,setNiveau(S),AI(Lactua.Speler;),AI(),plaatsTegel(Lactua.Tegel;)">
+  <children xsi:type="editmodel:ClassEditModel" name="AI" location="163,989" size="116,173" timstampe="5" stereotype="" id="{UMLID=_R7NdgL0wEd2F1socM5v5uw,JavaID=actua/AI}" runTimeClassModel="getNiveau(),plaatsTegel(Lactua.Tegel;Lactua.Tafel;),niveau,setNiveau(S),plaatsPion(Lactua.Tegel;),AI(Lactua.Speler;),AI()">
     <children xsi:type="editmodel:CompartmentEditModel" size="61,18">
       <children xsi:type="editmodel:AttributeEditModel" name="niveau" size="61,16" id="{UMLID=_R_h80b0wEd2F1socM5v5uw}"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="95,108">
-      <children xsi:type="editmodel:MethodEditModel" name="AI" size="50,16" id="{UMLID=_R_h8070wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="AI" size="50,16" id="{UMLID=_R_h81L0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getNiveau" size="88,16" id="{UMLID=_R_rGw70wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setNiveau" size="88,16" id="{UMLID=_R_rGwL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="plaatsTegel" size="95,16" id="{UMLID=_R_rGx70wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="plaatsPion" size="89,16" id="{UMLID=_R_rGxr0wEd2F1socM5v5uw}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="AI" size="50,16" id="{UMLID=_R_h8070wEd2F1socM5v5uw,JavaID=actua/AI#AI()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="AI" size="50,16" id="{UMLID=_R_h81L0wEd2F1socM5v5uw,JavaID=actua/AI#AI(Lactua.Speler;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNiveau" size="88,16" id="{UMLID=_R_rGw70wEd2F1socM5v5uw,JavaID=actua/AI#getNiveau()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setNiveau" size="88,16" id="{UMLID=_R_rGwL0wEd2F1socM5v5uw,JavaID=actua/AI#setNiveau(S)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="plaatsPion" size="95,16" id="{UMLID=_R_rGx70wEd2F1socM5v5uw,JavaID=actua/AI#plaatsPion(Lactua.Tegel;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="plaatsTegel" size="89,16" id="{UMLID=_R_rGxr0wEd2F1socM5v5uw,JavaID=actua/AI#plaatsTegel(Lactua.Tegel;Lactua.Tafel;)}"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" size="2,1" autoLocated="true" id="{UMLID=_R_h80L0wEd2F1socM5v5uw}" source="//@children.35" target="//@children.37/@sourceConnections.0" targetEnd="//@children.35/@sourceConnections.0/@children.1" sourceEnd="//@children.35/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
@@ -499,31 +502,34 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.37/@sourceConnections.0" name="Speler" location="136,508" size="135,425" timstampe="7" stereotype="" id="{UMLID=_RwCIRb0wEd2F1socM5v5uw,JavaID=actua/Speler}" runTimeClassModel="setKleur(C),setNaam(Ljava.lang.String;),vraagCoord(),score,Speler(),neemPion(),kleur,getScore(),getKleur(),vraagPositie(),draaiTegel(Z),plaatsPion(),setScore(J),getNaam(),neemTegel(Lactua.Tegel;Lactua.Tafel;),plaatsTegel(Lactua.Tegel;),naam,pasScoreAan(),vraagRichting(),Speler(Ljava.lang.String;CJ),neemPionTerug()">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.37/@sourceConnections.0" name="Speler" location="136,508" size="135,479" timstampe="9" stereotype="" id="{UMLID=_RwCIRb0wEd2F1socM5v5uw,JavaID=actua/Speler}" runTimeClassModel="setKleur(C),setNaam(Ljava.lang.String;),setPionnen(Z),vraagCoord(),score,plaatsPion(Lactua.Pion;),pionnen,Speler(),neemPion(),kleur,draaiTegel(Lactua.Tegel;Z),getScore(),getKleur(),vraagPositie(),plaatsTegel(Lactua.Tegel;Lactua.Tafel;),getPionnen(Lactua.Tegel;),setScore(J),getNaam(),neemTegel(Lactua.Tegel;Lactua.Tafel;),naam,pasScoreAan(),vraagRichting(),Speler(Ljava.lang.String;CJ),neemPionTerug()">
     <children xsi:type="editmodel:CompartmentEditModel" size="57,54">
       <children xsi:type="editmodel:AttributeEditModel" name="naam" size="55,16" id="{UMLID=_R7WndL0wEd2F1socM5v5uw}"/>
       <children xsi:type="editmodel:AttributeEditModel" name="score" size="57,16" id="{UMLID=_R7Wncr0wEd2F1socM5v5uw}"/>
       <children xsi:type="editmodel:AttributeEditModel" name="kleur" size="52,16" id="{UMLID=_R7WncL0wEd2F1socM5v5uw}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="pionnen" size="67,16" id="{UMLID=_i-1fIL1HEd2MkqMdWHMurg}"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="114,324">
-      <children xsi:type="editmodel:MethodEditModel" name="Speler" size="71,16" id="{UMLID=_R7gYgr0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="Speler" size="71,16" id="{UMLID=_R7zTaL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="neemPion" size="86,16" id="{UMLID=_R7Wndr0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="vraagPositie" size="99,16" id="{UMLID=_R7zTYL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="plaatsPion" size="89,16" id="{UMLID=_R7gYe70wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="pasScoreAan" size="107,16" id="{UMLID=_R7gYdL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="neemPionTerug" size="114,16" id="{UMLID=_R7picb0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="draaiTegel" size="90,16" id="{UMLID=_R7gYdb0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="vraagRichting" size="106,16" id="{UMLID=_R7gYfL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="vraagCoord" size="97,16" id="{UMLID=_R7pia70wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="neemTegel" size="92,16" id="{UMLID=_R7piY70wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="plaatsTegel" size="95,16" id="{UMLID=_R7zTY70wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getNaam" size="82,16" id="{UMLID=_R7pibr0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getKleur" size="80,16" id="{UMLID=_R7gYeL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getScore" size="84,16" id="{UMLID=_R7piaL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setNaam" size="82,16" id="{UMLID=_R7gYcb0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setKleur" size="80,16" id="{UMLID=_R7piYL0wEd2F1socM5v5uw}"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setScore" size="84,16" id="{UMLID=_R7gYf70wEd2F1socM5v5uw}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Speler" size="71,16" id="{UMLID=_R7gYgr0wEd2F1socM5v5uw,JavaID=actua/Speler#Speler()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Speler" size="71,16" id="{UMLID=_R7zTaL0wEd2F1socM5v5uw,JavaID=actua/Speler#Speler(Ljava.lang.String;CJ)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="neemPion" size="86,16" id="{UMLID=_R7Wndr0wEd2F1socM5v5uw,JavaID=actua/Speler#neemPion()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="vraagPositie" size="99,16" id="{UMLID=_R7zTYL0wEd2F1socM5v5uw,JavaID=actua/Speler#vraagPositie()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="draaiTegel" size="89,16" id="{UMLID=_R7gYe70wEd2F1socM5v5uw,JavaID=actua/Speler#draaiTegel(Lactua.Tegel;Z)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pasScoreAan" size="107,16" id="{UMLID=_R7gYdL0wEd2F1socM5v5uw,JavaID=actua/Speler#pasScoreAan()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="neemPionTerug" size="114,16" id="{UMLID=_R7picb0wEd2F1socM5v5uw,JavaID=actua/Speler#neemPionTerug()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPionnen" size="90,16" id="{UMLID=_R7gYdb0wEd2F1socM5v5uw,JavaID=actua/Speler#setPionnen(Z)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="vraagRichting" size="106,16" id="{UMLID=_R7gYfL0wEd2F1socM5v5uw,JavaID=actua/Speler#vraagRichting()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="vraagCoord" size="97,16" id="{UMLID=_R7pia70wEd2F1socM5v5uw,JavaID=actua/Speler#vraagCoord()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="neemTegel" size="92,16" id="{UMLID=_R7piY70wEd2F1socM5v5uw,JavaID=actua/Speler#neemTegel(Lactua.Tegel;Lactua.Tafel;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPionnen" size="95,16" id="{UMLID=_R7zTY70wEd2F1socM5v5uw,JavaID=actua/Speler#getPionnen(Lactua.Tegel;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNaam" size="82,16" id="{UMLID=_R7pibr0wEd2F1socM5v5uw,JavaID=actua/Speler#getNaam()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getKleur" size="80,16" id="{UMLID=_R7gYeL0wEd2F1socM5v5uw,JavaID=actua/Speler#getKleur()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getScore" size="84,16" id="{UMLID=_R7piaL0wEd2F1socM5v5uw,JavaID=actua/Speler#getScore()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setNaam" size="82,16" id="{UMLID=_R7gYcb0wEd2F1socM5v5uw,JavaID=actua/Speler#setNaam(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setKleur" size="80,16" id="{UMLID=_R7piYL0wEd2F1socM5v5uw,JavaID=actua/Speler#setKleur(C)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setScore" size="84,16" id="{UMLID=_R7gYf70wEd2F1socM5v5uw,JavaID=actua/Speler#setScore(J)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="plaatsPion" size="89,16" id="{UMLID=_i-_QJL1HEd2MkqMdWHMurg,JavaID=actua/Speler#plaatsPion(Lactua.Pion;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="plaatsTegel" size="95,16" id="{UMLID=_i_IaE71HEd2MkqMdWHMurg,JavaID=actua/Speler#plaatsTegel(Lactua.Tegel;Lactua.Tafel;)}"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
@@ -538,7 +544,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.35/@sourceConnections.0" size="2,1" autoLocated="true" id="{UMLID=_R-7f4L0wEd2F1socM5v5uw}" source="//@children.37" target="//@children.36" targetEnd="//@children.37/@sourceConnections.0/@children.1" sourceEnd="//@children.37/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
       <children xsi:type="editmodel:AssociationEndEditModel" location="71,0" anchorKind="FixedAtEdge" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="67,425" anchorKind="FixedAtEdge"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="67,539" anchorKind="FixedAtEdge"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
   </children>
