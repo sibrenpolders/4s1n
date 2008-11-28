@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import actua.Tafel;
 import actua.Tegel;
 import actua.AI;
+import actua.Pion;
 
 public class JunitAISpelerTest extends TestCase {
 	private AI ai;
@@ -28,11 +29,15 @@ public class JunitAISpelerTest extends TestCase {
 	
 	public void testPlaatsPion() {
 		Tafel tafel = new Tafel();
+		Pion p;
 		boolean geplaatst;
 		
-		geplaatst=ai.plaatsPion(tafel);
+		p = ai.neemPion();
 		
-		assertTrue(geplaatst);
+		if (p!=null) {
+			geplaatst=ai.plaatsPion(p);
+			assertTrue(geplaatst);
+		}
 	}
 	
 	public void testNeemPionTerug() {
