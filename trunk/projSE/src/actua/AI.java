@@ -23,7 +23,7 @@ public class AI extends Speler {
 		return false;
 	}
 
-	public boolean plaatsPion(Tafel tafel) {
+	public boolean plaatsPion(Pion p) {
 		return false;
 	}
 }
