@@ -26,7 +26,7 @@ public abstract class Speler {
 		return null;
 	}
 
-	public abstract boolean plaatsPion (Tafel tafel);
+	public abstract boolean plaatsPion (Pion p);
 
 	public void pasScoreAan () {
 		
