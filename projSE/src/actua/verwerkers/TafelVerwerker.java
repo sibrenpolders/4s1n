@@ -41,6 +41,6 @@ public class TafelVerwerker {
 	}	
 	
 	public Vector3D getOverzicht(){
-		
+		return null;
 	}
 }
