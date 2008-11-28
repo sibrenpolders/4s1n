@@ -1,6 +1,10 @@
-package actua;
+package testcases;
 
 import java.util.Vector;
+
+import actua.Easy;
+import actua.Tegel;
+import actua.Vector2D;
 
 
 public class EasyTest extends AITest {

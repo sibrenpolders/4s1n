@@ -1,5 +1,7 @@
-package actua;
+package testcases;
 
+import actua.Camera;
+import actua.Vector3D;
 import junit.framework.TestCase;
 
 public class JunitCameraTest extends TestCase {

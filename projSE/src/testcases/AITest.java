@@ -1,6 +1,10 @@
-package actua;
+package testcases;
 
 import java.util.Vector;
+
+import actua.Strategy;
+import actua.Tegel;
+import actua.Vector2D;
 
 import junit.framework.TestCase;
 

@@ -1,4 +1,4 @@
-package actua;
+package testcases;
 
 import junit.framework.TestCase;
 
