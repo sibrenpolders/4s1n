@@ -46,7 +46,10 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testIsLaatste() {
-		fail("Not yet implemented");
+		Vector2D v = new Vector2D(0, 0);
+
+		tafel.plaatsTegel(tegel, v);
+		assertTrue(tafel.isLaatste(tegel));
 	}
 
 	public void testBepaalTegel() {
