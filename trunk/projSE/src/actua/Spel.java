@@ -1,11 +1,9 @@
 package actua;
 
 public class Spel {
-	private OptieVerwerker optieVerwerker;
 	private TafelVerwerker tafelVerwerker;
 	private BestandsVerwerker bestandVerwerker;
 	private SpelerVerwerker spelerVerwerker;
-	 HelpVerwerker helpVerwerker;
 
 	public Spel() {
 		
@@ -22,13 +20,5 @@ public class Spel {
 	public BestandsVerwerker getBestandVerwerker () {
 		return bestandVerwerker;
 	}
-
-	public OptieVerwerker getOptiesVerwerker () {
-		return optieVerwerker;
-	}
-
-	public HelpVerwerker getHelpVerwerker () {
-		return helpVerwerker;
-	}
-
+	
 }

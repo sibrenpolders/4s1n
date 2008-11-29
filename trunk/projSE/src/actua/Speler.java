@@ -1,21 +1,25 @@
 package actua;
+import java.util.Vector;
+
 import actua.Pion;
 import actua.Tafel;
 import actua.Tegel;
 import actua.Vector2D;
 
 public abstract class Speler {
+	private static short DEFAULT_AANTALPIONNEN = 7;
 	private String naam;
 	private long score;
 	private char kleur;
-	private int pionnen;
-
-	public Speler() {
-		
-	}
+	private Vector<Pion> pionnen;
 
 	public Speler(String naam, char kleur, long score) {
-		
+		this.naam = naam;
+		this.score = score;
+		this.kleur = kleur;
+		pionnen = new Vector<Pion>();
+		for(int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
+			pionnen.add(new Pion(kleur));		
 	}
 
 	public Pion neemPion () {
@@ -66,10 +70,6 @@ public abstract class Speler {
 		return 0;
 	}
 	
-	public int getPionnen () {
-		return 0;
-	}
-
 	public void setNaam (String naam) {
 		
 	}
@@ -81,9 +81,4 @@ public abstract class Speler {
 	public void setScore (long score) {
 		
 	}
-	
-	public void setPionnen (int pionnen) {
-		this.pionnen=pionnen;
-	}
-
 }

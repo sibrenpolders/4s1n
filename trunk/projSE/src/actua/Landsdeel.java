@@ -1,12 +1,9 @@
 package actua;
 public class Landsdeel {
-	public Pion pion;
-
+	private boolean pion;
+	
+	
 	public Landsdeel() {
-		
-	}
-
-	public void setPion (Pion pion) {
 		
 	}
 
