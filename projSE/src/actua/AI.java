@@ -1,22 +1,25 @@
 package actua;
 
 public class AI extends Speler {
-	protected short niveau;
+	private short niveau;
 
-	public AI() {
-	 super();
+	public AI(String naam, char kleur, long score, short niveau)
+	{
+		super(naam, kleur, score);
+		this.niveau = niveau;
 	}
 
-	public AI(Speler speler) {
-		
+	public AI(Mens speler, short niveau) {
+		super(speler.getNaam(), speler.getKleur(), speler.getScore());
+		this.niveau = niveau;
 	}
 
 	public short getNiveau () {
-		return 0;
+		return niveau;
 	}
 
 	public void setNiveau (short niveau) {
-		
+		this.niveau = niveau;
 	}
 
 	public boolean plaatsTegel (Tegel tegel,Tafel tafel) {
