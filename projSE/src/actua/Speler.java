@@ -22,7 +22,7 @@ public abstract class Speler {
 			pionnen.add(new Pion(kleur));		
 	}
 
-	public Pion neemPion () {
+	public Pion neemPion (Tafel tafel) {
 		return null;
 	}
 
