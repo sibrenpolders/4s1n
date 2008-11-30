@@ -19,20 +19,12 @@ public class JunitAISpelerTest extends TestCase {
 		super.tearDown();
 	}
 	
-	public void testNeemPion() {
-		int prevPionnen=ai.getPionnen();
-		
-		ai.neemPion();
-		
-		assertEquals(prevPionnen-1,ai.getPionnen());
-	}
-	
 	public void testPlaatsPion() {
 		Tafel tafel = new Tafel();
 		Pion p;
 		boolean geplaatst;
 		
-		p = ai.neemPion();
+		p = ai.neemPion(tafel);
 		
 		if (p!=null) {
 			geplaatst=ai.plaatsPion(p);
