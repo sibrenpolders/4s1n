@@ -22,21 +22,15 @@ public class JunitBestandTest extends TestCase {
 		super.tearDown();
 	}
 	
-	public void testLeesVanBestand() {
-		String naam = "bla.sam";
-		
-		bestand.leesVanBestand(naam);
-		
-		assertNotNull(bestand.getSpel());
-		assertNotNull(bestand.getMemento());
-	}
-
 	public void testSchrijfNaarBestand() {
-		Memento memento=null,mTest=null;
-		Spel spel=null,spelTest=null;
+		Memento memento,mTest=null;
+		Spel spel,spelTest=null;
 		String naam = "bla.sam";
 		FileInputStream fis;
 		ObjectInputStream ois;
+		
+		memento = bestand.getMemento();
+		spel = bestand.getSpel();
 		
 		bestand.schrijfNaarBestand(naam);
 		
@@ -58,5 +52,14 @@ public class JunitBestandTest extends TestCase {
 		
 		assertEquals("Memento juist opgeslagen",memento,mTest);
 		assertEquals("Spel juist opgeslagen",spel,spelTest); 
+	}
+	
+	public void testLeesVanBestand() {
+		String naam = "bla.sam";
+		
+		bestand.leesVanBestand(naam);
+		
+		assertNotNull(bestand.getSpel());
+		assertNotNull(bestand.getMemento());
 	}
 }
