@@ -6,16 +6,19 @@ public class Pion {
 	private boolean geplaatst;
 	private char kleur;
 
+	public Pion(){
+		kleur='0';	}
+	
 	public Pion(char kleur) {
 		this.kleur = kleur;		
 	}
 
 	public void setPositie(Vector2D positie) {
-
+		this.positie=positie;
 	}
 
 	public void setType(char type) {
-
+		this.type=type;
 	}
 
 	public Vector2D getPositie() {
@@ -23,7 +26,7 @@ public class Pion {
 	}
 
 	public char getType() {
-		return 0;
+		return type;
 	}
 
 	public char getKleur() {
