@@ -22,6 +22,10 @@ public abstract class Speler {
 			pionnen.add(new Pion(kleur));		
 	}
 
+	public Speler() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Pion neemPion (Tafel tafel) {
 		return null;
 	}

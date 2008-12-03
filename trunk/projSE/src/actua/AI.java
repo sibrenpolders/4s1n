@@ -3,6 +3,10 @@ package actua;
 public class AI extends Speler {
 	private short niveau;
 
+	public AI() {
+		super();
+	}
+	
 	public AI(String naam, char kleur, long score, short niveau)
 	{
 		super(naam, kleur, score);
