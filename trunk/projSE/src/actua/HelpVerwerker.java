@@ -2,16 +2,16 @@ package actua;
 
 public class HelpVerwerker {
 	private Help help;
-	
+
 	public HelpVerwerker() {
 		help = new Help();
 	}
 
-	public void vraagHelp () {
-		
+	public void veranderHelpBronBestandMetBehulpVanGegevenString(String naam) {
+		help.setHelpBestand(naam);
 	}
 
-	public void openHelp () {
-		
+	public String[][] geefResultaat(String zoekterm, int limiter) {
+		return help.geefResultaat(zoekterm, limiter);
 	}
 }
