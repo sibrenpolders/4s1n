@@ -1,17 +1,28 @@
 package actua;
+
 public class Optie {
-	protected String naam;
-	protected Object o;
+	private String naam;
+	private String waarde;
 
-	public Optie() {
+	public Optie(String naam,  String obj) {
+		setNaam(naam);
+		setWaarde(obj);
 	}
 
-	public Object getWaarde() {
-		return 0;
+	public String getNaam() {
+		return naam;
 	}
 
-	public void setWaarde(Object waarde) {
+	public void setNaam(String naam) {
+		this.naam = naam;
+	}
 
+	public String getWaarde() {
+		return waarde;
+	}
+
+	public void setWaarde(String waarde) {
+		this.waarde = waarde;
 	}
 
 }

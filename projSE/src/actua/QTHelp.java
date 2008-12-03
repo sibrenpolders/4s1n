@@ -3,16 +3,31 @@ package actua;
 public class QTHelp extends GHelp {
 
 	public QTHelp() {
-		
+
 	}
 
-	public String vraagZoekterm () {
+	@Override
+	protected void geefInfoWeer(String[][] zoektermen) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected String vraagZoekterm() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void geefInfoWeer (String zoektermen) {
-		
-	}
-
 }
-
