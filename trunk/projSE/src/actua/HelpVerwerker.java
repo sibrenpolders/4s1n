@@ -1,10 +1,10 @@
 package actua;
 
 public class HelpVerwerker {
-	protected GHelp helpController;
-
+	private Help help;
+	
 	public HelpVerwerker() {
-		
+		help = new Help();
 	}
 
 	public void vraagHelp () {
@@ -14,5 +14,4 @@ public class HelpVerwerker {
 	public void openHelp () {
 		
 	}
-
 }

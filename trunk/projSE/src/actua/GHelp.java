@@ -1,7 +1,7 @@
 package actua;
-public abstract class GHelp {
-	protected static String HELP_BESTANDSNAAM;
 
+public abstract class GHelp {
+	protected HelpVerwerker
 	public GHelp() {
 		
 	}
@@ -17,5 +17,4 @@ public abstract class GHelp {
 	public void sluitHelpAf () {
 		
 	}
-
 }
