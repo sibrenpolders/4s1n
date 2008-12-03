@@ -1,6 +1,7 @@
 package testcases;
 
 import junit.framework.TestCase;
+import actua.Easy;
 import actua.Tafel;
 import actua.Tegel;
 import actua.AI;
