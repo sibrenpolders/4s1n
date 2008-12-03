@@ -1,7 +1,10 @@
 package actua;
 
+import actua.HelpVerwerker;
+
 public abstract class GHelp {
-	protected HelpVerwerker
+	protected HelpVerwerker helpVerwerker;
+	
 	public GHelp() {
 		
 	}
