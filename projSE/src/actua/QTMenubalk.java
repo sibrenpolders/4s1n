@@ -1,20 +1,31 @@
 package actua;
-
-import java.util.Observable;
-
-
-
+import com.trolltech.qt.gui.QMenuBar;
+import com.trolltech.qt.gui.QWidget;
 
 public class QTMenubalk extends GMenubalk {
-
-	public QTMenubalk() {
-		
+	private QMenuBar menubar;
+	
+	public QTMenubalk(QWidget parent) {
+		super();
+		setGHelp(new QTHelp());
+		setGOptie(new QTOptie());
+		menubar = new QMenuBar(parent);
+		addItems();
+	}
+	
+	private void addItems()
+	{
+		if(menubar == null)
+			throw new NullPointerException();
+		menubar.addMenu("Help");
+		menubar.addMenu("Opties");
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+	public void hide() {
+		menubar.hide();		
 	}
 
+	public void show() {
+		menubar.show();
+	}
 }
