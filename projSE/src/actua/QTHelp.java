@@ -2,7 +2,9 @@ package actua;
 
 import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QMainWindow;
+import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QTextBrowser;
+import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTHelp extends GHelp {
@@ -10,16 +12,27 @@ public class QTHelp extends GHelp {
 
 	public QTHelp() {
 		super();
-		help=new QMainWindow();
-		
+		help = new QMainWindow();
+
 		help.setWindowTitle("Help");
-		zoekVeld();
+		venster();
 	}
 
-	private void zoekVeld(){
-		QLineEdit zoekveld = new QLineEdit("Type hier ...",help);
+	private void venster() {
+		QWidget venster = new QWidget();
+		QGridLayout layout = new QGridLayout(venster);
+		QLineEdit zoekveld = new QLineEdit("Typ hier ...", help);
+		QPushButton zoek=new QPushButton("Zoek");
+		QTextBrowser veld=new QTextBrowser(help);
+
+		layout.addWidget(zoekveld,0,0);
+		layout.addWidget(zoek,0,1);
+		layout.addWidget(veld, 1, 0, 5, 2);
+
+		venster.setLayout(layout);
+		help.setCentralWidget(venster);
 	}
-	
+
 	@Override
 	protected void geefInfoWeer(String[][] zoektermen) {
 		// TODO Auto-generated method stub
