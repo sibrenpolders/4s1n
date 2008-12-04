@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public abstract class GInfo {
 	private ArrayList<GSpelerInfo> gSpelers;
 
-	public GInfo() {
+	public GInfo(Spel spel, OptieVerwerker opties) {
 		
 	}
 
