@@ -1,8 +1,8 @@
 package actua;
 
+import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QTextBrowser;
-import com.trolltech.qt.gui.QTextEdit;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTHelp extends GHelp {
@@ -17,7 +17,7 @@ public class QTHelp extends GHelp {
 	}
 
 	private void zoekVeld(){
-		QTextEdit zoekveld = new QTextEdit("Type hier ...",help);
+		QLineEdit zoekveld = new QLineEdit("Type hier ...",help);
 	}
 	
 	@Override
