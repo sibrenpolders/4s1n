@@ -20,8 +20,37 @@ public class QTMenubalk extends GMenubalk {
 	private void addItems() {
 		if (menubar == null)
 			throw new NullPointerException();
-		help();
-		menubar.addMenu("Opties");
+		spel();
+		bewerken();
+		opties();
+		help();	
+	}
+	
+	private void spel(){
+		QMenu spel;
+		QAction nSpel, opslaan,laden;
+
+		spel = addMenuItem("Spel");
+		nSpel = addActionItem(spel, "Nieuw Spel");
+		opslaan = addActionItem(spel, "Opslaan");
+		laden = addActionItem(spel, "Laden");
+	}
+	
+	private void bewerken(){
+		QMenu bewerken;
+		QAction undo,redo;
+		
+		bewerken = addMenuItem("Bewerken");
+		undo = addActionItem(bewerken, "Ongedaan maken");
+		redo = addActionItem(bewerken, "Opnieuw uitvoeren");
+	}
+	
+	private void opties(){
+		QMenu opties;
+		QAction optie;
+
+		opties = addMenuItem("Opties");
+		optie = addActionItem(opties, "Instellingen");
 	}
 
 	private void help() {
