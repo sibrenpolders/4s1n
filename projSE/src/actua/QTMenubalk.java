@@ -14,6 +14,8 @@ public class QTMenubalk extends GMenubalk {
 		setGHelp(new QTHelp());
 		setGOptie(new QTOptie());
 		menubar = new QMenuBar(parent);
+		menubar.setMaximumWidth(1024);
+		menubar.setMinimumWidth(1024);
 		addItems();
 	}
 
@@ -57,6 +59,7 @@ public class QTMenubalk extends GMenubalk {
 		QMenu helpMenu;
 		QAction help, about;
 
+		
 		helpMenu = addMenuItem("Help");
 		help = addActionItem(helpMenu, "Help en Ondersteuning");
 		about = addActionItem(helpMenu, "Info");
