@@ -1,11 +1,25 @@
 package actua;
 
+import com.trolltech.qt.gui.QMainWindow;
+import com.trolltech.qt.gui.QTextBrowser;
+import com.trolltech.qt.gui.QTextEdit;
+import com.trolltech.qt.gui.QWidget;
+
 public class QTHelp extends GHelp {
+	QMainWindow help;
 
 	public QTHelp() {
-
+		super();
+		help=new QMainWindow();
+		
+		help.setWindowTitle("Help");
+		zoekVeld();
 	}
 
+	private void zoekVeld(){
+		QTextEdit zoekveld = new QTextEdit("Type hier ...",help);
+	}
+	
 	@Override
 	protected void geefInfoWeer(String[][] zoektermen) {
 		// TODO Auto-generated method stub
@@ -14,13 +28,12 @@ public class QTHelp extends GHelp {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
+		help.hide();
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		help.show();
 
 	}
 
