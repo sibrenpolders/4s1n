@@ -7,7 +7,6 @@ public abstract class GSpeelveld {
 	private String achtergrond;
 
 	public GSpeelveld() {
-		
 	}
 
 	public void toonSpeelveld () {
@@ -18,4 +17,6 @@ public abstract class GSpeelveld {
 		
 	}
 
+	public abstract void hide();
+	public abstract void show();
 }

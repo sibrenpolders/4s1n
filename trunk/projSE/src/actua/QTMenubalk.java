@@ -1,6 +1,7 @@
 package actua;
 
 import com.trolltech.qt.gui.QAction;
+import com.trolltech.qt.gui.QLayout;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMenuBar;
 import com.trolltech.qt.gui.QMessageBox;
@@ -9,11 +10,12 @@ import com.trolltech.qt.gui.QWidget;
 public class QTMenubalk extends GMenubalk {
 	private QMenuBar menubar;
 
-	public QTMenubalk(QWidget parent) {
+	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help) {
 		super();
 		setGHelp(new QTHelp());
-		setGOptie(new QTOptie());
-		menubar = new QMenuBar(parent);
+		setGOptie(new QTOptie());		
+		
+		menubar = new QMenuBar();		
 		menubar.setMaximumWidth(1024);
 		menubar.setMinimumWidth(1024);
 		addItems();
@@ -75,7 +77,7 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	private QMenu addMenuItem(String titel) {
-		return menubar.addMenu("&" + titel);
+		return menubar.addMenu("&" + titel);		
 	}
 
 	private QAction addActionItem(QMenu menu, String titel) {
@@ -88,5 +90,13 @@ public class QTMenubalk extends GMenubalk {
 
 	public void show() {
 		menubar.show();
+	}
+
+	public QMenuBar getMenubar() {
+		return menubar;
+	}
+
+	public void setMenubar(QMenuBar menubar) {
+		this.menubar = menubar;
 	}
 }
