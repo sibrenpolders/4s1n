@@ -54,9 +54,8 @@ public class Applicatie {
 		if (args.length < 2 || args[1].compareTo("qt") == 0) {
 			gui = new QTFactory();
 			app = new Applicatie(gui);
-		} else if (args[1].compareTo("swing") == 0)
-			;
-		else if (args[1].compareTo("gtk") == 0)
-			;
+		} else
+			System.out.println(args[1]
+					+ " as a graphical toolkit is NOT supported.");
 	}
 }
