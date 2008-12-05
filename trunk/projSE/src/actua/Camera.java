@@ -34,7 +34,7 @@ public class Camera {
 	}
 
 	public void herstelOverzicht() {
-		huidigeVector.set(0, 0, 0);
+		huidigeVector.setXYZ(0, 0, 0);
 	}
 
 	public Vector3D getMinVector() {
