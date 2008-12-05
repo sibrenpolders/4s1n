@@ -7,11 +7,12 @@ public class HelpVerwerker {
 		help = new Help();
 	}
 
-	public void veranderHelpBronBestandMetBehulpVanGegevenString(String naam) {
-		help.setHelpBestand(naam);
+	public String[][] geefBeknopteMatchingResultaten(String zoekterm,
+			int limiter) {
+		return help.geefResultaat(zoekterm, limiter);
 	}
 
-	public String[][] geefResultaat(String zoekterm, int limiter) {
-		return help.geefResultaat(zoekterm, limiter);
+	public String geefVolledigResultaat(String zoekterm) {
+		return help.geefVolledigResultaat(zoekterm);
 	}
 }

@@ -1,15 +1,21 @@
 package actua;
 
+import java.util.Vector;
+
 public class Help {
-	private static String HELP_BESTAND = "help.txt";
-	private String helpBestand;
+	private Vector<HelpItem> items;
+	private HelpParser parser;
 
 	public Help() {
-		helpBestand = HELP_BESTAND;
+		items = new Vector<HelpItem>();
+		parser = new HelpParser();
+		parser.parseHelpDocument(items);
 	}
 
 	public Help(String bestand) {
-		helpBestand = bestand;
+		items = new Vector<HelpItem>();
+		parser = new HelpParser(bestand);
+		parser.parseHelpDocument(items);
 	}
 
 	/**
@@ -18,18 +24,14 @@ public class Help {
 	 * @param limiter
 	 *            aantal karakters van het resultaat dat voor een match mag
 	 *            worden teruggegeven
-	 * @return dim 1 = matches vb. 'punten', 'puntentelling', ... dim 2 =
+	 * @return dim 1 = matches vb. 'punten', 'puntentelling', ... ; dim 2 =
 	 *         resultaten voor die matches
 	 */
 	public String[][] geefResultaat(String zoekterm, int limiter) {
 		return null;
 	}
 
-	public String getHelpBestand() {
-		return helpBestand;
-	}
-
-	public void setHelpBestand(String helpBestand) {
-		this.helpBestand = helpBestand;
+	public String geefVolledigResultaat(String zoekterm) {
+		return null;
 	}
 }

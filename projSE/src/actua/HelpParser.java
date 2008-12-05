@@ -1,0 +1,101 @@
+package actua;
+
+import java.io.File;
+import java.util.Vector;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+public class HelpParser {
+	private static String HELP_BESTAND = "help.xml";
+	private String helpBestand;
+
+	public HelpParser() {
+		this(HELP_BESTAND);
+	}
+
+	public HelpParser(String bestand) {
+		helpBestand = bestand;
+	}
+
+	public void parseHelpDocument(Vector<HelpItem> items) {
+		try {
+			String uri = "file:" + new File(helpBestand).getAbsolutePath();
+			DocumentBuilderFactory factory = DocumentBuilderFactory
+					.newInstance();
+			factory.setValidating(false);
+			factory.setIgnoringComments(true);
+			factory.setIgnoringElementContentWhitespace(true);
+
+			DocumentBuilder db = factory.newDocumentBuilder();
+			Document doc = db.parse(uri);
+			parseNodes(doc, items);
+		} catch (Exception e) {
+		}
+	}
+
+	private void parseNodes(Node n, Vector<HelpItem> items) {
+		if (n == null) {
+			return;
+		}
+		Node e = getElement(n);
+		NodeList nl = e.getChildNodes();
+		int len = nl.getLength();
+		for (int i = 0; i < len; i++) {
+			Node nd = nl.item(i);
+			String tagName = nd.getNodeName();
+			if (tagName.equals("help"))
+				parseHelpItems(nd, items);
+		}
+	}
+
+	private void parseHelpItems(Node n, Vector<HelpItem> items) {
+		NodeList nl = n.getChildNodes();
+		int len = nl.getLength();
+		for (int i = 0; i < len; i++) {
+			Node nd = nl.item(i);
+			if (nd.getNodeName().equals("item")) {
+				HelpItem item = parseHelpItem(nd);
+				items.add(item);
+			}
+		}
+	}
+
+	private HelpItem parseHelpItem(Node n) {
+		HelpItem result = new HelpItem();
+
+		NodeList nl = n.getChildNodes();
+		int len = nl.getLength();
+		for (int i = 0; i < len; i++) {
+			Node nd = nl.item(i);
+			if (nd.getNodeName().equals("tag"))
+				result.addTag(nd.getNodeValue());
+			else if (nd.getNodeName().equals("uitleg"))
+				result.setUitleg(nd.getNodeValue());
+		}
+
+		return result;
+	}
+
+	private Node getElement(Node nd) {
+		NodeList nl = nd.getChildNodes();
+		int len = nl.getLength();
+		for (int i = 0; i < len; i++) {
+			Node n = nl.item(i);
+			if (n.getNodeType() == Node.ELEMENT_NODE) {
+				return n;
+			}
+		}
+		return null;
+	}
+
+	public String getHelpBestand() {
+		return helpBestand;
+	}
+
+	public void setHelpBestand(String helpBestand) {
+		this.helpBestand = helpBestand;
+	}
+}
