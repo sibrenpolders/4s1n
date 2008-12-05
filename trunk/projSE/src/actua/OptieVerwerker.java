@@ -40,6 +40,10 @@ public class OptieVerwerker {
 		return optieBestand;
 	}
 
+	public void setOptieBestand(String bestand) {
+		optieBestand = bestand;
+	}
+
 	/**
 	 * @return null, als de optie met de gegeven naam niet bestaat; de waarde
 	 *         van die optie in het andere geval.
