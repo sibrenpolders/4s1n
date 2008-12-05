@@ -9,11 +9,17 @@ import java.security.InvalidParameterException;
 import java.util.Vector;
 
 public class OptieVerwerker {
-	protected static String OPTIE_BESTAND = "opties.txt";
-	protected Vector<Optie> opties;
+	private static String OPTIE_BESTAND = "opties.txt";
+	private Vector<Optie> opties;
+	private String optieBestand;
 
 	public OptieVerwerker() {
+		this(OPTIE_BESTAND);
+	}
+
+	public OptieVerwerker(String bestand) {
 		opties = new Vector<Optie>();
+		optieBestand = bestand;
 
 		try {
 			leesUitBestand();
@@ -133,15 +139,11 @@ public class OptieVerwerker {
 	}
 
 	private void leesUitBestand() throws IOException {
-		leesUitBestand(OPTIE_BESTAND);
-	}
-
-	private void leesUitBestand(String fileName) throws IOException {
-		if (opties == null || fileName == null)
+		if (opties == null || optieBestand == null)
 			throw new NullPointerException();
 
 		opties.clear();
-		BufferedReader reader = new BufferedReader(new FileReader(fileName));
+		BufferedReader reader = new BufferedReader(new FileReader(optieBestand));
 		String line = null;
 		OptieParser op = new OptieParser();
 		while ((line = reader.readLine()) != null) {
@@ -157,14 +159,10 @@ public class OptieVerwerker {
 	}
 
 	public void schrijfNaarBestand() throws IOException {
-		schrijfNaarBestand(OPTIE_BESTAND);
-	}
-
-	public void schrijfNaarBestand(String fileName) throws IOException {
-		if (fileName == null)
+		if (optieBestand == null)
 			throw new NullPointerException();
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(optieBestand));
 		OptieParser op = new OptieParser();
 
 		for (int i = 0; i < opties.size(); ++i) {
