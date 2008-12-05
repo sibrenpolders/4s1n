@@ -9,10 +9,10 @@ public class HelpVerwerker {
 
 	public String[][] geefBeknopteMatchingResultaten(String zoekterm,
 			int limiter) {
-		return help.geefResultaat(zoekterm, limiter);
+		return help.geefMogelijkeResultaten(zoekterm, limiter);
 	}
 
-	public String geefVolledigResultaat(String zoekterm) {
-		return help.geefVolledigResultaat(zoekterm);
+	public String geefVolledigResultaat(String itemId) {
+		return help.geefVolledigResultaat(itemId);
 	}
 }
