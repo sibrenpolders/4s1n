@@ -40,16 +40,16 @@ public class HelpParser {
 
 			DocumentBuilder db = factory.newDocumentBuilder();
 			Document doc = db.parse(uri);
-			parseNodes(doc, items);
+			parseKnopen(doc, items);
 		} catch (Exception e) {
 		}
 	}
 
-	private void parseNodes(Node n, Vector<HelpItem> items) {
-		if (n == null) {
+	private void parseKnopen(Node ouderKnoop, Vector<HelpItem> items) {
+		if (ouderKnoop == null) {
 			return;
 		}
-		Node e = getElement(n);
+		Node e = getElement(ouderKnoop);
 		NodeList nl = e.getChildNodes();
 		int len = nl.getLength();
 		for (int i = 0; i < len; i++) {
@@ -60,8 +60,8 @@ public class HelpParser {
 		}
 	}
 
-	private void parseHelpItems(Node n, Vector<HelpItem> items) {
-		NodeList nl = n.getChildNodes();
+	private void parseHelpItems(Node helpKnoop, Vector<HelpItem> items) {
+		NodeList nl = helpKnoop.getChildNodes();
 		int len = nl.getLength();
 		for (int i = 0; i < len; i++) {
 			Node nd = nl.item(i);
@@ -72,13 +72,13 @@ public class HelpParser {
 		}
 	}
 
-	private HelpItem parseHelpItem(Node n) {
+	private HelpItem parseHelpItem(Node itemKnoop) {
 		HelpItem result = new HelpItem();
 
-		String id = getAttribute(n, "id");
+		String id = getAttribuut(itemKnoop, "id");
 		if (id != null) {
 			result.setId(id);
-			NodeList nl = n.getChildNodes();
+			NodeList nl = itemKnoop.getChildNodes();
 			int len = nl.getLength();
 			for (int i = 0; i < len; i++) {
 				Node nd = nl.item(i);
@@ -92,8 +92,8 @@ public class HelpParser {
 		return result;
 	}
 
-	private Node getElement(Node nd) {
-		NodeList nl = nd.getChildNodes();
+	private Node getElement(Node knoop) {
+		NodeList nl = knoop.getChildNodes();
 		int len = nl.getLength();
 		for (int i = 0; i < len; i++) {
 			Node n = nl.item(i);
@@ -104,14 +104,14 @@ public class HelpParser {
 		return null;
 	}
 
-	private String getAttribute(Node e, String name) {
-		NamedNodeMap attrs = e.getAttributes();
+	private String getAttribuut(Node knoop, String naam) {
+		NamedNodeMap attrs = knoop.getAttributes();
 		int len = attrs.getLength();
 		if (len > 0) {
 			int i;
 			for (i = 0; i < len; i++) {
 				Node attr = attrs.item(i);
-				if (name.equals(attr.getNodeName())) {
+				if (naam.equals(attr.getNodeName())) {
 					return attr.getNodeValue().trim();
 				}
 			}
