@@ -8,7 +8,7 @@ import actua.Vector2D;
 
 import junit.framework.TestCase;
 
-abstract public class AITest extends TestCase {
+abstract public class JunitAITest extends TestCase {
 	protected Strategy ai;
 	
 	protected void setUp() throws Exception {

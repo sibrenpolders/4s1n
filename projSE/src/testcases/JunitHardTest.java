@@ -7,7 +7,7 @@ import actua.Tegel;
 import actua.Vector2D;
 
 
-public class HardTest extends AITest {
+public class JunitHardTest extends JunitAITest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		super.ai = new Hard();

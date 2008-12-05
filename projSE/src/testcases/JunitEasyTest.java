@@ -7,7 +7,7 @@ import actua.Tegel;
 import actua.Vector2D;
 
 
-public class EasyTest extends AITest {
+public class JunitEasyTest extends JunitAITest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		super.ai= new Easy();
