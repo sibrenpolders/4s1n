@@ -46,15 +46,26 @@ public class Tegel {
 	 */
 	public void draaiTegel(boolean richting) {
 		char windrichting;
-		int element;
+		int element,richt=1;
+		String nieuw="";
 		
-		if(richting){
-			for(int i=0;i<4;++i){
-				element=0;
-			}
-		}else{
-			
+		if(richting)
+			richt*=-1;
+		
+		for(int i=0;i<4;++i){
+			element = mod(i+richt,4);
+			windrichting = soortTegel.charAt(element);
+			nieuw+=windrichting;	
 		}
+		
+		soortTegel=nieuw;
+	}
+	
+	private int mod(int waarde,int mod){
+		if(waarde==-1)
+			return 3;
+		else
+			return waarde%mod;
 	}
 	
 	public boolean equals(Tegel t){
