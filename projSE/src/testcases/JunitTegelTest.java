@@ -34,7 +34,12 @@ public class JunitTegelTest extends TestCase {
 	}
 
 	public void testDraaiTegel() {
-		fail("Not yet implemented");
+		Tegel t=new Tegel("wccc");
+		tegel.setSoortTegel("cccw");
+		
+		tegel.draaiTegel(true);
+		
+		assertEquals(t, tegel); // werkt niet zogoed
 	}
 
 }
