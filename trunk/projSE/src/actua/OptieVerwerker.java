@@ -132,10 +132,15 @@ public class OptieVerwerker {
 		}
 	}
 
+	private void leesUitBestand() throws IOException {
+		leesUitBestand(OPTIE_BESTAND);
+	}
+
 	private void leesUitBestand(String fileName) throws IOException {
 		if (opties == null || fileName == null)
 			throw new NullPointerException();
 
+		opties.clear();
 		BufferedReader reader = new BufferedReader(new FileReader(fileName));
 		String line = null;
 		OptieParser op = new OptieParser();
