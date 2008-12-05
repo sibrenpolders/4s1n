@@ -58,19 +58,20 @@ public class Tegel {
 	}
 	
 	public boolean equals(Tegel t){
-		if ((soortTegel == null && t.soortTegel != null) ||
-			(t.soortTegel == null && soortTegel != null)) {
-			return false;
+		boolean orientatieB, soortTegelB;
+		
+		if (orientatie != null) {
+			orientatieB = orientatie.equals(t.orientatie); 
+		} else {
+			orientatieB = t.orientatie == null;
+		}
+	
+		if (soortTegel!= null) {
+			soortTegelB = soortTegel.equals(t.soortTegel); 
+		} else {
+			soortTegelB = t.soortTegel== null;
 		}
 		
-		if ((orientatie == null && t.orientatie != null) || 
-			(t.orientatie == null && orientatie != null)) {
-			return false;
-		}
-		
-		if (orientatie != null && soortTegel != null && t != null) {
-			return this.soortTegel.equals(t.soortTegel) && this.orientatie.equals(t.orientatie);
-		}
-		return false;
+		return orientatieB && soortTegelB;
 	}
 }
