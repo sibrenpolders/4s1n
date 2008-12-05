@@ -9,7 +9,7 @@ public class Tegel {
 	private String soortTegel; // noord-oost-zuid-west
 
 	public Tegel() {
-
+		
 	}
 	
 	public Tegel(String soortTegel) {
@@ -58,6 +58,19 @@ public class Tegel {
 	}
 	
 	public boolean equals(Tegel t){
-		return this.soortTegel.equals(t.soortTegel) && this.orientatie.equals(t.orientatie);
+		if ((soortTegel == null && t.soortTegel != null) ||
+			(t.soortTegel == null && soortTegel != null)) {
+			return false;
+		}
+		
+		if ((orientatie == null && t.orientatie != null) || 
+			(t.orientatie == null && orientatie != null)) {
+			return false;
+		}
+		
+		if (orientatie != null && soortTegel != null && t != null) {
+			return this.soortTegel.equals(t.soortTegel) && this.orientatie.equals(t.orientatie);
+		}
+		return false;
 	}
 }
