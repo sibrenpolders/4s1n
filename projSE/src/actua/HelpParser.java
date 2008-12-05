@@ -5,6 +5,7 @@ import java.util.Vector;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -18,6 +19,14 @@ public class HelpParser {
 
 	public HelpParser(String bestand) {
 		helpBestand = bestand;
+	}
+
+	public String getHelpBestand() {
+		return helpBestand;
+	}
+
+	public void setHelpBestand(String helpBestand) {
+		this.helpBestand = helpBestand;
 	}
 
 	public void parseHelpDocument(Vector<HelpItem> items) {
@@ -66,14 +75,18 @@ public class HelpParser {
 	private HelpItem parseHelpItem(Node n) {
 		HelpItem result = new HelpItem();
 
-		NodeList nl = n.getChildNodes();
-		int len = nl.getLength();
-		for (int i = 0; i < len; i++) {
-			Node nd = nl.item(i);
-			if (nd.getNodeName().equals("tag"))
-				result.addTag(nd.getNodeValue());
-			else if (nd.getNodeName().equals("uitleg"))
-				result.setUitleg(nd.getNodeValue());
+		String id = getAttribute(n, "id");
+		if (id != null) {
+			result.setId(id);
+			NodeList nl = n.getChildNodes();
+			int len = nl.getLength();
+			for (int i = 0; i < len; i++) {
+				Node nd = nl.item(i);
+				if (nd.getNodeName().equals("tag"))
+					result.addTag(nd.getNodeValue());
+				else if (nd.getNodeName().equals("uitleg"))
+					result.setUitleg(nd.getNodeValue());
+			}
 		}
 
 		return result;
@@ -91,11 +104,18 @@ public class HelpParser {
 		return null;
 	}
 
-	public String getHelpBestand() {
-		return helpBestand;
-	}
-
-	public void setHelpBestand(String helpBestand) {
-		this.helpBestand = helpBestand;
+	private String getAttribute(Node e, String name) {
+		NamedNodeMap attrs = e.getAttributes();
+		int len = attrs.getLength();
+		if (len > 0) {
+			int i;
+			for (i = 0; i < len; i++) {
+				Node attr = attrs.item(i);
+				if (name.equals(attr.getNodeName())) {
+					return attr.getNodeValue().trim();
+				}
+			}
+		}
+		return null;
 	}
 }
