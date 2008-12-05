@@ -32,6 +32,7 @@ public class QTWindow extends GWindow {
 		hbox.addWidget(qInfo.getQtInfo());
 		
 		container.setLayout(hbox);
+		container.show();
 		
 		mainWindow.setCentralWidget(container);
 	}

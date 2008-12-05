@@ -1,26 +1,38 @@
 package actua;
 
 import com.trolltech.qt.core.QSize;
+import com.trolltech.qt.gui.QBrush;
+import com.trolltech.qt.gui.QColor;
+import com.trolltech.qt.gui.QGraphicsScene;
+import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTSpeelveld extends GSpeelveld {
-	private QWidget speelveld;
+	private QGraphicsView speelveld;
 
 	public QTSpeelveld(Spel spel, OptieVerwerker opties) {
 		super();
-		speelveld = new QWidget();
+		setSpeelveld(new QGraphicsView());
 		init();
 	}
 
 	private void init() {
-		speelveld.resize(new QSize(1024, 800));
-		QHBoxLayout hbox = new QHBoxLayout();		
-		QLabel label = new QLabel("FAILURE");
-		hbox.addWidget(label);
+		QGraphicsScene scene = new QGraphicsScene();
+		scene.addText("TEST");
+
+		speelveld.setGeometry(0, 0, 800, 600);
+		speelveld.setMaximumSize(new QSize(800, 600));
+		speelveld.setMinimumSize(new QSize(800, 600));
 		
-		speelveld.setLayout(hbox);
+		speelveld.setScene(scene);
+		speelveld.setBackgroundBrush(new QBrush(new QPixmap("classpath:background.xpm")));
+		speelveld.resize(new QSize(1024, 800));
+		speelveld.setCacheMode(new QGraphicsView.CacheMode(
+	                QGraphicsView.CacheModeFlag.CacheBackground));
+		speelveld.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.FullViewportUpdate);
 	}
 
 	public void hide() {
@@ -35,7 +47,7 @@ public class QTSpeelveld extends GSpeelveld {
 		return speelveld;
 	}
 
-	public void setSpeelveld(QWidget speelveld) {
+	private void setSpeelveld(QGraphicsView speelveld) {
 		this.speelveld = speelveld;
 	}
 
