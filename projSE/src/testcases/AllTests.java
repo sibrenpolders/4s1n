@@ -18,6 +18,7 @@ public class AllTests {
 		suite.addTestSuite(JunitSpelerVerwerkerTest.class);
 		suite.addTestSuite(JunitTafelTest.class);
 		suite.addTestSuite(JunitBestandTest.class);
+		suite.addTestSuite(JunitOptiesTest.class);
 		//$JUnit-END$
 		return suite;
 	}
