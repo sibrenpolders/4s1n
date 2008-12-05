@@ -2,10 +2,10 @@ package actua;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.util.Vector;
 
 public class OptieVerwerker {
@@ -19,13 +19,12 @@ public class OptieVerwerker {
 
 	public OptieVerwerker(String bestand) {
 		opties = new Vector<Optie>();
-		optieBestand = bestand;
+		if (bestand != null)
+			optieBestand = bestand;
+		else
+			optieBestand = OPTIE_BESTAND;
 
-		try {
-			leesUitBestand();
-		} catch (IOException e) {
-			// <opties> blijft een lege vector
-		}
+		leesUitBestand();
 	}
 
 	protected void finalize() throws Throwable {
@@ -33,95 +32,119 @@ public class OptieVerwerker {
 		schrijfNaarBestand();
 	}
 
+	public static String getDefaultOptieBestand() {
+		return OPTIE_BESTAND;
+	}
+
+	public String getOptieBestand() {
+		return optieBestand;
+	}
+
 	/**
 	 * @return null, als de optie met de gegeven naam niet bestaat; de waarde
 	 *         van die optie in het andere geval.
 	 */
 	public String getWaarde(String naam) {
-		for (int i = 0; i < opties.size(); ++i) {
-			Optie optie = opties.get(i);
-			if (optie.getNaam().compareTo(naam) == 0)
-				return optie.getWaarde();
-		}
-
-		return null;
+		if (naam != null) {
+			for (int i = 0; i < opties.size(); ++i) {
+				Optie optie = opties.get(i);
+				if (optie.getNaam().compareTo(naam) == 0)
+					return optie.getWaarde();
+			}
+			return null;
+		} else
+			return null;
 	}
 
 	public String getNaam(int i) {
 		if (i < 0 || i >= opties.size())
-			throw new IllegalArgumentException();
-
-		return opties.get(i).getNaam();
+			return null;
+		else
+			return opties.get(i).getNaam();
 	}
 
 	public String getWaarde(int i) {
 		if (i < 0 || i >= opties.size())
-			throw new IllegalArgumentException();
+			return null;
+		else
+			return opties.get(i).getWaarde();
+	}
 
-		return opties.get(i).getWaarde();
+	private void resetOpties() {
+		if (opties != null)
+			opties.clear();
 	}
 
 	private void setWaarde(String naam, String waarde) {
-		boolean veranderd = false;
-		for (int i = 0; i < opties.size() && !veranderd; ++i) {
-			Optie optie = opties.get(i);
-			if (optie.getNaam().compareTo(naam) == 0) {
-				optie.setWaarde(waarde);
-				veranderd = true;
+		if (naam != null && waarde != null) {
+			boolean veranderd = false;
+			for (int i = 0; i < opties.size() && !veranderd; ++i) {
+				Optie optie = opties.get(i);
+				if (optie.getNaam().compareTo(naam) == 0) {
+					optie.setWaarde(waarde);
+					veranderd = true;
+				}
 			}
-		}
 
-		if (!veranderd)
-			try {
+			if (!veranderd)
 				addOptie(naam, waarde);
-			} catch (Exception e) {
-				e.printStackTrace();
+		}
+	}
+
+	private void verwijderOptie(String naam) {
+		if (naam != null)
+			for (int i = 0; i < opties.size(); ++i) {
+				Optie optie = opties.get(i);
+				if (optie.getNaam().compareTo(naam) == 0) {
+					opties.remove(i);
+					--i;
+				}
 			}
 	}
 
-	private void addOptie(Optie optie) throws Exception {
-		if (getWaarde(optie.getNaam()) != null)
-			throw new Exception("Optie " + optie.getNaam()
-					+ " is reeds aanwezig.");
+	private void addOptie(Optie optie) {
+		if (optie != null) {
+			if (getWaarde(optie.getNaam()) != null)
+				verwijderOptie(optie.getNaam());
 
-		opties.add(optie);
+			opties.add(optie);
+		}
 	}
 
-	private void addOptie(String naam, String waarde) throws Exception {
-		if (getWaarde(naam) != null)
-			throw new Exception("Optie " + naam + " is reeds aanwezig.");
-
-		opties.add(new Optie(naam, waarde));
+	public void addOptie(String naam, String waarde) {
+		if (naam == null || waarde == null)
+			return;
+		else
+			addOptie(new Optie(naam, waarde));
 	}
 
 	public void veranderOptie(String[] nieuw) {
 		if (nieuw.length != 2)
-			throw new IllegalArgumentException();
-
-		String waarde = getWaarde(nieuw[0]);
-		if (waarde != null && waarde == nieuw[1])
-			;
-		else
-			setWaarde(nieuw[0], nieuw[1]);
+			return;
+		else {
+			String waarde = getWaarde(nieuw[0]);
+			if (waarde != null && waarde == nieuw[1])
+				;
+			else
+				setWaarde(nieuw[0], nieuw[1]);
+		}
 
 	}
 
 	public void veranderOpties(String[][] nieuweOpties) {
-		opties.clear();
-
+		resetOpties();
 		for (int i = 0; i < nieuweOpties.length; ++i)
 			veranderOptie(nieuweOpties[i]);
 	}
 
 	private class OptieParser {
-		public Optie zetOmInOptie(String regel)
-				throws InvalidParameterException {
+		public Optie zetOmInOptie(String regel) {
 			String delims = ":";
 			String[] tokens = regel.split(delims);
 			if (!isGeldigeRegel(regel))
-				throw new InvalidParameterException();
-
-			return new Optie(tokens[0], tokens[2]);
+				return null;
+			else
+				return new Optie(tokens[0], tokens[2]);
 		}
 
 		public String zetOmInTekst(Optie o) {
@@ -138,38 +161,58 @@ public class OptieVerwerker {
 		}
 	}
 
-	private void leesUitBestand() throws IOException {
+	private void leesUitBestand() {
 		if (opties == null || optieBestand == null)
-			throw new NullPointerException();
+			return;
+		else {
+			resetOpties();
 
-		opties.clear();
-		BufferedReader reader = new BufferedReader(new FileReader(optieBestand));
-		String line = null;
-		OptieParser op = new OptieParser();
-		while ((line = reader.readLine()) != null) {
+			BufferedReader reader = null;
+			String line = null;
+			OptieParser op = new OptieParser();
+
 			try {
-				Optie o = op.zetOmInOptie(line);
-				opties.add(o);
-			} catch (InvalidParameterException e) {
-				// Optie <o> wordt niet toegevoegd aan <opties>
-				;
+				reader = new BufferedReader(new FileReader(optieBestand));
+			} catch (FileNotFoundException e1) {
+				return;
+			}
+			try {
+				while ((line = reader.readLine()) != null) {
+					Optie o = op.zetOmInOptie(line);
+					opties.add(o);
+				}
+
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
-		reader.close();
 	}
 
-	public void schrijfNaarBestand() throws IOException {
-		if (optieBestand == null)
-			throw new NullPointerException();
+	public void schrijfNaarBestand() {
+		if (optieBestand != null) {
+			BufferedWriter writer = null;
+			OptieParser op = new OptieParser();
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter(optieBestand));
-		OptieParser op = new OptieParser();
+			try {
+				writer = new BufferedWriter(new FileWriter(optieBestand, false));
+			} catch (IOException e) {
+				return;
+			}
 
-		for (int i = 0; i < opties.size(); ++i) {
-			Optie o = opties.get(i);
-			String line = op.zetOmInTekst(o);
-			writer.write(line);
+			for (int i = 0; i < opties.size(); ++i) {
+				Optie o = opties.get(i);
+				String line = op.zetOmInTekst(o);
+				try {
+					writer.write(line);
+					writer.newLine();
+				} catch (IOException e) {
+				}
+			}
+			try {
+				writer.close();
+			} catch (IOException e) {
+			}
 		}
-		writer.close();
 	}
 }
