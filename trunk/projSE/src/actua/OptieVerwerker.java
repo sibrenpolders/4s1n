@@ -9,14 +9,14 @@ import java.security.InvalidParameterException;
 import java.util.Vector;
 
 public class OptieVerwerker {
-	protected static String OPTIE_BESTAND;
+	protected static String OPTIE_BESTAND = "opties.txt";
 	protected Vector<Optie> opties;
 
 	public OptieVerwerker() {
 		opties = new Vector<Optie>();
 
 		try {
-			leesUitBestand(OPTIE_BESTAND);
+			leesUitBestand();
 		} catch (IOException e) {
 			// <opties> blijft een lege vector
 		}
