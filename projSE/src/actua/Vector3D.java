@@ -1,30 +1,37 @@
 package actua;
+
 public class Vector3D extends Vector2D {
 	private int z;
 
+	/**
+	 * @post getX() == 0 && getY() == 0 && getZ() == 0
+	 */
 	public Vector3D() {
-		super.x = 0;
-		super.y = 0;
-		z = 0;
+		super();
+		setZ(0);
 	}
 
+	/**
+	 * @post getX() == x && getY() == y && getZ() == z
+	 */
 	public Vector3D(int x, int y, int z) {
-		super.x = x;
-		super.y = y;
-		this.z = z;
+		super(x, y);
+		setZ(z);
 	}
 
-	public int getZ () {
+	public int getZ() {
 		return z;
 	}
 
-	public void setZ (int z) {
+	/**
+	 * @post getZ() == z
+	 */
+	public void setZ(int z) {
 		this.z = z;
 	}
 
-	public void set(int x, int y, int z) {
-		super.set(x, y);
-		this.z = z;
+	public void setXYZ(int x, int y, int z) {
+		setXY(x, y);
+		setZ(z);
 	}
-
 }
