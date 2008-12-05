@@ -39,7 +39,13 @@ public class JunitTegelTest extends TestCase {
 		
 		tegel.draaiTegel(true);
 		
-		assertEquals(t, tegel); // werkt niet zogoed
+		assertTrue(t.equals(tegel)); 
+		
+		t.setSoortTegel("cccw");
+		
+		tegel.draaiTegel(false);
+		
+		assertTrue(t.equals(tegel));
 	}
 
 }
