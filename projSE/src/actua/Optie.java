@@ -4,7 +4,7 @@ public class Optie {
 	private String naam;
 	private String waarde;
 
-	public Optie(String naam,  String obj) {
+	public Optie(String naam, String obj) {
 		setNaam(naam);
 		setWaarde(obj);
 	}
