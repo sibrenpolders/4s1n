@@ -17,12 +17,11 @@ public class AllTests {
 		suite.addTestSuite(JunitOptiesTest.class);
 		suite.addTestSuite(JunitTegelTest.class);
 		suite.addTestSuite(JunitSpelerVerwerkerTest.class);
-		//suite.addTestSuite(JunitStatusBijhouderTest.class);
+		suite.addTestSuite(JunitStatusBijhouderTest.class);
 		suite.addTestSuite(JunitTafelTest.class);
 		suite.addTestSuite(JunitTafelVerwerkerTest.class);
 		suite.addTestSuite(JunitTegelTest.class);		
 		//$JUnit-END$
 		return suite;
 	}
-
 }
