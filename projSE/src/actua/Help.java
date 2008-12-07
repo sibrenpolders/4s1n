@@ -40,7 +40,13 @@ public class Help {
 			}
 		}
 
-		return (String[][]) result.toArray();
+		String[][] resultV = new String[result.size()][2];
+		for (int i = 0; i < result.size(); ++i) {
+			resultV[i][0] = result.get(i)[0];
+			resultV[i][1] = result.get(i)[1];
+		}
+
+		return resultV;
 	}
 
 	public String geefVolledigResultaat(String id) {

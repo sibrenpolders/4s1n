@@ -55,17 +55,7 @@ public class HelpParser {
 		for (int i = 0; i < len; i++) {
 			Node nd = nl.item(i);
 			String tagName = nd.getNodeName();
-			if (tagName.equals("help"))
-				parseHelpItems(nd, items);
-		}
-	}
-
-	private void parseHelpItems(Node helpKnoop, Vector<HelpItem> items) {
-		NodeList nl = helpKnoop.getChildNodes();
-		int len = nl.getLength();
-		for (int i = 0; i < len; i++) {
-			Node nd = nl.item(i);
-			if (nd.getNodeName().equals("item")) {
+			if (tagName.equals("item")) {
 				HelpItem item = parseHelpItem(nd);
 				items.add(item);
 			}
@@ -82,10 +72,14 @@ public class HelpParser {
 			int len = nl.getLength();
 			for (int i = 0; i < len; i++) {
 				Node nd = nl.item(i);
-				if (nd.getNodeName().equals("tag"))
-					result.addTag(nd.getNodeValue());
-				else if (nd.getNodeName().equals("uitleg"))
-					result.setUitleg(nd.getNodeValue());
+				String name = nd.getNodeName();
+				if (name.equals("tag")) {
+					String tag = getValue(nd);
+					result.addTag(tag);
+				} else if (nd.getNodeName().equals("uitleg")) {
+					String uitleg = getValue(nd);
+					result.setUitleg(uitleg);
+				}
 			}
 		}
 
@@ -116,6 +110,19 @@ public class HelpParser {
 				}
 			}
 		}
-		return null;
+		return "";
+	}
+
+	private String getValue(Node knoop) {
+		NodeList nl = knoop.getChildNodes();
+		int len = nl.getLength();
+		for (int i = 0; i < len; i++) {
+			Node n = nl.item(i);
+			short type = n.getNodeType();
+			if (type == Node.TEXT_NODE) {
+				return n.getNodeValue().trim();
+			}
+		}
+		return "";
 	}
 }
