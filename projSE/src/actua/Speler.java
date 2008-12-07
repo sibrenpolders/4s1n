@@ -1,6 +1,6 @@
 package actua;
-import java.util.Vector;
 
+import java.util.Vector;
 import actua.Pion;
 import actua.Tafel;
 import actua.Tegel;
@@ -18,71 +18,79 @@ public abstract class Speler {
 		this.score = score;
 		this.kleur = kleur;
 		pionnen = new Vector<Pion>();
-		for(int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
-			pionnen.add(new Pion(kleur));		
+		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
+			pionnen.add(new Pion(kleur));
 	}
 
 	public Speler() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Pion neemPion (Tafel tafel) {
+	public Pion neemPion(Tafel tafel) {
 		return null;
 	}
 
-	public Vector2D vraagPositie () {
+	public Vector2D vraagPositie() {
 		return null;
 	}
 
-	public abstract boolean plaatsPion (Pion p);
+	public abstract boolean plaatsPion(Pion p);
 
-	public void pasScoreAan () {
-		
+	public void pasScoreAan() {
+
 	}
 
-	public boolean neemPionTerug () {
+	public boolean neemPionTerug() {
 		return false;
 	}
 
-	public void draaiTegel (Tegel tegel,boolean richting) {
-		
+	public void draaiTegel(Tegel tegel, boolean richting) {
+
 	}
 
-	public boolean vraagRichting () {
+	public boolean vraagRichting() {
 		return false;
 	}
 
-	public Vector2D vraagCoord () {
+	public Vector2D vraagCoord() {
 		return new Vector2D();
 	}
 
-	public void neemTegel (Tegel tegel, Tafel tafel) {
-		
+	public void neemTegel(Tegel tegel, Tafel tafel) {
+
 	}
 
-	public abstract boolean plaatsTegel (Tegel tegel, Tafel tafel);
+	public abstract boolean plaatsTegel(Tegel tegel, Tafel tafel);
 
-	public String getNaam () {
-		return "";
+	public String getNaam() {
+		return naam;
 	}
 
-	public char getKleur () {
-		return 0;
+	public char getKleur() {
+		return kleur;
 	}
 
-	public long getScore () {
-		return 0;
-	}
-	
-	public void setNaam (String naam) {
-		
+	public long getScore() {
+		return score;
 	}
 
-	public void setKleur (char kleur) {
-		
+	public void setNaam(String naam) {
+		if (naam != null)
+			this.naam = naam;
 	}
 
-	public void setScore (long score) {
-		
+	public void setKleur(char kleur) {
+		this.kleur = kleur;
+		if (pionnen != null)
+			for (int i = 0; i < pionnen.size(); ++i)
+				pionnen.get(i).setKleur(kleur);
+	}
+
+	public void setScore(long score) {
+		this.score = score;
+	}
+
+	public void verhoogScoreMet(long nb) {
+		score += nb;
 	}
 }
