@@ -14,6 +14,7 @@ public class AllTests {
 		suite.addTestSuite(JunitCameraTest.class);
 		suite.addTestSuite(JunitEasyTest.class);
 		suite.addTestSuite(JunitHardTest.class);
+		suite.addTestSuite(JunitHelpTest.class);
 		suite.addTestSuite(JunitOptiesTest.class);
 		suite.addTestSuite(JunitTegelTest.class);
 		suite.addTestSuite(JunitSpelerVerwerkerTest.class);
