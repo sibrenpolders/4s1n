@@ -2,10 +2,6 @@ package actua;
 
 import actua.HelpVerwerker;
 
-/**
- * @author Sibrand
- * 
- */
 public abstract class GHelp {
 	protected HelpVerwerker helpVerwerker;
 	protected static int LIMIET = 100;
@@ -17,9 +13,9 @@ public abstract class GHelp {
 	protected abstract String vraagZoekterm();
 
 	protected abstract void geefInfoWeer(String[][] zoektermen);
-	
+
 	protected abstract String vraagId();
-	
+
 	protected abstract void geefDetailWeer(String info);
 
 	public abstract void show();
@@ -34,22 +30,22 @@ public abstract class GHelp {
 		if (zoekterm.compareTo("") == 0)
 			;
 		else {
-			String[][] output = helpVerwerker.geefBeknopteMatchingResultaten(zoekterm, LIMIET);
+			String[][] output = helpVerwerker.geefBeknopteMatchingResultaten(
+					zoekterm, LIMIET);
 			geefInfoWeer(output);
 		}
 	}
-	
-	protected void detailId(){
-		String id= vraagId();
-		
-		
+
+	protected void detailId() {
+		String id = vraagId();
+
 		if (id == null)
 			throw new NullPointerException();
 
 		if (id.compareTo("") == 0)
 			;
 		else {
-			String info=helpVerwerker.geefVolledigResultaat(id);
+			String info = helpVerwerker.geefVolledigResultaat(id);
 			geefDetailWeer(info);
 		}
 	}

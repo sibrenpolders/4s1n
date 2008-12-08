@@ -1,33 +1,21 @@
 package testcases;
 
 import actua.OptieVerwerker;
+import actua.Optie;
 import junit.framework.TestCase;
 
 public class JunitOptiesTest extends TestCase {
-	OptieVerwerker op;
-
-	public JunitOptiesTest(String name) {
-		super(name);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		op = new OptieVerwerker();
-	}
-
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
 
 	public void testOptieVerwerker() {
+		OptieVerwerker op = new OptieVerwerker();
 		assertNotNull(op.getOptieBestand());
 		assertEquals(OptieVerwerker.getDefaultOptieBestand(), op
 				.getOptieBestand());
 	}
 
 	public void testOptieVerwerkerString() {
-		op = new OptieVerwerker("testtest");
-		assertEquals("testtest", op.getOptieBestand());
+		OptieVerwerker op = new OptieVerwerker("JunitOpties.txt");
+		assertEquals("JunitOpties.txt", op.getOptieBestand());
 		assertNull(op.getWaarde("random"));
 		op = new OptieVerwerker(null);
 		assertEquals(OptieVerwerker.getDefaultOptieBestand(), op
@@ -35,60 +23,82 @@ public class JunitOptiesTest extends TestCase {
 	}
 
 	public void testGetWaardeString() throws Exception {
-		op.addOptie("back", "test");
-		op.addOptie("back2", "test");
-		assertEquals("test", op.getWaarde("back"));
-		assertEquals("test", op.getWaarde("back2"));
-		op.addOptie(null, "test");
+		OptieVerwerker op = new OptieVerwerker("empty");
+		op.addOptie("e1", Optie.TYPE.BOOL, "false");
+		op.addOptie("e2", Optie.TYPE.BOOL, "FAlSe");
+		op.addOptie("e3", Optie.TYPE.BOOL, "INVALID");
+		op.addOptie("e4", Optie.TYPE.NUM, "INVALID");
+
+		assertEquals("false", op.getWaarde("e1"));
+		assertEquals(null, op.getWaarde("e2"));
+		assertNull(op.getWaarde("e3"));
+		assertNull(op.getWaarde("e4"));
+
+		op.addOptie("e4", Optie.TYPE.NUM, "12");
+		assertEquals("12", op.getWaarde("e4"));
+
+		op.addOptie(null, Optie.TYPE.BOOL, "false");
 		assertEquals(null, op.getWaarde(null));
 		op.addOptie("bla", null);
 		assertEquals(null, op.getWaarde("bla"));
 	}
 
 	public void testGetNaam() throws Exception {
-		op = new OptieVerwerker("empty");
-		op.addOptie(null, "test");
+		OptieVerwerker op = new OptieVerwerker("empty");
+		op.addOptie(null, Optie.TYPE.NUM, "test");
 		assertNull(op.getWaarde(null));
 		op.addOptie("bla", null);
 		assertEquals(null, op.getNaam(0));
-		op.addOptie("bla", "test");
+		op.addOptie("bla", Optie.TYPE.BOOL, "false");
 		assertEquals("bla", op.getNaam(0));
 	}
 
 	public void testGetWaardeInt() throws Exception {
-		op = new OptieVerwerker("empty");
-		op.addOptie("test", "back");
-		op.addOptie("test", "back2");
-		assertEquals("back2", op.getWaarde(0));
+		OptieVerwerker op = new OptieVerwerker("empty");
+		op.addOptie("e1", Optie.TYPE.BOOL, "false");
+		op.addOptie("e2", Optie.TYPE.BOOL, "FAlSe");
+		assertEquals("false", op.getWaarde(0));
 		assertEquals(null, op.getWaarde(1));
-		op.addOptie(null, "test");
-		assertEquals(null, op.getWaarde(1));
-		op.addOptie("bla", null);
-		assertEquals(null, op.getWaarde("bla"));
 	}
 
 	public void testVeranderOptie() throws Exception {
-		op.addOptie("back", "test");
-		op.addOptie("back2", "test");
-		op.veranderOptie(new String[] { "back", "test2" });
-		assertEquals("test2", op.getWaarde("back"));
-		assertEquals("test", op.getWaarde("back2"));
-		op.veranderOptie(new String[] { "back", null });
-		assertEquals("test2", op.getWaarde("back"));
+		OptieVerwerker op = new OptieVerwerker("empty");
+		op.addOptie("e1", Optie.TYPE.BOOL, "false");
+		op.addOptie("e2", Optie.TYPE.BOOL, "FAlSe");
+		op.addOptie("e3", Optie.TYPE.TEXT, "hg");
+		op.addOptie("e4", Optie.TYPE.TEXT, "gh");
+		op.addOptie("e5", Optie.TYPE.NUM, "11");
+		op.addOptie("e6", Optie.TYPE.NUM, "234");
+		op.veranderOptie(new String[] { "e1", "true" });
+		assertEquals("true", op.getWaarde("e1"));
+		op.veranderOptie(new String[] { "e5", "45" });
+		assertEquals("45", op.getWaarde("e5"));
+		op.veranderOptie(new String[] { "e4", "4g" });
+		assertEquals("4g", op.getWaarde("e4"));
 	}
 
 	public void testSchrijfNaarBestand() throws Exception {
-		op.addOptie("back", "test1");
-		op.addOptie("back2", "test2");
-		op.addOptie("back3", "test3");
-		op.addOptie("back4", "test4");
+		OptieVerwerker op = new OptieVerwerker("JunitOpties.txt");
+		op.addOptie("e1", Optie.TYPE.BOOL, "false");
+		op.addOptie("e2", Optie.TYPE.BOOL, "FAlSe");
+		op.addOptie("e3", Optie.TYPE.TEXT, "hg");
+		op.addOptie("e4", Optie.TYPE.TEXT, "gh");
+		op.addOptie("e5", Optie.TYPE.NUM, "11");
+		op.addOptie("e6", Optie.TYPE.NUM, "234");
+		op.veranderOptie(new String[] { "e1", "true" });
+		assertEquals("true", op.getWaarde("e1"));
+		op.veranderOptie(new String[] { "e5", "45" });
+		assertEquals("45", op.getWaarde("e5"));
+		op.veranderOptie(new String[] { "e4", "4g" });
+		assertEquals("4g", op.getWaarde("e4"));
 		op.schrijfNaarBestand();
 
-		OptieVerwerker op2 = new OptieVerwerker();
-		assertEquals("test2", op2.getWaarde(1));
-		assertEquals("test1", op2.getWaarde(0));
-		assertEquals("back", op2.getNaam(0));
-		assertEquals("back3", op2.getNaam(2));
-		assertEquals("test4", op2.getWaarde("back4"));
+		op = new OptieVerwerker("JunitOpties.txt");
+		assertEquals("true", op.getWaarde("e1"));
+		assertEquals("45", op.getWaarde("e5"));
+		assertEquals("4g", op.getWaarde("e4"));
+		assertEquals(null, op.getWaarde("e2"));
+		assertEquals("234", op.getWaarde("e6"));
+		assertNull(op.getWaarde(10));
 	}
 }

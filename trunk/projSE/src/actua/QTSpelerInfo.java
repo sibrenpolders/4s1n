@@ -8,8 +8,8 @@ import com.trolltech.qt.gui.QWidget;
 
 public class QTSpelerInfo extends GSpelerInfo {
 	QWidget spelerInfoveld;
-	
-	public QTSpelerInfo(Speler speler,QWidget parent) {
+
+	public QTSpelerInfo(Speler speler, QWidget parent) {
 		super(speler);
 		spelerInfoveld = new QWidget(parent);
 		QLabel naam = new QLabel(speler.getNaam());
@@ -17,14 +17,14 @@ public class QTSpelerInfo extends GSpelerInfo {
 		QLabel kleur = new QLabel();
 		QLabel score = new QLabel("Score");
 		QGridLayout layout = new QGridLayout(spelerInfoveld);
-		
+
 		kleur.setPixmap(spelerKleur());
-		layout.addWidget(kleur,0,1);
+		layout.addWidget(kleur, 0, 1);
 		kleur.update();
-		layout.addWidget(naam,0,0);
-		layout.addWidget(score,1,0);
-		layout.addWidget(punten,1,1);
-		
+		layout.addWidget(naam, 0, 0);
+		layout.addWidget(score, 1, 0);
+		layout.addWidget(punten, 1, 1);
+
 		spelerInfoveld.setLayout(layout);
 	}
 
@@ -39,25 +39,24 @@ public class QTSpelerInfo extends GSpelerInfo {
 	@Override
 	public void toonSpeler() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateSpeler() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	private QPixmap spelerKleur(){
+
+	private QPixmap spelerKleur() {
 		QPixmap pixmap = new QPixmap();
-		
-		switch(getSpeler().getKleur()){
-			default:
-				pixmap.fill(new QColor(255,0,0));
+
+		switch (getSpeler().getKleur()) {
+		default:
+			pixmap.fill(new QColor(255, 0, 0));
 		}
-		
+
 		return pixmap;
 	}
 
 }
-
