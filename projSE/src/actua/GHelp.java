@@ -17,22 +17,40 @@ public abstract class GHelp {
 	protected abstract String vraagZoekterm();
 
 	protected abstract void geefInfoWeer(String[][] zoektermen);
+	
+	protected abstract String vraagId();
+	
+	protected abstract void geefDetailWeer(String info);
 
 	public abstract void show();
 
 	public abstract void hide();
 
 	protected void update() {
-		String zoekTerm = vraagZoekterm();
-		if (zoekTerm == null)
+		String zoekterm = vraagZoekterm();
+		if (zoekterm == null)
 			throw new NullPointerException();
 
-		if (zoekTerm.compareTo("") == 0)
+		if (zoekterm.compareTo("") == 0)
 			;
 		else {
-			String[][] output = helpVerwerker.geefBeknopteMatchingResultaten(
-					zoekTerm, LIMIET);
+			String[][] output = helpVerwerker.geefBeknopteMatchingResultaten(zoekterm, LIMIET);
 			geefInfoWeer(output);
+		}
+	}
+	
+	protected void detailId(){
+		String id= vraagId();
+		
+		
+		if (id == null)
+			throw new NullPointerException();
+
+		if (id.compareTo("") == 0)
+			;
+		else {
+			String info=helpVerwerker.geefVolledigResultaat(id);
+			geefDetailWeer(info);
 		}
 	}
 }
