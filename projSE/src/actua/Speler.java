@@ -25,6 +25,16 @@ public abstract class Speler {
 	public Speler() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void neemPion(Pion p)
+	{
+		if(p == null || p.getKleur() != getKleur())
+			;
+		else
+		{
+			pionnen.add(p);
+		}
+	}
 
 	public Pion neemPion(Tafel tafel) {
 		return null;
