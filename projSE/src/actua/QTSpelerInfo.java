@@ -8,12 +8,13 @@ import com.trolltech.qt.gui.QWidget;
 
 public class QTSpelerInfo extends GSpelerInfo {
 	QWidget spelerInfoveld;
+	QLabel punten;
 
 	public QTSpelerInfo(Speler speler, QWidget parent) {
 		super(speler);
 		spelerInfoveld = new QWidget(parent);
 		QLabel naam = new QLabel(speler.getNaam());
-		QLabel punten = new QLabel("0");
+		punten = new QLabel("0");
 		QLabel kleur = new QLabel();
 		QLabel score = new QLabel("Score");
 		QGridLayout layout = new QGridLayout(spelerInfoveld);
@@ -44,12 +45,11 @@ public class QTSpelerInfo extends GSpelerInfo {
 
 	@Override
 	public void updateSpeler() {
-		// TODO Auto-generated method stub
-
+		punten.setNum(getSpeler().getScore());
 	}
 
 	private QPixmap spelerKleur() {
-		QPixmap pixmap = new QPixmap();
+		QPixmap pixmap = new QPixmap(32,32); // moet altijd een h en w bij
 
 		switch (getSpeler().getKleur()) {
 		default:
