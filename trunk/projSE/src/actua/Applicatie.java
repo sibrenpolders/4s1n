@@ -1,18 +1,48 @@
 package actua;
 
 public class Applicatie {
+	// TODO
+	// Hebben deze globale variabelen ook maar enige nut??
 	private GFactory gFactory;
 	private Spel spel;
 	private HelpVerwerker help;
 	private OptieVerwerker opties;
 
 	public Applicatie(GFactory f) {
-		setGFactory(f);
-		setHelp(new HelpVerwerker());
-		setOpties(new OptieVerwerker());
-		setSpel(new Spel());
+		if (f == null) {
+			System.err.println("No graphical toolkit found.");
+			System.exit(1);
+		}
+		// TODO niet nodig??
+//		setGFactory(f);
+//		setHelp(new HelpVerwerker());
+//		setOpties(new OptieVerwerker());
+//		setSpel(new Spel());
 
-		f.showGWindow(getSpel(), getOpties(), getHelp());
+//		gFactory.showGWindow(getSpel(), getOpties(), getHelp());
+		
+		GWindow window = f.getWindow(new Spel(), new OptieVerwerker(), new HelpVerwerker());
+		window.show();		
+	}
+
+	public static void main(String[] args) {
+		String guiType = null;
+
+		if (args.length == 2) {
+			guiType = args[0];
+		}
+
+		new Applicatie(createGUIFactory(guiType));
+	}
+
+	private static GFactory createGUIFactory(String guiType) {
+		if (guiType == null || guiType.equals("qt")) {
+			return new QTFactory();
+		} else {
+			System.err.println(guiType
+					+ " as a graphical toolkit is NOT supported.");
+			return null;
+		}
 	}
 
 	private final Spel getSpel() {
@@ -45,17 +75,5 @@ public class Applicatie {
 
 	private final void setGFactory(GFactory factory) {
 		gFactory = factory;
-	}
-
-	public static void main(String[] args) {
-		Applicatie app;
-		GFactory gui;
-
-		if (args.length < 2 || args[1].compareTo("qt") == 0) {
-			gui = new QTFactory();
-			app = new Applicatie(gui);
-		} else
-			System.out.println(args[1]
-					+ " as a graphical toolkit is NOT supported.");
 	}
 }

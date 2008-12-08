@@ -1,21 +1,19 @@
 package actua;
 
-import com.trolltech.qt.QtInfo;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QMainWindow;
-import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
-public class QTWindow extends GWindow {
+public class QTWindow implements GWindow {
 	private QMainWindow mainWindow;
 
 	public QTWindow(Spel spel, OptieVerwerker opties, HelpVerwerker help) {
-		super();
+		super();		
 		QApplication.initialize(new String[0]);
 		setMainWindow(new QMainWindow());
 		mainWindow.setWindowTitle("Actua Tungrorum");
-		initMainWindow(spel, opties, help);		
+		initMainWindow(spel, opties, help);
 	}
 
 	private void initMainWindow(Spel spel, OptieVerwerker opties, HelpVerwerker help) {
