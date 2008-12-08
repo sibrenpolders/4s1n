@@ -42,7 +42,7 @@ public class QTSpeelveld extends GSpeelveld {
 			
 			setScene(scene);
 			setBackgroundBrush(new QBrush(new QPixmap(
-			"classpath:background.xpm")));
+			"src/icons/background.xpm")));
 			resize(new QSize(1024, 800));
 			setCacheMode(new QGraphicsView.CacheMode(
 					QGraphicsView.CacheModeFlag.CacheBackground));

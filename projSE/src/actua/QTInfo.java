@@ -30,7 +30,7 @@ public class QTInfo extends GInfo {
 			QVBoxLayout vbox = new QVBoxLayout();
 			
 			QLabel tegelIcon = new QLabel(this);
-	        tegelIcon.setPixmap(new QPixmap("classpath:city1.png"));
+	        tegelIcon.setPixmap(new QPixmap("src/icons/city1.png"));
 	        tegelIcon.setMinimumSize(new QSize(90, 90));
 	        tegelIcon.setMaximumSize(new QSize(90, 90));
 	        

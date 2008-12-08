@@ -12,7 +12,7 @@ public class QTMenubalk extends GMenubalk {
 
 	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help) {
 		super();
-		setGHelp(new QTHelp());
+		setGHelp(new QTHelp(help));
 		setGOptie(new QTOptie());		
 		
 		menubar = new QMenuBar();		
