@@ -10,8 +10,8 @@ public abstract class GHelp {
 	protected HelpVerwerker helpVerwerker;
 	protected static int LIMIET = 100;
 
-	public GHelp() {
-
+	public GHelp(HelpVerwerker helpVerwerker) {
+		this.helpVerwerker = helpVerwerker;
 	}
 
 	protected abstract String vraagZoekterm();

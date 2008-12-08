@@ -8,11 +8,15 @@ import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTHelp extends GHelp {
-	QMainWindow help;
+	private QMainWindow help;
+	private QTextBrowser veld;
+	private QLineEdit zoekveld;
 
-	public QTHelp() {
-		super();
+	public QTHelp(HelpVerwerker helpVerwerker) {
+		super(helpVerwerker);
 		help = new QMainWindow();
+		veld = new QTextBrowser(help);
+		zoekveld = new QLineEdit("Typ hier ...", help);
 
 		help.setWindowTitle("Help");
 		venster();
@@ -21,13 +25,14 @@ public class QTHelp extends GHelp {
 	private void venster() {
 		QWidget venster = new QWidget();
 		QGridLayout layout = new QGridLayout(venster);
-		QLineEdit zoekveld = new QLineEdit("Typ hier ...", help);
-		QPushButton zoek=new QPushButton("Zoek");
-		QTextBrowser veld=new QTextBrowser(help);
+		QPushButton zoek = new QPushButton("Zoek");
+	
 
 		layout.addWidget(zoekveld,0,0);
 		layout.addWidget(zoek,0,1);
 		layout.addWidget(veld, 1, 0, 5, 2);
+		
+		zoek.clicked.connect(this, "update()");
 
 		venster.setLayout(layout);
 		help.setCentralWidget(venster);
@@ -35,8 +40,8 @@ public class QTHelp extends GHelp {
 
 	@Override
 	protected void geefInfoWeer(String[][] zoektermen) {
-		// TODO Auto-generated method stub
-
+		int size=zoektermen.length;
+		veld.append(size+"");
 	}
 
 	@Override
@@ -52,8 +57,9 @@ public class QTHelp extends GHelp {
 
 	@Override
 	protected String vraagZoekterm() {
-		// TODO Auto-generated method stub
-		return null;
+		String zoekterm = zoekveld.text();
+		
+		return zoekterm;
 	}
 
 }
