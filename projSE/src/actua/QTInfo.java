@@ -22,129 +22,130 @@ import com.trolltech.qt.gui.QWidget;
 
 public class QTInfo extends GInfo {
 	private QWidget qtInfo;
-	
+
 	private class qtInfoVenster extends QWidget {
 		public qtInfoVenster() {
 			super();
-//			grabMouse();
+			// grabMouse();
 			QVBoxLayout vbox = new QVBoxLayout();
-			
+
 			QLabel tegelIcon = new QLabel(this);
-	        tegelIcon.setPixmap(new QPixmap("src/icons/city1.png"));
-	        tegelIcon.setMinimumSize(new QSize(90, 90));
-	        tegelIcon.setMaximumSize(new QSize(90, 90));
-	        
-	        setMinimumSize(new QSize(90, 90));
-	        setLayout(vbox);	        	        
+			tegelIcon.setPixmap(new QPixmap("src/icons/city1.png"));
+			tegelIcon.setMinimumSize(new QSize(90, 90));
+			tegelIcon.setMaximumSize(new QSize(90, 90));
+
+			setMinimumSize(new QSize(90, 90));
+			setLayout(vbox);
 		}
-		
-		protected void dragEnterEvent(QDragEnterEvent event)
-	    {
-	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
-//	            if (event.source().equals(this)) {
-	                event.setDropAction(Qt.DropAction.MoveAction);
-	                event.accept();
-//	            } else {
-//	                event.acceptProposedAction();
-//	            }
-	        } else {
-	            event.ignore();
-	        }
-	    }
 
-	    protected void dragMoveEvent(QDragMoveEvent event)
-	    {
-	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
-	            if (event.source().equals(this)) {
-	                event.setDropAction(Qt.DropAction.MoveAction);
-	                event.accept();
-	            } else {
-	                event.acceptProposedAction();
-	            }
-	        } else {
-	            event.ignore();
-	        }
-	    }
+		protected void dragEnterEvent(QDragEnterEvent event) {
+			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
+				// if (event.source().equals(this)) {
+				event.setDropAction(Qt.DropAction.MoveAction);
+				event.accept();
+				// } else {
+				// event.acceptProposedAction();
+				// }
+			} else {
+				event.ignore();
+			}
+		}
 
-	    protected void dropEvent(QDropEvent event) {
-//	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
-//	            QByteArray itemData = event.mimeData().data("application/x-dnditemdata");
-//	            QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.ReadOnly);
-//	        
-//	            QPixmap pixmap = new QPixmap();
-//	            QPoint offset = new QPoint();
-//	            pixmap.readFrom(dataStream);
-//	            offset.readFrom(dataStream);
-//
-//	            QLabel newIcon = new QLabel(this);
-//	            newIcon.setPixmap(pixmap);
-//	            newIcon.move(event.pos().subtract(offset));
-//	            newIcon.show();
-//	            newIcon.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose);
-//
-//	            if (event.source().equals(this)) {
-//	                event.setDropAction(Qt.DropAction.MoveAction);
-//	                event.accept();
-//	            } else {
-//	                event.acceptProposedAction();
-//	            }
-//	        } else {
-//	            event.ignore();
-//	        }
-	    }
+		protected void dragMoveEvent(QDragMoveEvent event) {
+			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
+				if (event.source().equals(this)) {
+					event.setDropAction(Qt.DropAction.MoveAction);
+					event.accept();
+				} else {
+					event.acceptProposedAction();
+				}
+			} else {
+				event.ignore();
+			}
+		}
 
-	    protected void mousePressEvent(QMouseEvent event)
-	    {
-	        QLabel child = (QLabel) childAt(event.pos());
-	        if (child == null)
-	            return;
+		protected void dropEvent(QDropEvent event) {
+			// if (event.mimeData().hasFormat("application/x-dnditemdata")) {
+			// QByteArray itemData =
+			// event.mimeData().data("application/x-dnditemdata");
+			// QDataStream dataStream = new QDataStream(itemData,
+			// QIODevice.OpenModeFlag.ReadOnly);
+			//	        
+			// QPixmap pixmap = new QPixmap();
+			// QPoint offset = new QPoint();
+			// pixmap.readFrom(dataStream);
+			// offset.readFrom(dataStream);
+			//
+			// QLabel newIcon = new QLabel(this);
+			// newIcon.setPixmap(pixmap);
+			// newIcon.move(event.pos().subtract(offset));
+			// newIcon.show();
+			// newIcon.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose);
+			//
+			// if (event.source().equals(this)) {
+			// event.setDropAction(Qt.DropAction.MoveAction);
+			// event.accept();
+			// } else {
+			// event.acceptProposedAction();
+			// }
+			// } else {
+			// event.ignore();
+			// }
+		}
 
-	        QPixmap pixmap = child.pixmap();
+		protected void mousePressEvent(QMouseEvent event) {
+			QLabel child = (QLabel) childAt(event.pos());
+			if (child == null)
+				return;
 
-	        QByteArray itemData = new QByteArray();
-	        QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.WriteOnly);
-	        pixmap.writeTo(dataStream);
-	        event.pos().subtract(child.pos()).writeTo(dataStream);
+			QPixmap pixmap = child.pixmap();
 
+			QByteArray itemData = new QByteArray();
+			QDataStream dataStream = new QDataStream(itemData,
+					QIODevice.OpenModeFlag.WriteOnly);
+			pixmap.writeTo(dataStream);
+			event.pos().subtract(child.pos()).writeTo(dataStream);
 
-	        com.trolltech.qt.core.QMimeData mimeData = new com.trolltech.qt.core.QMimeData();
-	        mimeData.setData("application/x-dnditemdata", itemData);
-	        
-	        QDrag drag = new QDrag(this);
-	        drag.setMimeData(mimeData);
-	        drag.setPixmap(pixmap);
-	        drag.setHotSpot(event.pos().subtract(child.pos()));
+			com.trolltech.qt.core.QMimeData mimeData = new com.trolltech.qt.core.QMimeData();
+			mimeData.setData("application/x-dnditemdata", itemData);
 
-	        QPixmap tempPixmap = new QPixmap(pixmap);
-	        QPainter painter = new QPainter();
-	        painter.begin(tempPixmap);
-	        painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127, 127, 127)));
-	        painter.end();
+			QDrag drag = new QDrag(this);
+			drag.setMimeData(mimeData);
+			drag.setPixmap(pixmap);
+			drag.setHotSpot(event.pos().subtract(child.pos()));
 
-	        child.setPixmap(tempPixmap);
+			QPixmap tempPixmap = new QPixmap(pixmap);
+			QPainter painter = new QPainter();
+			painter.begin(tempPixmap);
+			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,
+					127, 127)));
+			painter.end();
 
-	        if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
-	            Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction)
-	            child.close();
-	        else {
-	            child.show();
-	            child.setPixmap(pixmap);
-	        }
-	    }
+			child.setPixmap(tempPixmap);
+
+			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
+					Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction)
+				child.close();
+			else {
+				child.show();
+				child.setPixmap(pixmap);
+			}
+		}
 	}
-	
+
 	public QTInfo(Spel spel, OptieVerwerker opties) {
 		super(spel, opties);
-		qtInfo = new QWidget();		
+		qtInfo = new QWidget();
 		QPalette palette = new QPalette();
-		
+
 		QHBoxLayout hbox = new QHBoxLayout();
 		hbox.addWidget(new qtInfoVenster());
-		hbox.addWidget(new QTSpelerInfo(new Mens("Dude",'l',0),qtInfo).getSpelerInfoveld());
-		
-		qtInfo.setLayout(hbox);	
-        
-		qtInfo.setPalette(palette);				
+		hbox.addWidget(new QTSpelerInfo(new Mens("Dude", 'l', 0), qtInfo)
+				.getSpelerInfoveld());
+
+		qtInfo.setLayout(hbox);
+
+		qtInfo.setPalette(palette);
 	}
 
 	public QWidget getQtInfo() {
@@ -156,4 +157,3 @@ public class QTInfo extends GInfo {
 	}
 
 }
-

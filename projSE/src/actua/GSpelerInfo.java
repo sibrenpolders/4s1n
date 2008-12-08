@@ -4,7 +4,7 @@ public abstract class GSpelerInfo {
 	private Speler speler;
 
 	public GSpelerInfo(Speler speler) {
-		this.speler=speler;
+		this.speler = speler;
 	}
 
 	protected Speler getSpeler() {
@@ -15,8 +15,8 @@ public abstract class GSpelerInfo {
 		this.speler = speler;
 	}
 
-	public abstract  void toonSpeler ();
-	public abstract  void  updateSpeler ();
+	public abstract void toonSpeler();
+
+	public abstract void updateSpeler();
 
 }
-

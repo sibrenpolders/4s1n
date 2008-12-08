@@ -13,9 +13,9 @@ public class QTMenubalk extends GMenubalk {
 	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help) {
 		super();
 		setGHelp(new QTHelp(help));
-		setGOptie(new QTOptie());		
-		
-		menubar = new QMenuBar();		
+		setGOptie(new QTOptie(opties));
+
+		menubar = new QMenuBar();
 		menubar.setMaximumWidth(1024);
 		menubar.setMinimumWidth(1024);
 		addItems();
@@ -27,29 +27,29 @@ public class QTMenubalk extends GMenubalk {
 		spel();
 		bewerken();
 		opties();
-		help();	
+		help();
 	}
-	
-	private void spel(){
+
+	private void spel() {
 		QMenu spel;
-		QAction nSpel, opslaan,laden;
+		QAction nSpel, opslaan, laden;
 
 		spel = addMenuItem("Spel");
 		nSpel = addActionItem(spel, "Nieuw Spel");
 		opslaan = addActionItem(spel, "Opslaan");
 		laden = addActionItem(spel, "Laden");
 	}
-	
-	private void bewerken(){
+
+	private void bewerken() {
 		QMenu bewerken;
-		QAction undo,redo;
-		
+		QAction undo, redo;
+
 		bewerken = addMenuItem("Bewerken");
 		undo = addActionItem(bewerken, "Ongedaan maken");
 		redo = addActionItem(bewerken, "Opnieuw uitvoeren");
 	}
-	
-	private void opties(){
+
+	private void opties() {
 		QMenu opties;
 		QAction optie;
 
@@ -61,23 +61,25 @@ public class QTMenubalk extends GMenubalk {
 		QMenu helpMenu;
 		QAction help, about;
 
-		
 		helpMenu = addMenuItem("Help");
 		help = addActionItem(helpMenu, "Help en Ondersteuning");
 		about = addActionItem(helpMenu, "Info");
-		help.triggered.connect(this.gHelp,"show()");
-		about.triggered.connect(this,"infoVenster()");
+		help.triggered.connect(this.gHelp, "show()");
+		about.triggered.connect(this, "infoVenster()");
 	}
-	
-	private void infoVenster(){
-		QMessageBox.about(menubar,"About Application",
-				"The <b>Application</b> example demonstrates how to " +
-				"write modern GUI applications using Qt, with a menu bar, " +
-                "toolbars, and a status bar.");
+
+	private void infoVenster() {
+		QMessageBox
+				.about(
+						menubar,
+						"About Application",
+						"The <b>Application</b> example demonstrates how to "
+								+ "write modern GUI applications using Qt, with a menu bar, "
+								+ "toolbars, and a status bar.");
 	}
 
 	private QMenu addMenuItem(String titel) {
-		return menubar.addMenu("&" + titel);		
+		return menubar.addMenu("&" + titel);
 	}
 
 	private QAction addActionItem(QMenu menu, String titel) {

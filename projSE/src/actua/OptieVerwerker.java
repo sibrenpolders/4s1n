@@ -29,7 +29,7 @@ public class OptieVerwerker {
 
 	protected void finalize() throws Throwable {
 		super.finalize();
-		schrijfNaarBestand();
+		// schrijfNaarBestand();
 	}
 
 	public static String getDefaultOptieBestand() {
@@ -42,22 +42,6 @@ public class OptieVerwerker {
 
 	public void setOptieBestand(String bestand) {
 		optieBestand = bestand;
-	}
-
-	/**
-	 * @return null, als de optie met de gegeven naam niet bestaat; de waarde
-	 *         van die optie in het andere geval.
-	 */
-	public String getWaarde(String naam) {
-		if (naam != null) {
-			for (int i = 0; i < opties.size(); ++i) {
-				Optie optie = opties.get(i);
-				if (optie.getNaam().compareTo(naam) == 0)
-					return optie.getWaarde();
-			}
-			return null;
-		} else
-			return null;
 	}
 
 	public String getNaam(int i) {
@@ -74,24 +58,69 @@ public class OptieVerwerker {
 			return opties.get(i).getWaarde();
 	}
 
+	public Optie.TYPE getType(int i) {
+		if (i < 0 || i >= opties.size())
+			return null;
+		else
+			return opties.get(i).getType();
+	}
+
+	/**
+	 * 
+	 * @param naam
+	 * @return -1 indien een optie met de gegeven naam niet bestaat, de index,
+	 *         beginnende van nul, indien die optie wél bestaat
+	 */
+	public int indexVanOptie(String naam) {
+		if (naam != null) {
+			for (int i = 0; i < opties.size(); ++i) {
+				Optie optie = opties.get(i);
+				if (optie.getNaam().compareTo(naam) == 0)
+					return i;
+			}
+			return -1;
+		} else
+			return -1;
+	}
+
+	/**
+	 * @return null, als de optie met de gegeven naam niet bestaat; de waarde
+	 *         van die optie in het andere geval.
+	 */
+	public String getWaarde(String naam) {
+		int index;
+		if ((index = indexVanOptie(naam)) != -1) {
+			return getWaarde(index);
+		} else
+			return null;
+	}
+
+	/**
+	 * @return null, als de optie met de gegeven naam niet bestaat; het type van
+	 *         die optie in het andere geval.
+	 */
+	public Optie.TYPE getType(String naam) {
+		int index;
+		if ((index = indexVanOptie(naam)) != -1) {
+			return getType(index);
+		} else
+			return null;
+	}
+
 	private void resetOpties() {
 		if (opties != null)
 			opties.clear();
 	}
 
 	private void setWaarde(String naam, String waarde) {
-		if (naam != null && waarde != null) {
-			boolean veranderd = false;
-			for (int i = 0; i < opties.size() && !veranderd; ++i) {
+		int index;
+		if ((index = indexVanOptie(naam)) != -1
+				&& Optie.checkGeldigheidWaarde(getType(index), waarde)) {
+			for (int i = 0; i < opties.size(); ++i) {
 				Optie optie = opties.get(i);
-				if (optie.getNaam().compareTo(naam) == 0) {
+				if (optie.getNaam().compareTo(naam) == 0)
 					optie.setWaarde(waarde);
-					veranderd = true;
-				}
 			}
-
-			if (!veranderd)
-				addOptie(naam, waarde);
 		}
 	}
 
@@ -108,31 +137,32 @@ public class OptieVerwerker {
 
 	private void addOptie(Optie optie) {
 		if (optie != null) {
-			if (getWaarde(optie.getNaam()) != null)
-				verwijderOptie(optie.getNaam());
-
+			verwijderOptie(optie.getNaam());
 			opties.add(optie);
 		}
 	}
 
-	public void addOptie(String naam, String waarde) {
-		if (naam == null || waarde == null)
+	public void addOptie(String naam, Optie.TYPE t) {
+		if (naam == null || t == null)
 			return;
 		else
-			addOptie(new Optie(naam, waarde));
+			addOptie(new Optie(naam, t));
+	}
+
+	public void addOptie(String naam, Optie.TYPE t, String waarde) {
+		if (naam == null || t == null || waarde == null
+				|| Optie.checkGeldigheidWaarde(t, waarde) == false)
+			return;
+		else
+			addOptie(new Optie(naam, t, waarde));
 	}
 
 	public void veranderOptie(String[] nieuw) {
-		if (nieuw.length != 2)
+		if (nieuw.length != 2 || nieuw[0] == null || nieuw[1] == null)
 			return;
 		else {
-			String waarde = getWaarde(nieuw[0]);
-			if (waarde != null && waarde == nieuw[1])
-				;
-			else
-				setWaarde(nieuw[0], nieuw[1]);
+			setWaarde(nieuw[0], nieuw[1]);
 		}
-
 	}
 
 	public void veranderOpties(String[][] nieuweOpties) {
@@ -147,21 +177,26 @@ public class OptieVerwerker {
 			String[] tokens = regel.split(delims);
 			if (!isGeldigeRegel(regel))
 				return null;
-			else
-				return new Optie(tokens[0], tokens[2]);
+			else {
+				Optie.TYPE t = Optie.checkGeldigheidType(tokens[1]);
+				return new Optie(tokens[0], t, tokens[2]);
+			}
 		}
 
 		public String zetOmInTekst(Optie o) {
-			return new String(o.getNaam() + "::" + o.getWaarde());
+			return new String(o.getNaam() + ":" + o.getType() + ":"
+					+ o.getWaarde());
 		}
 
 		private boolean isGeldigeRegel(String regel) {
 			String delims = ":";
 			String[] tokens = regel.split(delims);
-			if (tokens.length < 3 || tokens[1].length() != 0)
+			if (tokens.length < 3 || tokens[0].length() == 0)
 				return false;
-			else
-				return true;
+			else {
+				Optie.TYPE t = Optie.checkGeldigheidType(tokens[1]);
+				return t != null && Optie.checkGeldigheidWaarde(t, tokens[2]);
+			}
 		}
 	}
 
@@ -183,7 +218,8 @@ public class OptieVerwerker {
 			try {
 				while ((line = reader.readLine()) != null) {
 					Optie o = op.zetOmInOptie(line);
-					opties.add(o);
+					if (o != null)
+						opties.add(o);
 				}
 
 				reader.close();
