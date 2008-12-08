@@ -26,42 +26,42 @@ public class QTTegel extends GTegel {
 	}
 
 	private void kiesAfbeelding() throws Exception {	
-		if(tegel.getSoortTegel().equals("wwww"))
-			pixmap.load("cloister.png");
-		else if(tegel.getSoortTegel().equals("wwrw"))
-			pixmap.load("cloisterr.png");
-		else if(tegel.getSoortTegel().equals("rrrr"))
-			pixmap.load("road4.png");
-		else if(tegel.getSoortTegel().equals("cwww"))
-			pixmap.load("city1.png");
-		else if(tegel.getSoortTegel().equals("ccww"))
-			pixmap.load("city11ne.png");
-		else if(tegel.getSoortTegel().equals("wcwc"))
-			pixmap.load("city11we.png");
-		else if(tegel.getSoortTegel().equals("crrw"))
-			pixmap.load("city1rse.png");
-		else if(tegel.getSoortTegel().equals("cwrr"))
-			pixmap.load("city1rsw.png");
-		else if(tegel.getSoortTegel().equals("crrr"))
-			pixmap.load("city1rswe.png");
-		else if(tegel.getSoortTegel().equals("crwr"))
-			pixmap.load("city1rwe.png");
-		else if(tegel.getSoortTegel().equals("cwwc"))
-			pixmap.load("city2nw.png");
-		else if(tegel.getSoortTegel().equals("crrc"))
-			pixmap.load("city2nwr.png");
-		else if(tegel.getSoortTegel().equals("wcwc"))
-			pixmap.load("city2we.png");
-		else if(tegel.getSoortTegel().equals("wwww"))
-			pixmap.load("cloister.png");
-		else if(tegel.getSoortTegel().equals("wwww"))
-			pixmap.load("cloister.png");
-		else if(tegel.getSoortTegel().equals("wwww"))
-			pixmap.load("cloister.png");
-		else if(tegel.getSoortTegel().equals("wwww"))
-			pixmap.load("cloister.png");
-		else if(tegel.getSoortTegel().equals("wwww"))
-			pixmap.load("cloister.png");
+//		if(tegel.getSoortTegel().equals("wwww"))
+//			pixmap.load("cloister.png");
+//		else if(tegel.getSoortTegel().equals("wwrw"))
+//			pixmap.load("cloisterr.png");
+//		else if(tegel.getSoortTegel().equals("rrrr"))
+//			pixmap.load("road4.png");
+//		else if(tegel.getSoortTegel().equals("cwww"))
+//			pixmap.load("city1.png");
+//		else if(tegel.getSoortTegel().equals("ccww"))
+//			pixmap.load("city11ne.png");
+//		else if(tegel.getSoortTegel().equals("wcwc"))
+//			pixmap.load("city11we.png");
+//		else if(tegel.getSoortTegel().equals("crrw"))
+//			pixmap.load("city1rse.png");
+//		else if(tegel.getSoortTegel().equals("cwrr"))
+//			pixmap.load("city1rsw.png");
+//		else if(tegel.getSoortTegel().equals("crrr"))
+//			pixmap.load("city1rswe.png");
+//		else if(tegel.getSoortTegel().equals("crwr"))
+//			pixmap.load("city1rwe.png");
+//		else if(tegel.getSoortTegel().equals("cwwc"))
+//			pixmap.load("city2nw.png");
+//		else if(tegel.getSoortTegel().equals("crrc"))
+//			pixmap.load("city2nwr.png");
+//		else if(tegel.getSoortTegel().equals("wcwc"))
+//			pixmap.load("city2we.png");
+//		else if(tegel.getSoortTegel().equals("wwww"))
+//			pixmap.load("cloister.png");
+//		else if(tegel.getSoortTegel().equals("wwww"))
+//			pixmap.load("cloister.png");
+//		else if(tegel.getSoortTegel().equals("wwww"))
+//			pixmap.load("cloister.png");
+//		else if(tegel.getSoortTegel().equals("wwww"))
+//			pixmap.load("cloister.png");
+//		else if(tegel.getSoortTegel().equals("wwww"))
+//			pixmap.load("cloister.png");
 	}
 
 	@Override
