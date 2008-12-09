@@ -14,6 +14,7 @@ public class QTMenubalk extends GMenubalk {
 		super();
 		setGHelp(new QTHelp(help));
 		setGOptie(new QTOptie(opties));
+		setGInitSpel(new QTInitSpel(spel));
 
 		menubar = new QMenuBar();
 		menubar.setMaximumWidth(1024);
@@ -38,6 +39,8 @@ public class QTMenubalk extends GMenubalk {
 		nSpel = addActionItem(spel, "Nieuw Spel");
 		opslaan = addActionItem(spel, "Opslaan");
 		laden = addActionItem(spel, "Laden");
+		
+		nSpel.triggered.connect(this.gInitSpel, "show()");
 	}
 
 	private void bewerken() {

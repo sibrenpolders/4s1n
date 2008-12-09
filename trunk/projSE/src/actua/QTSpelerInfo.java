@@ -20,9 +20,8 @@ public class QTSpelerInfo extends GSpelerInfo {
 		QGridLayout layout = new QGridLayout(spelerInfoveld);
 
 		kleur.setPixmap(spelerKleur());
-		layout.addWidget(kleur, 0, 1);
-		kleur.update();
-		layout.addWidget(naam, 0, 0);
+		layout.addWidget(kleur, 0, 0);
+		layout.addWidget(naam, 0, 1);
 		layout.addWidget(score, 1, 0);
 		layout.addWidget(punten, 1, 1);
 
