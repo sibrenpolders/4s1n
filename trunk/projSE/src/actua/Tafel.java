@@ -1,8 +1,12 @@
 package actua;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
-
+/**
+ * @author school
+ *
+ */
 public class Tafel {
 	private static final int NOORD = 0;
 	private static final int OOST = 1;
@@ -10,7 +14,7 @@ public class Tafel {
 	private static final int WEST = 3;
 
 	private Tegel laatstGeplaatsteTegel;
-	private Vector<Vector<Tegel>> veld;
+	private ArrayList<ArrayList<Tegel>> veld;
 	private Camera oogpunt;
 	private Vector2D startTegel;
 	
@@ -57,46 +61,86 @@ public class Tafel {
 			return false;
 		}
 
-		Vector<Tegel> kolomVector;
+		ArrayList<Tegel> kolomVector;
 		
 		// boven of onder de starttegel
-		if (rij == -1 || rij == veld.size()) {
-			rij = (rij == -1)? 0 : rij;
-			kolomVector = new Vector<Tegel>();
-			veld.add(rij, kolomVector);
-			kolomVector = veld.get(rij);
+		if (rij == -1) {
+			rij = 0;
+			kolomVector = addRij(rij);
 			startTegel.setX(startTegel.getX() + 1);
-		} else { // toevoegen in een bestaande rij
+		} else if (rij == veld.size()) {
+			kolomVector = addRij(rij);
+		} else { // toevoegen in een bestaande rij		
 			kolomVector = veld.get(rij);
 		}
-		
+	
 		// links of rechts van de starttegel
-		if (kolom < 0 || kolom > veld.get(rij).size()) {
-			addSpacers(kolom, kolomVector);
-			kolom = (kolom < 0)? 0 : kolom;
+		if (kolom == -1) {
+			adjustAll(rij, kolom);
 			startTegel.setY(startTegel.getY() + 1);
+			kolom = (kolom < 0)? 0 : kolom;
+		} else if (kolom > veld.get(rij).size()) {
+			addSpacers(rij, kolom);
 		}
 		
+		if (kolom < kolomVector.size() && kolomVector.get(kolom) == null) {
+			kolomVector.remove(kolom);
+		}
+		
+		System.err.println("Add: (" + rij + ", " + kolom + ")");
 		kolomVector.add(kolom, tegel);
 		setLaatstGeplaatsteTegel(tegel);
 		
 		return true;
 	}
 
-	private void addSpacers(int kolom, Vector<Tegel> kolomVector) {
-		int start = 0, end = 0;
+	private ArrayList<Tegel> addRij(int rij) {
+		ArrayList<Tegel> kolomVector = new ArrayList<Tegel>();
+		veld.add(rij, kolomVector);
+		kolomVector = veld.get(rij);
 		
-		if (kolom < -1) {
-			start = kolom;
-			end = kolomVector.size();
-		} else if (kolom > 1){
-			start = kolomVector.size();
-			end = kolom;
-		}
-		
-		for(; start < end; ++start) {
+		return kolomVector;
+	}
+
+	/**
+	 * Als de Tegel links van de starttegel wordt toegevoegd moet in elke rij de nieuwe positie van 
+	 * de starttegel aangepast. Alle element coördinaten zijn hier immer relatief mee.
+	 * Bij rechtse plaatsing dient enkel de rij waarin de tegel gezet wordt, opgevuld te worden
+	 * Boven en Onder geven geen probleem.
+	 * 
+	 * @param kolom
+	 * 		Dit getal geeft aan tot waar er bijgevuld moet worden.
+	 * @param kolomVector
+	 * 		De vector die opgevuld moet worden.
+	 */
+	private void addSpacers(int rij, int kolom) {
+		ArrayList<Tegel> kolomVector = veld.get(rij); 
+		for(int i = kolomVector.size(); i < kolom; ++i) {
 			kolomVector.add(null);
 		}
+	}
+
+	/**
+	 * Als er een tegel links van de starttegel gezet wordt moeten alle rijen aangepast worden. 
+	 * Alle elementen zijn immers t.o.v. de positie van de starttegel opgeslaan.
+	 * 
+	 * @param rij
+	 * 	De rij waarin een tegel gezet zal worden.
+	 * @param kolom
+	 * 	De kolom waarin een tegel gezet zal worden.
+	 */
+	private void adjustAll(int rij, int kolom) {
+		ArrayList<Tegel> kolomVector;
+		int aantal = (int) Math.abs(kolom - startTegel.getY());
+		
+		System.out.println(aantal);
+		for (int i = 0; i < veld.size(); ++i) {
+			kolomVector = veld.get(i);
+			
+			for (int j = 0; j < aantal; ++j) {
+				kolomVector.add(0, null);
+			}
+		}		
 	}
 
 	/**
@@ -210,7 +254,7 @@ public class Tafel {
 	 * @return
 	 */
 	private boolean isGeplaatst(int rij, int kolom) {
-		Vector<Tegel> rijV = null;
+		ArrayList<Tegel> rijV = null;
 		
 		// zoek de juist rij geeft null indien deze niet bestaat 
 		if (veld != null && rij > 0 && rij < veld.size()) {
@@ -228,6 +272,7 @@ public class Tafel {
 	}
 
 	public boolean plaatsPion(Vector2D coord, Pion pion) {
+		
 		return false;
 	}
 
@@ -279,10 +324,6 @@ public class Tafel {
 
 	}
 
-	public boolean valideerTegelPlaatsing(Tegel tegel, Vector2D coord) {
-		return false;
-	}
-
 	public void undo() {
 
 	}
@@ -309,10 +350,26 @@ public class Tafel {
 	}
 
 	private void setStartTegel(Tegel startTegel) {
-		veld = new Vector<Vector<Tegel>>();
-		veld.add(new Vector<Tegel>());
+		veld = new ArrayList<ArrayList<Tegel>>();
+		veld.add(new ArrayList<Tegel>());
 		veld.get(0).add(startTegel);
 		setLaatstGeplaatsteTegel(startTegel);
 		this.startTegel = new Vector2D(0, 0);
+	}
+	
+	/**
+	 * Zal voor elk niet null element van het veld een x printen. Voor null elementen
+	 * een n. Handig om te kijken of het veld goed is opgeslaan.
+	 */
+	public void printVeld() {
+		for (int i = 0; i < veld.size(); ++i) {
+			for (int j = 0; j < veld.get(i).size(); ++j) {
+				if (veld.get(i).get(j) == null) {
+					System.out.print(" n ");
+				} else
+					System.out.print(" x ");
+			}
+			System.out.println();
+		}
 	}
 }

@@ -36,6 +36,8 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testPlaatsTegel() {
+//		long startMemory = getMemoryUse();
+//		System.out.println(startMemory);
 		tafel.clear();
 		
 		// testen van plaatsen van starttegels, en de tegels daarond
@@ -46,19 +48,22 @@ public class JunitTafelTest extends TestCase {
 			assertTrue("Plaatsing tegel " + (i+1) + " faalt. coord: (" + coord.getX() + ", " + coord.getY() + ")", 
 					tafel.plaatsTegel(tegels.get(i), coord));
 		}
-		assertFalse("Plaatsing zelfde tegel faalt", tafel.plaatsTegel(tegels.get(0), coords.get(0)));
-
+		assertFalse("Plaatsing zelfde tegel faalt", tafel.plaatsTegel(tegels.get(0), coords.get(0)));		
+				
 		Tegel t;
 		// testen of de tegels goed zijn opgeslagen
 		for (int i = 0; i < 5; ++i) {
 			t = tafel.bepaalTegel(coords.get(i));
 			if (t != null) {
-				assertTrue("Verkeerde tegel opslag: tegel " + i, t.equals(tegels.get(i)));
+				assertTrue("Verkeerde tegel opslag: tegel " + i, t == tegels.get(i));
 			}
 		}	
 		
 		// testen of een niet bestaande tegel kan opgevraagd worden
-		assertNull(tafel.bepaalTegel(new Vector2D(-100, 100)));		
+		assertNull(tafel.bepaalTegel(new Vector2D(-100, 100)));
+//		long endMemory = getMemoryUse();
+//		System.out.println(endMemory);
+//		System.err.println(Math.round((((float)endMemory - startMemory)/100f)));		
 	}
 
 	private void maaktestTegels() {
@@ -109,6 +114,8 @@ public class JunitTafelTest extends TestCase {
 		 
 		 // probleem tegel coordinaten
 		 tafel.plaatsPion(v, pion);
+		 
+		 
 	}
 
 	public void testIsPlaatsingGeldig() {
@@ -155,15 +162,14 @@ public class JunitTafelTest extends TestCase {
 		fail("Not yet implemented");
 	}
 
-	public void testValideerTegelPlaatsing() {
-		Vector2D v = new Vector2D(0, 0);
-		Tegel tegel = new Tegel();
-		boolean bool;
-
-		tafel.plaatsTegel(tegel, v);
-		bool = tafel.valideerTegelPlaatsing(tegel, v);
-
-		assertFalse(bool);
+	public void testIsTegelPlaatsingGeldig() {
+//		Vector2D v = new Vector2D(1, 0);
+//		Tegel tegel = new Tegel();
+//		
+//		tafel.plaatsTegel(tegel, new Vector2D(0, 0));
+//		assertTrue(tafel.isTegelPlaatsingGeldig(tegel, v));
+//		tafel.plaatsTegel(tegel, v);		
+//		assertFalse(tafel.isTegelPlaatsingGeldig(tegel, v));
 	}
 
 	public void testUndo() {
@@ -173,5 +179,4 @@ public class JunitTafelTest extends TestCase {
 	public void testRedo() {
 		fail("Not yet implemented");
 	}
-
 }
