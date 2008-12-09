@@ -23,12 +23,14 @@ public class SpelerVerwerker implements Observer {
 
 	// niveau = -1 voor Mens
 	public void voegSpelerToe(short niveau, String naam, char kleur, long score) {
-		if (niveau < 0)
-			spelers.add(SpelerFactory.maakSpeler(SpelerFactory.MENS, naam,
-					kleur, score, niveau));
-		else
-			spelers.add(SpelerFactory.maakSpeler(SpelerFactory.AI, naam, kleur,
-					score, niveau));
+//		if (niveau < 0)
+//			spelers.add(SpelerFactory.maakSpeler(SpelerFactory.MENS, naam,
+//					kleur, score, niveau));
+//		else
+//			spelers.add(SpelerFactory.maakSpeler(SpelerFactory.AI, naam, kleur,
+//					score, niveau));
+		
+		spelers.add(SpelerFactory.maakSpeler(naam,kleur, score, niveau));
 	}
 
 	public void verwijderHuidigeSpeler() {
