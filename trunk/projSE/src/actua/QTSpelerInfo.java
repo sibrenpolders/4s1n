@@ -7,8 +7,8 @@ import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTSpelerInfo extends GSpelerInfo {
-	QWidget spelerInfoveld;
-	QLabel punten;
+	private QWidget spelerInfoveld;
+	private QLabel punten;
 
 	public QTSpelerInfo(Speler speler, QWidget parent) {
 		super(speler);
