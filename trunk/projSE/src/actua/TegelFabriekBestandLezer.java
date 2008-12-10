@@ -15,6 +15,7 @@ public class TegelFabriekBestandLezer {
 	private static final String WEI = "wei";
 	private static final String WEG = "weg";
 	private static final String KLOOSTER = "klooster";
+	private static final String KRUISPUNT = "kruispunt";
 	
 	NodeList tegels;
 	Node aantalElement;
@@ -117,6 +118,8 @@ public class TegelFabriekBestandLezer {
 			landsdeelKarakter = 'g';
 		} else if (nodeValue.equals(KLOOSTER)) {
 			landsdeelKarakter = 'k';
+		} else if (nodeValue.equals(KRUISPUNT)) {
+			landsdeelKarakter = 'r';
 		}
 		
 		return landsdeelKarakter;
