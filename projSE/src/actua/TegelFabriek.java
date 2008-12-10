@@ -1,6 +1,9 @@
 package actua;
 
+import java.util.ArrayList;
 import java.util.Vector;
+
+import com.sun.org.apache.bcel.internal.generic.LADD;
 
 import actua.Tegel;
 
@@ -17,15 +20,17 @@ public class TegelFabriek {
 	}
 	
 	/**
+	 * Deze functie zal een ArrayList van char[] aanmaken.
+	 * Dit is de stapel tegels waarmee het spel gespeeld wordt. 
 	 * @param aantal
 	 * 		aantal Tegel instanties die de vector moet bevatten
 	 * @return
 	 * 		Een stapel van tegel
 	 */
 	// TODO random functie belijken
-	public Vector<Tegel> maakTegels(int aantal) {
+	public ArrayList<char[]> maakTegelStack(int aantal) {
 		TegelFabriekBestandLezer tfbl = new TegelFabriekBestandLezer(tegelsBestand);
-		Vector<Tegel> stapel = new Vector<Tegel>();
+		ArrayList<char[]> stapel = new ArrayList<char[]>();
 		
 		int aantalVerschillendeTegels = tfbl.getAantalTegels();
 		int aantalTegelsTeMaken = aantal;
@@ -52,14 +57,12 @@ public class TegelFabriek {
 		return stapel;
 	}
 
-	private void voegTegelsToe(Vector<Tegel> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
-		char[] landsdelen = tfbl.getLandsdeelMatrix(tegelNummer);
-		
-		Tegel tegel = new Tegel(landsdelen);
+	private void voegTegelsToe(ArrayList<char[]> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
+		char[] tegel = tfbl.getLandsdeelMatrix(tegelNummer);		
 		stapel.add(tegel);
 
 		for (int i = 1; i < aantalTegels; ++i) {
 			stapel.add(tegel.clone());
 		}
-	}
+	}	
 }
