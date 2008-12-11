@@ -2,31 +2,35 @@ package actua;
 
 public class AI extends Speler {
 	private short niveau;
+	private TafelVerwerker tafelVerwerker;
+
+	public AI(String naam, char kleur, short niveau, TafelVerwerker tv,
+			long score) {
+		super(naam, kleur, score);
+		this.niveau = niveau;
+		this.tafelVerwerker = tv;
+	}
+
+	public AI(Speler speler, short niveau, TafelVerwerker tv) {
+		this(speler.getNaam(), speler.getKleur(), niveau, tv, speler.getScore());
+		this.pionnen = speler.getPionnen();
+	}
 
 	public AI() {
 		super();
-	}
-	
-	public AI(String naam, char kleur, long score, short niveau)
-	{
-		super(naam, kleur, score);
-		this.niveau = niveau;
+		this.niveau = 0;
+		this.tafelVerwerker = null;
 	}
 
-	public AI(Mens speler, short niveau) {
-		super(speler.getNaam(), speler.getKleur(), speler.getScore());
-		this.niveau = niveau;
-	}
-
-	public short getNiveau () {
+	public short getNiveau() {
 		return niveau;
 	}
 
-	public void setNiveau (short niveau) {
+	public void setNiveau(short niveau) {
 		this.niveau = niveau;
 	}
 
-	public boolean plaatsTegel (Tegel tegel,Tafel tafel) {
+	public boolean plaatsTegel(Tegel tegel, Tafel tafel) {
 		return false;
 	}
 
@@ -34,4 +38,3 @@ public class AI extends Speler {
 		return false;
 	}
 }
-

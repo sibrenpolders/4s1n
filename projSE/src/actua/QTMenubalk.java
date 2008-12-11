@@ -1,11 +1,9 @@
 package actua;
 
 import com.trolltech.qt.gui.QAction;
-import com.trolltech.qt.gui.QLayout;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMenuBar;
 import com.trolltech.qt.gui.QMessageBox;
-import com.trolltech.qt.gui.QWidget;
 
 public class QTMenubalk extends GMenubalk {
 	private QMenuBar menubar;
@@ -39,7 +37,7 @@ public class QTMenubalk extends GMenubalk {
 		nSpel = addActionItem(spel, "Nieuw Spel");
 		opslaan = addActionItem(spel, "Opslaan");
 		laden = addActionItem(spel, "Laden");
-		
+
 		nSpel.triggered.connect(this.gInitSpel, "show()");
 	}
 

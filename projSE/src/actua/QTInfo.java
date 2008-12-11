@@ -140,7 +140,7 @@ public class QTInfo extends GInfo {
 
 		QHBoxLayout hbox = new QHBoxLayout();
 		hbox.addWidget(new qtInfoVenster());
-		hbox.addWidget(new QTSpelerInfo(new Mens("Dude", 'l', 0), qtInfo)
+		hbox.addWidget(new QTSpelerInfo(new Speler("Dude", 'l', 0), qtInfo)
 				.getSpelerInfoveld());
 
 		qtInfo.setLayout(hbox);
