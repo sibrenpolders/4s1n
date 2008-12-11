@@ -43,6 +43,7 @@ public class QTInitSpel extends GInitSpel{
 		begin.clicked.connect(this, "begin()");
 		
 		venster.setCentralWidget(widget);
+		venster.setWindowTitle("Begin een nieuw Spel");
 	}
 
 	@Override
