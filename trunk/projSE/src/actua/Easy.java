@@ -1,23 +1,39 @@
 package actua;
-import java.util.Vector;
-
 
 public class Easy implements Strategy {
+	private TafelVerwerker tafelVerwerker;
 
-	public Easy() {
-		
+	public Easy(TafelVerwerker tv) {
+		this.tafelVerwerker = tv;
 	}
 
-	public Vector2D BerekenTegel(Vector<Vector<Tegel>> geplaatsteTegels,
-			Vector<Tegel> stapel, Tegel tegel) {
-		// TODO Auto-generated method stub
-		return null;
+	public int berekenPlaatsPion(Pion p, Tegel t, Vector2D tegelCoord) {
+		if (p.getGeplaatst() == false)
+			for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
+				if (tafelVerwerker.isPionPlaatsingGeldig(p, tegelCoord, i))
+					return i;
+			}
+
+		return -1;
 	}
 
-	@Override
-	public Vector2D BerekenPion(Vector<Vector<Tegel>> geplaatsteTegels,
-			Vector2D laatstGeplaatst) {
-		// TODO Auto-generated method stub
+	public Vector2D berekenPlaatsTegel(Tegel t) {
+		int breedte = tafelVerwerker.getBreedte();
+		int hoogte = tafelVerwerker.getHoogte();
+		Vector2D coordsStartTegel = tafelVerwerker.getBeginPositie();
+		int xMin = coordsStartTegel.getX() - 1;
+		int yMin = coordsStartTegel.getY() - 1;
+		int xMax = xMin + breedte + 2;
+		int yMax = yMin + hoogte + 2;
+
+		for (int x = xMin; x <= xMax; ++x)
+			for (int y = yMin; y <= yMax; ++y) {
+				Vector2D temp = new Vector2D(x, y);
+				if (tafelVerwerker.isTegelPlaatsingGeldig(t, temp)) {
+					return temp;
+				}
+			}
+
 		return null;
 	}
 }
