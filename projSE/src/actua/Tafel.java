@@ -92,32 +92,63 @@ public class Tafel {
 		kolomVector.add(kolom, nieuweTegel);
 		setLaatstGeplaatsteTegel(nieuweTegel);
 		// TODO functie update landsdelen schrijven
+		updateLandsdelen(rij, kolom);
 		
 		return true;
 	}
 
-	private Tegel getTegel(char[] tegel, int rij, int kolom) {
-		Tegel noord, oost, zuid, west;
-		noord = oost = zuid = west = null;
+	private void updateLandsdelen(int rij, int kolom) {
+		if ( rij < 0 || rij >= veld.size() || kolom < 0 || kolom >= veld.get(rij).size()) {
+			return;
+		}
+		
+		Tegel[] buren = getBuren(rij, kolom);
+		Tegel nieuweTegel = veld.get(rij).get(kolom);
+		
+		// noordbuur updaten
+		buren[0].updateLandsdeel(Tegel.ZUID, nieuweTegel);
+		updateLandsdelen(rij-1, kolom);
+		
+		// oostbuur updaten
+		buren[1].updateLandsdeel(Tegel.WEST, nieuweTegel);
+		updateLandsdelen(rij, kolom+1);
+		
+		// zuidbuur updaten
+		buren[2].updateLandsdeel(Tegel.NOORD, nieuweTegel);
+		updateLandsdelen(rij+1, kolom);
+		
+		// westbuur updaten
+		buren[3].updateLandsdeel(Tegel.OOST, nieuweTegel);
+		updateLandsdelen(rij, kolom-1);
+	}
 
+	private Tegel[] getBuren(int rij, int kolom) {
+		Tegel[] buren = new Tegel[4];
+		
 		if (rij - 1 >= 0) {
-			noord = veld.get(rij - 1).get(kolom);
+			buren[0] = veld.get(rij - 1).get(kolom);
 		}
 
 		ArrayList<Tegel> kolomVector = veld.get(rij);
 		if (kolomVector.size() > kolom + 1) {
-			oost = kolomVector.get(kolom + 1);
+			buren[1] = kolomVector.get(kolom + 1);
 		}
 
 		if (rij + 1 < veld.size()) {
-			zuid = veld.get(rij + 1).get(kolom);
+			buren[2] = veld.get(rij + 1).get(kolom);
 		}
 
 		if (kolom - 1 >= 0) {
-			west = kolomVector.get(kolom - 1);
+			buren[3] = kolomVector.get(kolom - 1);
 		}
+		
+		return buren;
+	}
 
-		return new Tegel(tegel, noord, oost, zuid, west);
+	private Tegel getTegel(char[] tegel, int rij, int kolom) {
+		Tegel[] buren = getBuren(rij, kolom);
+		
+		return new Tegel(tegel, buren[0], buren[1], buren[2], buren[3]);
 	}
 
 	private ArrayList<Tegel> addRij(int rij) {

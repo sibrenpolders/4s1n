@@ -232,7 +232,7 @@ public class Tegel {
 		}
 
 		// Op dit moment is pos zeker een geldige pion plaatsing
-		landsdelen[pos].plaatsPion();
+//		landsdelen[pos].plaatsPion();
 
 		return true;
 	}
@@ -280,5 +280,38 @@ public class Tegel {
 		orientatieB = orientatie == t.orientatie;
 
 		return orientatieB && soortTegelB;
+	}
+
+	public void updateLandsdeel(int zijde, Tegel nieuweTegel) {
+		switch(zijde) {
+		case NOORD:
+			updateLd(landsdelen[NOORD_WEST], nieuweTegel.landsdelen[ZUID_WEST]);
+			updateLd(landsdelen[NOORD], nieuweTegel.landsdelen[ZUID]);
+			updateLd(landsdelen[NOORD_OOST], nieuweTegel.landsdelen[ZUID_OOST]);
+			break;
+		case OOST:
+			updateLd(landsdelen[OOST_NOORD], nieuweTegel.landsdelen[WEST_NOORD]);
+			updateLd(landsdelen[OOST], nieuweTegel.landsdelen[WEST]);
+			updateLd(landsdelen[OOST_ZUID], nieuweTegel.landsdelen[WEST_ZUID]);
+			break;
+		case ZUID:
+			updateLd(landsdelen[ZUID_OOST], nieuweTegel.landsdelen[NOORD_OOST]);
+			updateLd(landsdelen[ZUID], nieuweTegel.landsdelen[NOORD]);
+			updateLd(landsdelen[ZUID_WEST], nieuweTegel.landsdelen[NOORD_WEST]);
+			break;
+		case WEST:
+			updateLd(landsdelen[WEST_ZUID], nieuweTegel.landsdelen[OOST_ZUID]);
+			updateLd(landsdelen[WEST], nieuweTegel.landsdelen[OOST]);
+			updateLd(landsdelen[WEST_NOORD], nieuweTegel.landsdelen[OOST_NOORD]);
+			break;
+		}
+	}
+
+	private void updateLd(Landsdeel huidigLd, Landsdeel nieuwLd) {
+		for (int i = 0; i < MAX_GROOTTE; ++i) {
+			if (landsdelen[i] == huidigLd) {
+				landsdelen[i] = nieuwLd;
+			}
+		}
 	}
 }
