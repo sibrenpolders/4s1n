@@ -1,9 +1,24 @@
 package actua;
 
+import com.trolltech.qt.gui.QGridLayout;
+import com.trolltech.qt.gui.QMainWindow;
+import com.trolltech.qt.gui.QWidget;
+
 public class QTOptie extends GOptie {
+	QMainWindow venster;
 
 	public QTOptie(OptieVerwerker ov) {
 		super(ov);
+		QWidget widget = new QWidget(venster);
+		venster = new QMainWindow();
+		QGridLayout layout = new QGridLayout();
+		
+		// Geluid
+		// Animaties
+		// Achtergrond
+		
+		venster.setCentralWidget(widget);
+		venster.setWindowTitle("Opties");
 	}
 
 	@Override
@@ -20,13 +35,11 @@ public class QTOptie extends GOptie {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
+		venster.hide();	
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		
+		venster.show();
 	}
 }
