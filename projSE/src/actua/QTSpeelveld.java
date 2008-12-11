@@ -1,5 +1,7 @@
 package actua;
 
+import sun.security.action.GetLongAction;
+
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
@@ -30,11 +32,16 @@ public class QTSpeelveld extends GSpeelveld {
 		QGraphicsScene scene;
 		public QtGraphicsView() {
 			init();
+			setAcceptDrops(true);
+
 		}
 		
 		private void init() {
 			scene = new QGraphicsScene();
-//			setLayout(new QGridLayout());
+			
+			QGridLayout layout = new QGridLayout();
+			layout.setSpacing(0);
+			setLayout(layout);
 			//speelveld.grabMouse();
 			setGeometry(0, 0, 720, 540);
 			setMaximumSize(new QSize(720, 540));
@@ -55,12 +62,12 @@ public class QTSpeelveld extends GSpeelveld {
 	    	System.out.println("bla3");
 	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
 		    	System.out.println("bla4");
-//	            if (event.source().equals(this)) {
+	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
-//	                event.accept();
-//	            } else {
+	                event.accept();
+	            } else {
 	                event.acceptProposedAction();
-//	            }
+	            }
 	        } else {
 	            event.ignore();
 	        }
@@ -71,18 +78,20 @@ public class QTSpeelveld extends GSpeelveld {
 	    	System.out.println("bla");
 	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
 		    	System.out.println("bla2");
-//	            if (event.source().equals(this)) {
+	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
 	                event.accept();
-//	            } else {
-//	                event.acceptProposedAction();
-//	            }
+	 
+	            } else {
+	                event.acceptProposedAction();
+	            }
 	        } else {
 	            event.ignore();
 	        }
 	    }
 
 	    protected void dropEvent(QDropEvent event) {
+	    	
 	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
 	            QByteArray itemData = event.mimeData().data("application/x-dnditemdata");
 	            QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.ReadOnly);
@@ -91,12 +100,14 @@ public class QTSpeelveld extends GSpeelveld {
 	            QPoint offset = new QPoint();
 	            pixmap.readFrom(dataStream);
 	            offset.readFrom(dataStream);
-
+	                    
 	            QLabel newIcon = new QLabel();
 	            newIcon.setPixmap(pixmap);
 	            newIcon.move(event.pos().subtract(offset));
+	           
 	            newIcon.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose);
-
+	            scene.addWidget(newIcon);
+	            
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
 	                event.accept();	        
