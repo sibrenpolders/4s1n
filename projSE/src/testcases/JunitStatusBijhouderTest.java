@@ -44,17 +44,39 @@ public class JunitStatusBijhouderTest extends TestCase {
 		assertEquals("Push/Pop faalt.", true, m4.equals(statusBijhouder
 				.pop_undo()));
 		assertEquals(3, statusBijhouder.getUndoSize());
+		assertEquals(1, statusBijhouder.getRedoSize());
+		
 		assertEquals("Push/Pop faalt.", true, m3.equals(statusBijhouder
 				.pop_undo()));
 		assertEquals(2, statusBijhouder.getUndoSize());
+		assertEquals(2, statusBijhouder.getRedoSize());
+		
 		assertEquals("Push/Pop faalt.", true, m2.equals(statusBijhouder
 				.pop_undo()));
 		assertEquals(1, statusBijhouder.getUndoSize());
+		assertEquals(3, statusBijhouder.getRedoSize());
+		
 		assertEquals("Push/Pop faalt.", false, m4.equals(statusBijhouder
 				.pop_undo()));
 		assertEquals(0, statusBijhouder.getUndoSize());
+		assertEquals(4, statusBijhouder.getRedoSize());
+		
+		assertEquals("Push/Pop faalt.", true, m1.equals(statusBijhouder
+				.pop_redo()));
+		assertEquals(3, statusBijhouder.getRedoSize());
+		
+		assertEquals("Push/Pop faalt.", true, m2.equals(statusBijhouder
+				.pop_redo()));
+		assertEquals(2, statusBijhouder.getRedoSize());
+		
+		assertEquals("Push/Pop faalt.", true, m3.equals(statusBijhouder
+				.pop_redo()));
+		assertEquals(1, statusBijhouder.getRedoSize());
+		
+		assertEquals("Push/Pop faalt.", true, m4.equals(statusBijhouder
+				.pop_redo()));
 
-		assertEquals("Geen elementen faalt.", null, statusBijhouder.pop_undo());
+		assertEquals("Geen elementen faalt.", 0, statusBijhouder.getRedoSize());
 	}
 
 	public void testPop_Push_redo() {
@@ -68,7 +90,7 @@ public class JunitStatusBijhouderTest extends TestCase {
 		Memento m3 = new Memento(t1, 'a', false);
 		Memento m4 = new Memento(null, 'b', true);
 
-		assertEquals("Geen elementen faalt.", null, statusBijhouder.pop_redo());
+		assertNull("Geen elementen faalt.", statusBijhouder.pop_redo());
 
 		// testObjecten pushen
 		statusBijhouder.push_redo(m1);
@@ -85,17 +107,39 @@ public class JunitStatusBijhouderTest extends TestCase {
 		assertEquals("Push/Pop faalt.", true, m4.equals(statusBijhouder
 				.pop_redo()));
 		assertEquals(3, statusBijhouder.getRedoSize());
+		assertEquals(1, statusBijhouder.getUndoSize());
+		
 		assertEquals("Push/Pop faalt.", true, m3.equals(statusBijhouder
 				.pop_redo()));
 		assertEquals(2, statusBijhouder.getRedoSize());
+		assertEquals(2, statusBijhouder.getUndoSize());
+		
 		assertEquals("Push/Pop faalt.", true, m2.equals(statusBijhouder
 				.pop_redo()));
 		assertEquals(1, statusBijhouder.getRedoSize());
+		assertEquals(3, statusBijhouder.getUndoSize());
+		
 		assertEquals("Push/Pop faalt.", false, m4.equals(statusBijhouder
 				.pop_redo()));
 		assertEquals(0, statusBijhouder.getRedoSize());
-
-		assertEquals("Geen elementen faalt.", null, statusBijhouder.pop_undo());
+		assertEquals(4, statusBijhouder.getUndoSize());
+		
+		assertEquals("Push/Pop faalt.", true, m1.equals(statusBijhouder
+				.pop_undo()));
+		assertEquals(3, statusBijhouder.getUndoSize());
+		
+		assertEquals("Push/Pop faalt.", true, m2.equals(statusBijhouder
+				.pop_undo()));
+		assertEquals(2, statusBijhouder.getUndoSize());
+		
+		assertEquals("Push/Pop faalt.", true, m3.equals(statusBijhouder
+				.pop_undo()));
+		assertEquals(1, statusBijhouder.getUndoSize());
+		
+		assertEquals("Push/Pop faalt.", true, m4.equals(statusBijhouder
+				.pop_undo()));
+		
+		assertEquals("Geen elementen faalt.", 0, statusBijhouder.getUndoSize());
 	}
 }
 
