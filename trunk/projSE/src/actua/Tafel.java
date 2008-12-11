@@ -103,51 +103,62 @@ public class Tafel {
 		}
 		
 		Tegel[] buren = getBuren(rij, kolom);
-		Tegel nieuweTegel = veld.get(rij).get(kolom);
+		Tegel nieuweTegel = bepaalTegel(new Vector2D(rij - startTegel.getX(), kolom - startTegel.getY()));
 		
 		// noordbuur updaten
-		buren[0].updateLandsdeel(Tegel.ZUID, nieuweTegel);
-		updateLandsdelen(rij-1, kolom);
-		
+		if (buren[0] != null) {
+			buren[0].updateLandsdeel(Tegel.ZUID, nieuweTegel);
+			updateLandsdelen(rij-1, kolom);
+		}
+
 		// oostbuur updaten
-		buren[1].updateLandsdeel(Tegel.WEST, nieuweTegel);
-		updateLandsdelen(rij, kolom+1);
-		
+		if (buren[1] != null) {
+			buren[1].updateLandsdeel(Tegel.WEST, nieuweTegel);
+			updateLandsdelen(rij, kolom+1);
+		}
 		// zuidbuur updaten
-		buren[2].updateLandsdeel(Tegel.NOORD, nieuweTegel);
-		updateLandsdelen(rij+1, kolom);
-		
+		if (buren[2] != null) {
+			buren[2].updateLandsdeel(Tegel.NOORD, nieuweTegel);
+			updateLandsdelen(rij+1, kolom);
+		}
 		// westbuur updaten
-		buren[3].updateLandsdeel(Tegel.OOST, nieuweTegel);
-		updateLandsdelen(rij, kolom-1);
+		if (buren[3] != null) {
+			buren[3].updateLandsdeel(Tegel.OOST, nieuweTegel);
+			updateLandsdelen(rij, kolom-1);
+		}
 	}
 
 	private Tegel[] getBuren(int rij, int kolom) {
 		Tegel[] buren = new Tegel[4];
+		int x = startTegel.getX();
+		int y = startTegel.getY();
 		
-		if (rij - 1 >= 0) {
-			buren[0] = veld.get(rij - 1).get(kolom);
-		}
-
-		ArrayList<Tegel> kolomVector = veld.get(rij);
-		if (kolomVector.size() > kolom + 1) {
-			buren[1] = kolomVector.get(kolom + 1);
-		}
-
-		if (rij + 1 < veld.size()) {
-			buren[2] = veld.get(rij + 1).get(kolom);
-		}
-
-		if (kolom - 1 >= 0) {
-			buren[3] = kolomVector.get(kolom - 1);
-		}
+		Vector2D coord = new Vector2D(rij-1 - x, kolom - y);
 		
+		// noord buur
+		buren[0] = bepaalTegel(coord);
+		
+		// west buur
+		coord.setXY(rij - x, kolom+1 - y);
+		buren[1] = bepaalTegel(coord);
+		
+		// zuid buur
+		coord.setXY(rij+1 -x, kolom - y);
+		buren[2] = bepaalTegel(coord);
+		
+		// oost buur
+		coord.setXY(rij - x, kolom-1 - y);
+		buren[3] = bepaalTegel(coord);
+			
 		return buren;
 	}
 
 	private Tegel getTegel(char[] tegel, int rij, int kolom) {
-		Tegel[] buren = getBuren(rij, kolom);
+		if (rij < 0 || rij >= veld.size() || kolom < 0) {
+			return null;
+		}
 		
+		Tegel[] buren = getBuren(rij, kolom);
 		return new Tegel(tegel, buren[0], buren[1], buren[2], buren[3]);
 	}
 
@@ -363,8 +374,8 @@ public class Tafel {
 
 	// TODO Moeten hier niet de coordinaten weer meegegeven worden?
 	// hogere lagen hebben toch geen nood aan het opslaan van de Tegel objecten?
-	public boolean isLaatste(Tegel tegel) {
-		return tegel == laatstGeplaatsteTegel;
+	public boolean isLaatste(int rij, int kolom) {
+		return bepaalTegel(new Vector2D(rij, kolom)) == laatstGeplaatsteTegel;
 	}
 
 	// TODO Functie is er enkel voor de unit test __NIET__ gebruiken voor andere
@@ -450,5 +461,29 @@ public class Tafel {
 			}
 			System.out.println();
 		}
+	}
+	
+	public Vector2D getBeginPositie() {
+		return startTegel;
+	}
+	
+	public int getHoogte() {
+		return veld.size();
+	}
+	
+	public int getBreedte() {
+		int hoogte = 0;
+		
+		if (veld.size() != 0) {
+			hoogte = veld.get(0).size();
+			
+			for(int i = 1; i < veld.size(); ++i) {
+				if (hoogte < veld.get(i).size()) {
+					hoogte = veld.get(i).size();
+				}
+			}
+		}
+		
+		return hoogte;
 	}
 }

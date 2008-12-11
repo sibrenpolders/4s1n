@@ -65,4 +65,16 @@ public class TafelVerwerker {
 	public boolean plaatstPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
 		return tafel.plaatsPion(tegelCoord, pionCoord, pion);
 	}
+	
+	public Vector2D getBeginPositie() {
+		return tafel.getBeginPositie();
+	}
+	
+	public int getHoogte() {
+		return tafel.getHoogte();
+	}
+	
+	public int getBreedte() {
+		return tafel.getBreedte();
+	}
 }
