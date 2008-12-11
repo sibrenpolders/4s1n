@@ -47,53 +47,53 @@ public class Tafel {
 	 *         geplaatst kan worden
 	 */
 	public boolean plaatsTegel(Tegel tegel, Vector2D coord) {
-//		// startTegel wordt gezet
-//		// coord maken niet uit startTegel staat op (0, 0)
-//		if (veld == null) {
-//			setStartTegel(tegel);
-//			return true;
-//		}
-//
-//		int rij = startTegel.getX() + coord.getX();
-//		int kolom = startTegel.getY() + coord.getY();
-//		// mag de tegel hier gezet worden? M.a.w. zijn zijn buren geldig?
-//		// TODO
-//		if (!tegelKanGeplaatstWorden(tegel, rij, kolom)) {
-//			return false;
-//		}
-//
-//		ArrayList<Tegel> kolomVector;
-//
-//		// boven of onder de starttegel
-//		if (rij == -1) {
-//			rij = 0;
-//			kolomVector = addRij(rij);
-//			startTegel.setX(startTegel.getX() + 1);
-//		} else if (rij == veld.size()) {
-//			kolomVector = addRij(rij);
-//		} else { // toevoegen in een bestaande rij
-//			kolomVector = veld.get(rij);
-//		}
-//
-//		// links of rechts van de starttegel
-//		if (kolom == -1) {
-//			adjustAll(rij, kolom);
-//			startTegel.setY(startTegel.getY() + 1);
-//			kolom = (kolom < 0) ? 0 : kolom;
-//		} else if (kolom > veld.get(rij).size()) {
-//			addSpacers(rij, kolom);
-//		}
-//
-//		if (kolom < kolomVector.size() && kolomVector.get(kolom) == null) {
-//			kolomVector.remove(kolom);
-//		}
-//
-//		System.err.println("Add: (" + rij + ", " + kolom + ")");
-//		Tegel nieuweTegel = getTegel(tegel, rij, kolom);
-//		kolomVector.add(kolom, nieuweTegel);
-//		setLaatstGeplaatsteTegel(nieuweTegel);
-////		// TODO functie update landsdelen schrijven
-//		updateLandsdelen(rij, kolom);
+		// startTegel wordt gezet
+		// coord maken niet uit startTegel staat op (0, 0)
+		if (veld == null) {
+			setStartTegel(tegel);
+			return true;
+		}
+
+		int rij = startTegel.getX() + coord.getX();
+		int kolom = startTegel.getY() + coord.getY();
+		// mag de tegel hier gezet worden? M.a.w. zijn zijn buren geldig?
+		// TODO
+		if (!tegelKanGeplaatstWorden(tegel, rij, kolom)) {
+			return false;
+		}
+
+		ArrayList<Tegel> kolomVector;
+
+		// boven of onder de starttegel
+		if (rij == -1) {
+			rij = 0;
+			kolomVector = addRij(rij);
+			startTegel.setX(startTegel.getX() + 1);
+		} else if (rij == veld.size()) {
+			kolomVector = addRij(rij);
+		} else { // toevoegen in een bestaande rij
+			kolomVector = veld.get(rij);
+		}
+
+		// links of rechts van de starttegel
+		if (kolom == -1) {
+			adjustAll(rij, kolom);
+			startTegel.setY(startTegel.getY() + 1);
+			kolom = (kolom < 0) ? 0 : kolom;
+		} else if (kolom > veld.get(rij).size()) {
+			addSpacers(rij, kolom);
+		}
+
+		if (kolom < kolomVector.size() && kolomVector.get(kolom) == null) {
+			kolomVector.remove(kolom);
+		}
+
+		System.err.println("Add: (" + rij + ", " + kolom + ")");
+		Tegel nieuweTegel = getTegel(tegel, rij, kolom);
+		kolomVector.add(kolom, nieuweTegel);
+		setLaatstGeplaatsteTegel(nieuweTegel);
+//		// TODO functie update landsdelen schrijven
+		updateLandsdelen(rij, kolom);
 		
 		return true;
 	}
@@ -154,13 +154,14 @@ public class Tafel {
 		return buren;
 	}
 
-	private Tegel getTegel(String tegel, int rij, int kolom) {
+	private Tegel getTegel(Tegel tegel, int rij, int kolom) {
 		if (rij < 0 || rij >= veld.size() || kolom < 0) {
 			return null;
 		}
 		
 		Tegel[] buren = getBuren(rij, kolom);
-		return new Tegel(tegel, buren[0], buren[1], buren[2], buren[3]);
+		tegel.vulLandsdelen(buren[0], buren[1], buren[2], buren[3]);
+		return tegel;
 	}
 
 	private ArrayList<Tegel> addRij(int rij) {
@@ -222,7 +223,7 @@ public class Tafel {
 	 * @return True als de tegel geplaatst kan worden. False als de tegel niet
 	 *         geplaatst kan worden.
 	 */
-	private boolean tegelKanGeplaatstWorden(String tegel, int rij, int kolom) {
+	private boolean tegelKanGeplaatstWorden(Tegel tegel, int rij, int kolom) {
 		// De tegel zijn 4 buren zijn geldig en
 		// er is nog geen tegel geplaatst op deze positie
 		return !isGeplaatst(rij, kolom) && geldigeBuren(tegel, rij, kolom);
@@ -236,42 +237,41 @@ public class Tafel {
 	 * @return True als de buren geldig zijn False als 1 van de buren ongeldig
 	 *         is of als er geen buren zijn
 	 */
-	private boolean geldigeBuren(String tegel, int rij, int kolom) {
-//		boolean burenGeldig = true;
-//		boolean buurGevonden = false; // als er geen buur gevonden wordt dan is
-//		// de zet ook ongeldig
-//		Tegel t;
-//		Vector2D positie = new Vector2D();
-//		int startTegelX = startTegel.getX();
-//		int startTegelY = startTegel.getY();
-//
-//		for (int i = 0; burenGeldig && i < 4; ++i) {
-//			switch (i) {
-//			case 0:
-//				positie.setXY(rij - 1 - startTegelX, kolom - startTegelY);
-//				break;
-//			case 1:
-//				positie.setXY(rij - startTegelX, kolom + 1 - startTegelY);
-//				break;
-//			case 2:
-//				positie.setXY(rij + 1 - startTegelX, kolom - startTegelY);
-//				break;
-//			case 3:
-//				positie.setXY(rij - startTegelX, kolom - 1 - startTegelY);
-//				break;
-//			}
-//
-//			if ((t = bepaalTegel(positie)) != null) {
-//				buurGevonden = true;
-//				burenGeldig = gelijkeLandsDelen(i,t);
-//			}
-//		}
-//
-//		return buurGevonden && burenGeldig;
-		return true;
+	private boolean geldigeBuren(Tegel tegel, int rij, int kolom) {
+		boolean burenGeldig = true;
+		boolean buurGevonden = false; // als er geen buur gevonden wordt dan is
+		// de zet ook ongeldig
+		Tegel t;
+		Vector2D positie = new Vector2D();
+		int startTegelX = startTegel.getX();
+		int startTegelY = startTegel.getY();
+
+		for (int i = 0; burenGeldig && i < 4; ++i) {
+			switch (i) {
+			case 0:
+				positie.setXY(rij - 1 - startTegelX, kolom - startTegelY);
+				break;
+			case 1:
+				positie.setXY(rij - startTegelX, kolom + 1 - startTegelY);
+				break;
+			case 2:
+				positie.setXY(rij + 1 - startTegelX, kolom - startTegelY);
+				break;
+			case 3:
+				positie.setXY(rij - startTegelX, kolom - 1 - startTegelY);
+				break;
+			}
+
+			if ((t = bepaalTegel(positie)) != null) {
+				buurGevonden = true;
+				burenGeldig = gelijkeLandsDelen(i,tegel, t);
+			}
+		}
+
+		return buurGevonden && burenGeldig;
 	}
 
-	private boolean gelijkeLandsDelen(int i, char[] tegel, Tegel t) {
+	private boolean gelijkeLandsDelen(int i, Tegel tegel, Tegel t) {
 		boolean isLandsdeelGelijk = true;
 
 		switch (i) {
@@ -321,12 +321,12 @@ public class Tafel {
 	 * @return True indien beide eenzelfde type landsdeel hebben en ze dus naast
 	 *         elkaar mogen liggen. False anders.
 	 */
-	private boolean vergelijkLandsdelen(char[] tegel, Tegel buur,
+	private boolean vergelijkLandsdelen(Tegel tegel, Tegel buur,
 			int landsdeelA, int landsdeelABuur, int landsdeelB,
 			int landsdeelBBuur, int landsdeelC, int landsdeelCBuur) {
-		return tegel[landsdeelA] == buur.bepaalLandsdeel(landsdeelABuur).getType() &&
-			   tegel[landsdeelB] == buur.bepaalLandsdeel(landsdeelBBuur).getType() &&
-			   tegel[landsdeelC] == buur.bepaalLandsdeel(landsdeelCBuur).getType();
+		return tegel.bepaalLandsdeel(landsdeelA).getType() == buur.bepaalLandsdeel(landsdeelABuur).getType() &&
+			   tegel.bepaalLandsdeel(landsdeelB).getType() == buur.bepaalLandsdeel(landsdeelBBuur).getType() &&
+			   tegel.bepaalLandsdeel(landsdeelC).getType() == buur.bepaalLandsdeel(landsdeelCBuur).getType();
 	}
 
 	/**
@@ -353,28 +353,25 @@ public class Tafel {
 	}
 
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
-//		Tegel t = bepaalTegel(tegelCoord);
-//
-//		return t != null && isPionPlaatsingGeldig(t, tegelCoord, pionCoord)
-//				&& t.plaatsPion(pionCoord);
-		return true;
+		Tegel t = bepaalTegel(tegelCoord);
+
+		return t != null && isPionPlaatsingGeldig(t, tegelCoord, pionCoord)
+				&& t.plaatsPion(pionCoord, pion);
 	}
 
 	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
-//		int rij = startTegel.getX() + coord.getX();
-//		int kolom = startTegel.getY() + coord.getY();
-//
-//		return tegelKanGeplaatstWorden(tegel, rij, kolom);
-		return true;
+		int rij = startTegel.getX() + coord.getX();
+		int kolom = startTegel.getY() + coord.getY();
+
+		return tegelKanGeplaatstWorden(tegel, rij, kolom);
 	}
 
-	public boolean isPionPlaatsingGeldig(Pion pion, Vector2D tegelCoord,
-			Vector2D tegelCoord2) {
-//		if (tegelCoord2 < 0 || tegelCoord2 >= Tegel.MAX_GROOTTE)
-//			return false;
-//
-//		return pion.isPionGeplaatst(tegelCoord2);
-			return true;
+	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
+			int pionCoord) {
+		if (pionCoord < 0 || pionCoord >= Tegel.MAX_GROOTTE)
+			return false;
+
+		return tegel.isPionGeplaatst(pionCoord);
 	}
 
 	// TODO Moeten hier niet de coordinaten weer meegegeven worden?
@@ -443,10 +440,10 @@ public class Tafel {
 		// oogpunt.reset();
 	}
 
-	private void setStartTegel(String startTegel) {
+	private void setStartTegel(Tegel tegel) {
 		veld = new ArrayList<ArrayList<Tegel>>();
 		veld.add(new ArrayList<Tegel>());
-		Tegel startT = new Tegel(startTegel);
+		Tegel startT = tegel;
 		veld.get(0).add(startT);
 		setLaatstGeplaatsteTegel(startT);
 		this.startTegel = new Vector2D(0, 0);

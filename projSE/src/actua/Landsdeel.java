@@ -12,11 +12,12 @@ public class Landsdeel {
 	private char type;
 
 	public Landsdeel() {
-		
+		pionnen = new ArrayList<Pion>();
 	}
 
 	public Landsdeel(char type) {
 		this.type = type;
+		pionnen = new ArrayList<Pion>();
 	}
 	
 	public char getType() {

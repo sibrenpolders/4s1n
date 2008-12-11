@@ -55,12 +55,10 @@ public class TafelVerwerker {
 	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
 		return tafel.isTegelPlaatsingGeldig(tegel, coord);
 	}
-
-	public boolean isPionPlaatsingGeldig(Pion pion, Vector2D tegelCoord,
-			int pionCoord) {
-		return tafel.isPionPlaatsingGeldig(pion, tegelCoord, tegelCoord);
+	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord, int pionCoord) {
+		return tafel.isPionPlaatsingGeldig(tegel, tegelCoord, pionCoord);
 	}
-
+	
 	/**
 	 * @param tegelCoord
 	 *            De tegel waarop de pion geplaatst moet worden (coordinaten
