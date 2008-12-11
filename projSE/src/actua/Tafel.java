@@ -441,7 +441,7 @@ public class Tafel {
 	private void setStartTegel(char[] startTegel) {
 		veld = new ArrayList<ArrayList<Tegel>>();
 		veld.add(new ArrayList<Tegel>());
-		Tegel startT = new Tegel(startTegel);
+//		Tegel startT = new Tegel(startTegel);
 		veld.get(0).add(startT);
 		setLaatstGeplaatsteTegel(startT);
 		this.startTegel = new Vector2D(0, 0);
