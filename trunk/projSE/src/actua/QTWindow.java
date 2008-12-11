@@ -3,6 +3,7 @@ package actua;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QMainWindow;
+import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTWindow implements GWindow {
@@ -24,7 +25,7 @@ public class QTWindow implements GWindow {
 		QHBoxLayout hbox = new QHBoxLayout();
 		
 		QTSpeelveld qSpeelveld = new QTSpeelveld(spel, opties);		
-		hbox.addWidget(qSpeelveld.getSpeelveld());
+		hbox.addWidget(qSpeelveld.getGridWidget());
 		
 		QTInfo qInfo = new QTInfo(spel, opties);
 		hbox.addWidget(qInfo.getQtInfo());
