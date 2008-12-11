@@ -46,7 +46,23 @@ public class AI extends Speler {
 	}
 
 	public SpelBeurtResultaat doeZet() {
-		return null;
+		boolean gedaan = false;
+		SpelBeurtResultaat result = null;
+
+		while (!gedaan) {
+			Tegel t = tafelVerwerker.neemTegelVanStapel();
+			Vector2D plaats = null;
+			if ((plaats = berekenPlaatsTegel(t)) != null) {
+				gedaan = true;
+				Pion p = null;
+				short plaatsPion = -1;
+				if ((p = this.getOngeplaatstePion()) != null)
+					plaatsPion = (short) berekenPlaatsPion(p, t, plaats);
+				result = new SpelBeurtResultaat(t, plaats, p, plaatsPion);
+			}
+		}
+
+		return result;
 	}
 
 	private Vector2D berekenPlaatsTegel(Tegel t) {
