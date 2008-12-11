@@ -70,13 +70,8 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	private void infoVenster() {
-		QMessageBox
-				.about(
-						menubar,
-						"About Application",
-						"The <b>Application</b> example demonstrates how to "
-								+ "write modern GUI applications using Qt, with a menu bar, "
-								+ "toolbars, and a status bar.");
+		QMessageBox.about(menubar,"Over Applicatie","Deze <b>Applicatie</b> is mogelijk gemaakt door "
+								+ "Niels, Sam, Sam, <s>Mr. Sibrand</s>, Sibren en Bart Peeters ");
 	}
 
 	private QMenu addMenuItem(String titel) {
