@@ -37,7 +37,7 @@ public class Tegel {
 	private static int teller = 0;
 	private short orientatie;
 	private Landsdeel[] landsdelen;
-	private static String tegelPresentatie;
+	private String tegelPresentatie;
 	
 	public Tegel() {
 
@@ -338,5 +338,9 @@ public class Tegel {
 		}
 		
 		return gelijk;
+	}
+	
+	public String getTegelPresentatie() {
+		return tegelPresentatie;
 	}
 }
