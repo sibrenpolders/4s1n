@@ -2,39 +2,67 @@ package actua;
 
 import java.util.Queue;
 
+
+
 public class TafelVerwerker {
 	private Queue<Tegel> stapel;
 	private Tafel tafel;
-
+	
 	public TafelVerwerker() {
 		tafel = new Tafel();
 	}
 
-	public void herstelOverzicht() {
-
+	public void herstelOverzicht () {
+		
 	}
 
-	public Tegel vraagNieuweTegel() {
+	public Tegel vraagNieuweTegel () {
 		return null;
 	}
 
-	public Tegel neemTegelVanStapel() {
+	public Tegel neemTegelVanStapel () {
 		return null;
 	}
 
-	public void verwerkTegel() {
-
+	public void verwerkTegel () {
+		
 	}
 
-	public Vector2D vraagCoord() {
+	public Vector2D vraagCoord () {
 		return null;
 	}
-
+	
 	public void wijzigOverzicht(Vector3D nieuwePositie) {
-		tafel.beweegCamera(nieuwePositie);
-	}
-
-	public Vector3D getOverzicht() {
+			tafel.beweegCamera(nieuwePositie);
+	}	
+	
+	public Vector3D getOverzicht(){
 		return null;
+	}
+	
+	/**
+	 * Zal de method aanroepen die een tegel op het veld plaatst
+	 * @param tegel
+	 * De tegel die geplaatst moet worden
+	 * @param coord
+	 * De positie op het veld waar tegel geplaatst moet worden (relatief t.o.v. de starttegel)
+	 * @return
+	 * True indien de tegel geplaatst kon worden
+	 * False anders
+	 */
+	public boolean plaatstTegel(char[] tegel, Vector2D coord) {
+		return tafel.plaatsTegel(tegel, coord);
+	}
+	
+	/**
+	 * @param tegelCoord
+	 * De tegel waarop de pion geplaatst moet worden (coordinaten zijn relatief t.o.v. de starttegel
+	 * @param pionCoord
+	 * plaats op de tegel waarop de pion geplaatst moet worden.
+	 * @param pion
+	 * pion die geplaatst moet worden.
+	 */
+	public boolean plaatstPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
+		return tafel.plaatsPion(tegelCoord, pionCoord, pion);
 	}
 }
