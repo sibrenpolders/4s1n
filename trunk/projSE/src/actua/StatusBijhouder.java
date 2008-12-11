@@ -1,6 +1,5 @@
 package actua;
 
-
 import java.util.ArrayDeque;
 
 public class StatusBijhouder {
@@ -19,7 +18,10 @@ public class StatusBijhouder {
 	}
 
 	public Memento pop_undo(){
-		return pop(undo);
+		Memento ret = pop(undo);
+		if( ret != null )
+			push_redo(ret);
+		return ret;
 	}
 	
 	public void push_redo (Memento status) {
@@ -27,7 +29,10 @@ public class StatusBijhouder {
 	}
 	
 	public Memento pop_redo () {
-		return pop(redo);
+		Memento ret = pop(redo);
+		if( ret != null )
+			push_undo(ret);
+		return ret;
 	}
 
 	private Memento pop(ArrayDeque<Memento> stack) {
