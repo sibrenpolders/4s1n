@@ -30,8 +30,26 @@ public class AI extends Speler {
 		this.niveau = niveau;
 	}
 
-	public boolean plaatsTegel(Tegel tegel, Tafel tafel) {
-		return false;
+	public Vector2D plaatsTegel(Tegel t) {		
+		int breedte = tafelVerwerker.getBreedte();
+		int hoogte = tafelVerwerker.getHoogte();
+		Vector2D coordsStartTegel = tafelVerwerker.getBeginPositie();
+		int xMin = coordsStartTegel.getX() - 1;
+		int yMin = coordsStartTegel.getY() - 1;
+		int xMax = xMin + breedte + 2;
+		int yMax = yMin + hoogte + 2;
+		
+		
+		for(int x = xMin; x <= xMax; ++x)
+			for(int y = yMin; y <= yMax; ++y)
+			{ 
+				Vector2D	temp = new Vector2D(x,y);			
+				if(tafelVerwerker.isTegelPlaatsingGeldig(t, new Vector2D(x,y)) {
+					int rij = startTegel.getX() + coord.getX();
+					int kolom = startTegel.getY() + coord.getY();
+				}
+			}
+)
 	}
 
 	public boolean plaatsPion(Pion p) {
