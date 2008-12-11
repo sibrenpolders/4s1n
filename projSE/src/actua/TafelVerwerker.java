@@ -85,4 +85,8 @@ public class TafelVerwerker {
 	public int getBreedte() {
 		return tafel.getBreedte();
 	}
+	
+	public void vulStapel(int aantal){
+		
+	}
 }

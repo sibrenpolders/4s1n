@@ -18,6 +18,7 @@ public class QTInitSpel extends GInitSpel{
 	QLineEdit[] naam = new QLineEdit[5];
 	QComboBox[] kleur = new QComboBox[5];
 	QComboBox[] soort = new QComboBox[5];
+	QSpinBox tegels;
 
 	public QTInitSpel(Spel spel) {
 		super(spel);
@@ -27,7 +28,7 @@ public class QTInitSpel extends GInitSpel{
 		QPushButton begin = new QPushButton("Begin",widget);
 		QPushButton annuleer = new QPushButton("Annuleer",widget);
 		QLabel aantal = new QLabel("Aantal Tegels:");
-		QSpinBox tegels = new QSpinBox(widget);
+		tegels = new QSpinBox(widget);
 		
 		for(int i = 0; i < 5; ++i)
 			spelerOptieVeld(layout, i);
@@ -72,6 +73,8 @@ public class QTInitSpel extends GInitSpel{
 				this.voegSpelerToe(naam[i].text(), kleur[i].currentText().charAt(0), soort[i].currentText());
 			}
 		}
+		
+		aantalTegels(tegels.value());
 		
 		venster.close();
 	}

@@ -32,12 +32,12 @@ public class QTTegel extends GTegel {
 	 * Kruispunt = r
 	*/
 	private void kiesAfbeelding(){
-		pixmap.load(getTegel().getTegelRep()+".png");
+		pixmap.load(getTegel().getTegelPresentatie()+".png");
 	}
 
 	@Override
 	public void hide() {
-		// alalalalalalalalaalalalalal
+		
 	}
 
 	@Override
