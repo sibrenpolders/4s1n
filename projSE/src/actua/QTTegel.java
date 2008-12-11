@@ -9,7 +9,7 @@ public class QTTegel extends GTegel {
 
 	public QTTegel(Tegel tegel) {
 		super(tegel);
-		pixmap = new QPixmap();
+		pixmap = new QPixmap(90,90);
 	}
 
 	public QPixmap getPixmap() {
@@ -19,53 +19,25 @@ public class QTTegel extends GTegel {
 	public void setPixmap(QPixmap pixmap) {
 		this.pixmap = pixmap;
 	}
-
-	private void laadAfbeeldingIn(String bestandsnaam) {
-		pixmap.load(bestandsnaam);
+	
+	public void wijzigGroottePixmap(int pixels){
+		pixmap = pixmap.scaled(pixels,pixels);
 	}
 
-	private void kiesAfbeelding() throws Exception {
-		// if(tegel.getSoortTegel().equals("wwww"))
-		// pixmap.load("cloister.png");
-		// else if(tegel.getSoortTegel().equals("wwrw"))
-		// pixmap.load("cloisterr.png");
-		// else if(tegel.getSoortTegel().equals("rrrr"))
-		// pixmap.load("road4.png");
-		// else if(tegel.getSoortTegel().equals("cwww"))
-		// pixmap.load("city1.png");
-		// else if(tegel.getSoortTegel().equals("ccww"))
-		// pixmap.load("city11ne.png");
-		// else if(tegel.getSoortTegel().equals("wcwc"))
-		// pixmap.load("city11we.png");
-		// else if(tegel.getSoortTegel().equals("crrw"))
-		// pixmap.load("city1rse.png");
-		// else if(tegel.getSoortTegel().equals("cwrr"))
-		// pixmap.load("city1rsw.png");
-		// else if(tegel.getSoortTegel().equals("crrr"))
-		// pixmap.load("city1rswe.png");
-		// else if(tegel.getSoortTegel().equals("crwr"))
-		// pixmap.load("city1rwe.png");
-		// else if(tegel.getSoortTegel().equals("cwwc"))
-		// pixmap.load("city2nw.png");
-		// else if(tegel.getSoortTegel().equals("crrc"))
-		// pixmap.load("city2nwr.png");
-		// else if(tegel.getSoortTegel().equals("wcwc"))
-		// pixmap.load("city2we.png");
-		// else if(tegel.getSoortTegel().equals("wwww"))
-		// pixmap.load("cloister.png");
-		// else if(tegel.getSoortTegel().equals("wwww"))
-		// pixmap.load("cloister.png");
-		// else if(tegel.getSoortTegel().equals("wwww"))
-		// pixmap.load("cloister.png");
-		// else if(tegel.getSoortTegel().equals("wwww"))
-		// pixmap.load("cloister.png");
-		// else if(tegel.getSoortTegel().equals("wwww"))
-		// pixmap.load("cloister.png");
+	/**
+	 * Stad = s
+	 * Wei = w
+	 * Weg = g
+	 * Klooster = k
+	 * Kruispunt = r
+	*/
+	private void kiesAfbeelding(){
+		pixmap.load(getTegel().getTegelRep()+".png");
 	}
 
 	@Override
 	public void hide() {
-
+		// alalalalalalalalaalalalalal
 	}
 
 	@Override

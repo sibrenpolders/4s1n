@@ -35,6 +35,16 @@ public class Tegel {
 	private short orientatie;
 	// private Landsdeel[] landsdelen;
 	private Landsdeel[] landsdelen;
+	// TODO er voor zorgen dat tegelRep gevuld wordt
+	private String tegelRep;
+
+	public String getTegelRep() {
+		return tegelRep;
+	}
+
+	public void setTegelRep(String tegelRep) {
+		this.tegelRep = tegelRep;
+	}
 
 	public Tegel() {
 
