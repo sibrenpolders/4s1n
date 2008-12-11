@@ -1,58 +1,50 @@
 package actua;
 
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.ArrayList;
 
-public class SpelerVerwerker implements Observer {
+public class SpelerVerwerker {
 
-	private List<Speler> spelers;
-	private Speler huidigeSpeler;
+	private ArrayList<Speler> spelers;
+	private int huidigeSpelerIndex;
 
 	public SpelerVerwerker() {
-
+		spelers = new ArrayList<Speler>();
 	}
 
 	public Speler geefHuidigeSpeler() {
-		return huidigeSpeler;
+		return spelers.get(huidigeSpelerIndex);
 	}
 
-	public void maakAI(Mens mens) {
+	public void gaNaarVolgendeSpeler() {
+		huidigeSpelerIndex = (huidigeSpelerIndex + 1) % spelers.size();
+	}
 
+	public void maakAI(Speler mens, short niveau, TafelVerwerker tv) {
+		for (int i = 0; i < spelers.size(); ++i)
+			if (spelers.get(i) == mens) {
+				spelers.remove(i);
+				spelers.add(i, new AI(mens, niveau, tv));
+				return;
+			}
 	}
 
 	// niveau = -1 voor Mens
-	public void voegSpelerToe(short niveau, String naam, char kleur, long score) {
-//		if (niveau < 0)
-//			spelers.add(SpelerFactory.maakSpeler(SpelerFactory.MENS, naam,
-//					kleur, score, niveau));
-//		else
-//			spelers.add(SpelerFactory.maakSpeler(SpelerFactory.AI, naam, kleur,
-//					score, niveau));
-		
-		spelers.add(SpelerFactory.maakSpeler(naam,kleur, score, niveau));
+	public void voegSpelerToe(short niveau, String naam, char kleur,
+			long score, TafelVerwerker tv) {
+		spelers.add(SpelerFactory.maakSpeler(naam, kleur, score, niveau, tv));
 	}
 
 	public void verwijderHuidigeSpeler() {
-
+		if (huidigeSpelerIndex < spelers.size())
+			spelers.remove(huidigeSpelerIndex);
+		huidigeSpelerIndex = huidigeSpelerIndex % spelers.size();
 	}
 
-	public void verwijderSpeler(Mens mens) {
-
+	public void verwijderSpeler(Speler speler) {
+		for (int i = 0; i < spelers.size(); ++i)
+			if (spelers.get(i) == speler) {
+				spelers.remove(i);
+				return;
+			}
 	}
-
-	public short vraagNiveau() {
-		return 0;
-	}
-
-	public void addObserver(Observer o) {
-
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

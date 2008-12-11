@@ -1,11 +1,6 @@
 package actua;
 
 import java.util.ArrayList;
-import java.util.Vector;
-
-import com.sun.org.apache.bcel.internal.generic.LADD;
-
-import actua.Tegel;
 
 public class TegelFabriek {
 	private static final String TEGELS_BESTAND = "src/xml/Tegels.xml";

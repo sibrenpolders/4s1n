@@ -2,16 +2,14 @@ package actua;
 
 import java.util.Vector;
 import actua.Pion;
-import actua.Tafel;
-import actua.Tegel;
-import actua.Vector2D;
 
-public abstract class Speler {
-	private static short DEFAULT_AANTALPIONNEN = 7;
-	private String naam;
-	private long score;
-	private char kleur;
-	private Vector<Pion> pionnen;
+public class Speler {
+	protected static short DEFAULT_AANTALPIONNEN = 7;
+	protected static char INACTIVE_COLOR = 'x';
+	protected String naam;
+	protected long score;
+	protected char kleur;
+	protected Vector<Pion> pionnen;
 
 	public Speler(String naam, char kleur, long score) {
 		this.naam = naam;
@@ -22,55 +20,34 @@ public abstract class Speler {
 			pionnen.add(new Pion(kleur));
 	}
 
+	public Speler(String naam, char kleur) {
+		this(naam, kleur, 0);
+	}
+
 	public Speler() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public void neemPion(Pion p)
-	{
-		if(p == null || p.getKleur() != getKleur())
-			;
-		else
-		{
-			pionnen.add(p);
-		}
+		this("unnamed", INACTIVE_COLOR);
 	}
 
-	public Pion neemPion(Tafel tafel) {
+	public boolean isEigenaarVan(Pion p) {
+		return p != null && p.getKleur() == this.getKleur();
+	}
+
+	public void haalVanTafel(Pion p) {
+		if (isEigenaarVan(p))
+			p.zetGeplaatst(false);
+	}
+
+	public void zetOpTafel(Pion p) {
+		if (isEigenaarVan(p))
+			p.zetGeplaatst(true);
+	}
+
+	public Pion getOngeplaatstePion() {
+		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
+			if (pionnen.get(i).getGeplaatst() == false)
+				return pionnen.get(i);
 		return null;
 	}
-
-	public Vector2D vraagPositie() {
-		return null;
-	}
-
-	public abstract boolean plaatsPion(Pion p);
-
-	public void pasScoreAan() {
-
-	}
-
-	public boolean neemPionTerug() {
-		return false;
-	}
-
-	public void draaiTegel(Tegel tegel, boolean richting) {
-
-	}
-
-	public boolean vraagRichting() {
-		return false;
-	}
-
-	public Vector2D vraagCoord() {
-		return new Vector2D();
-	}
-
-	public void neemTegel(Tegel tegel, Tafel tafel) {
-
-	}
-
-	public abstract boolean plaatsTegel(Tegel tegel, Tafel tafel);
 
 	public String getNaam() {
 		return naam;
@@ -102,5 +79,13 @@ public abstract class Speler {
 
 	public void verhoogScoreMet(long nb) {
 		score += nb;
+	}
+
+	protected Vector<Pion> getPionnen() {
+		return pionnen;
+	}
+
+	public void verwijder() {
+		setKleur(INACTIVE_COLOR);
 	}
 }
