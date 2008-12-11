@@ -160,6 +160,7 @@ public class Tafel {
 //		
 //		Tegel[] buren = getBuren(rij, kolom);
 //		return new Tegel(tegel, buren[0], buren[1], buren[2], buren[3]);
+		return null;
 	}
 
 	private ArrayList<Tegel> addRij(int rij) {
