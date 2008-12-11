@@ -46,7 +46,7 @@ public class Tafel {
 	 * @return Geeft true als de tegel geplaatst is. False als de tegel niet
 	 *         geplaatst kan worden
 	 */
-	public boolean plaatsTegel(char[] tegel, Vector2D coord) {
+	public boolean plaatsTegel(String tegel, Vector2D coord) {
 		// startTegel wordt gezet
 		// coord maken niet uit startTegel staat op (0, 0)
 		if (veld == null) {
@@ -57,9 +57,9 @@ public class Tafel {
 		int rij = startTegel.getX() + coord.getX();
 		int kolom = startTegel.getY() + coord.getY();
 		// mag de tegel hier gezet worden? M.a.w. zijn zijn buren geldig?
-		if (!tegelKanGeplaatstWorden(tegel, rij, kolom)) {
-			return false;
-		}
+//		if (!tegelKanGeplaatstWorden(tegel, rij, kolom)) {
+//			return false;
+//		}
 
 		ArrayList<Tegel> kolomVector;
 
@@ -88,11 +88,11 @@ public class Tafel {
 		}
 
 		System.err.println("Add: (" + rij + ", " + kolom + ")");
-		Tegel nieuweTegel = getTegel(tegel, rij, kolom);
-		kolomVector.add(kolom, nieuweTegel);
-		setLaatstGeplaatsteTegel(nieuweTegel);
-		// TODO functie update landsdelen schrijven
-		updateLandsdelen(rij, kolom);
+//		Tegel nieuweTegel = getTegel(tegel, rij, kolom);
+//		kolomVector.add(kolom, nieuweTegel);
+//		setLaatstGeplaatsteTegel(nieuweTegel);
+//		// TODO functie update landsdelen schrijven
+//		updateLandsdelen(rij, kolom);
 		
 		return true;
 	}
@@ -153,13 +153,13 @@ public class Tafel {
 		return buren;
 	}
 
-	private Tegel getTegel(char[] tegel, int rij, int kolom) {
-		if (rij < 0 || rij >= veld.size() || kolom < 0) {
-			return null;
-		}
-		
-		Tegel[] buren = getBuren(rij, kolom);
-		return new Tegel(tegel, buren[0], buren[1], buren[2], buren[3]);
+	private Tegel getTegel(String tegel, int rij, int kolom) {
+//		if (rij < 0 || rij >= veld.size() || kolom < 0) {
+//			return null;
+//		}
+//		
+//		Tegel[] buren = getBuren(rij, kolom);
+//		return new Tegel(tegel, buren[0], buren[1], buren[2], buren[3]);
 	}
 
 	private ArrayList<Tegel> addRij(int rij) {
@@ -438,12 +438,12 @@ public class Tafel {
 		// oogpunt.reset();
 	}
 
-	private void setStartTegel(char[] startTegel) {
+	private void setStartTegel(String startTegel) {
 		veld = new ArrayList<ArrayList<Tegel>>();
 		veld.add(new ArrayList<Tegel>());
-//		Tegel startT = new Tegel(startTegel);
-//		veld.get(0).add(startT);
-//		setLaatstGeplaatsteTegel(startT);
+		Tegel startT = new Tegel(startTegel);
+		veld.get(0).add(startT);
+		setLaatstGeplaatsteTegel(startT);
 		this.startTegel = new Vector2D(0, 0);
 	}
 
@@ -464,7 +464,7 @@ public class Tafel {
 	}
 	
 	public Vector2D getBeginPositie() {
-		return startTegel;
+		return new Vector2D(-startTegel.getX(), -startTegel.getY());
 	}
 	
 	public int getHoogte() {
