@@ -1,23 +1,21 @@
 package actua;
-import java.util.Vector;
-
 
 public class Hard implements Strategy {
+	private TafelVerwerker tv;
 
-	public Hard() {
-		
+	public Hard(TafelVerwerker tv) {
+		this.tv = tv;
 	}
 
-	public Vector2D BerekenTegel (Vector<Vector<Tegel>> geplaatsteTegels, 
-									Vector<Tegel> stapel, Tegel tegel) {
-		return null;
+	@Override
+	public int berekenPlaatsPion(Pion p, Tegel t, Vector2D tegelCoord) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	public Vector2D BerekenPion(Vector<Vector<Tegel>> geplaatsteTegels,
-			Vector2D laatstGeplaatst) {
+	@Override
+	public Vector2D berekenPlaatsTegel(Tegel t) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
-

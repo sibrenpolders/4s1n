@@ -1,14 +1,17 @@
 package actua;
 
 public class AI extends Speler {
+	public final static short EASY = 1;
+	public final static short HARD = 2;
 	private short niveau;
+	private Strategy strategy;
 	private TafelVerwerker tafelVerwerker;
 
 	public AI(String naam, char kleur, short niveau, TafelVerwerker tv,
 			long score) {
 		super(naam, kleur, score);
-		this.niveau = niveau;
 		this.tafelVerwerker = tv;
+		setNiveau(niveau);
 	}
 
 	public AI(Speler speler, short niveau, TafelVerwerker tv) {
@@ -18,8 +21,8 @@ public class AI extends Speler {
 
 	public AI() {
 		super();
-		this.niveau = 0;
 		this.tafelVerwerker = null;
+		setNiveau((short) 0);
 	}
 
 	public short getNiveau() {
@@ -27,32 +30,29 @@ public class AI extends Speler {
 	}
 
 	public void setNiveau(short niveau) {
-		this.niveau = niveau;
+		switch (niveau) {
+		case EASY:
+			strategy = new Easy(tafelVerwerker);
+			this.niveau = niveau;
+			break;
+		case HARD:
+			strategy = new Hard(tafelVerwerker);
+			this.niveau = niveau;
+			break;
+		default:
+			this.niveau = 0;
+			strategy = null;
+		}
 	}
 
-	public Vector2D plaatsTegel(Tegel t) {		
-		int breedte = tafelVerwerker.getBreedte();
-		int hoogte = tafelVerwerker.getHoogte();
-		Vector2D coordsStartTegel = tafelVerwerker.getBeginPositie();
-		int xMin = coordsStartTegel.getX() - 1;
-		int yMin = coordsStartTegel.getY() - 1;
-		int xMax = xMin + breedte + 2;
-		int yMax = yMin + hoogte + 2;
-		
-		
-		for(int x = xMin; x <= xMax; ++x)
-			for(int y = yMin; y <= yMax; ++y)
-			{ 
-				Vector2D	temp = new Vector2D(x,y);			
-				if(tafelVerwerker.isTegelPlaatsingGeldig(t, new Vector2D(x,y)) {
-					int rij = startTegel.getX() + coord.getX();
-					int kolom = startTegel.getY() + coord.getY();
-				}
-			}
-)
+	private Vector2D berekenPlaatsTegel(Tegel t) {
+		return strategy.berekenPlaatsTegel(t);
 	}
 
-	public boolean plaatsPion(Pion p) {
-		return false;
+	private int berekenPlaatsPion(Pion p, Tegel t, Vector2D tegelCoord) {
+		if (this.isEigenaarVan(p))
+			return strategy.berekenPlaatsPion(p, t, tegelCoord);
+		else
+			return -1;
 	}
 }
