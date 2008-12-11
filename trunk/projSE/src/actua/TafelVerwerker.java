@@ -50,8 +50,16 @@ public class TafelVerwerker {
 	 * True indien de tegel geplaatst kon worden
 	 * False anders
 	 */
-	public boolean plaatstTegel(char[] tegel, Vector2D coord) {
+	public boolean plaatstTegel(Tegel tegel, Vector2D coord) {
 		return tafel.plaatsTegel(tegel, coord);
+	}
+	
+	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
+		return tafel.isTegelPlaatsingGeldig(tegel, coord);
+	}
+	
+	public boolean isPionPlaatsingGeldig(Pion pion, Vector2D tegelCoord, int pionCoord) {
+		return tafel.isPionPlaatsingGeldig(pion, tegelCoord, tegelCoord);
 	}
 	
 	/**
