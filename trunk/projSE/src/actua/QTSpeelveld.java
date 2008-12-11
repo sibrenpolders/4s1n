@@ -1,6 +1,7 @@
 package actua;
 
-import sun.security.action.GetLongAction;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
@@ -22,35 +23,22 @@ import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QWheelEvent;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.core.Qt;
 
 public class QTSpeelveld extends GSpeelveld {
-	private QGraphicsView speelveld;
-	
 	private class QtGraphicsView extends QGraphicsView{
-		QGraphicsScene scene;
-		public QtGraphicsView() {
+		public QtGraphicsView(QGraphicsScene parent) {
+			super(parent);
 			init();
 			setAcceptDrops(true);
-
 		}
 		
-		private void init() {
-			scene = new QGraphicsScene();
-			
-			QGridLayout layout = new QGridLayout();
-			layout.setSpacing(0);
-			setLayout(layout);
-			//speelveld.grabMouse();
-			setGeometry(0, 0, 720, 540);
-			setMaximumSize(new QSize(720, 540));
-			setMinimumSize(new QSize(720, 540));
-			
-			setScene(scene);
+		private void init() {			
 			setBackgroundBrush(new QBrush(new QPixmap(
 			"src/icons/background.xpm")));
-			resize(new QSize(1024, 800));
 			setCacheMode(new QGraphicsView.CacheMode(
 					QGraphicsView.CacheModeFlag.CacheBackground));
 			setViewportUpdateMode(
@@ -101,12 +89,14 @@ public class QTSpeelveld extends GSpeelveld {
 	            pixmap.readFrom(dataStream);
 	            offset.readFrom(dataStream);
 	                    
-	            QLabel newIcon = new QLabel();
+	            /*QLabel newIcon = new QLabel();
 	            newIcon.setPixmap(pixmap);
 	            newIcon.move(event.pos().subtract(offset));
 	           
 	            newIcon.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose);
-	            scene.addWidget(newIcon);
+	            scene.addWidget(newIcon);*/
+	            
+	            scene().addPixmap(pixmap.scaled(width()-5,height()-5));
 	            
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
@@ -118,7 +108,7 @@ public class QTSpeelveld extends GSpeelveld {
 	            event.ignore();
 	        }
 	    }
-
+	    
 	    protected void mousePressEvent(QMouseEvent event)
 	    {
 	    	System.out.println("bluka");
@@ -159,10 +149,54 @@ public class QTSpeelveld extends GSpeelveld {
 //	        }
 	    }
 	};	
+	private Vector<QtGraphicsView> speelveld;
+	private Camera camera;
+	private QWidget gridWidget;
+	private QGridLayout gridLayout;
 
 	public QTSpeelveld(Spel spel, OptieVerwerker opties) {
-		super();
-		setSpeelveld(new QtGraphicsView());
+		super(spel);
+		setSpeelveld(new Vector<QtGraphicsView>());
+		init();
+	}
+	
+	private void init() {
+		gridWidget = new QWidget();		
+		gridLayout = new QGridLayout(gridWidget);
+		gridLayout.setSpacing(0);
+		QGraphicsScene scene;
+		QtGraphicsView view;
+		
+		gridWidget.setGeometry(0, 0, 720, 540);
+		gridWidget.setMaximumSize(new QSize(720, 540));
+		gridWidget.setMinimumSize(new QSize(720, 540));
+		//gridWidget.resize(new QSize(1024, 800));
+
+		for (int i=0;i<6;i++){
+			for (int j=0;j<8;j++){
+				scene=new QGraphicsScene(gridLayout);
+				view=new QtGraphicsView(scene);
+				gridLayout.addWidget(view,i,j+1,1,1);
+			}
+		}
+		
+		//camera dizzle
+		camera = new Camera(new Vector3D(0,0,0),new Vector3D(1000,1000,10));
+		camera.setHuidigeVector(new Vector3D(0,0,0));
+		
+		QPushButton buttonUp = new QPushButton("^",gridWidget);
+		buttonUp.setGeometry(gridWidget.width()/2-18,0,35,25);
+		buttonUp.clicked.connect(this,"cameraUp()");
+		QPushButton buttonDown = new QPushButton("v",gridWidget);
+		buttonDown.setGeometry(gridWidget.width()/2-18,gridWidget.height()-26,35,25);
+		buttonDown.clicked.connect(this,"cameraDown()");
+		QPushButton buttonLeft = new QPushButton("<",gridWidget);
+		buttonLeft.setGeometry(0,gridWidget.height()/2-13,25,35);
+		buttonLeft.clicked.connect(this,"cameraLeft()");
+		QPushButton buttonRight = new QPushButton(">",gridWidget);
+		buttonRight.setGeometry(gridWidget.width()-26,gridWidget.height()/2-13,25,35);
+		buttonRight.clicked.connect(this,"cameraRight()");
+		//
 	}
 	
 	public void hide() {
@@ -173,11 +207,68 @@ public class QTSpeelveld extends GSpeelveld {
 
 	}
 
-	public QWidget getSpeelveld() {
+	public Vector<QtGraphicsView> getSpeelveld() {
 		return speelveld;
 	}
 
-	private void setSpeelveld(QGraphicsView speelveld) {
+	private void setSpeelveld(Vector<QtGraphicsView> speelveld) {
 		this.speelveld = speelveld;
+	}
+	public void voegTegelToeAanGrafischeLijst(Tegel tegel) {
+		gTegels.add(new QTTegel(tegel));
+	}
+	
+	protected void wheelEvent(QWheelEvent event) {
+    	int zoomFactor = -event.delta()/8/3;
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()+5,zoomFactor*camera.getHuidigeVector().getZ());
+    	
+    	if (camera.bewegingGeldig(beweging)) {
+    		camera.veranderStandpunt(beweging);
+    		System.out.println(zoomFactor);
+    	}
+    }
+    
+    private void cameraUp() {
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()+5,camera.getHuidigeVector().getZ());
+    	
+    	if (camera.bewegingGeldig(beweging)) {
+    		camera.veranderStandpunt(beweging);
+    		System.out.println("up");
+    	}
+    }
+    private void cameraDown() {
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()-5,camera.getHuidigeVector().getZ());
+    	
+    	if (camera.bewegingGeldig(beweging)) {
+    		camera.veranderStandpunt(beweging);
+    		System.out.println("down");
+    	}
+    }
+    private void cameraLeft() {
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX()-5,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
+    	
+    	if (camera.bewegingGeldig(beweging)) {
+    		camera.veranderStandpunt(beweging);
+    		System.out.println("left");
+    	}
+    }
+    private void cameraRight() {
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX()+5,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
+    	
+    	if (camera.bewegingGeldig(beweging)) {
+    		camera.veranderStandpunt(beweging);
+    		System.out.println("right");
+    	}
+    }
+    private void veranderZicht() {
+    	
+    }
+
+	public QWidget getGridWidget() {
+		return gridWidget;
+	}
+
+	public void setGridWidget(QWidget gridWidget) {
+		this.gridWidget = gridWidget;
 	}
 }
