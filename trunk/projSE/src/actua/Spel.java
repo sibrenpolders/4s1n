@@ -6,7 +6,9 @@ public class Spel {
 	private SpelerVerwerker spelerVerwerker;
 
 	public Spel() {
-		
+		tafelVerwerker = new TafelVerwerker();
+		bestandVerwerker = new BestandsVerwerker();
+		spelerVerwerker = new SpelerVerwerker();
 	}
 
 	public TafelVerwerker getTafelVerwerker () {
