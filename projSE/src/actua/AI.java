@@ -45,6 +45,10 @@ public class AI extends Speler {
 		}
 	}
 
+	public SpelBeurtResultaat doeZet() {
+		return null;
+	}
+
 	private Vector2D berekenPlaatsTegel(Tegel t) {
 		return strategy.berekenPlaatsTegel(t);
 	}
