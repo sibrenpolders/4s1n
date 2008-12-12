@@ -1,21 +1,49 @@
 package actua;
 
 public class Hard implements Strategy {
-	private TafelVerwerker tv;
+	private TafelVerwerker tafelVerwerker;
 
 	public Hard(TafelVerwerker tv) {
-		this.tv = tv;
+		this.tafelVerwerker = tv;
 	}
 
-	@Override
 	public int berekenPlaatsPion(Pion p, Tegel t, Vector2D tegelCoord) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (p.getGeplaatst() == false)
+			for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
+				if (tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, i))
+					return i;
+			}
+
+		return -1;
 	}
 
-	@Override
+	// indien mogelijk, wordt een plaats teruggegeven waar dan een pion kan
+	// geplaatst worden
 	public Vector2D berekenPlaatsTegel(Tegel t) {
-		// TODO Auto-generated method stub
-		return null;
+		int breedte = tafelVerwerker.getBreedte();
+		int hoogte = tafelVerwerker.getHoogte();
+		Vector2D coordsStartTegel = tafelVerwerker.getBeginPositie();
+		int xMin = coordsStartTegel.getX() - 1;
+		int yMin = coordsStartTegel.getY() - 1;
+		int xMax = xMin + breedte + 2;
+		int yMax = yMin + hoogte + 2;
+
+		Vector2D backup = null;
+		for (int x = xMin; x <= xMax; ++x)
+			for (int y = yMin; y <= yMax; ++y) {
+				Vector2D temp = new Vector2D(x, y);
+				if (tafelVerwerker.isTegelPlaatsingGeldig(t, temp)) {
+					backup = temp;
+					if (plaatsingPionMogelijk(t, temp))
+						return temp;
+				}
+			}
+
+		return backup;
 	}
+
+	private boolean plaatsingPionMogelijk(Tegel t, Vector2D plaats) {
+		return false;
+	}
+
 }
