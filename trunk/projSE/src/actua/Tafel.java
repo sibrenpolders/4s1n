@@ -33,6 +33,10 @@ public class Tafel {
 	public Vector2D getStartTegel() {
 		return startTegel;
 	}
+	
+	public boolean cameraBewegingGeldig(Vector3D nieuwePositie) {
+		return getOogpunt().bewegingGeldig(nieuwePositie);
+	}
 
 	public void beweegCamera(Vector3D nieuwePositie) {
 		getOogpunt().veranderStandpunt(nieuwePositie);
