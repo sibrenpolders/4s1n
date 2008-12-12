@@ -4,11 +4,13 @@ public abstract class GMenubalk {
 	protected GHelp gHelp;
 	protected GOptie gOptie;
 	protected GInitSpel gInitSpel;
+	protected GWindow gParent;
 
 	public GMenubalk() {
 		gHelp = null;
 		gOptie = null;
 		gInitSpel = null;
+	//	gParent = parent;
 	}
 
 	public abstract void show();

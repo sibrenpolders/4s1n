@@ -62,10 +62,25 @@ public class QTSpelerInfo extends GSpelerInfo {
 		QPixmap pixmap = new QPixmap(32,32); // moet altijd een h en w bij
 
 		switch (getSpeler().getKleur()) {
-		default:
-			pixmap.fill(new QColor(255, 0, 0));
+		case 'r':
+			pixmap.fill(new QColor(255,0,0));
+			break;
+		case 'b':
+			pixmap.fill(new QColor(0,0,255));
+			break;
+		case 'g':
+			pixmap.fill(new QColor(255,255,0));
+			break;
+		case 'w':
+			pixmap.fill(new QColor(255,255,255));
+			break;
+		case 'o':
+			pixmap.fill(new QColor(255,160,0));
+			break;
+		case 'x':
+			pixmap.fill(new QColor(236, 233, 216));
+			break;
 		}
-
 		return pixmap;
 	}
 
