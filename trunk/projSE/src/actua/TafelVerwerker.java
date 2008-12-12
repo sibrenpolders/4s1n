@@ -116,4 +116,13 @@ public class TafelVerwerker {
 	public Tegel getLaatstGeplaatsteTegel() {
 		return tafel.getLaatstGeplaatsteTegel();
 	}
+	
+	public boolean verplaatsCamera(Vector3D nieuwePositie) {
+		if (tafel.cameraBewegingGeldig(nieuwePositie)) {
+			tafel.beweegCamera(nieuwePositie);
+			return true;
+		}
+		else
+			return false;
+	}
 }
