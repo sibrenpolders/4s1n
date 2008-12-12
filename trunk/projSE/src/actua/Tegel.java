@@ -191,6 +191,17 @@ public class Tegel {
 		}
 	}
 
+	public void updateLandsdeel(Landsdeel changeTo, int pos, boolean[] changed) {
+		Landsdeel changeFrom = bepaalLandsdeel(pos);
+		
+		for (int i = 0; i < MAX_GROOTTE; ++i) {
+			if (landsdelen[i] == changeFrom) {
+				landsdelen[i] = changeTo;
+				changed[i] = true;
+			}
+		}
+	}
+	
 	/**
 	 * Deze functie zal elk voorkomen van huidigLd vervangen door nieuwLd.
 	 * 

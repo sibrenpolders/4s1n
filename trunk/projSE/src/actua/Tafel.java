@@ -33,15 +33,15 @@ public class Tafel {
 	public Vector2D getStartTegel() {
 		return startTegel;
 	}
-	
-	public boolean cameraBewegingGeldig(Vector3D nieuwePositie) {
-		return getOogpunt().bewegingGeldig(nieuwePositie);
-	}
 
 	public void beweegCamera(Vector3D nieuwePositie) {
 		getOogpunt().veranderStandpunt(nieuwePositie);
 	}
 
+	public boolean cameraBewegingGeldig(Vector3D nieuwePositie) {
+		return getOogpunt().bewegingGeldig(nieuwePositie);
+	}
+	
 	/**
 	 * Zal een tegel op het speelveld plaatsen op de coördinaten gegeven door coord.
 	 * @param tegel
@@ -103,33 +103,27 @@ public class Tafel {
 	}
 
 //	private void updateLandsdelen(int rij, int kolom) {
-//		if ( rij < 0 || rij >= veld.size() || kolom < 0 || kolom >= veld.get(rij).size()) {
+//		if ( rij < 0 || rij >= veld.size() || kolom < 0 || 
+//				kolom >= veld.get(rij).size()) {
 //			return;
 //		}
 //		
 //		Tegel[] buren = getBuren(rij, kolom);
-//		Tegel nieuweTegel = bepaalTegel(new Vector2D(rij - startTegel.getX(), kolom - startTegel.getY()));
-//				
-//		// noordbuur updaten
+//		Tegel nieuweTegel = bepaalTegel(new Vector2D(rij - startTegel.getX(), 
+//				kolom - startTegel.getY()));
+//		boolean[] changed = new boolean[13];
+//		
 //		if (buren[0] != null) {
-//			nieuweTegel.updateLandsdeel(Tegel.NOORD, buren[0]);
+//			nieuweTegel.updateLandsdeel(
+//					buren[0].bepaalLandsdeel(Tegel.ZUID_WEST), Tegel.NOORD_WEST, 
+//					changed);
 //		}
-//
-//		// oostbuur updaten
-//		if (buren[1] != null && 
-//				nieuweTegel.bepaalLandsdeel(Tegel.WEST_NOORD) != nieuweTegel.bepaalLandsdeel(Tegel.ZUID_OOST)) {
-//			buren[1].updateLandsdeel(Tegel.WEST, nieuweTegel);
-//			updateLandsdelen(rij, kolom+1);
-//		}
-//		// zuidbuur updaten
-//		if (buren[2] != null) {
-//			buren[2].updateLandsdeel(Tegel.NOORD, nieuweTegel);
-//			updateLandsdelen(rij+1, kolom);
-//		}
-//		// westbuur updaten
-//		if (buren[3] != null) {
-//			buren[3].updateLandsdeel(Tegel.OOST, nieuweTegel);
-//			updateLandsdelen(rij, kolom-1);
+//		
+//		
+//			if (!changed[ZUID]) {
+//				nieuweTegel.updateLandsdeel(buren[0].bepaalLandsdeel(ZUID), 
+//						Tegel.NOORD, changed);
+//			} 
 //		}
 //	}
 
@@ -362,10 +356,91 @@ public class Tafel {
 
 	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
 			int pionCoord) {
-		if (pionCoord < 0 || pionCoord >= Tegel.MAX_GROOTTE)
+		if (pionCoord < 0 || pionCoord >= Tegel.MAX_GROOTTE || 
+				tegel.isPionGeplaatst(pionCoord) || 
+				tegel == laatstGeplaatsteTegel) {
 			return false;
+		}
+		
+		int rij = tegelCoord.getX() - startTegel.getX();
+		int kolom = tegelCoord.getY() - startTegel.getY();
+		
+		Tegel[] buren = getBuren(rij, kolom);
+		char matchLandsdeel = tegel.bepaalLandsdeel(pionCoord).getType();
+		
+		boolean pionPlaatsingGeldig = false;
+		
+		if (buren[0] != null) {
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(NOORD, 
+					matchLandsdeel, buren[0], tegelCoord);
+		} else if (buren[1] != null && pionPlaatsingGeldig) {
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(OOST, 
+					matchLandsdeel, buren[1], tegelCoord);
+		} else if (buren[2] != null && pionPlaatsingGeldig) {
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(ZUID, 
+					matchLandsdeel, buren[2], tegelCoord);
+		} else if (buren[3] != null && pionPlaatsingGeldig) {
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(WEST, 
+					matchLandsdeel, buren[3], tegelCoord);
+		}
+		
+		return pionPlaatsingGeldig;
+	}
 
-		return tegel.isPionGeplaatst(pionCoord);
+	private boolean isPionPlaatsingGeldig(int windrichting, char matchLandsdeel,
+			Tegel tegel, Vector2D tegelCoord) {
+		boolean pionPlaatsingGeldig = true;
+
+		switch(windrichting) {
+		case NOORD:
+			pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.ZUID_WEST,
+					Tegel.ZUID, Tegel.ZUID_OOST);
+			break;
+		case OOST:
+			pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.WEST_NOORD,
+					Tegel.WEST, Tegel.WEST_ZUID);
+			break;
+		case ZUID:
+			pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.NOORD_OOST,
+					Tegel.NOORD, Tegel.NOORD_WEST);
+			break;
+		case WEST:
+			pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.OOST_ZUID,
+					Tegel.OOST, Tegel.OOST_NOORD);
+			break;
+		}
+		
+		return pionPlaatsingGeldig;		
+	}
+
+	private boolean pionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
+			char matchLandsdeel, int windrichting, int windrichting2, 
+			int windrichting3) {
+		boolean pionPlaatsingGeldig = true;
+		Landsdeel vorigeLd = null;
+		Landsdeel huidigeLd;
+		huidigeLd = tegel.bepaalLandsdeel(windrichting);
+		
+		if (huidigeLd.getType() == matchLandsdeel) {
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(tegel, tegelCoord,
+					windrichting);
+		}
+		
+		vorigeLd = huidigeLd;
+		huidigeLd = tegel.bepaalLandsdeel(windrichting2);
+		if (vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(tegel, tegelCoord,
+					windrichting2);
+		}
+		
+		vorigeLd = huidigeLd;
+		huidigeLd = tegel.bepaalLandsdeel(windrichting3);
+		if (vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(tegel, tegelCoord,
+					windrichting3);
+		}
+		
+		return pionPlaatsingGeldig;
 	}
 
 	// TODO Moeten hier niet de coordinaten weer meegegeven worden?
