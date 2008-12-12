@@ -1,6 +1,7 @@
 package actua;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 public class TegelFabriek {
 	private static final String TEGELS_BESTAND = "src/xml/Tegels.xml";
@@ -25,7 +26,7 @@ public class TegelFabriek {
 	// TODO random functie belijken
 	public ArrayDeque<Tegel> maakTegelDeque(int aantal) {
 		TegelFabriekBestandLezer tfbl = new TegelFabriekBestandLezer(tegelsBestand);
-		ArrayDeque<Tegel> stapel = new ArrayDeque<Tegel>();
+		ArrayList<Tegel> stapel = new ArrayList<Tegel>();
 		
 		int aantalVerschillendeTegels = tfbl.getAantalTegels();
 		int aantalTegelsTeMaken = aantal;
@@ -49,13 +50,26 @@ public class TegelFabriek {
 
 		voegTegelsToe(stapel, i, aantalTegelsTeMaken, tfbl);
 		
-		return stapel;
+		ArrayDeque<Tegel> queue = shakeNotStir(stapel);
+		return queue;
 	}
 
-	private void voegTegelsToe(ArrayDeque<Tegel> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
+	private ArrayDeque<Tegel> shakeNotStir(ArrayList<Tegel> stapel) {
+		ArrayDeque<Tegel> queue = new ArrayDeque<Tegel>();
+
+		int next;
+		for (int i = 0; i < stapel.size(); ++i) {
+			next = (int) (Math.floor(Math.random()*stapel.size()));
+			queue.push(stapel.get(next));
+		}
+		
+		return queue;
+	}
+
+	private void voegTegelsToe(ArrayList<Tegel> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
 		String[] tegelStrings = tfbl.getTegelStrings(tegelNummer);
 		Tegel tegel = new Tegel(tegelStrings[0], tegelStrings[1]);
-		stapel.push(tegel);
+		stapel.add(tegel);
 
 		for (int i = 1; i < aantalTegels; ++i) {
 			stapel.add(new Tegel(tegel.getTegelPresentatie(), 
