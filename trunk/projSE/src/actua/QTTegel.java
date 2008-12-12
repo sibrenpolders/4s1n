@@ -10,6 +10,11 @@ public class QTTegel extends GTegel {
 	public QTTegel(Tegel tegel) {
 		super(tegel);
 		pixmap = new QPixmap(90,90);
+		kiesAfbeelding();
+	}
+	
+	public Tegel getTegel(){
+		return super.getTegel();
 	}
 
 	public QPixmap getPixmap() {
