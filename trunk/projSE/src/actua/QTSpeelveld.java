@@ -275,6 +275,7 @@ public class QTSpeelveld extends GSpeelveld {
     		veranderZicht('r');
     }
     
+    //nog niet klaar
     private void veranderZicht(char richting) {
     	Vector2D oldLBH,newLBH=null;
     	int offsetX = getSpel().getTafelVerwerker().getStartTegelPos().getX();
