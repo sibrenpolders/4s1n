@@ -6,7 +6,7 @@ public class TafelVerwerker {
 	private static final int AANTAL_TEGELS = 72;
 	private ArrayDeque<Tegel> stapel;
 	private TegelFabriek tfb;
-	public Tafel tafel;
+	private Tafel tafel;
 
 	public TafelVerwerker() {
 		tfb = new TegelFabriek();
@@ -107,5 +107,13 @@ public class TafelVerwerker {
 	
 	public int aantalTegels(){
 		return stapel.size();
+	}
+	
+	public Camera getCamera() {
+		return tafel.getOogpunt();
+	}
+	
+	public Tegel getLaatstGeplaatsteTegel() {
+		return tafel.getLaatstGeplaatsteTegel();
 	}
 }
