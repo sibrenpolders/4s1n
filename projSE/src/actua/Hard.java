@@ -43,7 +43,11 @@ public class Hard implements Strategy {
 	}
 
 	private boolean plaatsingPionMogelijk(Tegel t, Vector2D plaats) {
+		for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
+			if (tafelVerwerker.plaatsingPionMogelijk(t, plaats, i))
+				return true;
+		}
+
 		return false;
 	}
-
 }
