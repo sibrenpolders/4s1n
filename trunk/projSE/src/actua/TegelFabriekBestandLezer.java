@@ -2,15 +2,13 @@ package actua;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 public class TegelFabriekBestandLezer {
-	private static final int LINKS = 0;
-	private static final int MIDDEN = 1;
-	private static final int RECHTS = 2;
 	private static final String STAD = "stad";
 	private static final String WEI = "wei";
 	private static final String WEG = "weg";
@@ -44,111 +42,95 @@ public class TegelFabriekBestandLezer {
 		return Integer.parseInt(aantalElement.getTextContent());
 	}
 	
-	public char[] getLandsdeelMatrix(int tegelNummer) {
-		if (tegelNummer < 0 || tegelNummer >= tegels.getLength()) {
-			return null;
-		}
-		
-		return maakLandsdeelMatrix(tegels.item(tegelNummer));
+	public String[] getTegelStrings(int tegelNummer) {		
+		return maakTegelStrings(tegels.item(tegelNummer));
 	}
-
-	private char[] maakLandsdeelMatrix(Node tegelElement) {
-		Node noord = null, oost = null, zuid = null, west = null, midden = null;
+	
+	private String[] maakTegelStrings(Node tegelElement) {
 		NodeList children = tegelElement.getChildNodes();
-		Node tmp;
+		String[] NW, N, NO, ON, O, OZ, ZO, Z, ZW, WZ, W, WN, M;
+		NW = N = NO = ON = O = OZ = ZO = Z = ZW = WZ = W = WN = M = null;
 		String nodeName;
+		Node tmp;
 		
 		for(int i = 0; i < children.getLength(); ++i) {
 			tmp = children.item(i);
 			nodeName = tmp.getLocalName();
 			
-			if (null != nodeName && nodeName.equals("noord")) {
-				noord = tmp;
-			} else if (null != nodeName && nodeName.equals("oost")) {
-				oost = tmp;
-			} else if (null != nodeName && nodeName.equals("zuid")) {
-				zuid = tmp;
-			} else if (null != nodeName && nodeName.equals("west")) {
-				west = tmp;
-			} else if (null != nodeName && nodeName.equals("midden")) {
-				midden = tmp;
-			}
-		}
-		
-		if (noord == null || oost == null || zuid == null || west == null || midden == null) {
-			return null;			
-		}
-		
-		return vulLandsdelenIn(noord, oost, zuid, west, midden);
-	}
-	
-	private char[] vulLandsdelenIn(Node noord, Node oost, Node zuid, Node west, Node midden) {
-		char[] landsdelen = new char[13];
-		
-		// de landsdelen worden met de wijzer mee ingelezen (linksboven beginnen)
-		landsdelen[0]  = getLandsdeel(west, RECHTS);
-		landsdelen[1]  = getLandsdeel(noord, LINKS);
-		landsdelen[2]  = getLandsdeel(noord, MIDDEN);
-		landsdelen[3]  = getLandsdeel(noord, RECHTS);
-		landsdelen[4]  = getLandsdeel(oost, RECHTS);
-		landsdelen[7]  = getLandsdeel(oost, MIDDEN);
-		landsdelen[12] = getLandsdeel(oost, LINKS);
-		landsdelen[11] = getLandsdeel(zuid, RECHTS);
-		landsdelen[10] = getLandsdeel(zuid, MIDDEN);
-		landsdelen[9]  = getLandsdeel(zuid, LINKS);
-		landsdelen[8]  = getLandsdeel(west, LINKS);
-		landsdelen[5]  = getLandsdeel(west, MIDDEN);
-		
-		// midden invullen
-		landsdelen[6] = stringNaarKarakter(midden.getTextContent());
-		
-		return landsdelen;
-	}
-
-	private char stringNaarKarakter(String nodeValue) {
-		char landsdeelKarakter = 0;
-		
-		if (nodeValue == null) {
-			;
-		} else if (nodeValue.equals(STAD)) {
-			landsdeelKarakter = 's';
-		} else if (nodeValue.equals(WEI)) {
-			landsdeelKarakter = 'w';
-		} else if (nodeValue.equals(WEG)) {
-			landsdeelKarakter = 'g';
-		} else if (nodeValue.equals(KLOOSTER)) {
-			landsdeelKarakter = 'k';
-		} else if (nodeValue.equals(KRUISPUNT)) {
-			landsdeelKarakter = 'r';
-		}
-		
-		return landsdeelKarakter;
-	}
-
-	private char getLandsdeel(Node windrichting, int vaknummer) {
-		char landsdeel = 0;
-		NodeList children = windrichting.getChildNodes();
-		Node tmp;
-		String nodeName;
-		
-		boolean landsdeelGevonden = false;
-		
-		for (int i = 0; !landsdeelGevonden && i < children.getLength(); ++i) {
-			tmp = children.item(i);
-			nodeName = tmp.getLocalName();
-			
-			if (vaknummer == LINKS && null != nodeName && nodeName.equals("links")) {
-				landsdeelGevonden = true;
-				landsdeel = stringNaarKarakter(tmp.getTextContent());
-			} else if (vaknummer == MIDDEN && null != nodeName && nodeName.equals("midden")) {
-				landsdeelGevonden = true;
-				landsdeel = stringNaarKarakter(tmp.getTextContent());
-			} else if (vaknummer == RECHTS && null != nodeName && nodeName.equals("rechts")) {
-				landsdeelGevonden = true;
-				landsdeel = stringNaarKarakter(tmp.getTextContent());
+			if (null != nodeName && nodeName.equals("noordWest")) {
+				NW = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("noord")) {
+				N = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("noordOost")) {
+				NO = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("oostNoord")) {
+				ON = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("oost")) {
+				O = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("oostZuid")) {
+				OZ = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("zuidOost")) {
+				ZO = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("zuid")) {
+				Z = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("zuidWest")) {
+				ZW = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("westZuid")) {
+				WZ = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("west")) {
+				W = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("westNoord")) {
+				WN = getString(tmp);
+			} else if( null != nodeName && nodeName.equals("midden")) {
+				M = getString(tmp);
 			}  
 		}
 		
-		return landsdeel;
+		String[] tegelStrings = new String[2];
+		if (NW != null && N != null && NO != null && ON != null && O != null &&  
+			OZ != null && ZO != null && Z != null && ZW != null && WZ != null &&  
+			W != null && WN != null && M != null)
+		tegelStrings[0] = WN[0]+NW[0]+N[0]+NO[0]+ON[0]+W[0]+M[0]+O[0]+WZ[0]+ZW[0]+Z[0]+ZO[0]+OZ[0]; 
+		tegelStrings[1] = WN[1]+NW[1]+N[1]+NO[1]+ON[1]+W[1]+M[1]+O[1]+WZ[1]+ZW[1]+Z[1]+ZO[1]+OZ[0];
+		
+		return tegelStrings;
 	}
+	
+	private String[] getString(Node tmp) {
+		NodeList children = tmp.getChildNodes();
+		String[] string = new String[2];
+		Node tmp2;
+		String type = null;
+		
+		for (int i = 0; i < children.getLength(); ++i) {
+			tmp2 = children.item(i);
+			
+			if (tmp2.getLocalName().equals(STAD)) {
+				string[0] = "s";
+				type = STAD;
+			} else if (tmp2.getLocalName().equals(WEI)) {
+				string[0] = "w";
+				type = WEI;
+			} else if (tmp2.getLocalName().equals(WEG)) {
+				string[0] = "g";
+				type = WEG;
+			} else if (tmp2.getLocalName().equals(KLOOSTER)) {
+				string[0] = "k";
+				type = KLOOSTER;
+			}  else if (tmp2.getLocalName().equals(KRUISPUNT)) {
+				string[0] = "r";
+				type = KRUISPUNT;
+			}
+			
+			NamedNodeMap attr = tmp2.getAttributes();
+			for (int j = 0; j < attr.getLength(); ++j) {
+				if (attr.item(i) != null && 
+						attr.item(i).getNodeName().equals("id")) {
+					string[1] = attr.item(i).getNodeValue();
+				}
+			}
+		}
+		
+		return string;
+	}	
 }

@@ -17,8 +17,7 @@ public class JunitTegelTest extends TestCase {
 	}
 
 	public void testBepaalLandsdeel() {
-		char[] landsdelen = maakTestLandsDelen();
-		Tegel tegel = new Tegel(landsdelen);
+		Tegel tegel = new Tegel("wsssswwswwwws", "0111100100001");
 		
 		assertEquals("getLandsDeel 0", Landsdeel.WEI, tegel.bepaalLandsdeel(0).getType());
 		assertEquals("getLandsDeel 1", Landsdeel.STAD, tegel.bepaalLandsdeel(1).getType());
@@ -36,23 +35,23 @@ public class JunitTegelTest extends TestCase {
 	}
 
 	public void testPlaatsPion() {
-		char[] landsdelen = maakTestLandsDelen();
-		Tegel tegel = new Tegel(landsdelen);
+//		Tegel tegel = new Tegel("wsssswwswwwws");
+		Tegel tegel = new Tegel("wssswgggwwwww", "0111022233333");
 		Landsdeel landsDeel;
 		
 		// een eerste pion plaatsen op een stadsdeel
-		assertTrue("Plaatsting eerste pion", tegel.plaatsPion(1));
+		assertTrue("Plaatsting eerste pion", tegel.plaatsPion(0, new Pion()));
 		
 		// een tweede pion plaatsten op hetzelfde stadsdeel?
-		landsDeel = tegel.bepaalLandsdeel(12);
+		landsDeel = tegel.bepaalLandsdeel(4);
 		assertTrue("Staat er al een pion?", landsDeel.isPionGeplaatst());
 		
 		// een tweede pion plaatsen op het andere landsdeel?
-		landsDeel = tegel.bepaalLandsdeel(0);
+		landsDeel = tegel.bepaalLandsdeel(6);
 		assertFalse("Staat er al een pion?", landsDeel.isPionGeplaatst());
 		
 		// mag blijkbaar wel
-		assertTrue("Plaatsting tweede pion", tegel.plaatsPion(0));		
+		assertTrue("Plaatsting tweede pion", tegel.plaatsPion(6, new Pion()));		
 		// staat hij er wel?
 		assertTrue("Staat er al een pion?", landsDeel.isPionGeplaatst());
 	}
@@ -88,14 +87,5 @@ public class JunitTegelTest extends TestCase {
 		for (int i = 0; i < 4; ++i) {
 			tegel.draaiTegel(true);
 		}
-	}
-		
-	private char[] maakTestLandsDelen() {
-		char[] landsdelen = new char[13];
-		
-		landsdelen[1] = landsdelen[2] = landsdelen[3] = landsdelen[4] = landsdelen[7] = landsdelen[12] = Landsdeel.STAD;
-		landsdelen[0] = landsdelen[5] = landsdelen[6] = landsdelen[8] = landsdelen[9] = landsdelen[10] = landsdelen[11] = Landsdeel.WEI;
-		
-		return landsdelen;
 	}
 }

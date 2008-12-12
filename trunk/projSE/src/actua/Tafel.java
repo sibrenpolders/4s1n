@@ -39,6 +39,7 @@ public class Tafel {
 	}
 
 	/**
+	 * Zal een tegel op het speelveld plaatsen op de coördinaten gegeven door coord.
 	 * @param tegel
 	 *            De tegel die op de tafel gelegd moet worden.
 	 * @param coord
@@ -88,10 +89,9 @@ public class Tafel {
 			kolomVector.remove(kolom);
 		}
 
-		System.err.println("Add: (" + rij + ", " + kolom + ")");
-		Tegel nieuweTegel = getTegel(tegel, rij, kolom);
-		kolomVector.add(kolom, nieuweTegel);
-		setLaatstGeplaatsteTegel(nieuweTegel);
+
+		kolomVector.add(kolom, tegel);
+		setLaatstGeplaatsteTegel(tegel);
 //		// TODO functie update landsdelen schrijven
 		updateLandsdelen(rij, kolom);
 		
@@ -105,15 +105,15 @@ public class Tafel {
 		
 		Tegel[] buren = getBuren(rij, kolom);
 		Tegel nieuweTegel = bepaalTegel(new Vector2D(rij - startTegel.getX(), kolom - startTegel.getY()));
-		
+				
 		// noordbuur updaten
 		if (buren[0] != null) {
-			buren[0].updateLandsdeel(Tegel.ZUID, nieuweTegel);
-			updateLandsdelen(rij-1, kolom);
+			nieuweTegel.updateLandsdeel(Tegel.NOORD, buren[0]);
 		}
 
 		// oostbuur updaten
-		if (buren[1] != null) {
+		if (buren[1] != null && 
+				nieuweTegel.bepaalLandsdeel(Tegel.WEST_NOORD) != nieuweTegel.bepaalLandsdeel(Tegel.ZUID_OOST)) {
 			buren[1].updateLandsdeel(Tegel.WEST, nieuweTegel);
 			updateLandsdelen(rij, kolom+1);
 		}
@@ -152,16 +152,6 @@ public class Tafel {
 		buren[3] = bepaalTegel(coord);
 			
 		return buren;
-	}
-
-	private Tegel getTegel(Tegel tegel, int rij, int kolom) {
-		if (rij < 0 || rij >= veld.size() || kolom < 0) {
-			return null;
-		}
-		
-		Tegel[] buren = getBuren(rij, kolom);
-		tegel.vulLandsdelen(buren[0], buren[1], buren[2], buren[3]);
-		return tegel;
 	}
 
 	private ArrayList<Tegel> addRij(int rij) {

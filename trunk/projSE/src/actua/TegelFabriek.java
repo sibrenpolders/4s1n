@@ -1,6 +1,6 @@
 package actua;
 
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 
 public class TegelFabriek {
 	private static final String TEGELS_BESTAND = "src/xml/Tegels.xml";
@@ -15,17 +15,17 @@ public class TegelFabriek {
 	}
 	
 	/**
-	 * Deze functie zal een ArrayList van char[] aanmaken.
+	 * Deze functie zal een Dequeue van Tegels aanmaken.
 	 * Dit is de stapel tegels waarmee het spel gespeeld wordt. 
 	 * @param aantal
 	 * 		aantal Tegel instanties die de vector moet bevatten
 	 * @return
-	 * 		Een stapel van tegel
+	 * 		De tegelStapel
 	 */
 	// TODO random functie belijken
-	public ArrayList<char[]> maakTegelStack(int aantal) {
+	public ArrayDeque<Tegel> maakTegelDeque(int aantal) {
 		TegelFabriekBestandLezer tfbl = new TegelFabriekBestandLezer(tegelsBestand);
-		ArrayList<char[]> stapel = new ArrayList<char[]>();
+		ArrayDeque<Tegel> stapel = new ArrayDeque<Tegel>();
 		
 		int aantalVerschillendeTegels = tfbl.getAantalTegels();
 		int aantalTegelsTeMaken = aantal;
@@ -52,12 +52,14 @@ public class TegelFabriek {
 		return stapel;
 	}
 
-	private void voegTegelsToe(ArrayList<char[]> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
-		char[] tegel = tfbl.getLandsdeelMatrix(tegelNummer);		
-		stapel.add(tegel);
+	private void voegTegelsToe(ArrayDeque<Tegel> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
+		String[] tegelStrings = tfbl.getTegelStrings(tegelNummer);
+		Tegel tegel = new Tegel(tegelStrings[0], tegelStrings[1]);
+		stapel.push(tegel);
 
 		for (int i = 1; i < aantalTegels; ++i) {
-			stapel.add(tegel.clone());
+			stapel.add(new Tegel(tegel.getTegelPresentatie(), 
+					tegel.getIdPresentatie()));
 		}
 	}	
 }

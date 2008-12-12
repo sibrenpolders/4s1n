@@ -1,6 +1,9 @@
 package testcases;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+
+import actua.Tegel;
 import actua.TegelFabriek;
 import junit.framework.TestCase;
 
@@ -20,7 +23,7 @@ public class TegelFabriekTest extends TestCase {
 	public void testMaakTegels() {
 		TegelFabriek tf = new TegelFabriek();
 		
-		ArrayList<char[]> stapel = tf.maakTegelStack(72);
+		ArrayDeque<Tegel> stapel = tf.maakTegelDeque(72);
 		assertEquals(72, stapel.size());
 	}
 
