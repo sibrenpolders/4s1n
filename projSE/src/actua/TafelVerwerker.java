@@ -5,16 +5,17 @@ import java.util.ArrayDeque;
 public class TafelVerwerker {
 	private static final int AANTAL_TEGELS = 72;
 	private ArrayDeque<Tegel> stapel;
+	private TegelFabriek tfb;
 	public Tafel tafel;
 
 	public TafelVerwerker() {
-		TegelFabriek tfb = new TegelFabriek();
+		tfb = new TegelFabriek();
 		stapel = tfb.maakTegelDeque(AANTAL_TEGELS);
 		tafel = new Tafel();
 	}
 
 	public TafelVerwerker(int aantalTegels) {
-		TegelFabriek tfb = new TegelFabriek();
+		tfb = new TegelFabriek();
 		stapel = tfb.maakTegelDeque(aantalTegels);
 		tafel = new Tafel();
 	}
@@ -23,14 +24,19 @@ public class TafelVerwerker {
 
 	}
 
+	// TODO kan iets anders zijn
 	public Tegel vraagNieuweTegel() {
-		return null;
+		return stapel.getFirst();
 	}
 
 	public Tegel neemTegelVanStapel() {
-		return null;
+		return stapel.getFirst();
 	}
-
+	
+	public void legTerug(Tegel tegel){
+		stapel.addLast(tegel);
+	}
+	
 	public void verwerkTegel() {
 
 	}
@@ -94,6 +100,12 @@ public class TafelVerwerker {
 	}
 	
 	public void vulStapel(int aantal){
+		tfb = new TegelFabriek();
 		
+		stapel = tfb.maakTegelDeque(aantal);
+	}
+	
+	public int aantalTegels(){
+		return stapel.size();
 	}
 }
