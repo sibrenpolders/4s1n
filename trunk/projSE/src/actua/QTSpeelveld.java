@@ -156,7 +156,6 @@ public class QTSpeelveld extends GSpeelveld {
 //	        }
 	    }
 	};	
-	private Camera camera;
 	private QWidget gridWidget;
 	private QGridLayout gridLayout;
 
@@ -181,14 +180,15 @@ public class QTSpeelveld extends GSpeelveld {
 			for (int j=0;j<8;j++){
 				scene=new QGraphicsScene(gridLayout);
 				view=new QtGraphicsView(scene,new Vector2D(i,j));
-				gridLayout.addWidget(view,i,j+1,1,1);
+				gridLayout.addWidget(view,i,j,1,1);
 			}
 		}
 		
 		//camera dizzle
-		camera = new Camera(new Vector3D(0,0,0),new Vector3D(1000,1000,10));
-		camera.setHuidigeVector(new Vector3D(0,0,0));
-		camera.setLinkerBovenHoek(new Vector2D(-5,-5));
+		getSpel().getTafelVerwerker().getCamera().setMinVector(new Vector3D(0,0,0));
+		getSpel().getTafelVerwerker().getCamera().setMaxVector(new Vector3D(1000,1000,10));
+		getSpel().getTafelVerwerker().getCamera().setHuidigeVector(new Vector3D(0,0,0));
+		getSpel().getTafelVerwerker().getCamera().setLinkerBovenHoek(new Vector2D(-5,-5));
 		
 		QPushButton buttonUp = new QPushButton("^",gridWidget);
 		buttonUp.setGeometry(gridWidget.width()/2-18,0,35,25);
@@ -215,8 +215,17 @@ public class QTSpeelveld extends GSpeelveld {
 	
 	public void voegTegelToe(Vector2D gridCoord) {
 		Tegel tegel = getSpel().getTafelVerwerker().neemTegelVanStapel();
-		Vector2D coord = new Vector2D(camera.getLinkerBovenHoek().getX()+gridCoord.getX(),camera.getLinkerBovenHoek().getY()+gridCoord.getY());
-		System.out.println(coord.getX()+" "+coord.getY());
+		Vector2D coord = new Vector2D(getSpel().getTafelVerwerker().getCamera().getLinkerBovenHoek().getX()+gridCoord.getX(),getSpel().getTafelVerwerker().getCamera().getLinkerBovenHoek().getY()+gridCoord.getY());
+		
+//		QGraphicsScene scene;
+//		QtGraphicsView view;
+//		
+//		if (gridCoord.getX()==0 || gridCoord.getX()==5)
+//			for (int j=0;j<8;j++) {
+//				scene=new QGraphicsScene(gridLayout);
+//				view=new QtGraphicsView(scene,new Vector2D(gridCoord.getX()+1,j));
+//				gridLayout.addWidget(view,gridCoord.getX()+1,j,1,1);
+//			}
 		
 		if (getSpel().getTafelVerwerker().plaatsTegel(tegel,coord))
 			voegTegelToeAanGrafischeLijst(tegel);
@@ -228,58 +237,51 @@ public class QTSpeelveld extends GSpeelveld {
 	
 	protected void wheelEvent(QWheelEvent event) {
     	int zoomFactor = -event.delta()/8/15;
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY(),zoomFactor*camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),zoomFactor*getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
-    	if (camera.bewegingGeldig(beweging)) {
-    		camera.veranderStandpunt(beweging);
+    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
+    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
     		System.out.println(zoomFactor);
     	}
     }
     
     private void cameraUp() {
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()+1,camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	QGraphicsScene scene;
     	QtGraphicsView view;
     	
-    	if (camera.bewegingGeldig(beweging)) {
-    		camera.veranderStandpunt(beweging);
-    		
-    		for (int i=0;i<8;i++) {
-    			gridLayout.removeItem(gridLayout.itemAtPosition(5, i));
-    			scene=new QGraphicsScene(gridLayout);
-				view=new QtGraphicsView(scene,new Vector2D(0,i));
-				gridLayout.addWidget(view,0,i+1,1,1);
-    		}
+    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
+    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
+    		veranderZicht('u');
     	}
     }
     private void cameraDown() {
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()-1,camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
-    	if (camera.bewegingGeldig(beweging)) {
-    		camera.veranderStandpunt(beweging);
-    		System.out.println("down");
+    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
+    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
+    		veranderZicht('d');
     	}
     }
     private void cameraLeft() {
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX()-1,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
-    	if (camera.bewegingGeldig(beweging)) {
-    		camera.veranderStandpunt(beweging);
-    		System.out.println("left");
+    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
+    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
+    		veranderZicht('l');
     	}
     }
     private void cameraRight() {
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX()+1,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
-    	if (camera.bewegingGeldig(beweging)) {
-    		camera.veranderStandpunt(beweging);
-    		System.out.println("right");
+    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
+    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
+    		veranderZicht('r');
     	}
     }
     private void veranderZicht(char richting) {
     	switch (richting) {
     		case 'u':
-    			
     			break;
     		case 'd':
     			break;
