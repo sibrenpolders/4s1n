@@ -93,41 +93,41 @@ public class Tafel {
 		kolomVector.add(kolom, tegel);
 		setLaatstGeplaatsteTegel(tegel);
 //		// TODO functie update landsdelen schrijven
-		updateLandsdelen(rij, kolom);
+//		updateLandsdelen(rij, kolom);
 		
 		return true;
 	}
 
-	private void updateLandsdelen(int rij, int kolom) {
-		if ( rij < 0 || rij >= veld.size() || kolom < 0 || kolom >= veld.get(rij).size()) {
-			return;
-		}
-		
-		Tegel[] buren = getBuren(rij, kolom);
-		Tegel nieuweTegel = bepaalTegel(new Vector2D(rij - startTegel.getX(), kolom - startTegel.getY()));
-				
-		// noordbuur updaten
-		if (buren[0] != null) {
-			nieuweTegel.updateLandsdeel(Tegel.NOORD, buren[0]);
-		}
-
-		// oostbuur updaten
-		if (buren[1] != null && 
-				nieuweTegel.bepaalLandsdeel(Tegel.WEST_NOORD) != nieuweTegel.bepaalLandsdeel(Tegel.ZUID_OOST)) {
-			buren[1].updateLandsdeel(Tegel.WEST, nieuweTegel);
-			updateLandsdelen(rij, kolom+1);
-		}
-		// zuidbuur updaten
-		if (buren[2] != null) {
-			buren[2].updateLandsdeel(Tegel.NOORD, nieuweTegel);
-			updateLandsdelen(rij+1, kolom);
-		}
-		// westbuur updaten
-		if (buren[3] != null) {
-			buren[3].updateLandsdeel(Tegel.OOST, nieuweTegel);
-			updateLandsdelen(rij, kolom-1);
-		}
-	}
+//	private void updateLandsdelen(int rij, int kolom) {
+//		if ( rij < 0 || rij >= veld.size() || kolom < 0 || kolom >= veld.get(rij).size()) {
+//			return;
+//		}
+//		
+//		Tegel[] buren = getBuren(rij, kolom);
+//		Tegel nieuweTegel = bepaalTegel(new Vector2D(rij - startTegel.getX(), kolom - startTegel.getY()));
+//				
+//		// noordbuur updaten
+//		if (buren[0] != null) {
+//			nieuweTegel.updateLandsdeel(Tegel.NOORD, buren[0]);
+//		}
+//
+//		// oostbuur updaten
+//		if (buren[1] != null && 
+//				nieuweTegel.bepaalLandsdeel(Tegel.WEST_NOORD) != nieuweTegel.bepaalLandsdeel(Tegel.ZUID_OOST)) {
+//			buren[1].updateLandsdeel(Tegel.WEST, nieuweTegel);
+//			updateLandsdelen(rij, kolom+1);
+//		}
+//		// zuidbuur updaten
+//		if (buren[2] != null) {
+//			buren[2].updateLandsdeel(Tegel.NOORD, nieuweTegel);
+//			updateLandsdelen(rij+1, kolom);
+//		}
+//		// westbuur updaten
+//		if (buren[3] != null) {
+//			buren[3].updateLandsdeel(Tegel.OOST, nieuweTegel);
+//			updateLandsdelen(rij, kolom-1);
+//		}
+//	}
 
 	private Tegel[] getBuren(int rij, int kolom) {
 		Tegel[] buren = new Tegel[4];
