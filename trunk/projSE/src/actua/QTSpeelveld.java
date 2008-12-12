@@ -30,14 +30,14 @@ import com.trolltech.qt.core.Qt;
 
 public class QTSpeelveld extends GSpeelveld {
 	private class QtGraphicsView extends QGraphicsView{
-		private boolean filled;
+		private boolean gevuld;
 		Vector2D gridCoord;
 		
 		public QtGraphicsView(QGraphicsScene parent,Vector2D coord) {
 			super(parent);
 			init();
 			setAcceptDrops(true);
-			filled=false;
+			gevuld=false;
 			this.gridCoord=coord;
 		}
 		
@@ -50,6 +50,16 @@ public class QTSpeelveld extends GSpeelveld {
 					QGraphicsView.ViewportUpdateMode.FullViewportUpdate);
 		}
 
+		private void setPixmap(QPixmap pixmap) {
+			scene().addPixmap(pixmap);
+			gevuld=true;
+		}
+		
+		private void removePixmap() {
+			scene().clear();
+			gevuld=false;
+		}
+		
 		protected void dragEnterEvent(QDragEnterEvent event)
 	    {
 	    	System.out.println("bla3");
@@ -85,7 +95,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	    protected void dropEvent(QDropEvent event) {
 	    	
-	        if (event.mimeData().hasFormat("application/x-dnditemdata") && !filled) {
+	        if (event.mimeData().hasFormat("application/x-dnditemdata") && !gevuld) {
 	            QByteArray itemData = event.mimeData().data("application/x-dnditemdata");
 	            QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.ReadOnly);
 	        
@@ -102,8 +112,8 @@ public class QTSpeelveld extends GSpeelveld {
 	            scene.addWidget(newIcon);*/
 	            
 	            scene().addPixmap(pixmap.scaled(width()-5,height()-5));
-	            voegTegelToe(gridCoord);
-	            filled=true;
+	            voegTegelToe(gridCoord,pixmap);
+	            gevuld=true;
 	            
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
@@ -176,8 +186,8 @@ public class QTSpeelveld extends GSpeelveld {
 		gridWidget.setMinimumSize(new QSize(720, 540));
 		//gridWidget.resize(new QSize(1024, 800));
 
-		for (int i=0;i<6;i++){
-			for (int j=0;j<8;j++){
+		for (int i=0;i<7;i++){
+			for (int j=0;j<9;j++){
 				scene=new QGraphicsScene(gridLayout);
 				view=new QtGraphicsView(scene,new Vector2D(i,j));
 				gridLayout.addWidget(view,i,j,1,1);
@@ -188,7 +198,7 @@ public class QTSpeelveld extends GSpeelveld {
 		getSpel().getTafelVerwerker().getCamera().setMinVector(new Vector3D(0,0,0));
 		getSpel().getTafelVerwerker().getCamera().setMaxVector(new Vector3D(1000,1000,10));
 		getSpel().getTafelVerwerker().getCamera().setHuidigeVector(new Vector3D(0,0,0));
-		getSpel().getTafelVerwerker().getCamera().setLinkerBovenHoek(new Vector2D(-5,-5));
+		getSpel().getTafelVerwerker().getCamera().setLinkerBovenHoek(new Vector2D(-3,-4));
 		
 		QPushButton buttonUp = new QPushButton("^",gridWidget);
 		buttonUp.setGeometry(gridWidget.width()/2-18,0,35,25);
@@ -213,83 +223,103 @@ public class QTSpeelveld extends GSpeelveld {
 
 	}
 	
-	public void voegTegelToe(Vector2D gridCoord) {
+	public void voegTegelToe(Vector2D gridCoord,QPixmap pixmap) {
 		Tegel tegel = getSpel().getTafelVerwerker().neemTegelVanStapel();
 		Vector2D coord = new Vector2D(getSpel().getTafelVerwerker().getCamera().getLinkerBovenHoek().getX()+gridCoord.getX(),getSpel().getTafelVerwerker().getCamera().getLinkerBovenHoek().getY()+gridCoord.getY());
 		
 //		QGraphicsScene scene;
 //		QtGraphicsView view;
 //		
-//		if (gridCoord.getX()==0 || gridCoord.getX()==5)
-//			for (int j=0;j<8;j++) {
+//		if (gridCoord.getX()==0 || gridCoord.getX()==6)
+//			for (int j=0;j<9;j++) {
 //				scene=new QGraphicsScene(gridLayout);
 //				view=new QtGraphicsView(scene,new Vector2D(gridCoord.getX()+1,j));
 //				gridLayout.addWidget(view,gridCoord.getX()+1,j,1,1);
 //			}
 		
 		if (getSpel().getTafelVerwerker().plaatsTegel(tegel,coord))
-			voegTegelToeAanGrafischeLijst(tegel);
-	}
-	
-	public void voegTegelToeAanGrafischeLijst(Tegel tegel) {
-		gTegels.add(new QTTegel(tegel));
+			voegTegelToeAanGrafischeLijst(tegel,coord,pixmap);
 	}
 	
 	protected void wheelEvent(QWheelEvent event) {
     	int zoomFactor = -event.delta()/8/15;
-    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),zoomFactor*getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),zoomFactor*getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
-    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
-    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
-    		System.out.println(zoomFactor);
-    	}
+    	getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie);
     }
     
     private void cameraUp() {
-    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	QGraphicsScene scene;
     	QtGraphicsView view;
     	
-    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
-    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
+    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
     		veranderZicht('u');
-    	}
     }
     private void cameraDown() {
-    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
-    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
-    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
+    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
     		veranderZicht('d');
-    	}
     }
     private void cameraLeft() {
-    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
-    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
-    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
+    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
     		veranderZicht('l');
-    	}
     }
     private void cameraRight() {
-    	Vector3D beweging = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
-    	if (getSpel().getTafelVerwerker().getCamera().bewegingGeldig(beweging)) {
-    		getSpel().getTafelVerwerker().getCamera().veranderStandpunt(beweging);
+    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
     		veranderZicht('r');
-    	}
     }
+    
     private void veranderZicht(char richting) {
+    	Vector2D oldLBH,newLBH=null;
+    	int offsetX = getSpel().getTafelVerwerker().getStartTegelPos().getX();
+    	int offsetY = getSpel().getTafelVerwerker().getStartTegelPos().getY();
+    	int startX,startY;
+    	
     	switch (richting) {
     		case 'u':
+    			oldLBH = getSpel().getTafelVerwerker().getCamera().getLinkerBovenHoek();
+    			newLBH = new Vector2D(oldLBH.getX()-1,oldLBH.getY());
+    			
+    			startX = offsetX+newLBH.getX();
+    			startY = offsetX+newLBH.getY();
+    			
+    			for (int i=0;i<7;i++) {
+    				for (int j=0;j<9;j++) {
+    					if (startX<0)
+    						((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).removePixmap();
+    					else if (startY<0)
+    						((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).removePixmap();
+    					else if (gTegels.get(startX).get(startY)==null) {
+    						((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).removePixmap();
+    					}
+    					else {
+    						((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).setPixmap(((QTTegel)gTegels.get(startX).get(startY)).getPixmap());
+    					}
+    				}
+    			}
+    					
     			break;
     		case 'd':
+    			oldLBH = getSpel().getTafelVerwerker().getCamera().getLinkerBovenHoek();
+    			newLBH = new Vector2D(oldLBH.getX()+1,oldLBH.getY());
     			break;
     		case 'l':
+    			oldLBH = getSpel().getTafelVerwerker().getCamera().getLinkerBovenHoek();
+    			newLBH = new Vector2D(oldLBH.getX(),oldLBH.getY()-1);
     			break;
     		case 'r':
+    			oldLBH = getSpel().getTafelVerwerker().getCamera().getLinkerBovenHoek();
+    			newLBH = new Vector2D(oldLBH.getX(),oldLBH.getY()+1);
     			break;
     	}
+    	
+    	getSpel().getTafelVerwerker().getCamera().setLinkerBovenHoek(newLBH);
     }
 
 	public QWidget getGridWidget() {
