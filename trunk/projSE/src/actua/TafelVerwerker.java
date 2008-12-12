@@ -129,4 +129,8 @@ public class TafelVerwerker {
 	public Vector2D getStartTegelPos() {
 		return tafel.getStartTegel();
 	}
+
+	public boolean plaatsingPionMogelijk(Tegel t, Vector2D tegelCoord, int pionCoord) {
+		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
+	}
 }
