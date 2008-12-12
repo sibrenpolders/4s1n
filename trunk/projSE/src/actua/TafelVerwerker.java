@@ -125,4 +125,8 @@ public class TafelVerwerker {
 		else
 			return false;
 	}
+	
+	public Vector2D getStartTegelPos() {
+		return tafel.getStartTegel();
+	}
 }
