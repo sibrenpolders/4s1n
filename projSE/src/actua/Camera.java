@@ -5,6 +5,7 @@ public class Camera {
 	private Vector3D minVector;
 	private Vector3D huidigeVector;
 	private Vector3D maxVector;
+	private Vector2D linkerBovenHoek;
 
 	public Camera() {
 
@@ -59,6 +60,14 @@ public class Camera {
 
 	public void setMaxVector(Vector3D maxVector) {
 		this.maxVector = maxVector;
+	}
+
+	public Vector2D getLinkerBovenHoek() {
+		return linkerBovenHoek;
+	}
+
+	public void setLinkerBovenHoek(Vector2D linkerBovenHoek) {
+		this.linkerBovenHoek = linkerBovenHoek;
 	}
 
 }
