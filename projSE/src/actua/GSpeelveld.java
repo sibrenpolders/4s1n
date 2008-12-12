@@ -13,6 +13,7 @@ public abstract class GSpeelveld {
 	
 	public GSpeelveld(Spel spel) {
 		this.spel=spel;
+		gTegels = new ArrayList<GTegel>();
 	}
 
 	public ArrayList<GTegel> getGTegels() {
@@ -30,6 +31,15 @@ public abstract class GSpeelveld {
 	public void setAchtergrond(String achtergrond) {
 		this.achtergrond = achtergrond;
 	}
+	
+
+	public Spel getSpel() {
+		return spel;
+	}
+
+	public void setSpel(Spel spel) {
+		this.spel = spel;
+	}
 
 	public void toonSpeelveld () {
 		
@@ -42,7 +52,7 @@ public abstract class GSpeelveld {
 	public void voegTegelToe() {
 		
 	}
-
+	
 	public abstract void hide();
 	public abstract void show();
 }
