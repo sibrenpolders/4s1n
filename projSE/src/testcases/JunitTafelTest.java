@@ -84,25 +84,16 @@ public class JunitTafelTest extends TestCase {
 		Pion p = new Pion();
 		// testen van plaatsen van starttegels, en de tegels daarond
 		tafel.plaatsTegel(tegels.get(0), coords.get(0));
-		tafel.plaatsPion(coords.get(0), ,p);
+		assertTrue(tafel.plaatsPion(coords.get(0), Tegel.NOORD, p));
+		tafel.plaatsTegel(tegels.get(1), coords.get(1));
+		assertTrue(tafel.plaatsPion(coords.get(1), Tegel.ZUID, p));
 		
-		for (int i = 1; i < 5; ++i) {
+		for (int i = 2; i < 4; ++i) {
 			tafel.plaatsTegel(tegels.get(i), coords.get(i));
 		}
-		
-		assertFalse("Plaatsing zelfde tegel faalt", tafel.plaatsTegel(tegels.get(0), coords.get(0)));		
-				
-		Tegel t;
-		// testen of de tegels goed zijn opgeslagen
-		for (int i = 0; i < 5; ++i) {
-			t = tafel.bepaalTegel(coords.get(i));
-			if (t != null) {
-				assertTrue("Verkeerde tegel opslag: tegel " + i, t.equals(tegels.get(i)));
-			}
-		}	
-		
-		// testen of een niet bestaande tegel kan opgevraagd worden
-		assertNull(tafel.bepaalTegel(new Vector2D(-100, 100)));
+						
+//		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.OOST, p));
+		assertFalse(tafel.plaatsPion(coords.get(3), Tegel.OOST, p));
 	}
 
 	public void testIsPlaatsingGeldig() {

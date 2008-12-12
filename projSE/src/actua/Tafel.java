@@ -357,8 +357,7 @@ public class Tafel {
 	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
 			int pionCoord) {
 		if (pionCoord < 0 || pionCoord >= Tegel.MAX_GROOTTE || 
-				tegel.isPionGeplaatst(pionCoord) || 
-				tegel == laatstGeplaatsteTegel) {
+				tegel.isPionGeplaatst(pionCoord)) {
 			return false;
 		}
 		
@@ -368,7 +367,7 @@ public class Tafel {
 		Tegel[] buren = getBuren(rij, kolom);
 		char matchLandsdeel = tegel.bepaalLandsdeel(pionCoord).getType();
 		
-		boolean pionPlaatsingGeldig = false;
+		boolean pionPlaatsingGeldig = true;
 		
 		if (buren[0] != null) {
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(NOORD, 
@@ -393,19 +392,19 @@ public class Tafel {
 
 		switch(windrichting) {
 		case NOORD:
-			pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.ZUID_WEST,
+			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.ZUID_WEST,
 					Tegel.ZUID, Tegel.ZUID_OOST);
 			break;
 		case OOST:
-			pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.WEST_NOORD,
+			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.WEST_NOORD,
 					Tegel.WEST, Tegel.WEST_ZUID);
 			break;
 		case ZUID:
-			pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.NOORD_OOST,
+			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.NOORD_OOST,
 					Tegel.NOORD, Tegel.NOORD_WEST);
 			break;
 		case WEST:
-			pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.OOST_ZUID,
+			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.OOST_ZUID,
 					Tegel.OOST, Tegel.OOST_NOORD);
 			break;
 		}
@@ -428,14 +427,14 @@ public class Tafel {
 		
 		vorigeLd = huidigeLd;
 		huidigeLd = tegel.bepaalLandsdeel(windrichting2);
-		if (vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
+		if (pionPlaatsingGeldig && vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(tegel, tegelCoord,
 					windrichting2);
 		}
 		
 		vorigeLd = huidigeLd;
 		huidigeLd = tegel.bepaalLandsdeel(windrichting3);
-		if (vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
+		if (pionPlaatsingGeldig && vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(tegel, tegelCoord,
 					windrichting3);
 		}
