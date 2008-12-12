@@ -34,8 +34,6 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testPlaatsTegel() {
-//		long startMemory = getMemoryUse();
-//		System.out.println(startMemory);
 		tafel.clear();
 		
 		// testen van plaatsen van starttegels, en de tegels daarond
@@ -59,9 +57,6 @@ public class JunitTafelTest extends TestCase {
 		
 		// testen of een niet bestaande tegel kan opgevraagd worden
 		assertNull(tafel.bepaalTegel(new Vector2D(-100, 100)));
-//		long endMemory = getMemoryUse();
-//		System.out.println(endMemory);
-//		System.err.println(Math.round((((float)endMemory - startMemory)/100f)));		
 	}
 
 	private void maaktestTegels() {
@@ -86,11 +81,28 @@ public class JunitTafelTest extends TestCase {
 
 	public void testPlaatsPion() {
 		tafel.clear();
-		Vector2D v = new Vector2D(1, 1);
-		Pion pion=new Pion();
-		 
-		 // probleem tegel coordinaten
-//		 tafel.plaatsPion(v, pion);		 		 
+		Pion p = new Pion();
+		// testen van plaatsen van starttegels, en de tegels daarond
+		tafel.plaatsTegel(tegels.get(0), coords.get(0));
+		tafel.plaatsPion(coords.get(0), ,p);
+		
+		for (int i = 1; i < 5; ++i) {
+			tafel.plaatsTegel(tegels.get(i), coords.get(i));
+		}
+		
+		assertFalse("Plaatsing zelfde tegel faalt", tafel.plaatsTegel(tegels.get(0), coords.get(0)));		
+				
+		Tegel t;
+		// testen of de tegels goed zijn opgeslagen
+		for (int i = 0; i < 5; ++i) {
+			t = tafel.bepaalTegel(coords.get(i));
+			if (t != null) {
+				assertTrue("Verkeerde tegel opslag: tegel " + i, t.equals(tegels.get(i)));
+			}
+		}	
+		
+		// testen of een niet bestaande tegel kan opgevraagd worden
+		assertNull(tafel.bepaalTegel(new Vector2D(-100, 100)));
 	}
 
 	public void testIsPlaatsingGeldig() {
