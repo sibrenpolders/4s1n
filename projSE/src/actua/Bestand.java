@@ -9,33 +9,48 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Bestand implements Serializable {
+	private static final long serialVersionUID = 2838794736711909285L;
 	private String naam;
 	private Spel spel;
 	private Memento memento;
 
-	public Bestand() {
-		
+	public Bestand(String naam, Spel spel, Memento me) {
+		this.naam = naam;
+		this.spel = spel;
+		this.memento = me;
 	}
-	
+
+	public Bestand() {
+
+	}
+
 	public Spel getSpel() {
 		return spel;
 	}
-	
+
 	public Memento getMemento() {
 		return memento;
 	}
 
-	public void leesVanBestand (String naam) {
+	public String getNaam() {
+		return naam;
+	}
+
+	public void leesVanBestand() {
+		leesVanBestand(naam);
+	}
+
+	public void leesVanBestand(String naam) {
 		FileInputStream fis;
 		ObjectInputStream ois;
-		
+
 		try {
 			fis = new FileInputStream(naam);
 			ois = new ObjectInputStream(fis);
-			
-			spel = (Spel)ois.readObject();
-			memento = (Memento)ois.readObject();
-			
+
+			spel = (Spel) ois.readObject();
+			memento = (Memento) ois.readObject();
+
 			ois.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -46,17 +61,21 @@ public class Bestand implements Serializable {
 		}
 	}
 
-	public void schrijfNaarBestand (String naam) {
+	public void schrijfNaarBestand() {
+		schrijfNaarBestand(naam);
+	}
+
+	public void schrijfNaarBestand(String naam) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
-		
+
 		try {
 			fos = new FileOutputStream(naam);
 			oos = new ObjectOutputStream(fos);
-			
+
 			oos.writeObject(spel);
 			oos.writeObject(memento);
-			
+
 			oos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -64,5 +83,4 @@ public class Bestand implements Serializable {
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -1,32 +1,19 @@
 package actua;
+
+import java.io.File;
+
 public class BestandsVerwerker {
 
 	public BestandsVerwerker() {
-		
+
 	}
 
-	public boolean checkBestaan (String naam) {
-		return false;
+	public boolean bestandBestaat(String naam) {
+		File f = new File(naam);
+		return f.exists();
 	}
 
-	public boolean checkExtensie (String naam) {
-		return false;
+	public boolean heeftExtensie(String naam, String extensie) {
+		return naam.endsWith(extensie);
 	}
-
-	public boolean confirmeerOverschrijving () {
-		return false;
-	}
-
-	public void startLaden () {
-		
-	}
-
-	public String vraagNaam () {
-		return null;
-	}
-
-	public void startOpslaan () {
-		
-	}
-
 }
