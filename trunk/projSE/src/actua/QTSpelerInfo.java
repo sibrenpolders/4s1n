@@ -38,8 +38,19 @@ public class QTSpelerInfo extends GSpelerInfo {
 
 	@Override
 	public void toonSpeler() {
-		// TODO Auto-generated method stub
-
+//		QLabel naam = new QLabel(getSpeler().getNaam());
+//		punten = new QLabel("0");
+//		//QLabel kleur = new QLabel(getSpeler().getKleur());
+//		QLabel score = new QLabel("Score");
+//		QGridLayout layout = new QGridLayout(spelerInfoveld);
+//
+//		//kleur.setPixmap(spelerKleur());
+//		//layout.addWidget(kleur, 0, 0);
+//		layout.addWidget(naam, 0, 1);
+//		layout.addWidget(score, 1, 0);
+//		layout.addWidget(punten, 1, 1);
+//
+//		spelerInfoveld.setLayout(layout);
 	}
 
 	@Override

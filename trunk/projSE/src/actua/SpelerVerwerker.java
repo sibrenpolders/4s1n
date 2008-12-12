@@ -6,6 +6,7 @@ public class SpelerVerwerker {
 
 	private ArrayList<Speler> spelers;
 	private int huidigeSpelerIndex;
+	
 
 	public SpelerVerwerker() {
 		spelers = new ArrayList<Speler>();
