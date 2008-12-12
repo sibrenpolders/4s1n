@@ -30,10 +30,15 @@ import com.trolltech.qt.core.Qt;
 
 public class QTSpeelveld extends GSpeelveld {
 	private class QtGraphicsView extends QGraphicsView{
-		public QtGraphicsView(QGraphicsScene parent) {
+		private boolean filled;
+		Vector2D gridCoord;
+		
+		public QtGraphicsView(QGraphicsScene parent,Vector2D coord) {
 			super(parent);
 			init();
 			setAcceptDrops(true);
+			filled=false;
+			this.gridCoord=coord;
 		}
 		
 		private void init() {			
@@ -80,7 +85,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	    protected void dropEvent(QDropEvent event) {
 	    	
-	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
+	        if (event.mimeData().hasFormat("application/x-dnditemdata") && !filled) {
 	            QByteArray itemData = event.mimeData().data("application/x-dnditemdata");
 	            QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.ReadOnly);
 	        
@@ -97,6 +102,8 @@ public class QTSpeelveld extends GSpeelveld {
 	            scene.addWidget(newIcon);*/
 	            
 	            scene().addPixmap(pixmap.scaled(width()-5,height()-5));
+	            voegTegelToe(gridCoord);
+	            filled=true;
 	            
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
@@ -149,14 +156,12 @@ public class QTSpeelveld extends GSpeelveld {
 //	        }
 	    }
 	};	
-	private Vector<QtGraphicsView> speelveld;
 	private Camera camera;
 	private QWidget gridWidget;
 	private QGridLayout gridLayout;
 
 	public QTSpeelveld(Spel spel, OptieVerwerker opties) {
 		super(spel);
-		setSpeelveld(new Vector<QtGraphicsView>());
 		init();
 	}
 	
@@ -175,7 +180,7 @@ public class QTSpeelveld extends GSpeelveld {
 		for (int i=0;i<6;i++){
 			for (int j=0;j<8;j++){
 				scene=new QGraphicsScene(gridLayout);
-				view=new QtGraphicsView(scene);
+				view=new QtGraphicsView(scene,new Vector2D(i,j));
 				gridLayout.addWidget(view,i,j+1,1,1);
 			}
 		}
@@ -183,6 +188,7 @@ public class QTSpeelveld extends GSpeelveld {
 		//camera dizzle
 		camera = new Camera(new Vector3D(0,0,0),new Vector3D(1000,1000,10));
 		camera.setHuidigeVector(new Vector3D(0,0,0));
+		camera.setLinkerBovenHoek(new Vector2D(-5,-5));
 		
 		QPushButton buttonUp = new QPushButton("^",gridWidget);
 		buttonUp.setGeometry(gridWidget.width()/2-18,0,35,25);
@@ -206,21 +212,23 @@ public class QTSpeelveld extends GSpeelveld {
 	public void show() {
 
 	}
-
-	public Vector<QtGraphicsView> getSpeelveld() {
-		return speelveld;
+	
+	public void voegTegelToe(Vector2D gridCoord) {
+		Tegel tegel = getSpel().getTafelVerwerker().neemTegelVanStapel();
+		Vector2D coord = new Vector2D(camera.getLinkerBovenHoek().getX()+gridCoord.getX(),camera.getLinkerBovenHoek().getY()+gridCoord.getY());
+		System.out.println(coord.getX()+" "+coord.getY());
+		
+		if (getSpel().getTafelVerwerker().plaatsTegel(tegel,coord))
+			voegTegelToeAanGrafischeLijst(tegel);
 	}
-
-	private void setSpeelveld(Vector<QtGraphicsView> speelveld) {
-		this.speelveld = speelveld;
-	}
+	
 	public void voegTegelToeAanGrafischeLijst(Tegel tegel) {
 		gTegels.add(new QTTegel(tegel));
 	}
 	
 	protected void wheelEvent(QWheelEvent event) {
-    	int zoomFactor = -event.delta()/8/3;
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()+5,zoomFactor*camera.getHuidigeVector().getZ());
+    	int zoomFactor = -event.delta()/8/15;
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY(),zoomFactor*camera.getHuidigeVector().getZ());
     	
     	if (camera.bewegingGeldig(beweging)) {
     		camera.veranderStandpunt(beweging);
@@ -229,15 +237,23 @@ public class QTSpeelveld extends GSpeelveld {
     }
     
     private void cameraUp() {
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()+5,camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()+1,camera.getHuidigeVector().getZ());
+    	QGraphicsScene scene;
+    	QtGraphicsView view;
     	
     	if (camera.bewegingGeldig(beweging)) {
     		camera.veranderStandpunt(beweging);
-    		System.out.println("up");
+    		
+    		for (int i=0;i<8;i++) {
+    			gridLayout.removeItem(gridLayout.itemAtPosition(5, i));
+    			scene=new QGraphicsScene(gridLayout);
+				view=new QtGraphicsView(scene,new Vector2D(0,i));
+				gridLayout.addWidget(view,0,i+1,1,1);
+    		}
     	}
     }
     private void cameraDown() {
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()-5,camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()-1,camera.getHuidigeVector().getZ());
     	
     	if (camera.bewegingGeldig(beweging)) {
     		camera.veranderStandpunt(beweging);
@@ -245,7 +261,7 @@ public class QTSpeelveld extends GSpeelveld {
     	}
     }
     private void cameraLeft() {
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX()-5,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX()-1,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
     	
     	if (camera.bewegingGeldig(beweging)) {
     		camera.veranderStandpunt(beweging);
@@ -253,15 +269,25 @@ public class QTSpeelveld extends GSpeelveld {
     	}
     }
     private void cameraRight() {
-    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX()+5,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
+    	Vector3D beweging = new Vector3D(camera.getHuidigeVector().getX()+1,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
     	
     	if (camera.bewegingGeldig(beweging)) {
     		camera.veranderStandpunt(beweging);
     		System.out.println("right");
     	}
     }
-    private void veranderZicht() {
-    	
+    private void veranderZicht(char richting) {
+    	switch (richting) {
+    		case 'u':
+    			
+    			break;
+    		case 'd':
+    			break;
+    		case 'l':
+    			break;
+    		case 'r':
+    			break;
+    	}
     }
 
 	public QWidget getGridWidget() {
