@@ -7,6 +7,11 @@ import com.trolltech.qt.gui.QPixmap;
 public class QTTegel extends GTegel {
 	private QPixmap pixmap;
 
+	public QTTegel() {
+		super();
+		pixmap = new QPixmap(90,90);
+	}
+	
 	public QTTegel(Tegel tegel) {
 		super(tegel);
 		pixmap = new QPixmap(90,90);
