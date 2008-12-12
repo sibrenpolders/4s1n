@@ -25,6 +25,10 @@ public class TegelFabriekTest extends TestCase {
 		
 		ArrayDeque<Tegel> stapel = tf.maakTegelDeque(72);
 		assertEquals(72, stapel.size());
+		
+		for (int i = 0; i < stapel.size(); ++i) {
+			assertNotNull(stapel.pop());
+		}
 	}
 
 }
