@@ -13,6 +13,12 @@ public class QTTegel extends GTegel {
 		kiesAfbeelding();
 	}
 	
+	public QTTegel(Tegel tegel,QPixmap pixmap) {
+		super(tegel);
+		this.pixmap = new QPixmap();
+		this.pixmap = pixmap;
+	}
+	
 	public Tegel getTegel(){
 		return super.getTegel();
 	}

@@ -70,7 +70,7 @@ public class QTInitSpel extends GInitSpel{
 		}
 		
 		for(int i = 0; i < 5; ++i){
-			if(!soort[i].currentText().equals("Gesloten")){
+			if(!soort[i].currentText().equals("Inactief")){
 				this.voegSpelerToe(naam[i].text(), kleur[i].currentText().charAt(0), soort[i].currentText());
 			}
 		}
@@ -84,7 +84,7 @@ public class QTInitSpel extends GInitSpel{
 		int numSpelers = 0;
 		
 		for(int i = 0; i < 5; ++i){
-			if( !soort[i].currentText().equals("Gesloten"))
+			if( !soort[i].currentText().equals("Inactief"))
 				++numSpelers;
 		}
 		
@@ -95,10 +95,10 @@ public class QTInitSpel extends GInitSpel{
 		String naamSpeler = new String();
 		
 		for(int i = 0; i < 5; ++i){
-			if( !soort[i].currentText().equals("Gesloten")){
+			if( !soort[i].currentText().equals("Inactief")){
 				naamSpeler = naam[i].text();
 				for(int j = 0; j < 5; ++j){
-					if( !soort[j].currentText().equals("Gesloten") )
+					if( !soort[j].currentText().equals("Inactief") )
 						if( j != i && naamSpeler.equals(naam[j].text()))
 							return false;
 				}
@@ -112,10 +112,10 @@ public class QTInitSpel extends GInitSpel{
 		String kleurSpeler = new String();
 		
 		for(int i = 0; i < 5; ++i){
-			if( !soort[i].currentText().equals("Gesloten")){
+			if( !soort[i].currentText().equals("Inactief")){
 				kleurSpeler = kleur[i].currentText();
 				for(int j = 0; j < 5; ++j){
-					if( !soort[j].currentText().equals("Gesloten"))
+					if( !soort[j].currentText().equals("Inactief"))
 						if( j != i && kleurSpeler.equals(kleur[j].currentText()))
 							return false;
 				}
@@ -162,7 +162,7 @@ public class QTInitSpel extends GInitSpel{
 		kleurIcon = new QIcon(pixmap);		
 		kleur[i].addItem(kleurIcon,"Oranje");
 		
-		soort[i].addItem("Gesloten");
+		soort[i].addItem("Inactief");
 		soort[i].addItem("Mens");
 		soort[i].addItem("Easy");
 		soort[i].addItem("Hard");				
