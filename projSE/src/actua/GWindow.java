@@ -1,6 +1,11 @@
 package actua;
 
 public interface /*abstract class*/ GWindow {
+//	protected GMenubalk gMenu;
+//	protected GSpeelveld qSpeelveld;
+//	protected GInfo qInfo;
+//	
+	
 	/*public GWindow() {
 
 	}
@@ -10,4 +15,5 @@ public interface /*abstract class*/ GWindow {
 	}*/
 
 	public void show();
+	
 }

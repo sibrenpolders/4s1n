@@ -138,12 +138,20 @@ public class QTInfo extends GInfo {
 		qtInfo = new QWidget();
 		QPalette palette = new QPalette();
 
-		QHBoxLayout hbox = new QHBoxLayout();
-		hbox.addWidget(new qtInfoVenster());
-		hbox.addWidget(new QTSpelerInfo(new Speler("Dude", 'l', 0), qtInfo)
+		QVBoxLayout vbox = new QVBoxLayout();
+		vbox.addWidget(new qtInfoVenster());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'r', 0), qtInfo)
 				.getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'g', 0), qtInfo)
+		.getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
+		.getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
+		.getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
+		.getSpelerInfoveld());
 
-		qtInfo.setLayout(hbox);
+		qtInfo.setLayout(vbox);
 
 		qtInfo.setPalette(palette);
 	}
