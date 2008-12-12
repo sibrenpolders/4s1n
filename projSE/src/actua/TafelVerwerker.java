@@ -1,15 +1,24 @@
 package actua;
 
-import java.util.Queue;
+import java.util.ArrayDeque;
 
 public class TafelVerwerker {
-	private Queue<Tegel> stapel;
+	private static final int AANTAL_TEGELS = 72;
+	private ArrayDeque<Tegel> stapel;
 	public Tafel tafel;
 
 	public TafelVerwerker() {
+		TegelFabriek tfb = new TegelFabriek();
+		stapel = tfb.maakTegelDeque(AANTAL_TEGELS);
 		tafel = new Tafel();
 	}
 
+	public TafelVerwerker(int aantalTegels) {
+		TegelFabriek tfb = new TegelFabriek();
+		stapel = tfb.maakTegelDeque(aantalTegels);
+		tafel = new Tafel();
+	}
+	
 	public void herstelOverzicht() {
 
 	}

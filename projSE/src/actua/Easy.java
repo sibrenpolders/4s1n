@@ -10,7 +10,7 @@ public class Easy implements Strategy {
 	public int berekenPlaatsPion(Pion p, Tegel t, Vector2D tegelCoord) {
 		if (p.getGeplaatst() == false)
 			for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
-				if (tafelVerwerker.isPionPlaatsingGeldig(p, tegelCoord, i))
+				if (tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, i))
 					return i;
 			}
 

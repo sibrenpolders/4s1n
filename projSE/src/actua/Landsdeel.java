@@ -31,6 +31,10 @@ public class Landsdeel {
 	public boolean isPionGeplaatst() {
 		return pionnen.size() != 0;
 	}
-
+	
+	public Landsdeel clone() {
+		Landsdeel ld = new Landsdeel(type);	
+		return ld;
+	}
 }
 

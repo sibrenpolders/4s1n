@@ -36,253 +36,50 @@ public class Tegel {
 	
 	// TODO nog nakijken maar dacht dat dit een testvariabele was -> verwijderen
 	// dus
-	private static int teller = 0;
 	private short orientatie;
 	private Landsdeel[] landsdelen;
 	private String tegelPresentatie;
+	private String idPresentatie;
 	
 	public Tegel() {
 
 	}
 
-	// TODO verwijderen??
-	public Tegel(Landsdeel[] landsdelen) {
-		orientatie = 0; // beginopstelling van de tegel
-		setLandsdelen(landsdelen);
-	}
-
-	public Tegel(String tegelPresentatie) {
-		++teller;
+	public Tegel(String tegelPresentatie, String idPresentatie) {
 		orientatie = 0;
 		this.tegelPresentatie = tegelPresentatie;
-		setLandsdelen(null, null, null, null);
+		setLandsdelen(new String(idPresentatie));
+		this.idPresentatie = idPresentatie;
 	}
 
-	public Tegel(String tegelPresentatie, Tegel noord, Tegel oost, Tegel zuid,
-			Tegel west) {
-		++teller;
-		orientatie = 0;
-		this.tegelPresentatie = tegelPresentatie;
-		setLandsdelen(noord, oost, zuid, west);
+	public String getIdPresentatie() {
+		return idPresentatie;
 	}
-
-	private void setLandsdelen(Tegel noord, Tegel oost,
-			Tegel zuid, Tegel west) {
+	
+	private void setLandsdelen(String idPresentatie) {
+		if (idPresentatie == null || idPresentatie.length() != MAX_GROOTTE) {
+			System.err.println("Foutieve string idPresentatie: " + idPresentatie);
+			return;
+		}
+		
 		landsdelen = new Landsdeel[tegelPresentatie.length()];
-
-		vulLandsdelen(WEST_NOORD, noord, oost, zuid, west);
-		corrigeerWegInvloeden();
 		
-		for (int i = 0; i < 13; ++i) {
+		for (int i = 0; i < MAX_GROOTTE; ++i) {
 			if (landsdelen[i] == null) {
-				System.err.println("SHIT: " + teller + ", " + i);
-			}
-		}
-	}
-
-	private void corrigeerWegInvloeden() {
-		if (tegelPresentatie.charAt(NOORD) == WEG && 
-				tegelPresentatie.charAt(OOST) == WEG && 
-				tegelPresentatie.charAt(WEST) != WEG && 
-				tegelPresentatie.charAt(ZUID) != WEG) {
-			updateLd(landsdelen[NOORD_WEST],landsdelen[OOST_ZUID]);
-		}
-		
-		if (tegelPresentatie.charAt(NOORD) == WEG && 
-				tegelPresentatie.charAt(WEST) == WEG && 
-				tegelPresentatie.charAt(OOST) != WEG &&
-				tegelPresentatie.charAt(ZUID) != WEG) {
-			updateLd(landsdelen[NOORD_OOST],landsdelen[WEST_ZUID]);
-		}
-		
-		if (tegelPresentatie.charAt(ZUID) == WEG && 
-				tegelPresentatie.charAt(OOST) == WEG && 
-				tegelPresentatie.charAt(NOORD) != WEG &&
-				tegelPresentatie.charAt(WEST) != WEG) {
-			updateLd(landsdelen[ZUID_WEST],landsdelen[WEST_ZUID]);
-		}
-		
-		if (tegelPresentatie.charAt(ZUID) == WEG && 
-				tegelPresentatie.charAt(WEST) == WEG && 
-				tegelPresentatie.charAt(OOST) != WEG &&
-				tegelPresentatie.charAt(NOORD) != WEG) {
-			updateLd(landsdelen[NOORD_WEST],landsdelen[OOST_ZUID]);
-		}
-	}
-
-	private void vulLandsdelen(int beginPos, Tegel noord, Tegel oost, Tegel zuid, Tegel west) {
-		if (west == null) {
-			landsdelen[beginPos] = new Landsdeel(tegelPresentatie.charAt(beginPos));
-			// west tegel is niet null dus deze tegel heeft aan zijn west-zijde
-			// dezelfde landsdelen als de west buur in het oosten heeft
-		} else {
-			landsdelen[beginPos] = west.bepaalLandsdeel(OOST);
-		}
-
-		vindGelijkeLandsdelen(beginPos, noord, oost, zuid, west);
-		
-		while (!isLandsdelenGevuld()) {
-			beginPos = volgendeNietGevuldeLandsdeel();
-			landsdelen[beginPos] = getLandsDeel(beginPos, noord, oost, zuid, west);
-			vindGelijkeLandsdelen(beginPos, noord, oost, zuid, west);
-		}
-	}
-
-	private int volgendeNietGevuldeLandsdeel() {
-		for (int i = 0; i < landsdelen.length; ++i) {
-			if (landsdelen[i] == null) {
-				return i;
+				landsdelen[i] = new Landsdeel(tegelPresentatie.charAt(i));
+				
+				for (int j = i; j < MAX_GROOTTE; ++j) {
+					if (idPresentatie.charAt(i) == idPresentatie.charAt(j)) {
+						landsdelen[j] = landsdelen[i];
+					}
+				}
 			}
 		}
 		
-		return -1;
-	}
-
-	private boolean isLandsdelenGevuld() {
-		for (int i = 0; i < landsdelen.length; ++i) {
-			if (landsdelen[i] == null) {
-				return false;
-			}
+		for(int j = 0; j < 10; ++j) {
+			;
 		}
-		
-		return true;
 	}
-
-	private void vindGelijkeLandsdelen(int i, 
-			Tegel noord, Tegel oost, Tegel zuid, Tegel west) {
-		/**
-		 * Het volstaat om het landsdeel onder en rechts van landsdeel i na te
-		 * kijken. Diegene erboven zijn al een bekeken
-		 */
-
-		// rechts heeft het zelfde lansdeel
-		if (i + 1 < tegelPresentatie.length() && landsdelen[i + 1] == null
-				&& tegelPresentatie.charAt(i) == tegelPresentatie.charAt(i + 1)) {
-			landsdelen[i + 1] = landsdelen[i];
-			vindGelijkeLandsdelen(i + 1, noord, oost, zuid,
-					west);
-		}
-//		} else if (i + 1 < tegelPresentatie.length() && landsdelen[i + 1] == null) {
-//			landsdelen[i + 1] = getLandsDeel(i + 1, noord,
-//					oost, zuid, west);
-//			vindGelijkeLandsdelen(i + 1, noord, oost, zuid,
-//					west);
-//		}
-
-		// onder
-		int volgende = -1;
-
-		if (i == 2 || i == 6) {
-			volgende = i + 4;
-		} else if (i == 0 || i == 7) {
-			volgende = i + 5;
-		} else if (i == 3 || i == 8) {
-			volgende = i + 1;
-		} else if (i == 12) {
-			volgende = 11;
-		} else if (i == 4 || i == 5) {
-			volgende = i + 3;
-		}
-
-		// onder heeft een gelijk landsdeel
-		if (volgende != -1 && landsdelen[volgende] == null
-				&& tegelPresentatie.charAt(i) == tegelPresentatie.charAt(volgende)) {
-			landsdelen[volgende] = landsdelen[i];
-			vindGelijkeLandsdelen(volgende, noord, oost, zuid,
-					west);
-		}
-//		} else if (volgende != -1 && landsdelen[volgende] == null) {
-//			landsdelen[volgende] = getLandsDeel(volgende,
-//					noord, oost, zuid, west);
-//			vindGelijkeLandsdelen(volgende, noord, oost, zuid,
-//					west);
-//		}
-	}
-
-	private Landsdeel getLandsDeel(int i, Tegel noord,
-			Tegel oost, Tegel zuid, Tegel west) {
-
-		Landsdeel nieuwLandsdeel;
-		
-		switch (i) {
-		// noord kant van de nieuwe tegel heeft dezelfde landsdelen als de zuid
-		// kant van de noorder buur tegel
-		case NOORD_WEST:
-			nieuwLandsdeel = getLd(noord, NOORD_WEST, ZUID_WEST);
-			break;
-		case NOORD:
-			nieuwLandsdeel = getLd(noord, NOORD, ZUID);
-			break;
-		case NOORD_OOST:
-			nieuwLandsdeel = getLd(noord, NOORD_OOST, ZUID_OOST);
-			break;
-		// oost kant van de nieuwe tegel heeft dezelfde landsdelen als de west
-		// kant van de oost buur tegel
-		case OOST_NOORD:
-			nieuwLandsdeel = getLd(oost, OOST_NOORD, WEST_NOORD);
-			break;
-		case OOST:
-			nieuwLandsdeel = getLd(oost, OOST, WEST);
-			break;
-		case OOST_ZUID:
-			nieuwLandsdeel = getLd(oost, OOST_ZUID, WEST_ZUID);
-			break;
-		// zuid kant van de nieuwe tegel heeft dezelfde landsdelen als de noord
-		// kant van de zuid buur tegel
-		case ZUID_OOST:
-			nieuwLandsdeel = getLd(zuid, ZUID_OOST, NOORD_OOST);
-			break;
-		case ZUID:
-			nieuwLandsdeel = getLd(zuid, ZUID, NOORD);
-			break;
-		case ZUID_WEST:
-			nieuwLandsdeel = getLd(zuid, ZUID_WEST, NOORD_WEST);
-			break;
-		// west kant van de nieuwe tegel heeft dezelfde landsdelen als de oost
-		// kant van de west buur tegel			
-		case WEST_ZUID:
-			nieuwLandsdeel = getLd(west, WEST_ZUID, OOST_ZUID);
-			break;
-		case WEST:
-			nieuwLandsdeel = getLd(west, WEST, OOST);
-			break;
-		case WEST_NOORD:
-			nieuwLandsdeel = getLd(west, WEST_NOORD, OOST_NOORD);
-			break;
-		default:
-			nieuwLandsdeel = new Landsdeel(tegelPresentatie.charAt(i));
-		}
-
-		return nieuwLandsdeel;
-	}
-
-	private Landsdeel getLd(Tegel buur, int zijkant, int zijkantBuur) {
-		if (buur == null) {
-			return new Landsdeel(tegelPresentatie.charAt(zijkant));
-		}
-		
-		return buur.bepaalLandsdeel(zijkantBuur);
-	}
-
-	// TODO verwijderen???
-	private void setLandsdelen(Landsdeel[] landsdelen) {
-		if (landsdelen != null && landsdelen.length != MAX_GROOTTE) {
-			System.err.println("Ongeldige matrix van landsdelen");
-		}
-
-		this.landsdelen = landsdelen;
-	}
-
-	public short getOrientatie() {
-		return orientatie;
-	}
-
-	public void getSoortTegel() {
-	}
-
-	// public void setSoortTegel(String soortTegel) {
-	// this.soortTegel = soortTegel;
-	// }
 
 	public Landsdeel bepaalLandsdeel(int pos) {
 		// er zijn foute coördinaten zijn doorgegeven.
@@ -338,10 +135,28 @@ public class Tegel {
 		return true;
 	}
 
-	// TODO invullen!!!!
-	public Tegel clone() {
-		return null;
-	}
+//	// TODO invullen!!!!
+//	public Tegel clone() {
+//		Tegel t = new Tegel();
+//		t.orientatie = orientatie;
+//		t.landsdelen = new Landsdeel[landsdelen.length];
+//		
+//		for (int i = 0; i < landsdelen.length; ++i) {
+//			if (t.landsdelen[i] == null) {
+//				t.landsdelen[i] = landsdelen[i].clone();
+//				for (int j = i; j < landsdelen.length; ++j) {
+//					if (landsdelen[i] == landsdelen[j]){
+//						t.landsdelen[j] = t.landsdelen[i];
+//					}
+//				}
+//			}
+//		}
+//		
+//		t.landsdelen = landsdelen.clone();
+//		t.tegelPresentatie = new String(tegelPresentatie);
+//
+//		return t;
+//	}
 
 	public boolean equals(Tegel t) {
 		boolean orientatieB, soortTegelB = true;
@@ -392,26 +207,11 @@ public class Tegel {
 		}
 	}
 	
-	public boolean equals(char[] landsdelen) {
-		boolean gelijk  = true;
-		
-		if (landsdelen.length != MAX_GROOTTE) {
-			return false;
-		}
-		
-		for(int i = 0; gelijk && i < MAX_GROOTTE; ++i) {
-			gelijk = landsdelen[i] == this.landsdelen[i].getType();
-		}
-		
-		return gelijk;
-	}
-	
 	public String getTegelPresentatie() {
 		return tegelPresentatie;
 	}
-
-	public void vulLandsdelen(Tegel noord, Tegel oost, Tegel zuid,
-			Tegel west) {
-		setLandsdelen(noord, oost, zuid, west);
+	
+	public short getOrientatie() {
+		return orientatie;
 	}
 }

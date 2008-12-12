@@ -29,22 +29,9 @@ public class TegelFabriekBestandLezerTest extends TestCase {
 	}
 
 	// ook nog testen met corrupte files
-	public void testGetLandsdeelMatrix() {
-		char[] landsdelen = tfbl.getLandsdeelMatrix(0);
-				
-		assertEquals(WEI, landsdelen[0]);
-		assertEquals(STAD, landsdelen[1]);
-		assertEquals(STAD, landsdelen[2]);
-		assertEquals(STAD, landsdelen[3]);
-		assertEquals(STAD, landsdelen[4]);
-		assertEquals(WEI, landsdelen[5]);
-		assertEquals(WEI, landsdelen[6]);
-		assertEquals(STAD, landsdelen[7]);
-		assertEquals(WEI, landsdelen[8]);
-		assertEquals(WEI, landsdelen[9]);
-		assertEquals(WEI, landsdelen[10]);
-		assertEquals(WEI, landsdelen[11]);
-		assertEquals(STAD, landsdelen[12]);		
+	public void testGetTegelStrings() {
+		String[] string = tfbl.getTegelStrings(0);
+		assertEquals("wsssswwswwww", string[0]);	
 	}
 
 }
