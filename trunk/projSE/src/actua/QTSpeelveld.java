@@ -20,10 +20,12 @@ import com.trolltech.qt.gui.QGraphicsSceneMouseEvent;
 import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
+import com.trolltech.qt.gui.QKeySequence;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QShortcut;
 import com.trolltech.qt.gui.QWheelEvent;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.core.Qt;
@@ -31,7 +33,7 @@ import com.trolltech.qt.core.Qt;
 public class QTSpeelveld extends GSpeelveld {
 	private class QtGraphicsView extends QGraphicsView{
 		private boolean gevuld;
-		Vector2D gridCoord;
+		private Vector2D gridCoord;
 		
 		public QtGraphicsView(QGraphicsScene parent,Vector2D coord) {
 			super(parent);
@@ -169,6 +171,8 @@ public class QTSpeelveld extends GSpeelveld {
 	};	
 	private QWidget gridWidget;
 	private QGridLayout gridLayout;
+	private int rows = 7;
+	private int columns = 9;
 
 	public QTSpeelveld(Spel spel, OptieVerwerker opties) {
 		super(spel);
@@ -187,8 +191,8 @@ public class QTSpeelveld extends GSpeelveld {
 		gridWidget.setMinimumSize(new QSize(720, 540));
 		//gridWidget.resize(new QSize(1024, 800));
 
-		for (int i=0;i<7;i++){
-			for (int j=0;j<9;j++){
+		for (int i=0;i<rows;i++){
+			for (int j=0;j<columns;j++){
 				scene=new QGraphicsScene(gridLayout);
 				view=new QtGraphicsView(scene,new Vector2D(i,j));
 				gridLayout.addWidget(view,i,j,1,1);
@@ -212,6 +216,15 @@ public class QTSpeelveld extends GSpeelveld {
 		QPushButton buttonRight = new QPushButton(">",gridWidget);
 		buttonRight.setGeometry(gridWidget.width()-26,gridWidget.height()/2-13,25,35);
 		buttonRight.clicked.connect(this,"cameraRight()");
+		
+		QShortcut shortcut = new QShortcut(new QKeySequence("Up"),gridWidget);
+		shortcut.activated.connect(this,"cameraUp()");
+		shortcut = new QShortcut(new QKeySequence("Down"),gridWidget);
+		shortcut.activated.connect(this,"cameraDown()");
+		shortcut = new QShortcut(new QKeySequence("Left"),gridWidget);
+		shortcut.activated.connect(this,"cameraLeft()");
+		shortcut = new QShortcut(new QKeySequence("Right"),gridWidget);
+		shortcut.activated.connect(this,"cameraRight()");
 		//
 	}
 	
@@ -277,25 +290,22 @@ public class QTSpeelveld extends GSpeelveld {
     
     //nog een paar foutjes
     private void veranderZicht(char richting) {
-    	Vector3D LBH;
     	int offsetX = getSpel().getTafelVerwerker().getStartTegelPos().getX();
     	int offsetY = getSpel().getTafelVerwerker().getStartTegelPos().getY();
     	int startX,startY,i=0,j=0,y;
     	int sizeX = gTegels.size();
     	int sizeY;
-    	
-		LBH = getSpel().getTafelVerwerker().getCamera().getHuidigeVector();
 		
-		startX = offsetX+LBH.getX();
-		startY = offsetY+LBH.getY();
+		startX = offsetX+getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX();
+		startY = offsetY+getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY();
 		
-		for (;i<7 && startX<0;startX++,i++)
-			for (y=0;y<9;y++) {
+		for (;i<rows && startX<0;startX++,i++)
+			for (y=0;y<columns;y++) {
 				((QtGraphicsView)gridLayout.itemAtPosition(i,y).widget()).removePixmap();
 			}
 		
-		for (;i<7;i++,startX++) {
-			for (y=startY;j<9 && y<0;y++) {
+		for (;i<rows;i++,startX++) {
+			for (y=startY;j<columns && y<0;y++) {
 				((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).removePixmap();
 				j++;
 			}
@@ -304,7 +314,7 @@ public class QTSpeelveld extends GSpeelveld {
 				sizeY = gTegels.get(startX).size();
 			else
 				sizeY=0;
-			for (;j<9;j++,y++) {
+			for (;j<columns;j++,y++) {
 				if (startX < sizeX && y < sizeY && gTegels.get(startX).get(y)!=null) {
 					((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).setPixmap(((QTTegel)gTegels.get(startX).get(y)).getPixmap());
 				}
