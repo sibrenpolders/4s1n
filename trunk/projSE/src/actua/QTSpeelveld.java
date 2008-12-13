@@ -51,6 +51,7 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 
 		private void setPixmap(QPixmap pixmap) {
+			scene().clear();
 			scene().addPixmap(pixmap.scaled(width()-5,height()-5));
 			gevuld=true;
 		}
@@ -276,25 +277,25 @@ public class QTSpeelveld extends GSpeelveld {
     
     //nog een paar foutjes
     private void veranderZicht(char richting) {
-    	Vector3D oldLBH;
+    	Vector3D LBH;
     	int offsetX = getSpel().getTafelVerwerker().getStartTegelPos().getX();
     	int offsetY = getSpel().getTafelVerwerker().getStartTegelPos().getY();
     	int startX,startY,i=0,j=0,y;
     	int sizeX = gTegels.size();
     	int sizeY;
     	
-		oldLBH = getSpel().getTafelVerwerker().getCamera().getHuidigeVector();
+		LBH = getSpel().getTafelVerwerker().getCamera().getHuidigeVector();
 		
-		startX = offsetX+oldLBH.getX();
-		startY = offsetY+oldLBH.getY();
+		startX = offsetX+LBH.getX();
+		startY = offsetY+LBH.getY();
 		
-		for (;startX<0;startX++,i++)
+		for (;i<7 && startX<0;startX++,i++)
 			for (y=0;y<9;y++) {
 				((QtGraphicsView)gridLayout.itemAtPosition(i,y).widget()).removePixmap();
 			}
 		
 		for (;i<7;i++,startX++) {
-			for (y=startY;y<0;y++) {
+			for (y=startY;j<9 && y<0;y++) {
 				((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).removePixmap();
 				j++;
 			}
