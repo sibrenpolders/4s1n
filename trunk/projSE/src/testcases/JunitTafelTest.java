@@ -2,7 +2,6 @@ package testcases;
 
 import java.util.ArrayList;
 
-import actua.Landsdeel;
 import actua.Pion;
 import actua.Tafel;
 import actua.Tegel;
@@ -96,7 +95,7 @@ public class JunitTafelTest extends TestCase {
 		assertFalse(tafel.plaatsPion(coords.get(3), Tegel.OOST, p));
 	}
 
-	public void testIsPlaatsingGeldig() {
+	public void testIsTegelPlaatsingGeldig() {
 		tafel.clear();
 		
 		tafel.plaatsTegel(tegels.get(0), coords.get(0));
@@ -142,18 +141,10 @@ public class JunitTafelTest extends TestCase {
 		fail("Not yet implemented");
 	}
 
-	public void testIsTegelPlaatsingGeldig() {
-//		Vector2D v = new Vector2D(1, 0);
-//		Tegel tegel = new Tegel();
-//		
-//		tafel.plaatsTegel(tegel, new Vector2D(0, 0));
-//		assertTrue(tafel.isTegelPlaatsingGeldig(tegel, v));
-//		tafel.plaatsTegel(tegel, v);		
-//		assertFalse(tafel.isTegelPlaatsingGeldig(tegel, v));
-	}
-
 	public void testUndo() {
-		fail("Not yet implemented");
+		tafel.clear();
+		
+		
 	}
 
 	public void testRedo() {
