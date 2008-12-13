@@ -483,8 +483,40 @@ public class Tafel {
 
 	}
 
-	public void undo() {
-
+	/**
+	 * Deze functie zal het veld 1 zet terugdoen.
+	 * Hiervoor heeft hij een referentie nodig naar de vorige laatst 
+	 * geplaatste tegel.
+	 * 
+	 * @param laatstGeplaatsteTegel
+	 * Referentie naar de vorige laatst geplaatste tegel.
+	 */
+	public void undo(Tegel laatstGeplaatsteTegel) {
+		Vector2D coordVerwijderdeTegel = null;
+		boolean gevonden = false;
+		
+		for (int i = 0; !gevonden && i < veld.size(); ++i) {
+			ArrayList<Tegel> kolomVector = veld.get(i);
+			for (int j = 0; !gevonden && j < kolomVector.size(); ++i) {
+				if (kolomVector.get(j) == this.laatstGeplaatsteTegel) {
+					kolomVector.remove(j);
+					coordVerwijderdeTegel = new Vector2D(i, j);
+				}				
+			}
+			if (kolomVector.size() == 0) {
+				veld.remove(i);
+			}
+		}
+		
+		if (gevonden && coordVerwijderdeTegel.getX() < startTegel.getX()) {
+			startTegel.setX(startTegel.getX() - 1);
+		}
+		
+		if (gevonden && coordVerwijderdeTegel.getY() < startTegel.getY()) {
+			startTegel.setY(startTegel.getY() - 1);
+		}
+		
+		this.laatstGeplaatsteTegel = laatstGeplaatsteTegel;
 	}
 
 	public void redo() {
@@ -555,5 +587,5 @@ public class Tafel {
 		}
 		
 		return hoogte;
-	}
+	}	
 }
