@@ -3,6 +3,9 @@ package testcases;
 import actua.Memento;
 import actua.Spel;
 import actua.Bestand;
+import actua.TafelVerwerker;
+import actua.Tegel;
+import actua.Vector2D;
 import junit.framework.TestCase;
 
 import java.io.FileInputStream;
@@ -23,43 +26,19 @@ public class JunitBestandTest extends TestCase {
 	}
 	
 	public void testSchrijfNaarBestand() {
-		Memento memento,mTest=null;
-		Spel spel,spelTest=null;
-		String naam = "bla.sam";
-		FileInputStream fis;
-		ObjectInputStream ois;
+		Spel spel = new Spel();
+		TafelVerwerker t = spel.getTafelVerwerker();
+		Tegel start = t.getLaatstGeplaatsteTegel();
+
+		bestand.schrijfNaarBestand(spel, null, "test");
+		Spel spel2 = new Spel();
+		Memento me2 = new Memento();
 		
-		memento = bestand.getMemento();
-		spel = bestand.getSpel();
+		bestand.leesVanBestand(spel2, me2, "test");
 		
-		bestand.schrijfNaarBestand(naam);
-		
-		try {
-			fis = new FileInputStream(naam);
-			ois = new ObjectInputStream(fis);
-			
-			mTest = (Memento)ois.readObject();
-			spelTest = (Spel)ois.readObject();
-			
-			ois.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		assertEquals("Memento juist opgeslagen",memento,mTest);
-		assertEquals("Spel juist opgeslagen",spel,spelTest); 
+		assertTrue(start == spel2.getTafelVerwerker().getLaatstGeplaatsteTegel());
 	}
 	
 	public void testLeesVanBestand() {
-		String naam = "bla.sam";
-		
-		bestand.leesVanBestand(naam);
-		
-		assertNotNull(bestand.getSpel());
-		assertNotNull(bestand.getMemento());
 	}
 }

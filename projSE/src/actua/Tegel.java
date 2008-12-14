@@ -1,5 +1,8 @@
 package actua;
 
+import java.io.IOException;
+import java.io.ObjectStreamException;
+
 /**
  * 
  */
@@ -136,27 +139,27 @@ public class Tegel {
 	}
 
 //	// TODO invullen!!!!
-//	public Tegel clone() {
-//		Tegel t = new Tegel();
-//		t.orientatie = orientatie;
-//		t.landsdelen = new Landsdeel[landsdelen.length];
-//		
-//		for (int i = 0; i < landsdelen.length; ++i) {
-//			if (t.landsdelen[i] == null) {
-//				t.landsdelen[i] = landsdelen[i].clone();
-//				for (int j = i; j < landsdelen.length; ++j) {
-//					if (landsdelen[i] == landsdelen[j]){
-//						t.landsdelen[j] = t.landsdelen[i];
-//					}
-//				}
-//			}
-//		}
-//		
-//		t.landsdelen = landsdelen.clone();
-//		t.tegelPresentatie = new String(tegelPresentatie);
-//
-//		return t;
-//	}
+	public Tegel clone() {
+		Tegel t = new Tegel();
+		t.orientatie = orientatie;
+		t.landsdelen = new Landsdeel[landsdelen.length];
+		
+		for (int i = 0; i < landsdelen.length; ++i) {
+			if (t.landsdelen[i] == null) {
+				t.landsdelen[i] = landsdelen[i].clone();
+				for (int j = i; j < landsdelen.length; ++j) {
+					if (landsdelen[i] == landsdelen[j]){
+						t.landsdelen[j] = t.landsdelen[i];
+					}
+				}
+			}
+		}
+		
+		t.landsdelen = landsdelen.clone();
+		t.tegelPresentatie = new String(tegelPresentatie);
+
+		return t;
+	}
 
 	public boolean equals(Tegel t) {
 		boolean orientatieB, soortTegelB = true;
@@ -225,4 +228,22 @@ public class Tegel {
 	public short getOrientatie() {
 		return orientatie;
 	}
+	
+	 private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		 out.writeShort(orientatie);
+		 out.writeObject(idPresentatie);
+		 out.writeObject(tegelPresentatie);
+		 // TODO pion plaatsing erin zetten (morgen)
+	 }
+	 
+	 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		 orientatie = in.readShort();
+		 idPresentatie = (String) in.readObject();
+		 tegelPresentatie = (String) in.readObject();
+		 setLandsdelen(new String(idPresentatie));
+	 }
+	 
+	 private void readObjectNoData() throws ObjectStreamException {
+		 
+	 }
 }

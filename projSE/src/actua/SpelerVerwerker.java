@@ -1,9 +1,13 @@
 package actua;
 
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-public class SpelerVerwerker {
-
+public class SpelerVerwerker implements Serializable{
+	private static final long serialVersionUID = 6790524642848337268L;
 	private ArrayList<Speler> spelers;
 	private int huidigeSpelerIndex;
 	
@@ -48,4 +52,18 @@ public class SpelerVerwerker {
 				return;
 			}
 	}
+	
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.writeObject(spelers);
+		out.writeInt(huidigeSpelerIndex);
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		spelers= (ArrayList<Speler>) in.readObject();
+		huidigeSpelerIndex = in.readInt();
+	}
+
+	private void readObjectNoData() throws ObjectStreamException {
+
+ }
 }

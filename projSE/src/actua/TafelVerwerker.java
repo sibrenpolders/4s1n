@@ -1,21 +1,24 @@
 package actua;
 
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.ArrayDeque;
 
-public class TafelVerwerker {
+public class TafelVerwerker implements Serializable{
+	private static final long serialVersionUID = -6431108242978335095L;
 	private static final int AANTAL_TEGELS = 72;
 	private ArrayDeque<Tegel> stapel;
-	private TegelFabriek tfb;
 	private Tafel tafel;
 
 	public TafelVerwerker() {
-		tfb = new TegelFabriek();
+		TegelFabriek tfb = new TegelFabriek();
 		stapel = tfb.maakTegelDeque(AANTAL_TEGELS);
 		tafel = new Tafel();
 	}
 
 	public TafelVerwerker(int aantalTegels) {
-		tfb = new TegelFabriek();
+		TegelFabriek tfb = new TegelFabriek();
 		stapel = tfb.maakTegelDeque(aantalTegels);
 		tafel = new Tafel();
 	}
@@ -100,7 +103,7 @@ public class TafelVerwerker {
 	}
 	
 	public void vulStapel(int aantal){
-		tfb = new TegelFabriek();
+		TegelFabriek tfb = new TegelFabriek();
 		
 		stapel = tfb.maakTegelDeque(aantal);
 	}
@@ -133,4 +136,18 @@ public class TafelVerwerker {
 	public boolean plaatsingPionMogelijk(Tegel t, Vector2D tegelCoord, int pionCoord) {
 		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
 	}
+	
+	 private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+			out.writeObject(stapel);
+			out.writeObject(tafel);
+	 }
+	 
+	 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		 stapel = (ArrayDeque<Tegel>) in.readObject();
+		 tafel = (Tafel) in.readObject();
+	 }
+	 
+	 private void readObjectNoData() throws ObjectStreamException {
+		 
+	 }
 }

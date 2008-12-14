@@ -1,12 +1,16 @@
 package actua;
 
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * @author school
  * 
  */
-public class Tafel {
+public class Tafel implements Serializable {
+	private static final long serialVersionUID = -1767380269715221020L;
 	private static final int NOORD = 0;
 	private static final int OOST = 1;
 	private static final int ZUID = 2;
@@ -59,8 +63,11 @@ public class Tafel {
 			return true;
 		}
 
-		int rij = startTegel.getX() + coord.getX();
-		int kolom = startTegel.getY() + coord.getY();
+		Vector2D veldCoord = zetOmInVeldCoord(coord);
+		int rij = veldCoord.getX();
+		int kolom = veldCoord.getY();
+		veldCoord = null;
+		
 		// mag de tegel hier gezet worden? M.a.w. zijn zijn buren geldig?
 		// TODO
 		if (!tegelKanGeplaatstWorden(tegel, rij, kolom)) {
@@ -127,27 +134,28 @@ public class Tafel {
 //		}
 //	}
 
-	private Tegel[] getBuren(int rij, int kolom) {
+	private Tegel[] getBuren(Vector2D coord) {
 		Tegel[] buren = new Tegel[4];
-		int x = startTegel.getX();
-		int y = startTegel.getY();
-		
-		Vector2D coord = new Vector2D(rij-1 - x, kolom - y);
+		Vector2D veldCoord = new Vector2D(coord);
 		
 		// noord buur
-		buren[0] = bepaalTegel(coord);
-		
-		// west buur
-		coord.setXY(rij - x, kolom+1 - y);
-		buren[1] = bepaalTegel(coord);
-		
-		// zuid buur
-		coord.setXY(rij+1 -x, kolom - y);
-		buren[2] = bepaalTegel(coord);
+		veldCoord.setX(veldCoord.getX() - 1);
+		buren[0] = bepaalTegel(veldCoord);
 		
 		// oost buur
-		coord.setXY(rij - x, kolom-1 - y);
-		buren[3] = bepaalTegel(coord);
+		veldCoord.setX(veldCoord.getX() + 1);
+		veldCoord.setY(veldCoord.getY() + 1);
+		buren[1] = bepaalTegel(veldCoord);
+		
+		// zuid buur
+		veldCoord.setX(veldCoord.getX() + 1);
+		veldCoord.setY(veldCoord.getY() - 1);
+		buren[2] = bepaalTegel(veldCoord);
+		
+		// oost buur
+		veldCoord.setX(veldCoord.getX() - 1);
+		veldCoord.setY(veldCoord.getY() - 1);
+		buren[3] = bepaalTegel(veldCoord);
 			
 		return buren;
 	}
@@ -361,10 +369,9 @@ public class Tafel {
 			return false;
 		}
 		
-		int rij = tegelCoord.getX() - startTegel.getX();
-		int kolom = tegelCoord.getY() - startTegel.getY();
+		Vector2D veldCoord = zetOmInVeldCoord(tegelCoord);
 		
-		Tegel[] buren = getBuren(rij, kolom);
+		Tegel[] buren = getBuren(veldCoord);
 		char matchLandsdeel = tegel.bepaalLandsdeel(pionCoord).getType();
 		
 		boolean pionPlaatsingGeldig = true;
@@ -442,8 +449,6 @@ public class Tafel {
 		return pionPlaatsingGeldig;
 	}
 
-	// TODO Moeten hier niet de coordinaten weer meegegeven worden?
-	// hogere lagen hebben toch geen nood aan het opslaan van de Tegel objecten?
 	public boolean isLaatste(int rij, int kolom) {
 		return bepaalTegel(new Vector2D(rij, kolom)) == laatstGeplaatsteTegel;
 	}
@@ -587,5 +592,74 @@ public class Tafel {
 		}
 		
 		return hoogte;
-	}	
+	}
+	
+	public String[] getTegelPresentatie(Vector2D coord) {
+		if (coord == null) {
+			return null;
+		}
+		
+		Vector2D veldCoord = zetOmInVeldCoord(coord);	
+		int x = veldCoord.getX();
+		int y = veldCoord.getY();
+		
+		if (veldCoord != null && x >= 0 && x < veld.size()
+				&& y >= 0 && y < veld.get(x).size()) {
+			Tegel t = veld.get(x).get(y);
+			String[] retString = new String[2];
+			retString[0] = t.getTegelPresentatie();
+			retString[1] = t.getIdPresentatie();
+			return retString;
+		}
+		
+		return null;
+	}
+
+	private Vector2D zetOmInVeldCoord(Vector2D coord) {
+		int x = startTegel.getX() + coord.getX();
+		int y = startTegel.getY() + coord.getY();
+		
+		return new Vector2D(x, y);
+	}
+	
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		boolean gevonden = false;
+		ArrayList<Tegel> kolomVector;
+		Vector2D coordLaatstGeplaatsteTegel = null;
+		
+		for (int i = 0; !gevonden && i < veld.size(); ++i) {
+			kolomVector = veld.get(i);
+			for(int j = 0; j < kolomVector.size(); ++j) {
+				if (kolomVector.get(j) == laatstGeplaatsteTegel) {
+					gevonden = true;
+					coordLaatstGeplaatsteTegel = new Vector2D(i, j);
+				}
+			}
+		}
+		
+		out.writeObject(coordLaatstGeplaatsteTegel);
+		out.writeObject(veld);
+		out.writeObject(oogpunt);
+		out.writeObject(startTegel);
+	}
+	
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		Vector2D coordLaatstGeplaatsteTegel = (Vector2D)in.readObject();
+		veld = (ArrayList<ArrayList<Tegel>>) in.readObject();
+		oogpunt = (Camera) in.readObject();
+		startTegel = (Vector2D) in.readObject();
+		
+		int x = coordLaatstGeplaatsteTegel.getX();
+		int y = coordLaatstGeplaatsteTegel.getY();
+		
+		if (coordLaatstGeplaatsteTegel != null && x >= 0 
+				&& x < veld.size() && y >= 0 && y < veld.get(x).size()) {
+			laatstGeplaatsteTegel = veld.get(x).get(y);
+		}
+	}
+
+	private void readObjectNoData() throws ObjectStreamException {
+		// TODO invullen??
+	}
+
 }

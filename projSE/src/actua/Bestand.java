@@ -8,8 +8,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class Bestand implements Serializable {
-	private static final long serialVersionUID = 2838794736711909285L;
+public class Bestand {
 	private String naam;
 	private Spel spel;
 	private Memento memento;
@@ -36,22 +35,23 @@ public class Bestand implements Serializable {
 		return naam;
 	}
 
-	public void leesVanBestand() {
-		leesVanBestand(naam);
+	public void leesVanBestand(Spel spel, Memento memento) {
+		leesVanBestand(spel, memento, naam);
 	}
 
-	public void leesVanBestand(String naam) {
+	public void leesVanBestand(Spel spel, Memento memento, String naam) {
 		FileInputStream fis;
-		ObjectInputStream ois;
+		ObjectInputStream in;
 
 		try {
 			fis = new FileInputStream(naam);
-			ois = new ObjectInputStream(fis);
+			in = new ObjectInputStream(fis);
 
-			spel = (Spel) ois.readObject();
-			memento = (Memento) ois.readObject();
+			spel = (Spel) in.readObject();
+//			memento = (Memento) ois.readObject();
 
-			ois.close();
+			in.close();
+			fis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -61,26 +61,22 @@ public class Bestand implements Serializable {
 		}
 	}
 
-	public void schrijfNaarBestand() {
-		schrijfNaarBestand(naam);
+	public void schrijfNaarBestand(Spel spel, Memento memento) {
+		schrijfNaarBestand(spel, memento, naam);
 	}
 
-	public void schrijfNaarBestand(String naam) {
-		FileOutputStream fos;
-		ObjectOutputStream oos;
-
+	public void schrijfNaarBestand(Spel spel, Memento memento, String naam) {
 		try {
-			fos = new FileOutputStream(naam);
-			oos = new ObjectOutputStream(fos);
-
-			oos.writeObject(spel);
-			oos.writeObject(memento);
-
-			oos.close();
+			FileOutputStream fos = new FileOutputStream(naam);
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			
+			out.writeObject(spel);
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}		
 	}
 }
