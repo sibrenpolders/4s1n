@@ -10,32 +10,65 @@ import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QDrag;
 import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
-import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPalette;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTInfo extends GInfo {
 	private QWidget qtInfo;
 
-	private class qtInfoVenster extends QWidget {
-		public qtInfoVenster() {
+	private class Stapel extends QWidget {
+		private TafelVerwerker tafelVerwerker;
+		QLabel tegelIcon;
+		
+		public Stapel(Spel spel) {
 			super();
-			// grabMouse();
-			QVBoxLayout vbox = new QVBoxLayout();
-
-			QLabel tegelIcon = new QLabel(this);
-			tegelIcon.setPixmap(new QPixmap("src/icons/city1.png"));
+			Tegel tegel = new Tegel();
+			tegelIcon = new QLabel(this);
+			tafelVerwerker = spel.getTafelVerwerker();
+					
+			tegel = tafelVerwerker.vraagNieuweTegel();
+			tegelIcon.setPixmap(new QPixmap("src/icons/"+tegel.getTegelPresentatie()+".png"));
 			tegelIcon.setMinimumSize(new QSize(90, 90));
 			tegelIcon.setMaximumSize(new QSize(90, 90));
 
 			setMinimumSize(new QSize(90, 90));
-			setLayout(vbox);
+		}
+
+		public void roteerRechts(){
+			QLabel child = (QLabel) childAt(0,0);
+			
+			if(child != null){
+				Tegel tegel = new Tegel();
+				tegel = tafelVerwerker.vraagNieuweTegel();
+				if(tegel != null){
+					QTTegel qtTegel = new QTTegel(tegel);
+					qtTegel.roteer(true);
+					child.clear();
+					child.setPixmap(new QPixmap(qtTegel.getPixmap()));
+				}
+			}
+		}
+		
+		public void roteerLinks(){
+			QLabel child = (QLabel) childAt(0,0);
+			
+			if(child != null){
+				Tegel tegel = new Tegel();
+				tegel = tafelVerwerker.vraagNieuweTegel();
+				if(tegel != null){
+					QTTegel qtTegel = new QTTegel(tegel);
+					qtTegel.roteer(false);
+					child.clear();
+					child.setPixmap(new QPixmap(qtTegel.getPixmap()));
+				}
+			}
 		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
@@ -64,37 +97,8 @@ public class QTInfo extends GInfo {
 			}
 		}
 
-		protected void dropEvent(QDropEvent event) {
-			// if (event.mimeData().hasFormat("application/x-dnditemdata")) {
-			// QByteArray itemData =
-			// event.mimeData().data("application/x-dnditemdata");
-			// QDataStream dataStream = new QDataStream(itemData,
-			// QIODevice.OpenModeFlag.ReadOnly);
-			//	        
-			// QPixmap pixmap = new QPixmap();
-			// QPoint offset = new QPoint();
-			// pixmap.readFrom(dataStream);
-			// offset.readFrom(dataStream);
-			//
-			// QLabel newIcon = new QLabel(this);
-			// newIcon.setPixmap(pixmap);
-			// newIcon.move(event.pos().subtract(offset));
-			// newIcon.show();
-			// newIcon.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose);
-			//
-			// if (event.source().equals(this)) {
-			// event.setDropAction(Qt.DropAction.MoveAction);
-			// event.accept();
-			// } else {
-			// event.acceptProposedAction();
-			// }
-			// } else {
-			// event.ignore();
-			// }
-		}
-
 		protected void mousePressEvent(QMouseEvent event) {
-			QLabel child = (QLabel) childAt(event.pos());
+			QLabel child = (QLabel) childAt(0,0);
 			if (child == null)
 				return;
 
@@ -117,16 +121,23 @@ public class QTInfo extends GInfo {
 			QPixmap tempPixmap = new QPixmap(pixmap);
 			QPainter painter = new QPainter();
 			painter.begin(tempPixmap);
-			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,
-					127, 127)));
+			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,127, 127)));
 			painter.end();
 
 			child.setPixmap(tempPixmap);
 
-			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
-					Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction)
-				child.close();
-			else {
+			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction){
+				Tegel tegel = new Tegel();
+				tegel = tafelVerwerker.vraagNieuweTegel();
+				
+				if( tegel == null )
+					child.close();
+				else{
+					child.show();
+					child.setPixmap(new QPixmap("src/icons/"+tegel.getTegelPresentatie()+".png"));		
+				}
+					
+			}else {
 				child.show();
 				child.setPixmap(pixmap);
 			}
@@ -136,20 +147,27 @@ public class QTInfo extends GInfo {
 	public QTInfo(Spel spel, OptieVerwerker opties) {
 		super(spel, opties);
 		qtInfo = new QWidget();
+		QWidget hBox = new QWidget();
 		QPalette palette = new QPalette();
+		QPushButton roteerR = new QPushButton("Draai Rechts");
+		QPushButton roteerL = new QPushButton("Draai Links");
+		Stapel stapel = new Stapel(spel);
 
 		QVBoxLayout vbox = new QVBoxLayout();
-		vbox.addWidget(new qtInfoVenster());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'r', 0), qtInfo)
-				.getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'g', 0), qtInfo)
-		.getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
-		.getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
-		.getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
-		.getSpelerInfoveld());
+		QHBoxLayout hbox = new QHBoxLayout();
+		hbox.addWidget(roteerL);
+		hbox.addWidget(roteerR);
+		vbox.addWidget(stapel);
+		hBox.setLayout(hbox);
+		vbox.addWidget(hBox);
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'r', 0), qtInfo).getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'g', 0), qtInfo).getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
+		
+		roteerR.clicked.connect(stapel, "roteerRechts()");
+		roteerL.clicked.connect(stapel, "roteerLinks()");
 
 		qtInfo.setLayout(vbox);
 
