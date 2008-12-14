@@ -11,8 +11,6 @@ public abstract class GTegel {
 		this.tegel=tegel;
 	}
 	
-	public abstract void show();
-	public abstract void hide();
 	public abstract void roteer(boolean richting);
 
 	protected Tegel getTegel() {
