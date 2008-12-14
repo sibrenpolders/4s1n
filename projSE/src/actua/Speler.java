@@ -3,14 +3,19 @@ package actua;
 import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import actua.Pion;
 
 public class Speler implements Serializable {
+	public static final char INACTIVE_COLOR = 'x';
+	public static final char SPELER_ROOD = 'r';
+	public static final char SPELER_BLAUW= 'b';
+	public static final char SPELER_WIT= 'w';
+	public static final char SPELER_GEEL= 'g';
+	public static final char SPELER_ORANJE= 'o';
+	
 	private static final long serialVersionUID = -5478932661892837977L;
-	protected static short DEFAULT_AANTALPIONNEN = 7;
-	protected static char INACTIVE_COLOR = 'x';
+	protected static short DEFAULT_AANTALPIONNEN = 7;	
 	protected String naam;
 	protected long score;
 	protected char kleur;
