@@ -1,6 +1,12 @@
 package actua;
 
-public class Pion {
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+import java.util.ArrayDeque;
+
+public class Pion implements Serializable {
+	private static final long serialVersionUID = -8119438347413483304L;
 	private boolean geplaatst;
 	private char kleur;
 
@@ -11,10 +17,6 @@ public class Pion {
 	public Pion(char kleur) {
 		this.kleur = kleur;
 		geplaatst = false;
-	}
-
-	public Vector2D getPositie() {
-		return null;
 	}
 
 	public char getKleur() {
@@ -35,5 +37,19 @@ public class Pion {
 
 	public boolean getGeplaatst() {
 		return geplaatst;
+	}
+	
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.writeBoolean(geplaatst);
+		out.writeChar(kleur);
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		geplaatst = in.readBoolean();
+		kleur = in.readChar();
+	}
+
+	private void readObjectNoData() throws ObjectStreamException {
+
 	}
 }

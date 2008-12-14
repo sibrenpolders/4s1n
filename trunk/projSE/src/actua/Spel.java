@@ -1,13 +1,19 @@
 package actua;
 
-public class Spel {
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+
+public class Spel implements Serializable{
+	private static final long serialVersionUID = 2689906234458876556L;
 	private TafelVerwerker tafelVerwerker;
-	private BestandsVerwerker bestandVerwerker;
+	// waarom heeft een spel een bestandsverwerken nodig?
+//	private BestandsVerwerker bestandVerwerker;
 	private SpelerVerwerker spelerVerwerker;
 
 	public Spel() {
 		tafelVerwerker = new TafelVerwerker();
-		bestandVerwerker = new BestandsVerwerker();
+//		bestandVerwerker = new BestandsVerwerker();
 		spelerVerwerker = new SpelerVerwerker();
 	}
 
@@ -19,8 +25,22 @@ public class Spel {
 		return spelerVerwerker;
 	}
 
-	public BestandsVerwerker getBestandVerwerker () {
-		return bestandVerwerker;
-	}
+//	public BestandsVerwerker getBestandVerwerker () {
+//		return bestandVerwerker;
+//	}
 	
+	 private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		 out.writeObject(tafelVerwerker);
+//		 out.writeObject(bestandVerwerker);
+		 out.writeObject(spelerVerwerker);
+	 }
+	 
+	 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		 tafelVerwerker = (TafelVerwerker) in.readObject();
+		 spelerVerwerker = (SpelerVerwerker) in.readObject();
+	 }
+	 
+	 private void readObjectNoData() throws ObjectStreamException {
+		 
+	 }
 }

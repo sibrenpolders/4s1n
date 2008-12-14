@@ -7,7 +7,6 @@ public class BestandsVerwerker {
 	private Bestand bestand;
 
 	public BestandsVerwerker() {
-		bestand = null;
 	}
 
 	public boolean bestandBestaat(String naam) {
@@ -21,18 +20,20 @@ public class BestandsVerwerker {
 
 	public boolean slaSpelToestandOp(String naam, Spel spel, Memento me,
 			boolean confirm) {
+		Bestand bestand = new Bestand();
 		if (heeftExtensie(naam, extensie)
 				&& (!bestandBestaat(naam) || (bestandBestaat(naam) && confirm))) {
-			(bestand = new Bestand(naam, spel, me)).schrijfNaarBestand();
+			bestand.schrijfNaarBestand(spel, me, naam);
 			return true;
 		}
 
 		return false;
 	}
 
-	public boolean laadSpelToestandIn(String naam, boolean confirm) {
+	public boolean laadSpelToestandIn(Spel spel, Memento me, String naam, boolean confirm) {
+		Bestand bestand = new Bestand();
 		if (heeftExtensie(naam, extensie) && bestandBestaat(naam) && confirm) {
-			(bestand = new Bestand()).leesVanBestand(naam);
+			bestand.leesVanBestand(spel, me, naam);
 			return true;
 		}
 		return false;

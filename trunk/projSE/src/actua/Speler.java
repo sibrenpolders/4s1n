@@ -1,21 +1,26 @@
 package actua;
 
-import java.util.Vector;
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import actua.Pion;
 
-public class Speler {
+public class Speler implements Serializable {
+	private static final long serialVersionUID = -5478932661892837977L;
 	protected static short DEFAULT_AANTALPIONNEN = 7;
 	protected static char INACTIVE_COLOR = 'x';
 	protected String naam;
 	protected long score;
 	protected char kleur;
-	protected Vector<Pion> pionnen;
+	protected ArrayList<Pion> pionnen;
 
 	public Speler(String naam, char kleur, long score) {
 		this.naam = naam;
 		this.score = score;
 		this.kleur = kleur;
-		pionnen = new Vector<Pion>();
+		pionnen = new ArrayList<Pion>();
 		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
 			pionnen.add(new Pion(kleur));
 	}
@@ -81,11 +86,29 @@ public class Speler {
 		score += nb;
 	}
 
-	protected Vector<Pion> getPionnen() {
+	protected ArrayList<Pion> getPionnen() {
 		return pionnen;
 	}
 
 	public void verwijder() {
 		setKleur(INACTIVE_COLOR);
 	}
+	
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+			out.writeObject(naam);
+			out.writeLong(score);
+			out.writeChar(kleur);
+			out.writeObject(pionnen);
+	 }
+	 
+	 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		 naam = (String) in.readObject();
+		 score = in.readLong();
+		 kleur = in.readChar();
+		 pionnen = (ArrayList<Pion>) in.readObject();
+	 }
+	 
+	 private void readObjectNoData() throws ObjectStreamException {
+		 
+	 }
 }
