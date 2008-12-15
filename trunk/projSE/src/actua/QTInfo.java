@@ -182,4 +182,34 @@ public class QTInfo extends GInfo {
 		this.qtInfo = qtInfo;
 	}
 
+	@Override
+	public void addSpeler(Speler speler) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void toonInfo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void toonSpelers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void toonTegelStapel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateInfo() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

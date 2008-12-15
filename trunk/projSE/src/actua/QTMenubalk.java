@@ -56,6 +56,7 @@ public class QTMenubalk extends GMenubalk {
 
 		opties = addMenuItem("Opties");
 		optie = addActionItem(opties, "Instellingen");
+		optie.triggered.connect(this.gOptie, "show()");
 	}
 
 	private void help() {
@@ -70,7 +71,11 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	private void infoVenster() {
-		QMessageBox.about(menubar,"Over Applicatie","Deze <b>Applicatie</b> is mogelijk gemaakt door "
+		QMessageBox
+				.about(
+						menubar,
+						"Over Applicatie",
+						"Deze <b>Applicatie</b> is mogelijk gemaakt door "
 								+ "Niels, Sam, Sam, <s>Mr. Sibrand</s>, Sibren en Bart Peeters ");
 	}
 

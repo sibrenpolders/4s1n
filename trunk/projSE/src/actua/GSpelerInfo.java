@@ -1,7 +1,7 @@
 package actua;
 
 public abstract class GSpelerInfo {
-	private Speler speler;
+	protected Speler speler;
 
 	public GSpelerInfo(Speler speler) {
 		this.speler = speler;
