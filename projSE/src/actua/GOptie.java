@@ -7,14 +7,9 @@ public abstract class GOptie {
 		this.optieVerwerker = ov;
 	}
 
-	public abstract void geefOptiesWeer();
-
-	public abstract void sluitOptiesAf();
-
 	public abstract void show();
 
 	public abstract void hide();
 
-	protected void update() {
-	}
+	protected abstract void save();
 }
