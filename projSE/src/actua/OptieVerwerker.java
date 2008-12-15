@@ -29,7 +29,7 @@ public class OptieVerwerker {
 
 	protected void finalize() throws Throwable {
 		super.finalize();
-		// schrijfNaarBestand();
+		schrijfNaarBestand();
 	}
 
 	public static String getDefaultOptieBestand() {
@@ -56,6 +56,10 @@ public class OptieVerwerker {
 			return null;
 		else
 			return opties.get(i).getWaarde();
+	}
+
+	public int getNbOpties() {
+		return opties.size();
 	}
 
 	public Optie.TYPE getType(int i) {

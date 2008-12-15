@@ -7,7 +7,7 @@ public class Applicatie {
 			System.exit(1);
 		}
 
-		GWindow window = f.getWindow(new Spel(), new OptieVerwerker(),
+		GWindow window = f.getWindow(new Spel(), new OptieVerwerker("src/xml/opties.txt"),
 				new HelpVerwerker());
 		window.show();
 	}

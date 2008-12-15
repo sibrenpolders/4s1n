@@ -10,7 +10,6 @@ public abstract class GMenubalk {
 		gHelp = null;
 		gOptie = null;
 		gInitSpel = null;
-	//	gParent = parent;
 	}
 
 	public abstract void show();
@@ -40,6 +39,5 @@ public abstract class GMenubalk {
 	protected void setGInitSpel(GInitSpel initSpel) {
 		gInitSpel = initSpel;
 	}
-	
-	
+
 }
