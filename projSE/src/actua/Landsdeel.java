@@ -8,16 +8,16 @@ public class Landsdeel {
 	public static final char WEG = 'g';
 	public static final char KLOOSTER= 'k';
 	
-	private ArrayList<Pion> pionnen;
+	private Pion pion;
 	private char type;
 
 	public Landsdeel() {
-		pionnen = new ArrayList<Pion>();
+		pion= null;
 	}
 
 	public Landsdeel(char type) {
 		this.type = type;
-		pionnen = new ArrayList<Pion>();
+		pion= null;
 	}
 	
 	public char getType() {
@@ -25,16 +25,24 @@ public class Landsdeel {
 	}
 
 	public void plaatsPion(Pion pion) {
-		pionnen.add(pion);
+		if (pion != null) {
+			this.pion = pion;
+		}
 	}
 
 	public boolean isPionGeplaatst() {
-		return pionnen.size() != 0;
+		return pion != null;
 	}
 	
 	public Landsdeel clone() {
 		Landsdeel ld = new Landsdeel(type);	
 		return ld;
+	}
+	
+	public Pion neemPionnenTerug() {
+		Pion returnPion = pion;
+		this.pion = null;
+		return returnPion;
 	}
 }
 
