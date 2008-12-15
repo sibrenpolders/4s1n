@@ -26,28 +26,29 @@ public class QTInfo extends GInfo {
 	private class Stapel extends QWidget {
 		private TafelVerwerker tafelVerwerker;
 		QLabel tegelIcon;
-		
+
 		public Stapel(Spel spel) {
 			super();
 			Tegel tegel = new Tegel();
 			tegelIcon = new QLabel(this);
 			tafelVerwerker = spel.getTafelVerwerker();
-					
+
 			tegel = tafelVerwerker.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/"+tegel.getTegelPresentatie()+".png"));
+			tegelIcon.setPixmap(new QPixmap("src/icons/"
+					+ tegel.getTegelPresentatie() + ".png"));
 			tegelIcon.setMinimumSize(new QSize(90, 90));
 			tegelIcon.setMaximumSize(new QSize(90, 90));
 
 			setMinimumSize(new QSize(90, 90));
 		}
 
-		public void roteerRechts(){
-			QLabel child = (QLabel) childAt(0,0);
-			
-			if(child != null){
+		public void roteerRechts() {
+			QLabel child = (QLabel) childAt(0, 0);
+
+			if (child != null) {
 				Tegel tegel = new Tegel();
 				tegel = tafelVerwerker.vraagNieuweTegel();
-				if(tegel != null){
+				if (tegel != null) {
 					QTTegel qtTegel = new QTTegel(tegel);
 					qtTegel.roteer(true);
 					child.clear();
@@ -55,14 +56,14 @@ public class QTInfo extends GInfo {
 				}
 			}
 		}
-		
-		public void roteerLinks(){
-			QLabel child = (QLabel) childAt(0,0);
-			
-			if(child != null){
+
+		public void roteerLinks() {
+			QLabel child = (QLabel) childAt(0, 0);
+
+			if (child != null) {
 				Tegel tegel = new Tegel();
 				tegel = tafelVerwerker.vraagNieuweTegel();
-				if(tegel != null){
+				if (tegel != null) {
 					QTTegel qtTegel = new QTTegel(tegel);
 					qtTegel.roteer(false);
 					child.clear();
@@ -98,7 +99,7 @@ public class QTInfo extends GInfo {
 		}
 
 		protected void mousePressEvent(QMouseEvent event) {
-			QLabel child = (QLabel) childAt(0,0);
+			QLabel child = (QLabel) childAt(0, 0);
 			if (child == null)
 				return;
 
@@ -121,23 +122,26 @@ public class QTInfo extends GInfo {
 			QPixmap tempPixmap = new QPixmap(pixmap);
 			QPainter painter = new QPainter();
 			painter.begin(tempPixmap);
-			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,127, 127)));
+			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,
+					127, 127)));
 			painter.end();
 
 			child.setPixmap(tempPixmap);
 
-			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction){
+			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
+					Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
 				Tegel tegel = new Tegel();
 				tegel = tafelVerwerker.vraagNieuweTegel();
-				
-				if( tegel == null )
+
+				if (tegel == null)
 					child.close();
-				else{
+				else {
 					child.show();
-					child.setPixmap(new QPixmap("src/icons/"+tegel.getTegelPresentatie()+".png"));		
+					child.setPixmap(new QPixmap("src/icons/"
+							+ tegel.getTegelPresentatie() + ".png"));
 				}
-					
-			}else {
+
+			} else {
 				child.show();
 				child.setPixmap(pixmap);
 			}
@@ -160,12 +164,17 @@ public class QTInfo extends GInfo {
 		vbox.addWidget(stapel);
 		hBox.setLayout(hbox);
 		vbox.addWidget(hBox);
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'r', 0), qtInfo).getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'g', 0), qtInfo).getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
-		
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'r', 0), qtInfo)
+				.getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'g', 0), qtInfo)
+				.getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
+				.getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
+				.getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
+				.getSpelerInfoveld());
+
 		roteerR.clicked.connect(stapel, "roteerRechts()");
 		roteerL.clicked.connect(stapel, "roteerLinks()");
 
@@ -185,31 +194,31 @@ public class QTInfo extends GInfo {
 	@Override
 	public void addSpeler(Speler speler) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void toonInfo() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void toonSpelers() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void toonTegelStapel() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateInfo() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
