@@ -357,6 +357,10 @@ public class Tafel implements Serializable {
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
 		Tegel t = bepaalTegel(tegelCoord);
 
+		if (t != laatstGeplaatsteTegel) {
+			return false;
+		}
+		
 		return t != null && isPionPlaatsingGeldig(t, tegelCoord, pionCoord)
 				&& t.plaatsPion(pionCoord, pion);
 	}
@@ -370,13 +374,15 @@ public class Tafel implements Serializable {
 
 	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
 			int pionCoord) {
+		Vector2D  veldCoord = zetOmInVeldCoord(tegelCoord);
+		return isPionPlaatsingGeldig(pionCoord, tegel, veldCoord);
+	}
+	
+	private boolean isPionPlaatsingGeldig(int pionCoord, Tegel tegel, Vector2D veldCoord) {
 		if (pionCoord < 0 || pionCoord >= Tegel.MAX_GROOTTE || 
 				tegel.isPionGeplaatst(pionCoord)) {
 			return false;
 		}
-		
-		Vector2D veldCoord = zetOmInVeldCoord(tegelCoord);
-		
 		Tegel[] buren = getBuren(veldCoord);
 		char matchLandsdeel = tegel.bepaalLandsdeel(pionCoord).getType();
 		
@@ -399,7 +405,7 @@ public class Tafel implements Serializable {
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(WEST, 
 					matchLandsdeel, buren[3], veldCoord);
 		}
-		
+
 		return pionPlaatsingGeldig;
 	}
 
@@ -438,22 +444,19 @@ public class Tafel implements Serializable {
 		huidigeLd = tegel.bepaalLandsdeel(windrichting);
 		
 		if (huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(tegel, tegelCoord,
-					windrichting);
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting, tegel, tegelCoord);
 		}
 		
 		vorigeLd = huidigeLd;
 		huidigeLd = tegel.bepaalLandsdeel(windrichting2);
 		if (pionPlaatsingGeldig && vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(tegel, tegelCoord,
-					windrichting2);
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting2, tegel, tegelCoord);
 		}
 		
 		vorigeLd = huidigeLd;
 		huidigeLd = tegel.bepaalLandsdeel(windrichting3);
 		if (pionPlaatsingGeldig && vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(tegel, tegelCoord,
-					windrichting3);
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting3, tegel, tegelCoord);
 		}
 		
 		return pionPlaatsingGeldig;
