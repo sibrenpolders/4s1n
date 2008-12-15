@@ -49,8 +49,8 @@ public class Score {
 		int y = coord.getY();
 		aantalTegels = 0;
 		
-		if (coord != null || veld != null || veld.size() <= x || x < 0 || y < 0 ||
-				veld.get(x).size() <= x) {
+		if (coord == null || veld == null || veld.size() <= x || x < 0 || y < 0 ||
+				veld.get(x).size() <= y) {
 			return;
 		}
 		
@@ -78,12 +78,15 @@ public class Score {
 	private void updateScore(Vector2D coord, ArrayList<ArrayList<Tegel>> veld,
 			Tegel geplaatsteTegel, int i) {
 		Landsdeel ld = geplaatsteTegel.bepaalLandsdeel(i);
-		ArrayList<Pion> pionnen = new ArrayList<Pion>();
+		ArrayList<Pion> pionnen = new ArrayList<Pion>();	
 		
 		if (ld.getType() == Landsdeel.KLOOSTER && ld.isPionGeplaatst()) {
 			updateScoreKlooster(veld, coord, i, ld);
 		} else if (ld.getType() == Landsdeel.STAD) {
-			updateScoreStad(veld, coord, i, ld, pionnen); 
+			ArrayList<Tegel> checked = new ArrayList<Tegel>();
+			if(updateScoreStad(veld, coord, ld, pionnen, checked)) { 
+				updateScore(pionnen, STAD_PUNTEN);
+			}
 		} else if (ld.getType() == Landsdeel.WEG) {
 			updateScoreWeg(veld, coord, i, ld, pionnen);
 		}
@@ -240,8 +243,8 @@ public class Score {
 		return uitGaandeWeg;
 	}
 
-	private void updateScoreStad(ArrayList<ArrayList<Tegel>> veld,
-			Vector2D coord, int i, Landsdeel ld, ArrayList<Pion> pionnen) {
+	private boolean updateScoreStad(ArrayList<ArrayList<Tegel>> veld,
+			Vector2D coord, Landsdeel ld, ArrayList<Pion> pionnen, ArrayList<Tegel> checked) {
 		if (ld.isPionGeplaatst()) {
 			pionnen.add(ld.neemPionnenTerug());
 		}
@@ -249,38 +252,62 @@ public class Score {
 		++aantalTegels;
 		
 		Tegel t = veld.get(coord.getX()).get(coord.getY());
-		Vector2D coordBuur = new Vector2D(coord);
-		switch(i) {
-		case Tegel.NOORD:
-			coordBuur.setX(coordBuur.getX()-1);		
-			updateScoreStad(veld, coordBuur, ld, Tegel.NOORD, pionnen);
-			break;
-		case Tegel.WEST:
-			coordBuur.setY(coordBuur.getY()+1);		
-			updateScoreStad(veld, coordBuur, ld, Tegel.NOORD, pionnen);
-			break;
-		case Tegel.ZUID:
-			coordBuur.setX(coordBuur.getX()+1);		
-			updateScoreStad(veld, coordBuur, ld, Tegel.NOORD, pionnen);
-			break;
-		case Tegel.OOST:
-			coordBuur.setX(coordBuur.getY()-1);		
-			updateScoreStad(veld, coordBuur, ld, Tegel.NOORD, pionnen);
-			break;
+		checked.add(t);
+		int x = coord.getX();
+		int y = coord.getY();
+		Vector2D coordBuur = new Vector2D();
+		
+		boolean eindeGevonden = true;
+		
+		if (t.bepaalLandsdeel(Tegel.NOORD) == ld) {
+			coordBuur.setXY(x-1, y);
+			eindeGevonden = updateScoreStad(veld, coordBuur, ld, Tegel.ZUID, pionnen, checked);
+		}
+
+		if (eindeGevonden && t.bepaalLandsdeel(Tegel.OOST) == ld) {
+			coordBuur.setXY(x, y+1);
+			eindeGevonden = updateScoreStad(veld, coordBuur, ld, Tegel.WEST, pionnen, checked);
+		}
+
+		if (eindeGevonden && t.bepaalLandsdeel(Tegel.ZUID) == ld) {
+			coordBuur.setXY(x+1, y);
+			eindeGevonden = updateScoreStad(veld, coordBuur, ld, Tegel.NOORD, pionnen, checked);
+		}
+
+		if (eindeGevonden && t.bepaalLandsdeel(Tegel.WEST) == ld) {
+			coordBuur.setXY(x, y-1);
+			eindeGevonden = updateScoreStad(veld, coordBuur, ld, Tegel.OOST, pionnen, checked);
 		}
 		
+		return eindeGevonden;
 	}
 
-	private void updateScoreStad(ArrayList<ArrayList<Tegel>> veld,
-			Vector2D coordBuur, Landsdeel ld, int windrichting, ArrayList<Pion> pionnen) {
+	private boolean updateScoreStad(ArrayList<ArrayList<Tegel>> veld,
+			Vector2D coordBuur, Landsdeel ld, int windrichting, ArrayList<Pion> pionnen,
+			ArrayList<Tegel> checked) {
 		int x = coordBuur.getX();
 		int y = coordBuur.getY();
-		Landsdeel ldWindrichting = veld.get(x).get(y).bepaalLandsdeel(windrichting);
+		Tegel tegel = veld.get(x).get(y);
+		Landsdeel ldWindrichting = tegel.bepaalLandsdeel(windrichting);
+		
+		boolean eindeGevonden = true;
 		
 		if (x >= 0 && x < veld.size() && y >= 0 && y < veld.get(x).size() && 
-				ld == ldWindrichting) {
-			updateScoreStad(veld, coordBuur, windrichting, ldWindrichting, pionnen);
+				ld.getType() == ldWindrichting.getType() && !alGechecked(checked, tegel)) {
+			eindeGevonden = updateScoreStad(veld, coordBuur, ldWindrichting, pionnen, checked);
 		}
+		
+		return eindeGevonden;
+	}
+
+	private boolean alGechecked(ArrayList<Tegel> checked, Tegel tegel) {
+		for (int i = 0; i < checked.size(); ++i) {
+			if (tegel == checked.get(i)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	private void updateScoreKlooster(ArrayList<ArrayList<Tegel>> veld,

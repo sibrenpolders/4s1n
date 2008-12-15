@@ -146,22 +146,22 @@ public class Tafel implements Serializable {
 		
 		// noord buur
 		veldCoord.setX(veldCoord.getX() - 1);
-		buren[0] = bepaalTegel(veldCoord);
+		buren[0] = tegelAt(veldCoord);
 		
 		// oost buur
 		veldCoord.setX(veldCoord.getX() + 1);
 		veldCoord.setY(veldCoord.getY() + 1);
-		buren[1] = bepaalTegel(veldCoord);
+		buren[1] = tegelAt(veldCoord);
 		
 		// zuid buur
 		veldCoord.setX(veldCoord.getX() + 1);
 		veldCoord.setY(veldCoord.getY() - 1);
-		buren[2] = bepaalTegel(veldCoord);
+		buren[2] = tegelAt(veldCoord);
 		
 		// oost buur
 		veldCoord.setX(veldCoord.getX() - 1);
 		veldCoord.setY(veldCoord.getY() - 1);
-		buren[3] = bepaalTegel(veldCoord);
+		buren[3] = tegelAt(veldCoord);
 			
 		return buren;
 	}
@@ -245,26 +245,24 @@ public class Tafel implements Serializable {
 		// de zet ook ongeldig
 		Tegel t;
 		Vector2D positie = new Vector2D();
-		int startTegelX = startTegel.getX();
-		int startTegelY = startTegel.getY();
 
 		for (int i = 0; burenGeldig && i < 4; ++i) {
 			switch (i) {
 			case 0:
-				positie.setXY(rij - 1 - startTegelX, kolom - startTegelY);
+				positie.setXY(rij - 1, kolom);
 				break;
 			case 1:
-				positie.setXY(rij - startTegelX, kolom + 1 - startTegelY);
+				positie.setXY(rij, kolom + 1);
 				break;
 			case 2:
-				positie.setXY(rij + 1 - startTegelX, kolom - startTegelY);
+				positie.setXY(rij + 1, kolom);
 				break;
 			case 3:
-				positie.setXY(rij - startTegelX, kolom - 1 - startTegelY);
+				positie.setXY(rij, kolom - 1);
 				break;
 			}
 
-			if ((t = bepaalTegel(positie)) != null) {
+			if ((t = tegelAt(positie)) != null) {
 				buurGevonden = true;
 				burenGeldig = gelijkeLandsDelen(i,tegel, t);
 			}
@@ -375,60 +373,81 @@ public class Tafel implements Serializable {
 	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
 			int pionCoord) {
 		Vector2D  veldCoord = zetOmInVeldCoord(tegelCoord);
-		return isPionPlaatsingGeldig(pionCoord, tegel, veldCoord);
+		ArrayList<Tegel> checked = new ArrayList<Tegel>();
+		return isPionPlaatsingGeldig(pionCoord, tegel, veldCoord, checked);
 	}
 	
-	private boolean isPionPlaatsingGeldig(int pionCoord, Tegel tegel, Vector2D veldCoord) {
+	private boolean isPionPlaatsingGeldig(int pionCoord, Tegel tegel, Vector2D veldCoord, 
+			ArrayList<Tegel> checked) {
 		if (pionCoord < 0 || pionCoord >= Tegel.MAX_GROOTTE || 
 				tegel.isPionGeplaatst(pionCoord)) {
 			return false;
 		}
+		
+		checked.add(tegel);
+		
 		Tegel[] buren = getBuren(veldCoord);
 		char matchLandsdeel = tegel.bepaalLandsdeel(pionCoord).getType();
 		
 		boolean pionPlaatsingGeldig = true;
 		
-		if (buren[0] != null) {
+		if (buren[0] != null && !alGechecked(checked, buren[0])) {
 			veldCoord.setX(veldCoord.getX()-1);
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(NOORD, 
-					matchLandsdeel, buren[0], veldCoord);
-		} else if (buren[1] != null && pionPlaatsingGeldig) {
+					matchLandsdeel, buren[0], veldCoord, checked);
+		} 
+		
+		if (buren[1] != null && !alGechecked(checked, buren[1]) && pionPlaatsingGeldig) {
 			veldCoord.setY(veldCoord.getY()+1);
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(OOST, 
-					matchLandsdeel, buren[1], veldCoord);
-		} else if (buren[2] != null && pionPlaatsingGeldig) {
+					matchLandsdeel, buren[1], veldCoord, checked);
+		} 
+		
+		if (buren[2] != null && !alGechecked(checked, buren[2]) && pionPlaatsingGeldig) {
 			veldCoord.setX(veldCoord.getX()+1);
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(ZUID, 
-					matchLandsdeel, buren[2], veldCoord);
-		} else if (buren[3] != null && pionPlaatsingGeldig) {
+					matchLandsdeel, buren[2], veldCoord, checked);
+		} 
+		
+		if (buren[3] != null && !alGechecked(checked, buren[3]) && pionPlaatsingGeldig) {
 			veldCoord.setY(veldCoord.getY()-1);
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(WEST, 
-					matchLandsdeel, buren[3], veldCoord);
+					matchLandsdeel, buren[3], veldCoord, checked);
 		}
 
 		return pionPlaatsingGeldig;
 	}
 
+	private boolean alGechecked(ArrayList<Tegel> checked, Tegel tegel) {
+		for (int i = 0; i < checked.size(); ++i) {
+			if (checked.get(i) == tegel) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 	private boolean isPionPlaatsingGeldig(int windrichting, char matchLandsdeel,
-			Tegel tegel, Vector2D tegelCoord) {
+			Tegel tegel, Vector2D tegelCoord, ArrayList<Tegel> checked) {
 		boolean pionPlaatsingGeldig = true;
 
 		switch(windrichting) {
 		case NOORD:
 			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.ZUID_WEST,
-					Tegel.ZUID, Tegel.ZUID_OOST);
+					Tegel.ZUID, Tegel.ZUID_OOST, checked);
 			break;
 		case OOST:
 			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.WEST_NOORD,
-					Tegel.WEST, Tegel.WEST_ZUID);
+					Tegel.WEST, Tegel.WEST_ZUID, checked);
 			break;
 		case ZUID:
 			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.NOORD_OOST,
-					Tegel.NOORD, Tegel.NOORD_WEST);
+					Tegel.NOORD, Tegel.NOORD_WEST, checked);
 			break;
 		case WEST:
 			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord, matchLandsdeel, Tegel.OOST_ZUID,
-					Tegel.OOST, Tegel.OOST_NOORD);
+					Tegel.OOST, Tegel.OOST_NOORD, checked);
 			break;
 		}
 		
@@ -437,26 +456,26 @@ public class Tafel implements Serializable {
 
 	private boolean pionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
 			char matchLandsdeel, int windrichting, int windrichting2, 
-			int windrichting3) {
+			int windrichting3, ArrayList<Tegel> checked) {
 		boolean pionPlaatsingGeldig = true;
 		Landsdeel vorigeLd = null;
 		Landsdeel huidigeLd;
 		huidigeLd = tegel.bepaalLandsdeel(windrichting);
 		
 		if (huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting, tegel, tegelCoord);
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting, tegel, tegelCoord, checked);
 		}
 		
 		vorigeLd = huidigeLd;
 		huidigeLd = tegel.bepaalLandsdeel(windrichting2);
 		if (pionPlaatsingGeldig && vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting2, tegel, tegelCoord);
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting2, tegel, tegelCoord, checked);
 		}
 		
 		vorigeLd = huidigeLd;
 		huidigeLd = tegel.bepaalLandsdeel(windrichting3);
 		if (pionPlaatsingGeldig && vorigeLd != huidigeLd && huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting3, tegel, tegelCoord);
+			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting3, tegel, tegelCoord, checked);
 		}
 		
 		return pionPlaatsingGeldig;
@@ -474,8 +493,13 @@ public class Tafel implements Serializable {
 			return null;
 		}
 
-		int x = startTegel.getX() + coord.getX();
-		int y = startTegel.getY() + coord.getY();
+		Vector2D veldCoord = zetOmInVeldCoord(coord);
+		return tegelAt(veldCoord);		
+	}
+	
+	private Tegel tegelAt(Vector2D coord) {
+		int x = coord.getX();
+		int y = coord.getY();
 
 		// ongedefinieerde positie
 		if (x < 0 || x >= veld.size() || y < 0 || y >= veld.get(x).size()) {
@@ -678,6 +702,6 @@ public class Tafel implements Serializable {
 	public void updateScore(Vector2D coord) {
 		Vector2D veldCoord = zetOmInVeldCoord(coord);
 		
-		score.updateScore(coord, veld);
+		score.updateScore(veldCoord, veld);
 	}
 }
