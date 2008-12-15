@@ -85,13 +85,13 @@ public class JunitTafelTest extends TestCase {
 		tafel.plaatsTegel(tegels.get(0), coords.get(0));
 		assertTrue(tafel.plaatsPion(coords.get(0), Tegel.NOORD, p));
 		tafel.plaatsTegel(tegels.get(1), coords.get(1));
-		assertTrue(tafel.plaatsPion(coords.get(1), Tegel.ZUID, p));
+		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.ZUID, p));
 		
 		for (int i = 2; i < 4; ++i) {
 			tafel.plaatsTegel(tegels.get(i), coords.get(i));
 		}
 						
-//		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.OOST, p));
+		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.OOST, p));
 		assertFalse(tafel.plaatsPion(coords.get(3), Tegel.OOST, p));
 	}
 
