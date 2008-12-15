@@ -20,11 +20,17 @@ public class Tafel implements Serializable {
 	private ArrayList<ArrayList<Tegel>> veld;
 	private Camera oogpunt;
 	private Vector2D startTegel;
-
+	private Score score;
+	
 	public Tafel() {
 		clear();
 	}
 
+	public Tafel(Score score) {
+		this.score = score;
+		clear();
+	}
+	
 	public Tegel getLaatstGeplaatsteTegel() {
 		return laatstGeplaatsteTegel;
 	}
@@ -377,17 +383,21 @@ public class Tafel implements Serializable {
 		boolean pionPlaatsingGeldig = true;
 		
 		if (buren[0] != null) {
+			veldCoord.setX(veldCoord.getX()-1);
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(NOORD, 
-					matchLandsdeel, buren[0], tegelCoord);
+					matchLandsdeel, buren[0], veldCoord);
 		} else if (buren[1] != null && pionPlaatsingGeldig) {
+			veldCoord.setY(veldCoord.getY()+1);
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(OOST, 
-					matchLandsdeel, buren[1], tegelCoord);
+					matchLandsdeel, buren[1], veldCoord);
 		} else if (buren[2] != null && pionPlaatsingGeldig) {
+			veldCoord.setX(veldCoord.getX()+1);
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(ZUID, 
-					matchLandsdeel, buren[2], tegelCoord);
+					matchLandsdeel, buren[2], veldCoord);
 		} else if (buren[3] != null && pionPlaatsingGeldig) {
+			veldCoord.setY(veldCoord.getY()-1);
 			pionPlaatsingGeldig = isPionPlaatsingGeldig(WEST, 
-					matchLandsdeel, buren[3], tegelCoord);
+					matchLandsdeel, buren[3], veldCoord);
 		}
 		
 		return pionPlaatsingGeldig;
@@ -662,4 +672,9 @@ public class Tafel implements Serializable {
 		// TODO invullen??
 	}
 
+	public void updateScore(Vector2D coord) {
+		Vector2D veldCoord = zetOmInVeldCoord(coord);
+		
+		score.updateScore(coord, veld);
+	}
 }

@@ -34,6 +34,7 @@ public class Tegel {
 	public static final int WEST_ZUID = 8;
 	public static final int WEST = 5;
 	public static final int WEST_NOORD = 0;
+	public static final int MIDDEN = 6;
 	
 	private static final char WEG = 'g';
 	
@@ -246,4 +247,12 @@ public class Tegel {
 	 private void readObjectNoData() throws ObjectStreamException {
 		 
 	 }
+
+	public Pion neemPionTerug(int landsdeel) {
+		if (landsdeel >= 0 && landsdeel < MAX_GROOTTE) {
+			return landsdelen[landsdeel].neemPionnenTerug();
+		}
+		
+		return null;
+	}
 }
