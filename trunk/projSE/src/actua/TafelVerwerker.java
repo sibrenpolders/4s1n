@@ -23,21 +23,28 @@ public class TafelVerwerker implements Serializable{
 		tafel = new Tafel();
 	}
 	
+	public ArrayDeque<Tegel> getStapel() {
+		return stapel;
+	}
+
 	public void herstelOverzicht() {
 
 	}
 
-	// TODO kan iets anders zijn
+	public Tegel neemLaatsteTegel(){
+		return stapel.removeFirst();
+	}
+	
 	public Tegel vraagNieuweTegel() {
-		return stapel.getFirst();
+		return stapel.peekFirst();
 	}
 
 	public Tegel neemTegelVanStapel() {
-		return stapel.getFirst();
+		return stapel.pop();
 	}
 	
-	public void legTerug(Tegel tegel){
-		stapel.addLast(tegel);
+	public void legTerugTop(Tegel tegel){
+		stapel.addFirst(tegel);
 	}
 	
 	public void verwerkTegel() {
