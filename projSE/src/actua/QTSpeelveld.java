@@ -230,9 +230,14 @@ public class QTSpeelveld extends GSpeelveld {
 		shortcut = new QShortcut(new QKeySequence("Right"),gridWidget);
 		shortcut.activated.connect(this,"cameraRight()");
 		//
-		
+
 		//plaatsen starttegel
-		QTTegel startTegel = new QTTegel();
+		TegelFabriek startTegelFabriek = new TegelFabriek();
+		QTTegel startTegel = new QTTegel(startTegelFabriek.geefStartTegel());
+		Vector2D gridCoord = new Vector2D((rows-1)/2,(columns-1)/2);
+		getSpel().getTafelVerwerker().plaatsTegel(startTegel.getTegel(),new Vector2D(0,0));
+		voegTegelToeAanGrafischeLijst(startTegel.getTegel(),new Vector2D(0,0),startTegel.getPixmap());
+		((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(startTegel.getPixmap().scaled(85,85));
 	}
 	
 	public void hide() {
@@ -244,10 +249,12 @@ public class QTSpeelveld extends GSpeelveld {
 	}
 	
 	public boolean voegTegelToe(Vector2D gridCoord,QPixmap pixmap) {
-		Tegel tegel = getSpel().getTafelVerwerker().neemTegelVanStapel();
+		Tegel tegel = getSpel().getTafelVerwerker().vraagNieuweTegel();
 		Vector2D coord = new Vector2D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()+gridCoord.getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()+gridCoord.getY());
 		
-		if (getSpel().getTafelVerwerker().plaatsTegel(tegel,coord)) {
+		if (getSpel().getTafelVerwerker().isTegelPlaatsingGeldig(tegel,coord)) {
+			getSpel().getTafelVerwerker().neemTegelVanStapel();
+			getSpel().getTafelVerwerker().plaatsTegel(tegel,coord);
 			voegTegelToeAanGrafischeLijst(tegel,coord,pixmap);
 			((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
 			return true;
@@ -330,6 +337,7 @@ public class QTSpeelveld extends GSpeelveld {
 		}
     }
     
+
     private void kleurMogelijkhedenGroen() {
     	Tegel tegel = getSpel().getTafelVerwerker().vraagNieuweTegel();
     	Vector2D coord = new Vector2D();
@@ -347,17 +355,19 @@ public class QTSpeelveld extends GSpeelveld {
 			;
     	
 		for (;i<rows && startX <= sizeX;i++,startX++) {
-			for (y=startY;j<columns && y<-1;y++)
+			for (y=startY;j<columns && y<-1;y++,j++)
 				;
 			
-			if (startX<sizeX)
+			if (startX==sizeX-1)
 				sizeY = gTegels.get(startX).size();
+			else if (startX<sizeX)
+				sizeY = gTegels.get(startX+1).size();
 			else
-				sizeY=0;
-			for (;j<columns && startX <= sizeX;j++,y++) {
+				sizeY = gTegels.get(startX-1).size();
+			for (;j<columns && y <= sizeY;j++,y++) {
 				coord.setXY(startX,y);
 				if (y <= sizeY) {
-					if (getSpel().getTafelVerwerker().plaatsTegel(tegel,coord)) {
+					if (getSpel().getTafelVerwerker().isTegelPlaatsingGeldig(tegel,coord)) {
 						((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).setForegroundBrush(new QBrush(new QColor(0,255,0,127)));
 	    			}
 				}
