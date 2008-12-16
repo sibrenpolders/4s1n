@@ -13,13 +13,13 @@ public class TafelVerwerker implements Serializable{
 
 	public TafelVerwerker() {
 		TegelFabriek tfb = new TegelFabriek();
-		stapel = tfb.maakTegelDeque(AANTAL_TEGELS);
+		stapel = tfb.maakTegelDeque(AANTAL_TEGELS-1);
 		tafel = new Tafel();
 	}
 
 	public TafelVerwerker(int aantalTegels) {
 		TegelFabriek tfb = new TegelFabriek();
-		stapel = tfb.maakTegelDeque(aantalTegels);
+		stapel = tfb.maakTegelDeque(aantalTegels-1);
 		tafel = new Tafel();
 	}
 	
@@ -116,7 +116,7 @@ public class TafelVerwerker implements Serializable{
 	public void vulStapel(int aantal){
 		TegelFabriek tfb = new TegelFabriek();
 		
-		stapel = tfb.maakTegelDeque(aantal);
+		stapel = tfb.maakTegelDeque(aantal-1);
 	}
 	
 	public int aantalTegels(){
