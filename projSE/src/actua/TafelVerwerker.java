@@ -32,7 +32,7 @@ public class TafelVerwerker implements Serializable{
 	}
 
 	public Tegel neemLaatsteTegel(){
-		return stapel.removeFirst();
+		return stapel.pollFirst();
 	}
 	
 	public Tegel vraagNieuweTegel() {
