@@ -32,7 +32,7 @@ public class JunitScoreTest extends TestCase {
 		
 		for (int i = 0; i < 4; ++i) {
 			if(!tafel.plaatsTegel(tegels.get(i), coords.get(i))) {
-				System.err.println("TEGEL_PLAATSING");
+				System.err.println("TEGEL_PLAATSING: " + i);
 			}
 		}
 		// nog geen pion geplaatst
@@ -70,10 +70,10 @@ public class JunitScoreTest extends TestCase {
 		ArrayList<Tegel> tegels = new ArrayList<Tegel>();
 							
 		tegels.add(new Tegel("sssssssssssss", "0000000000000"));
-		tegels.add(new Tegel("wwwwwwwwwsssw", "0000000001110"));
-		tegels.add(new Tegel("swwwwswwswwww", "0111101101111"));
+		tegels.add(new Tegel("wwwwwwwssswww", "0000000111000"));
+		tegels.add(new Tegel("swwwwwwwwwssw", "1000000000110"));
 		tegels.add(new Tegel("wssswwwwwwwww", "0111000000000"));
-		tegels.add(new Tegel("wwwwswwswwwws", "0000100100001"));
+		tegels.add(new Tegel("wwwwssswwwwww", "0000111000000"));
 		
 		return tegels;
 	}

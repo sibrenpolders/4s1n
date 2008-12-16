@@ -94,8 +94,8 @@ public class TegelFabriekBestandLezer {
 		if (NW != null && N != null && NO != null && ON != null && O != null &&  
 			OZ != null && ZO != null && Z != null && ZW != null && WZ != null &&  
 			W != null && WN != null && M != null)
-		tegelStrings[0] = WN[0]+NW[0]+N[0]+NO[0]+ON[0]+W[0]+M[0]+O[0]+WZ[0]+ZW[0]+Z[0]+ZO[0]+OZ[0]; 
-		tegelStrings[1] = WN[1]+NW[1]+N[1]+NO[1]+ON[1]+W[1]+M[1]+O[1]+WZ[1]+ZW[1]+Z[1]+ZO[1]+OZ[0];
+		tegelStrings[0] = WN[0]+NW[0]+N[0]+NO[0]+ON[0]+O[0]+OZ[0]+ZO[0]+Z[0]+ZW[0]+WZ[0]+W[0]+M[0]; 
+		tegelStrings[1] = WN[1]+NW[1]+N[1]+NO[1]+ON[1]+O[1]+OZ[1]+ZO[1]+Z[1]+ZW[1]+WZ[1]+W[1]+M[1];
 		
 		return tegelStrings;
 	}

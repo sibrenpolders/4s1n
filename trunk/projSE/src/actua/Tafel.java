@@ -522,7 +522,7 @@ public class Tafel implements Serializable {
 	}
 
 	public void herstelOverzicht() {
-
+		oogpunt.herstelOverzicht();
 	}
 
 	/**
