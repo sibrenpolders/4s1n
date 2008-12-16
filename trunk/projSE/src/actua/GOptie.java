@@ -12,4 +12,5 @@ public abstract class GOptie {
 	public abstract void hide();
 
 	protected abstract void save();
+	protected abstract void cancel();
 }
