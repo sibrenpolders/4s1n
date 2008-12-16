@@ -7,6 +7,7 @@ public class Landsdeel {
 	public static final char WEI = 'w';
 	public static final char WEG = 'g';
 	public static final char KLOOSTER= 'k';
+	public static final char KRUISPUNT = 'r';
 	
 	private Pion pion;
 	private char type;
