@@ -30,8 +30,7 @@ public abstract class GHelp {
 		if (zoekterm.compareTo("") == 0)
 			;
 		else {
-			String[][] output = helpVerwerker.geefBeknopteMatchingResultaten(
-					zoekterm, LIMIET);
+			String[][] output = helpVerwerker.geefBeknopteMatchingResultaten(zoekterm, LIMIET);
 			geefInfoWeer(output);
 		}
 	}
