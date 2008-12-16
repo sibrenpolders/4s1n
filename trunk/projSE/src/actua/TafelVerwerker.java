@@ -43,6 +43,10 @@ public class TafelVerwerker implements Serializable{
 		return stapel.pop();
 	}
 	
+	public void legTerugEinde(Tegel tegel){
+		stapel.addLast(tegel);
+	}
+	
 	public void legTerugTop(Tegel tegel){
 		stapel.addFirst(tegel);
 	}
