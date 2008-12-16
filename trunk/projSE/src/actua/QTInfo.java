@@ -34,8 +34,7 @@ public class QTInfo extends GInfo {
 			tafelVerwerker = spel.getTafelVerwerker();
 
 			tegel = tafelVerwerker.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/"
-					+ tegel.getTegelPresentatie() + ".png"));
+			tegelIcon.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
 			tegelIcon.setMinimumSize(new QSize(90, 90));
 			tegelIcon.setMaximumSize(new QSize(90, 90));
 
@@ -46,8 +45,9 @@ public class QTInfo extends GInfo {
 			QLabel child = (QLabel) childAt(0, 0);
 
 			if (child != null) {
-				Tegel tegel = new Tegel();
+				Tegel tegel = new Tegel();		
 				tegel = tafelVerwerker.vraagNieuweTegel();
+				
 				if (tegel != null) {
 					QTTegel qtTegel = new QTTegel(tegel);
 					qtTegel.roteer(true);
@@ -106,8 +106,7 @@ public class QTInfo extends GInfo {
 			QPixmap pixmap = child.pixmap();
 
 			QByteArray itemData = new QByteArray();
-			QDataStream dataStream = new QDataStream(itemData,
-					QIODevice.OpenModeFlag.WriteOnly);
+			QDataStream dataStream = new QDataStream(itemData,QIODevice.OpenModeFlag.WriteOnly);
 			pixmap.writeTo(dataStream);
 			event.pos().subtract(child.pos()).writeTo(dataStream);
 
@@ -122,14 +121,12 @@ public class QTInfo extends GInfo {
 			QPixmap tempPixmap = new QPixmap(pixmap);
 			QPainter painter = new QPainter();
 			painter.begin(tempPixmap);
-			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,
-					127, 127)));
+			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127, 127, 127)));
 			painter.end();
 
 			child.setPixmap(tempPixmap);
 
-			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
-					Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
+			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
 				Tegel tegel = new Tegel();
 				tegel = tafelVerwerker.vraagNieuweTegel();
 
@@ -137,10 +134,8 @@ public class QTInfo extends GInfo {
 					child.close();
 				else {
 					child.show();
-					child.setPixmap(new QPixmap("src/icons/"
-							+ tegel.getTegelPresentatie() + ".png"));
+					child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
 				}
-
 			} else {
 				child.show();
 				child.setPixmap(pixmap);
