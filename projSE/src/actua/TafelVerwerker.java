@@ -28,7 +28,7 @@ public class TafelVerwerker implements Serializable{
 	}
 
 	public void herstelOverzicht() {
-
+		tafel.herstelOverzicht();
 	}
 
 	public Tegel neemLaatsteTegel(){
@@ -64,7 +64,7 @@ public class TafelVerwerker implements Serializable{
 	}
 
 	public Vector3D getOverzicht() {
-		return null;
+		return tafel.getOogpunt().getHuidigeVector();
 	}
 
 	/**

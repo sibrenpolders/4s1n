@@ -71,11 +71,11 @@ public class JunitTafelTest extends TestCase {
 	private void maakLandsDelen() {
 		tegels = new ArrayList<Tegel>();
 		
-		tegels.add(new Tegel("swwwsswsswwws", "0111201201112"));
-		tegels.add(new Tegel("wsssswwswwwws", "0111100100001"));
-		tegels.add(new Tegel("swwwssssswwws", "0111000002220"));
-		tegels.add(new Tegel("wwwwwwkwwwwww", "0000007000000"));
-		tegels.add(new Tegel("swwwssssswwws", "0111000002220"));
+		tegels.add(new Tegel("swwwssswwwssw", "0111222111001"));
+		tegels.add(new Tegel("wsssssswwwwww", "0111111000000"));
+		tegels.add(new Tegel("swwwssssswwws", "0111000222000"));
+		tegels.add(new Tegel("wwwwwwwwwwwwk", "0000000000001"));
+		tegels.add(new Tegel("swwwssswwwsss", "0111000222000"));
 	}
 
 	public void testPlaatsPion() {

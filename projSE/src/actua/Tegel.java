@@ -8,12 +8,12 @@ import java.io.ObjectStreamException;
  */
 /*
  * ________________ 
- * |0\1 | 2  |3/4  | 
- * |----|----|-----| 
- * | 5  | 6  | 7   |
- * |---------------| 
- * |8/9 | 10 |11\12| 
- * |_______________|
+ * |1\2  | 3 |4/5 | 
+ * |-----|---|----| 
+ * | 12  | 0 |  6 |
+ * |--------------| 
+ * |11/10| 9 |8 \7| 
+ * |______________|
  */
 public class Tegel {
 	// een tegel is verdeeld in een 3x3 matrix van landsdelen
@@ -26,15 +26,15 @@ public class Tegel {
 	public static final int NOORD = 2;	
 	public static final int NOORD_OOST = 3;
 	public static final int OOST_NOORD = 4;
-	public static final int OOST = 7;
-	public static final int OOST_ZUID = 12;
-	public static final int ZUID_OOST = 11;
-	public static final int ZUID = 10;
+	public static final int OOST = 5;
+	public static final int OOST_ZUID = 6;
+	public static final int ZUID_OOST = 7;
+	public static final int ZUID = 8;
 	public static final int ZUID_WEST = 9;
-	public static final int WEST_ZUID = 8;
-	public static final int WEST = 5;
+	public static final int WEST_ZUID = 10;
+	public static final int WEST = 11;
 	public static final int WEST_NOORD = 0;
-	public static final int MIDDEN = 6;
+	public static final int MIDDEN = 12;
 	
 	private static final char WEG = 'g';
 	
@@ -46,7 +46,7 @@ public class Tegel {
 	private String idPresentatie;
 	
 	public Tegel() {
-
+		orientatie = 0;
 	}
 
 	public Tegel(String tegelPresentatie, String idPresentatie) {
@@ -92,7 +92,7 @@ public class Tegel {
 			return null;
 		}
 
-		return landsdelen[pos];
+		return landsdelen[getPos(pos)];
 	}
 
 	public boolean plaatsPion(int pos, Pion pion) {
@@ -254,5 +254,23 @@ public class Tegel {
 		}
 		
 		return null;
+	}
+	
+	private int getPos(int pos) {
+		if (pos == MIDDEN || orientatie == 0) {
+			return pos;
+		}
+		
+		int beginPos = 1;
+		
+		if (orientatie == 1) {
+			beginPos = 9;
+		} else if (orientatie == 2) {
+			beginPos = 6;
+		} else if (orientatie == 3) {
+			beginPos = 3;
+		}
+		
+		return (beginPos+pos)%12;
 	}
 }

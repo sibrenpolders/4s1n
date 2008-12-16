@@ -81,6 +81,75 @@ public class JunitTegelTest extends TestCase {
 				// na volledige draaiing nog 1 stap verder gaan
 		tegel.draaiTegel(false);
 		assertEquals("Volledig rond + 1 (linksom)", 3, tegel.getOrientatie());
+		
+		draaiTegel90();
+		draaiTegel180();
+		draaiTegel270();
+	}
+
+	private void draaiTegel270() {
+		Tegel tegel = new Tegel("0123456789abc", "0123456789abc");
+		
+		for (int i = 0; i < 3; ++i) {
+			tegel.draaiTegel(true);
+		}
+		
+		System.err.println(tegel.bepaalLandsdeel(Tegel.WEST_NOORD).getType());
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST_NOORD).getType(), '3');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD_WEST).getType(), '4');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD).getType(), '5');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD_OOST).getType(), '6');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST_NOORD).getType(), '7');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST).getType(), '8');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST_ZUID).getType(), '9');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID_OOST).getType(), 'a');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID).getType(), 'b');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID_WEST).getType(), '0');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST_ZUID).getType(), '1');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST).getType(), '2');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.MIDDEN).getType(), 'c');
+	}
+
+	private void draaiTegel180() {
+		Tegel tegel = new Tegel("0123456789abc", "0123456789abc");
+
+		for (int i = 0; i < 2; ++i) {
+			tegel.draaiTegel(true);
+		}
+
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST_NOORD).getType(), '6');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD_WEST).getType(), '7');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD).getType(), '8');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD_OOST).getType(), '9');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST_NOORD).getType(), 'a');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST).getType(), 'b');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST_ZUID).getType(), '0');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID_OOST).getType(), '1');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID).getType(), '2');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID_WEST).getType(), '3');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST_ZUID).getType(), '4');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST).getType(), '5');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.MIDDEN).getType(), 'c');
+	}
+
+	private void draaiTegel90() {
+		Tegel tegel = new Tegel("0123456789abc", "0123456789abc");
+		tegel.draaiTegel(true);
+
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST_NOORD).getType(), '9');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD_WEST).getType(), 'a');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD).getType(), 'b');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.NOORD_OOST).getType(), '0');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST_NOORD).getType(), '1');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST).getType(), '2');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.OOST_ZUID).getType(), '3');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID_OOST).getType(), '4');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID).getType(), '5');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.ZUID_WEST).getType(), '6');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST_ZUID).getType(), '7');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST).getType(), '8');
+		assertEquals(tegel.bepaalLandsdeel(Tegel.MIDDEN).getType(), 'c');
+		
 	}
 
 	private void draaiTegel360(Tegel tegel, boolean richting) {

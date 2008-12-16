@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public class TegelFabriek {
 	private static final String TEGELS_BESTAND = "src/xml/Tegels.xml";
 	private String tegelsBestand;
-	
+	private String[][] startTegels = { {"wssswgwwwwwgg", "0111023333322"}, 
+			{"wssswwwwgwwgg", "0111000023322"}, {"wssswgwwgwwwg", "0111023320002"}};
 	public TegelFabriek() {
 		tegelsBestand = TEGELS_BESTAND;
 	}
@@ -54,6 +55,12 @@ public class TegelFabriek {
 		return queue;
 	}
 
+	public Tegel geefStartTegel() {
+		int i = (int) (Math.floor(Math.random()*3));
+		
+		return new Tegel(startTegels[i][0], startTegels[i][1]);
+	}
+	
 	private ArrayDeque<Tegel> shakeNotStir(ArrayList<Tegel> stapel) {
 		ArrayDeque<Tegel> queue = new ArrayDeque<Tegel>();
 
