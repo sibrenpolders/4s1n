@@ -86,5 +86,4 @@ public class QTHelp extends GHelp {
 
 		return zoekterm;
 	}
-
 }
