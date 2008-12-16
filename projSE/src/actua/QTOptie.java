@@ -115,7 +115,7 @@ public class QTOptie extends GOptie {
 		opties.show();
 	}
 
-	private void cancel() {
+	protected void cancel() {
 		int nbOpties = optieVerwerker.getNbOpties();
 
 		for (int i = 0; i < nbOpties; ++i) {
