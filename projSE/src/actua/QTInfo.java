@@ -71,6 +71,18 @@ public class QTInfo extends GInfo {
 				}
 			}
 		}
+		
+		public void nieuweTegel(){
+			Tegel tegel = new Tegel();
+			tegel = tafelVerwerker.neemTegelVanStapel();
+			tafelVerwerker.legTerugEinde(tegel);
+			
+			tegel = new Tegel();
+			QLabel child = (QLabel) childAt(0, 0);
+			tegel = tafelVerwerker.vraagNieuweTegel();
+			child.clear();
+			child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
+		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
 			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
@@ -150,6 +162,7 @@ public class QTInfo extends GInfo {
 		QPalette palette = new QPalette();
 		QPushButton roteerR = new QPushButton("Draai Rechts");
 		QPushButton roteerL = new QPushButton("Draai Links");
+		QPushButton nieuweTegel = new QPushButton("Nieuwe Tegel");
 		Stapel stapel = new Stapel(spel);
 
 		QVBoxLayout vbox = new QVBoxLayout();
@@ -159,19 +172,16 @@ public class QTInfo extends GInfo {
 		vbox.addWidget(stapel);
 		hBox.setLayout(hbox);
 		vbox.addWidget(hBox);
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'r', 0), qtInfo)
-				.getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'g', 0), qtInfo)
-				.getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
-				.getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
-				.getSpelerInfoveld());
-		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo)
-				.getSpelerInfoveld());
+		vbox.addWidget(nieuweTegel);	
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'r', 0), qtInfo).getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'g', 0), qtInfo).getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
+		vbox.addWidget(new QTSpelerInfo(new Speler("", 'x', 0), qtInfo).getSpelerInfoveld());
 
 		roteerR.clicked.connect(stapel, "roteerRechts()");
 		roteerL.clicked.connect(stapel, "roteerLinks()");
+		nieuweTegel.clicked.connect(stapel, "nieuweTegel()");
 
 		qtInfo.setLayout(vbox);
 
