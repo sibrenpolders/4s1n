@@ -17,6 +17,7 @@ import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QGraphicsScene;
 import com.trolltech.qt.gui.QGraphicsSceneDragDropEvent;
 import com.trolltech.qt.gui.QGraphicsSceneMouseEvent;
+import com.trolltech.qt.gui.QGraphicsSceneWheelEvent;
 import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
@@ -44,12 +45,9 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 		
 		private void init() {			
-			setBackgroundBrush(new QBrush(new QPixmap(
-			"src/icons/background.xpm")));
-			setCacheMode(new QGraphicsView.CacheMode(
-					QGraphicsView.CacheModeFlag.CacheBackground));
-			setViewportUpdateMode(
-					QGraphicsView.ViewportUpdateMode.FullViewportUpdate);
+			setBackgroundBrush(new QBrush(new QPixmap("src/icons/background.xpm")));
+			setCacheMode(new QGraphicsView.CacheMode(QGraphicsView.CacheModeFlag.CacheBackground));
+			setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.FullViewportUpdate);
 		}
 
 		private void setPixmap(QPixmap pixmap) {
@@ -63,11 +61,18 @@ public class QTSpeelveld extends GSpeelveld {
 			gevuld=false;
 		}
 		
+		protected void wheelEvent(QWheelEvent event) {
+	    	int zoomFactor = -event.delta()/8/15;
+	    	System.out.println(zoomFactor);
+	    	zooming(zoomFactor);
+	    }
+		
 		protected void dragEnterEvent(QDragEnterEvent event)
 	    {
-	    	System.out.println("bla3");
+	    	System.out.println("dragEnter");
 	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
 		    	System.out.println("bla4");
+		    	kleurMogelijkhedenGroen();
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
 	                event.accept();
@@ -81,7 +86,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	    protected void dragMoveEvent(QDragMoveEvent event)
 	    {
-	    	System.out.println("bla");
+	    	System.out.println("dragMove");
 	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
 		    	System.out.println("bla2");
 	            if (event.source().equals(this)) {
@@ -114,9 +119,8 @@ public class QTSpeelveld extends GSpeelveld {
 	            newIcon.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose);
 	            scene.addWidget(newIcon);*/
 	            
-	            scene().addPixmap(pixmap.scaled(width()-5,height()-5));
-	            voegTegelToe(gridCoord,pixmap);
-	            gevuld=true;
+	            if (voegTegelToe(gridCoord,pixmap))
+	            	gevuld=true;
 	            
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
@@ -201,8 +205,8 @@ public class QTSpeelveld extends GSpeelveld {
 		
 		//camera dizzle
 		getSpel().getTafelVerwerker().getCamera().setMinVector(new Vector3D(-1000,-1000,0));
-		getSpel().getTafelVerwerker().getCamera().setMaxVector(new Vector3D(1000,1000,10));
-		getSpel().getTafelVerwerker().getCamera().setHuidigeVector(new Vector3D(-3,-4,0));
+		getSpel().getTafelVerwerker().getCamera().setMaxVector(new Vector3D(1000,1000,6));
+		getSpel().getTafelVerwerker().getCamera().setHuidigeVector(new Vector3D(-3,-4,3));
 		
 		QPushButton buttonUp = new QPushButton("^",gridWidget);
 		buttonUp.setGeometry(gridWidget.width()/2-18,0,35,25);
@@ -236,7 +240,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	}
 	
-	public void voegTegelToe(Vector2D gridCoord,QPixmap pixmap) {
+	public boolean voegTegelToe(Vector2D gridCoord,QPixmap pixmap) {
 		Tegel tegel = getSpel().getTafelVerwerker().neemTegelVanStapel();
 		Vector2D coord = new Vector2D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()+gridCoord.getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()+gridCoord.getY());
 		
@@ -250,15 +254,22 @@ public class QTSpeelveld extends GSpeelveld {
 //				gridLayout.addWidget(view,gridCoord.getX()+1,j,1,1);
 //			}
 		
-		if (getSpel().getTafelVerwerker().plaatsTegel(tegel,coord))
+		if (getSpel().getTafelVerwerker().plaatsTegel(tegel,coord)) {
 			voegTegelToeAanGrafischeLijst(tegel,coord,pixmap);
+			((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
+			return true;
+		}
+		else
+			return false;
 	}
 	
-	protected void wheelEvent(QWheelEvent event) {
-    	int zoomFactor = -event.delta()/8/15;
-    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),zoomFactor*getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
-    	
-    	getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie);
+	private void zooming(int zoomFactor) {
+//    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()-zoomFactor,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()-zoomFactor,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ()+zoomFactor);
+//    	
+//    	rows+=zoomFactor;
+//    	columns+=zoomFactor;
+//    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
+//    		veranderZicht();
     }
     
     private void cameraUp() {
@@ -267,29 +278,29 @@ public class QTSpeelveld extends GSpeelveld {
     	QtGraphicsView view;
     	
     	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
-    		veranderZicht('u');
+    		veranderZicht();
     }
     private void cameraDown() {
     	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
     	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
-    		veranderZicht('d');
+    		veranderZicht();
     }
     private void cameraLeft() {
     	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
     	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
-    		veranderZicht('l');
+    		veranderZicht();
     }
     private void cameraRight() {
     	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
     	
     	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
-    		veranderZicht('r');
+    		veranderZicht();
     }
     
     //nog een paar foutjes
-    private void veranderZicht(char richting) {
+    private void veranderZicht() {
     	int offsetX = getSpel().getTafelVerwerker().getStartTegelPos().getX();
     	int offsetY = getSpel().getTafelVerwerker().getStartTegelPos().getY();
     	int startX,startY,i=0,j=0,y;
@@ -324,6 +335,12 @@ public class QTSpeelveld extends GSpeelveld {
 			}
 			j=0;
 		}
+    }
+    
+    private void kleurMogelijkhedenGroen() {
+    	Tegel tegel = getSpel().getTafelVerwerker().vraagNieuweTegel();
+    	
+    	
     }
 
 	public QWidget getGridWidget() {
