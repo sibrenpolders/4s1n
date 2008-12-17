@@ -53,11 +53,13 @@ public class QTSpeelveld extends GSpeelveld {
 		private void setPixmap(QPixmap pixmap) {
 			scene().clear();
 			scene().addPixmap(pixmap.scaled(width()-5,height()-5));
+			update();
 			gevuld=true;
 		}
 		
 		private void removePixmap() {
 			scene().clear();
+			update();
 			gevuld=false;
 		}
 		
@@ -214,8 +216,8 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 		
 		//camera dizzle
-		getSpel().getTafelVerwerker().getCamera().setMinVector(new Vector3D(-1000,-1000,0));
-		getSpel().getTafelVerwerker().getCamera().setMaxVector(new Vector3D(1000,1000,6));
+		getSpel().getTafelVerwerker().getCamera().setMinVector(new Vector3D(-getSpel().getTafelVerwerker().getStapel().size(),-getSpel().getTafelVerwerker().getStapel().size(),0));
+		getSpel().getTafelVerwerker().getCamera().setMaxVector(new Vector3D(getSpel().getTafelVerwerker().getStapel().size(),getSpel().getTafelVerwerker().getStapel().size(),6));
 		getSpel().getTafelVerwerker().getCamera().setHuidigeVector(new Vector3D(-3,-4,3));
 		
 		QPushButton buttonUp = new QPushButton("^",gridWidget);
@@ -247,7 +249,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector2D gridCoord = new Vector2D((rows-1)/2,(columns-1)/2);
 		getSpel().getTafelVerwerker().plaatsTegel(startTegel.getTegel(),new Vector2D(0,0));
 		voegTegelToeAanGrafischeLijst(startTegel.getTegel(),new Vector2D(0,0),startTegel.getPixmap());
-		((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(startTegel.getPixmap().scaled(85,85));
+		((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(startTegel.getPixmap().scaled(73,69));
 		((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).setGevuld(true);
 	}
 	
@@ -267,11 +269,15 @@ public class QTSpeelveld extends GSpeelveld {
 			getSpel().getTafelVerwerker().neemTegelVanStapel();
 			getSpel().getTafelVerwerker().plaatsTegel(tegel,coord);
 			voegTegelToeAanGrafischeLijst(tegel,coord,pixmap);
-			((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
+			((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(
+					((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,
+					((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
 			return true;
 		}
-		else
+		else {
+			getSpel().getTafelVerwerker().vraagNieuweTegel().setOrientatie((short) 0);
 			return false;
+		}
 	}
 	
 	private void zooming(int zoomFactor) {
