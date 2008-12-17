@@ -131,7 +131,7 @@ public abstract class GSpeelveld {
 		for (int i = 0; i < gTegels.size(); ++i) {
 			kolomVector = gTegels.get(i);
 
-			for (int j = 0; j < aantal; ++j) {
+			for (int j = 0; j < aantal - kolomVector.size()+1; ++j) {
 				kolomVector.add(0, null);
 			}
 		}
