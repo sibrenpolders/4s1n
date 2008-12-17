@@ -1,3 +1,4 @@
+// TODO nakijken of veld niet beter een ADT wordt
 package actua;
 
 import java.io.IOException;
@@ -9,14 +10,6 @@ import java.util.ArrayList;
  * @author school
  * 
  */
-/**
- * @author school
- *
- */
-/**
- * @author school
- *
- */
 public class Tafel implements Serializable {
 	private static final long serialVersionUID = -1767380269715221020L;
 	private static final int NOORD = 0;
@@ -26,7 +19,6 @@ public class Tafel implements Serializable {
 
 	private Tegel laatstGeplaatsteTegel;
 	private ArrayList<ArrayList<Tegel>> veld;
-//	private Camera oogpunt;
 	private Vector2D startTegel;
 	private Score score;
 	
@@ -515,9 +507,7 @@ public class Tafel implements Serializable {
 
 	public boolean neemPionTerug(Pion pion) {
 		return false;
-	}
-
-	
+	}	
 
 	/**
 	 * Deze functie zal het veld 1 zet terugdoen.
