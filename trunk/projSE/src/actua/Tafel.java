@@ -83,8 +83,6 @@ public class Tafel implements Serializable {
 		int kolom = veldCoord.getY();
 		veldCoord = null;
 		
-		// mag de tegel hier gezet worden? M.a.w. zijn zijn buren geldig?
-		// TODO
 		if (!tegelKanGeplaatstWorden(tegel, rij, kolom)) {
 			return false;
 		}
@@ -118,36 +116,9 @@ public class Tafel implements Serializable {
 
 		kolomVector.add(kolom, tegel);
 		setLaatstGeplaatsteTegel(tegel);
-//		// TODO functie update landsdelen schrijven
-//		updateLandsdelen(rij, kolom);
 		
 		return true;
 	}
-
-//	private void updateLandsdelen(int rij, int kolom) {
-//		if ( rij < 0 || rij >= veld.size() || kolom < 0 || 
-//				kolom >= veld.get(rij).size()) {
-//			return;
-//		}
-//		
-//		Tegel[] buren = getBuren(rij, kolom);
-//		Tegel nieuweTegel = bepaalTegel(new Vector2D(rij - startTegel.getX(), 
-//				kolom - startTegel.getY()));
-//		boolean[] changed = new boolean[13];
-//		
-//		if (buren[0] != null) {
-//			nieuweTegel.updateLandsdeel(
-//					buren[0].bepaalLandsdeel(Tegel.ZUID_WEST), Tegel.NOORD_WEST, 
-//					changed);
-//		}
-//		
-//		
-//			if (!changed[ZUID]) {
-//				nieuweTegel.updateLandsdeel(buren[0].bepaalLandsdeel(ZUID), 
-//						Tegel.NOORD, changed);
-//			} 
-//		}
-//	}
 
 	private Tegel[] getBuren(Vector2D coord) {
 		Tegel[] buren = new Tegel[4];
@@ -308,27 +279,6 @@ public class Tafel implements Serializable {
 		return isLandsdeelGelijk;
 	}
 
-	/** TODO commentaar aanpassen
-	 * @param tegel
-	 *            Dit is tegel die geplaatst moet worden
-	 * @param buur
-	 *            Dit is de buur van de tegel die geplaatst moet worden
-	 * @param windrichting
-	 *            Dit is de kant van de tegel die we willen vergelijken (Noord -
-	 *            OOST - ZUID - WEST)
-	 * @param windrichtingAndereTegel
-	 *            Dit is de kan van de buur waarmee we vergelijken (Noord - OOST
-	 *            - ZUID - WEST)
-	 * @param windrichtingMidden
-	 *            Deze parameter gaat eventuele wegen met elkaar vergelijken
-	 *            (wegen lopen altijd in het midden).
-	 * @param windrichtingMiddenAndereTegel
-	 *            Idem met boven
-	 * @param j
-	 * @param i
-	 * @return True indien beide eenzelfde type landsdeel hebben en ze dus naast
-	 *         elkaar mogen liggen. False anders.
-	 */
 	private boolean vergelijkLandsdelen(Tegel tegel, Tegel buur,
 			int landsdeelA, int landsdeelABuur, int landsdeelB,
 			int landsdeelBBuur, int landsdeelC, int landsdeelCBuur) {
@@ -360,6 +310,20 @@ public class Tafel implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Zal indien mogelijk pion plaatsen op de tegel met coördinaten tegelCoord. 
+	 * pionCoord zal bepalen op welk landsdeel de pion zal staan.
+	 * vb: Tegel.NOORD_OOST
+	 * 
+	 * @param tegelCoord
+	 * 	coördinaten van de tegel waar een pion op geplaatst zal worden.
+	 * @param pionCoord
+	 * 	coördinaten van het landsdeel op de tegel waar de pion zal geplaatst worden.
+	 * @param pion
+	 * 	de pion die zal geplaatst worden.
+	 * @return
+	 * 	True als de pion geplaatst is, False als hij niet geplaatst kan worden.
+	 */
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
 		Tegel t = bepaalTegel(tegelCoord);
 
@@ -371,6 +335,16 @@ public class Tafel implements Serializable {
 				&& t.plaatsPion(pionCoord, pion);
 	}
 
+	/**
+	 * Deze functie zal nagaan of tegel op positie coord geplaatst kan worden.
+	 * De tegel wordt hierbij niet echt op het veld gezet.
+	 * @param tegel
+	 * 	De tegel die geplaatst moet worden.
+	 * @param coord
+	 * 	De coördinaten waar de tegel geplaatst moet worden.
+	 * @return
+	 * 	True indien de tegelplaatsing mogelijk is, False anders.
+	 */
 	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
 		int rij = startTegel.getX() + coord.getX();
 		int kolom = startTegel.getY() + coord.getY();
@@ -378,6 +352,18 @@ public class Tafel implements Serializable {
 		return tegelKanGeplaatstWorden(tegel, rij, kolom);
 	}
 
+	/**
+	 * Deze functie zal nagaan of een pion plaatsing kan gebeuren op tegel met coördinaten tegelCoord op het
+	 * landsdeel met coördinaten pionCoord. Deze functie zal niet de pion echt gaan plaatsen op de tegel.
+	 * @param tegel
+	 * 	De tegel waarop de pion geplaatst moet worden.
+	 * @param tegelCoord
+	 * 	De coördinaten van de tegel waarop de pion geplaatst moet worden.
+	 * @param pionCoord
+	 * 	De coördinaten van het lansdeel waarop de pion geplaatst moet worden.
+	 * @return
+	 * 	True als de pion geplaatst kan worden, False anders.
+	 */
 	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
 			int pionCoord) {
 		Vector2D  veldCoord = zetOmInVeldCoord(tegelCoord);
@@ -489,6 +475,16 @@ public class Tafel implements Serializable {
 		return pionPlaatsingGeldig;
 	}
 
+	/**
+	 * Deze functie zal nagaan of de tegel met coördinaten (rij, kolom) de laatst geplaatste tegel is.
+	 * 
+	 * @param rij
+	 * 	Het rijnummer van de tegel.
+	 * @param kolom
+	 * 	Het kolomnummer van de tegel.
+	 * @return
+	 * 	True als dit de coördinaten zijn van de laatstgeplaatste tegel, False anders.
+	 */
 	public boolean isLaatste(int rij, int kolom) {
 		return bepaalTegel(new Vector2D(rij, kolom)) == laatstGeplaatsteTegel;
 	}
@@ -515,14 +511,6 @@ public class Tafel implements Serializable {
 		}
 
 		return veld.get(x).get(y);
-	}
-
-	public boolean isBoer(Pion pion) {
-		return false;
-	}
-
-	public void isGebiedGeldig(Pion pion) {
-
 	}
 
 	public boolean neemPionTerug(Pion pion) {
@@ -577,8 +565,6 @@ public class Tafel implements Serializable {
 		startTegel = null;
 		laatstGeplaatsteTegel = null;
 		veld = null;
-		// TODO
-		// oogpunt.reset();
 	}
 
 	private void setStartTegel(Tegel tegel) {
