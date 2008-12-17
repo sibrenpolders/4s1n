@@ -161,4 +161,9 @@ public class TafelVerwerker implements Serializable{
 	 private void readObjectNoData() throws ObjectStreamException {
 		 
 	 }
+	 
+	 public boolean isTegelPlaatsBaar(Tegel tegel) {
+		 
+		 return true;
+	 }
 }
