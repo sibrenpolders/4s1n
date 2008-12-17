@@ -13,6 +13,10 @@ import java.util.ArrayList;
  * @author school
  *
  */
+/**
+ * @author school
+ *
+ */
 public class Tafel implements Serializable {
 	private static final long serialVersionUID = -1767380269715221020L;
 	private static final int NOORD = 0;
@@ -22,7 +26,7 @@ public class Tafel implements Serializable {
 
 	private Tegel laatstGeplaatsteTegel;
 	private ArrayList<ArrayList<Tegel>> veld;
-	private Camera oogpunt;
+//	private Camera oogpunt;
 	private Vector2D startTegel;
 	private Score score;
 	
@@ -50,19 +54,11 @@ public class Tafel implements Serializable {
 	}
 
 	/**
-	 * Geeft de positie van de start tegel terug 
+	 * Geeft de positie van de start tegel terug /
 	 * @return
 	 */
 	public Vector2D getStartTegel() {
 		return new Vector2D(0, 0);
-	}
-
-	public void beweegCamera(Vector3D nieuwePositie) {
-		getOogpunt().veranderStandpunt(nieuwePositie);
-	}
-
-	public boolean cameraBewegingGeldig(Vector3D nieuwePositie) {
-		return getOogpunt().bewegingGeldig(nieuwePositie);
 	}
 	
 	/**
@@ -533,9 +529,7 @@ public class Tafel implements Serializable {
 		return false;
 	}
 
-	public void herstelOverzicht() {
-		oogpunt.herstelOverzicht();
-	}
+	
 
 	/**
 	 * Deze functie zal het veld 1 zet terugdoen.
@@ -577,17 +571,10 @@ public class Tafel implements Serializable {
 
 	}
 
-	public void setOogpunt(Camera oogpunt) {
-		this.oogpunt = oogpunt;
-	}
-
-	public Camera getOogpunt() {
-		return oogpunt;
-	}
+	
 
 	public void clear() {
 		startTegel = null;
-		oogpunt = new Camera();
 		laatstGeplaatsteTegel = null;
 		veld = null;
 		// TODO
@@ -688,14 +675,12 @@ public class Tafel implements Serializable {
 		
 		out.writeObject(coordLaatstGeplaatsteTegel);
 		out.writeObject(veld);
-		out.writeObject(oogpunt);
 		out.writeObject(startTegel);
 	}
 	
 	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
 		Vector2D coordLaatstGeplaatsteTegel = (Vector2D)in.readObject();
 		veld = (ArrayList<ArrayList<Tegel>>) in.readObject();
-		oogpunt = (Camera) in.readObject();
 		startTegel = (Vector2D) in.readObject();
 		
 		int x = coordLaatstGeplaatsteTegel.getX();

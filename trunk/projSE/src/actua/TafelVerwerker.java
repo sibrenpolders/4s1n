@@ -27,10 +27,6 @@ public class TafelVerwerker implements Serializable{
 		return stapel;
 	}
 
-	public void herstelOverzicht() {
-		tafel.herstelOverzicht();
-	}
-
 	public Tegel neemLaatsteTegel(){
 		return stapel.pollFirst();
 	}
@@ -57,14 +53,6 @@ public class TafelVerwerker implements Serializable{
 
 	public Vector2D vraagCoord() {
 		return null;
-	}
-
-	public void wijzigOverzicht(Vector3D nieuwePositie) {
-		tafel.beweegCamera(nieuwePositie);
-	}
-
-	public Vector3D getOverzicht() {
-		return tafel.getOogpunt().getHuidigeVector();
 	}
 
 	/**
@@ -122,22 +110,9 @@ public class TafelVerwerker implements Serializable{
 	public int aantalTegels(){
 		return stapel.size();
 	}
-	
-	public Camera getCamera() {
-		return tafel.getOogpunt();
-	}
-	
+
 	public Tegel getLaatstGeplaatsteTegel() {
 		return tafel.getLaatstGeplaatsteTegel();
-	}
-	
-	public boolean verplaatsCamera(Vector3D nieuwePositie) {
-		if (tafel.cameraBewegingGeldig(nieuwePositie)) {
-			tafel.beweegCamera(nieuwePositie);
-			return true;
-		}
-		else
-			return false;
 	}
 	
 	public Vector2D getStartTegelPos() {
