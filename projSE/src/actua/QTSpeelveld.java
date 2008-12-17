@@ -122,6 +122,8 @@ public class QTSpeelveld extends GSpeelveld {
 	            if (voegTegelToe(gridCoord,pixmap))
 	            	gevuld=true;
 	            
+	            clearGroen();
+	            
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
 	                event.accept();	        
@@ -172,6 +174,14 @@ public class QTSpeelveld extends GSpeelveld {
 //	            child.setPixmap(pixmap);
 //	        }
 	    }
+
+		public boolean isGevuld() {
+			return gevuld;
+		}
+
+		public void setGevuld(boolean gevuld) {
+			this.gevuld = gevuld;
+		}
 	};	
 	private QWidget gridWidget;
 	private QGridLayout gridLayout;
@@ -238,6 +248,7 @@ public class QTSpeelveld extends GSpeelveld {
 		getSpel().getTafelVerwerker().plaatsTegel(startTegel.getTegel(),new Vector2D(0,0));
 		voegTegelToeAanGrafischeLijst(startTegel.getTegel(),new Vector2D(0,0),startTegel.getPixmap());
 		((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(startTegel.getPixmap().scaled(85,85));
+		((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).setGevuld(true);
 	}
 	
 	public void hide() {
@@ -367,13 +378,19 @@ public class QTSpeelveld extends GSpeelveld {
 			for (;j<columns && y <= sizeY;j++,y++) {
 				coord.setXY(startX,y);
 				if (y <= sizeY) {
-					if (getSpel().getTafelVerwerker().isTegelPlaatsingGeldig(tegel,coord)) {
+					if (!((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).isGevuld() && getSpel().getTafelVerwerker().isTegelPlaatsingGeldig(tegel,coord)) {
 						((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).setForegroundBrush(new QBrush(new QColor(0,255,0,127)));
 	    			}
 				}
 			}
 			j=0;
 		}
+    }
+    
+    private void clearGroen() {
+    	for (int i=0;i<rows;i++)
+    		for (int j=0;j<columns;j++)
+    			((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).setForegroundBrush(null);
     }
 
 	public QWidget getGridWidget() {
