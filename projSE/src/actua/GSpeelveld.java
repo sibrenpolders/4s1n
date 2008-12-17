@@ -9,7 +9,7 @@ public abstract class GSpeelveld {
 	private String achtergrond;
 	private Spel spel;
 	private Vector2D startGTegel;
-	private Camera camera;
+	protected Camera camera;
 	
 	public GSpeelveld() {
 		camera = new Camera();
@@ -67,8 +67,13 @@ public abstract class GSpeelveld {
 	 * @param nieuwePositie
 	 * 	De nieuwe positie van het centrum van het veld (Vector3D)
 	 */
-	public void beweegCamera(Vector3D nieuwePositie) {
-		camera.veranderStandpunt(nieuwePositie);
+	protected boolean beweegCamera(Vector3D nieuwePositie) {
+		if (cameraBewegingGeldig(nieuwePositie)) {
+			camera.veranderStandpunt(nieuwePositie);
+			return true;
+		}
+		
+		return false;
 	}
 
 	/**
@@ -80,7 +85,7 @@ public abstract class GSpeelveld {
 	 * @return
 	 * 	True als de veldwijziging geldig is, Fals anders.
 	 */
-	public boolean cameraBewegingGeldig(Vector3D nieuwePositie) {
+	protected boolean cameraBewegingGeldig(Vector3D nieuwePositie) {
 		return camera.bewegingGeldig(nieuwePositie);
 	}
 	
@@ -88,15 +93,15 @@ public abstract class GSpeelveld {
 	 * Deze functie zal het veld overzicht weer op de standaard waarden 
 	 * zetten.
 	 */
-	public void herstelOverzicht() {
+	protected void herstelOverzicht() {
 		camera.herstelOverzicht();
 	}
 	
-	public void setOogpunt(Camera camera) {
+	protected void setOogpunt(Camera camera) {
 		this.camera= camera;
 	}
 
-	public Camera getOogpunt() {
+	protected Camera getOogpunt() {
 		return camera;
 	}
 	

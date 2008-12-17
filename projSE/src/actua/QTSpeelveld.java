@@ -216,9 +216,9 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 		
 		//camera dizzle
-		getSpel().getTafelVerwerker().getCamera().setMinVector(new Vector3D(-getSpel().getTafelVerwerker().getStapel().size(),-getSpel().getTafelVerwerker().getStapel().size(),0));
-		getSpel().getTafelVerwerker().getCamera().setMaxVector(new Vector3D(getSpel().getTafelVerwerker().getStapel().size(),getSpel().getTafelVerwerker().getStapel().size(),6));
-		getSpel().getTafelVerwerker().getCamera().setHuidigeVector(new Vector3D(-3,-4,3));
+		camera.setMinVector(new Vector3D(-getSpel().getTafelVerwerker().getStapel().size(),-getSpel().getTafelVerwerker().getStapel().size(),0));
+		camera.setMaxVector(new Vector3D(getSpel().getTafelVerwerker().getStapel().size(),getSpel().getTafelVerwerker().getStapel().size(),6));
+		camera.setHuidigeVector(new Vector3D(-3,-4,3));
 		
 		QPushButton buttonUp = new QPushButton("^",gridWidget);
 		buttonUp.setGeometry(gridWidget.width()/2-18,0,35,25);
@@ -263,7 +263,7 @@ public class QTSpeelveld extends GSpeelveld {
 	
 	public boolean voegTegelToe(Vector2D gridCoord,QPixmap pixmap) {
 		Tegel tegel = getSpel().getTafelVerwerker().vraagNieuweTegel();
-		Vector2D coord = new Vector2D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()+gridCoord.getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()+gridCoord.getY());
+		Vector2D coord = new Vector2D(camera.getHuidigeVector().getX()+gridCoord.getX(),camera.getHuidigeVector().getY()+gridCoord.getY());
 		
 		if (getSpel().getTafelVerwerker().isTegelPlaatsingGeldig(tegel,coord)) {
 			getSpel().getTafelVerwerker().neemTegelVanStapel();
@@ -290,29 +290,29 @@ public class QTSpeelveld extends GSpeelveld {
     }
     
     private void cameraUp() {
-    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX()-1,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
     	QGraphicsScene scene;
     	QtGraphicsView view;
     	
-    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
+    	if (beweegCamera(nieuwePositie))
     		veranderZicht();
     }
     private void cameraDown() {
-    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX()+1,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
     	
-    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
+    	if (beweegCamera(nieuwePositie))
     		veranderZicht();
     }
     private void cameraLeft() {
-    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()-1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()-1,camera.getHuidigeVector().getZ());
     	
-    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
+    	if (beweegCamera(nieuwePositie))
     		veranderZicht();
     }
     private void cameraRight() {
-    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX(),getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()+1,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ());
+    	Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()+1,camera.getHuidigeVector().getZ());
     	
-    	if (getSpel().getTafelVerwerker().verplaatsCamera(nieuwePositie))
+    	if (beweegCamera(nieuwePositie))
     		veranderZicht();
     }
     
@@ -324,8 +324,8 @@ public class QTSpeelveld extends GSpeelveld {
     	int sizeX = gTegels.size();
     	int sizeY;
 		
-		startX = offsetX+getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX();
-		startY = offsetY+getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY();
+		startX = offsetX+camera.getHuidigeVector().getX();
+		startY = offsetY+camera.getHuidigeVector().getY();
 		
 		for (;i<rows && startX<0;startX++,i++)
 			for (y=0;y<columns;y++) {
@@ -365,8 +365,8 @@ public class QTSpeelveld extends GSpeelveld {
     	int sizeX = gTegels.size();
     	int sizeY;
 		
-		startX = offsetX+getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX();
-		startY = offsetY+getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY();
+		startX = offsetX+camera.getHuidigeVector().getX();
+		startY = offsetY+camera.getHuidigeVector().getY();
 		
 		for (;i<rows && startX<-1;startX++,i++)
 			;
