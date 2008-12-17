@@ -230,7 +230,11 @@ public class Tegel {
 		return orientatie;
 	}
 	
-	 private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+	 public void setOrientatie(short orientatie) {
+		this.orientatie = orientatie;
+	}
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		 out.writeShort(orientatie);
 		 out.writeObject(idPresentatie);
 		 out.writeObject(tegelPresentatie);
