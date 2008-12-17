@@ -72,7 +72,7 @@ public class QTSpeelveld extends GSpeelveld {
 	    	System.out.println("dragEnter");
 	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
 		    	System.out.println("bla4");
-		    	//kleurMogelijkhedenGroen();
+		    	kleurMogelijkhedenGroen();
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
 	                event.accept();

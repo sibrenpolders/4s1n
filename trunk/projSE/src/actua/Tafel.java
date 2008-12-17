@@ -207,11 +207,10 @@ public class Tafel implements Serializable {
 		ArrayList<Tegel> kolomVector;
 		int aantal = (int) Math.abs(kolom - startTegel.getY());
 
-		System.out.println(aantal);
 		for (int i = 0; i < veld.size(); ++i) {
 			kolomVector = veld.get(i);
 
-			for (int j = 0; j < aantal; ++j) {
+			for (int j = 0; j < aantal - kolomVector.size()+1; ++j) {
 				kolomVector.add(0, null);
 			}
 		}

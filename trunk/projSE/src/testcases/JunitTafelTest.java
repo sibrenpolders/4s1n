@@ -150,4 +150,91 @@ public class JunitTafelTest extends TestCase {
 	public void testRedo() {
 		fail("Not yet implemented");
 	}
+	
+	public void testFail() {
+		ArrayList<Tegel> tegels = maaktegelsFail();
+		ArrayList<Vector2D> coord = maakCoordsFail();
+		Tafel t = new Tafel();
+		
+		for (int i = 0; i < 0; ++i) {
+			assertTrue(t.plaatsTegel(tegels.get(i), coords.get(i)));
+		}
+	}
+
+	private ArrayList<Vector2D> maakCoordsFail() {
+		ArrayList<Vector2D> coords = new ArrayList<Vector2D>();
+		
+//		coords.add(new Vector2D(0, 0));
+//		coords.add(new Vector2D(-1, 0));
+//		coords.add(new Vector2D(-2, 0));
+//		coords.add(new Vector2D(-2, 1));
+//		coords.add(new Vector2D(-2, 2));
+//		coords.add(new Vector2D(-1, -1));
+//		coords.add(new Vector2D(-1, -2));
+//		coords.add(new Vector2D(0, 1));
+//		coords.add(new Vector2D(1, 0));
+//		coords.add(new Vector2D(1, 1));
+//		coords.add(new Vector2D(0, 2));
+		
+		coords.add(new Vector2D(new Vector2D(0, 0)));
+		coords.add(new Vector2D(new Vector2D(1, 0)));
+		coords.add(new Vector2D(new Vector2D(-1, 0)));
+		coords.add(new Vector2D(new Vector2D(-1, -1)));
+		coords.add(new Vector2D(new Vector2D(-1, 1)));
+		coords.add(new Vector2D(new Vector2D(-2, 0)));
+		coords.add(new Vector2D(new Vector2D(-1, 2)));
+		coords.add(new Vector2D(new Vector2D(-1, -2)));
+		coords.add(new Vector2D(new Vector2D(-2, -1)));
+		
+		return coords;
+	}
+
+	private ArrayList<Tegel> maaktegelsFail() {
+		ArrayList<Tegel> tegels = new ArrayList<Tegel>();
+		
+		tegels.add(new Tegel("wssswgwwgwwwg.png", "0111023320002"));
+		tegels.add(new Tegel("wwgwwwwwgwwwg.png", "0012222210001"));
+		Tegel t = new Tegel("wsssssswwwwww.png", "0111111000000");
+		t.draaiTegel(true);
+		t.draaiTegel(true);
+		tegels.add(t);
+		t = new Tegel("wssswwwwgwwgg.png", "0111023320002");
+		t.draaiTegel(true);
+		tegels.add(t);
+		tegels.add(new Tegel("wsssssswwwwww.png", "0111111000000"));
+		t = new Tegel("wwgwwwwwgwwwg.png", "0012222210001");
+		t.draaiTegel(false);
+		tegels.add(t);
+		t = new Tegel("wsssssswwwwww.png", "0111111000000");
+		t.draaiTegel(false);
+		tegels.add(t);
+		t = new Tegel("wwgwwwwwgwwwg.png", "0012222210001");
+		t.draaiTegel(true);
+		tegels.add(t);
+		t = new Tegel("wssswwwwgwwgg.png", "0111000023322");
+		tegels.add(t);
+		//		Tegel t = new Tegel("swwwssswwwsss.png", "0111000222000");
+//		t.draaiTegel(true);
+//		tegels.add(t);		
+//		tegels.add(new Tegel("sssssssssssss.png", "0000000000000"));
+//		tegels.add(new Tegel("sssssssssssss.png", "0000000000000"));
+//		t = new Tegel("wssswwwwwwwww.png", "0111000000000");
+//		t.draaiTegel(false);
+//		tegels.add(t);
+//		t = new Tegel("wwwwwgwwgwwgr.png", "0000012234456");
+//		t.draaiTegel(true);
+//		tegels.add(t);
+//		tegels.add(new Tegel("sssswgwwgwssg.png", "0000123321002"));
+//		tegels.add(new Tegel("wwgwwgwwgwwgr.png", "0012234456678"));
+//		t = new Tegel("wwgwwgwwgwwgr.png", "0012234456678");
+//		t.draaiTegel(false);
+//		tegels.add(t);
+//		t = new Tegel("wssswwwwgwwgg.png", "0111000012211");
+//		t.draaiTegel(true);
+//		t.draaiTegel(true);
+//		tegels.add(t);
+//		tegels.add(new Tegel("wwgwwgwwgwwgr.png", "0012234456678"));
+		
+		return tegels;
+	}
 }
