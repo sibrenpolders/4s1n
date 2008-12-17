@@ -9,13 +9,15 @@ public abstract class GSpeelveld {
 	private String achtergrond;
 	private Spel spel;
 	private Vector2D startGTegel;
-
+	private Camera camera;
+	
 	public GSpeelveld() {
-		
+		camera = new Camera();
 	}
 	
 	public GSpeelveld(Spel spel) {
 		this.spel=spel;
+		camera = new Camera();
 	}
 
 	public ArrayList<ArrayList<GTegel>> getGTegels() {
@@ -60,6 +62,43 @@ public abstract class GSpeelveld {
 	
 	
 	
+	/**
+	 * Zal de het veldoverzicht wijzigen.
+	 * @param nieuwePositie
+	 * 	De nieuwe positie van het centrum van het veld (Vector3D)
+	 */
+	public void beweegCamera(Vector3D nieuwePositie) {
+		camera.veranderStandpunt(nieuwePositie);
+	}
+
+	/**
+	 * Zal nagaan of het veldoverzicht kan gewijzigd worden naar
+	 * de ingegeven positie.
+	 * 
+	 * @param nieuwePositie
+	 * 	De positie naar waar de veldwijziging gedaan zal worden.
+	 * @return
+	 * 	True als de veldwijziging geldig is, Fals anders.
+	 */
+	public boolean cameraBewegingGeldig(Vector3D nieuwePositie) {
+		return camera.bewegingGeldig(nieuwePositie);
+	}
+	
+	/**
+	 * Deze functie zal het veld overzicht weer op de standaard waarden 
+	 * zetten.
+	 */
+	public void herstelOverzicht() {
+		camera.herstelOverzicht();
+	}
+	
+	public void setOogpunt(Camera camera) {
+		this.camera= camera;
+	}
+
+	public Camera getOogpunt() {
+		return camera;
+	}
 	
 	//functies van tafel m.b.t. dubbele arraylist 
 	//werken hier op een qt dubbele arraylist
