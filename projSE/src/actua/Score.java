@@ -1,3 +1,4 @@
+// TODO WEG berekenen!!!!
 package actua;
 
 import java.util.ArrayList;
@@ -317,19 +318,19 @@ public class Score {
 			pion.zetGeplaatst(false);
 			switch(pion.getKleur()) {
 			case Speler.SPELER_BLAUW:
-				spelerBlauw += 8;
+				spelerBlauw += KLOOSTER_PUNTEN;
 				break;
 			case Speler.SPELER_ROOD:
-				spelerRood += 8;
+				spelerRood += KLOOSTER_PUNTEN;
 				break;
 			case Speler.SPELER_WIT:
-				spelerWit += 8;
+				spelerWit += KLOOSTER_PUNTEN;
 				break;
 			case Speler.SPELER_GEEL:
-				spelerGeel += 8;
+				spelerGeel += KLOOSTER_PUNTEN;
 				break;
 			case Speler.SPELER_ORANJE:
-				spelerOranje += 8;
+				spelerOranje += KLOOSTER_PUNTEN;
 				break;
 			}
 		}
