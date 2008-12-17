@@ -9,6 +9,10 @@ import java.util.ArrayList;
  * @author school
  * 
  */
+/**
+ * @author school
+ *
+ */
 public class Tafel implements Serializable {
 	private static final long serialVersionUID = -1767380269715221020L;
 	private static final int NOORD = 0;
@@ -31,6 +35,12 @@ public class Tafel implements Serializable {
 		clear();
 	}
 	
+	/** 
+	 * Zal de de laatst geplaatste tegel teruggeven.
+	 * 
+	 * @return
+	 * 	laatstGeplaatste tegel
+	 */
 	public Tegel getLaatstGeplaatsteTegel() {
 		return laatstGeplaatsteTegel;
 	}
@@ -39,9 +49,12 @@ public class Tafel implements Serializable {
 		this.laatstGeplaatsteTegel = laatstGeplaatsteTegel;
 	}
 
-	// TODO Snap het nut van deze functie niet.
+	/**
+	 * Geeft de positie van de start tegel terug 
+	 * @return
+	 */
 	public Vector2D getStartTegel() {
-		return startTegel;
+		return new Vector2D(0, 0);
 	}
 
 	public void beweegCamera(Vector3D nieuwePositie) {
