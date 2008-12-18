@@ -78,9 +78,13 @@ public class TegelFabriek {
 		Tegel tegel = new Tegel(tegelStrings[0], tegelStrings[1]);
 		stapel.add(tegel);
 
+		assert(tegel.getOrientatie() != 0);
 		for (int i = 1; i < aantalTegels; ++i) {
-			stapel.add(new Tegel(tegel.getTegelPresentatie(), 
-					tegel.getIdPresentatie()));
+			Tegel nieuweTegel = new Tegel(tegel.getTegelPresentatie(), 
+					tegel.getIdPresentatie());
+			assert(tegel.getOrientatie() != 0);
+			stapel.add(nieuweTegel);
+			
 		}
 	}	
 }

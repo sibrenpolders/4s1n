@@ -230,7 +230,7 @@ public class Tegel {
 		return orientatie;
 	}
 	
-	 public void setOrientatie(short orientatie) {
+	 public void setOrientatie(short orientatie) {		
 		this.orientatie = orientatie;
 	}
 

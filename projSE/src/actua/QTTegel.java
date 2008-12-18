@@ -51,6 +51,7 @@ public class QTTegel extends GTegel {
 		pixmap.load("src/icons/"+getTegel().getTegelPresentatie()+".png");
 	}
 
+	static int i = 0;
 	public void roteer(boolean richting) {
 		QMatrix matrix = new QMatrix();
 		
