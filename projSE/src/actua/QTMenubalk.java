@@ -8,8 +8,8 @@ import com.trolltech.qt.gui.QMessageBox;
 public class QTMenubalk extends GMenubalk {
 	private QMenuBar menubar;
 
-	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help) {
-		super();
+	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help,BestandsVerwerker bestand) {
+		super(spel);
 		setGHelp(new QTHelp(help));
 		setGOptie(new QTOptie(opties));
 		setGInitSpel(new QTInitSpel(spel));
