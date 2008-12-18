@@ -8,12 +8,11 @@ public class Spel implements Serializable{
 	private static final long serialVersionUID = 2689906234458876556L;
 	private TafelVerwerker tafelVerwerker;
 	// waarom heeft een spel een bestandsverwerken nodig?
-//	private BestandsVerwerker bestandVerwerker;
+	//hij heeft er geen nodig
 	private SpelerVerwerker spelerVerwerker;
 
 	public Spel() {
 		tafelVerwerker = new TafelVerwerker();
-//		bestandVerwerker = new BestandsVerwerker();
 		spelerVerwerker = new SpelerVerwerker();
 	}
 
@@ -24,14 +23,9 @@ public class Spel implements Serializable{
 	public SpelerVerwerker getSpelerVerwerker () {
 		return spelerVerwerker;
 	}
-
-//	public BestandsVerwerker getBestandVerwerker () {
-//		return bestandVerwerker;
-//	}
 	
 	 private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		 out.writeObject(tafelVerwerker);
-//		 out.writeObject(bestandVerwerker);
 		 out.writeObject(spelerVerwerker);
 	 }
 	 

@@ -5,11 +5,13 @@ public abstract class GMenubalk {
 	protected GOptie gOptie;
 	protected GInitSpel gInitSpel;
 	protected GWindow gParent;
+	protected Spel spel;
 
-	public GMenubalk() {
+	public GMenubalk(Spel spel) {
 		gHelp = null;
 		gOptie = null;
 		gInitSpel = null;
+		this.spel=spel;
 	}
 
 	public abstract void show();

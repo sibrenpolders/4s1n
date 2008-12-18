@@ -8,16 +8,16 @@ import com.trolltech.qt.gui.QWidget;
 public class QTWindow implements GWindow {
 	private QMainWindow mainWindow;
 
-	public QTWindow(Spel spel, OptieVerwerker opties, HelpVerwerker help) {
+	public QTWindow(Spel spel, OptieVerwerker opties, HelpVerwerker help,BestandsVerwerker bestand) {
 		super();		
 		QApplication.initialize(new String[0]);
 		setMainWindow(new QMainWindow());
 		mainWindow.setWindowTitle("Actua Tungrorum");
-		initMainWindow(spel, opties, help);
+		initMainWindow(spel, opties, help, bestand);
 	}
 
-	private void initMainWindow(Spel spel, OptieVerwerker opties, HelpVerwerker help) {
-		QTMenubalk qMenubalk = new QTMenubalk(spel, opties, help);
+	private void initMainWindow(Spel spel, OptieVerwerker opties, HelpVerwerker help,BestandsVerwerker bestand) {
+		QTMenubalk qMenubalk = new QTMenubalk(spel, opties, help,bestand);
 		mainWindow.setMenuBar(qMenubalk.getMenubar());
 		
 		QWidget container = new QWidget(mainWindow);
