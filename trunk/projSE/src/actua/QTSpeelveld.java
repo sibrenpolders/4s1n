@@ -12,6 +12,7 @@ import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.gui.QBrush;
 import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QDragEnterEvent;
+import com.trolltech.qt.gui.QDragLeaveEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QGraphicsScene;
@@ -136,45 +137,9 @@ public class QTSpeelveld extends GSpeelveld {
 	            event.ignore();
 	        }
 	    }
-	    
-	    protected void mousePressEvent(QMouseEvent event)
+	    protected void dragLeaveEvent(QDragLeaveEvent event)
 	    {
-	    	System.out.println("bluka");
-//	        QLabel child = (QLabel) childAt(event.pos());
-//	        if (child == null)
-//	            return;
-//
-//	        QPixmap pixmap = child.pixmap();
-//
-//	        QByteArray itemData = new QByteArray();
-//	        QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.WriteOnly);
-//	        pixmap.writeTo(dataStream);
-//	        event.pos().subtract(child.pos()).writeTo(dataStream);
-//
-//
-//	        com.trolltech.qt.core.QMimeData mimeData = new com.trolltech.qt.core.QMimeData();
-//	        mimeData.setData("application/x-dnditemdata", itemData);
-//	        
-//	        QDrag drag = new QDrag(this);
-//	        drag.setMimeData(mimeData);
-//	        drag.setPixmap(pixmap);
-//	        drag.setHotSpot(event.pos().subtract(child.pos()));
-//
-//	        QPixmap tempPixmap = new QPixmap(pixmap);
-//	        QPainter painter = new QPainter();
-//	        painter.begin(tempPixmap);
-//	        painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127, 127, 127)));
-//	        painter.end();
-//
-//	        child.setPixmap(tempPixmap);
-//
-//	        if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
-//	            Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction)
-//	            child.close();
-//	        else {
-//	            child.show();
-//	            child.setPixmap(pixmap);
-//	        }
+	    	clearGroen();
 	    }
 
 		public boolean isGevuld() {
