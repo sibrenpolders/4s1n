@@ -294,26 +294,34 @@ public class QTSpeelveld extends GSpeelveld {
     	QGraphicsScene scene;
     	QtGraphicsView view;
     	
-    	if (beweegCamera(nieuwePositie))
+    	if (cameraBewegingGeldig(nieuwePositie)) {
+    		beweegCamera(nieuwePositie);
     		veranderZicht();
+    	}
     }
     private void cameraDown() {
     	Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX()+1,camera.getHuidigeVector().getY(),camera.getHuidigeVector().getZ());
     	
-    	if (beweegCamera(nieuwePositie))
+    	if (cameraBewegingGeldig(nieuwePositie)) {
+    		beweegCamera(nieuwePositie);
     		veranderZicht();
+    	}
     }
     private void cameraLeft() {
     	Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()-1,camera.getHuidigeVector().getZ());
     	
-    	if (beweegCamera(nieuwePositie))
+    	if (cameraBewegingGeldig(nieuwePositie)) {
+    		beweegCamera(nieuwePositie);
     		veranderZicht();
+    	}
     }
     private void cameraRight() {
     	Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),camera.getHuidigeVector().getY()+1,camera.getHuidigeVector().getZ());
     	
-    	if (beweegCamera(nieuwePositie))
+    	if (cameraBewegingGeldig(nieuwePositie)) {
+    		beweegCamera(nieuwePositie);
     		veranderZicht();
+    	}
     }
     
     //nog een paar foutjes
@@ -354,7 +362,7 @@ public class QTSpeelveld extends GSpeelveld {
 		}
     }
     
-
+    //werkt
     private void kleurMogelijkhedenGroen() {
     	Tegel tegel = getSpel().getTafelVerwerker().vraagNieuweTegel();
     	Vector2D coord = new Vector2D();
@@ -363,7 +371,7 @@ public class QTSpeelveld extends GSpeelveld {
     	int offsetY = getSpel().getTafelVerwerker().getStartTegelPos().getY();
     	int startX,startY,i=0,j=0,y;
     	int sizeX = gTegels.size();
-    	int sizeY;
+    	int sizeY=getBiggestSize();
 		
 		startX = offsetX+camera.getHuidigeVector().getX();
 		startY = offsetY+camera.getHuidigeVector().getY();
@@ -375,14 +383,8 @@ public class QTSpeelveld extends GSpeelveld {
 			for (y=startY;j<columns && y<-1;y++,j++)
 				;
 			
-			if (startX==sizeX-1)
-				sizeY = gTegels.get(startX).size();
-			else if (startX<sizeX)
-				sizeY = gTegels.get(startX+1).size();
-			else
-				sizeY = gTegels.get(startX-1).size();
 			for (;j<columns && y <= sizeY;j++,y++) {
-				coord.setXY(startX,y);
+				coord.setXY(camera.getHuidigeVector().getX()+i,camera.getHuidigeVector().getY()+j);
 				if (y <= sizeY) {
 					if (!((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).isGevuld() && getSpel().getTafelVerwerker().isTegelPlaatsingGeldig(tegel,coord)) {
 						((QtGraphicsView)gridLayout.itemAtPosition(i,j).widget()).setForegroundBrush(new QBrush(new QColor(0,255,0,127)));
