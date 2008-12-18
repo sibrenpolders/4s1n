@@ -47,8 +47,7 @@ public class QTInfo extends GInfo {
 			QLabel child = (QLabel) childAt(0, 0);
 
 			if (child != null) {
-				Tegel tegel = new Tegel();		
-				tegel = tafelVerwerker.vraagNieuweTegel();
+				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
 				
 				if (tegel != null) {
 					QTTegel qtTegel = new QTTegel(tegel);
@@ -63,8 +62,7 @@ public class QTInfo extends GInfo {
 			QLabel child = (QLabel) childAt(0, 0);
 
 			if (child != null) {
-				Tegel tegel = new Tegel();
-				tegel = tafelVerwerker.vraagNieuweTegel();
+				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
 				if (tegel != null) {
 					QTTegel qtTegel = new QTTegel(tegel);
 					qtTegel.roteer(false);
@@ -75,13 +73,13 @@ public class QTInfo extends GInfo {
 		}
 		
 		public void nieuweTegel(){
-			Tegel tegel = new Tegel();
-			tegel = tafelVerwerker.neemTegelVanStapel();
+			Tegel tegel = tafelVerwerker.neemTegelVanStapel();
+			tegel.setOrientatie((short)0);
 			tafelVerwerker.legTerugEinde(tegel);
 			
-			tegel = new Tegel();
 			QLabel child = (QLabel) childAt(0, 0);
 			tegel = tafelVerwerker.vraagNieuweTegel();
+			assert(tegel.getOrientatie() != 0);
 			child.clear();
 			child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
 		}
@@ -141,9 +139,7 @@ public class QTInfo extends GInfo {
 			child.setPixmap(tempPixmap);
 
 			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
-				Tegel tegel = new Tegel();
-				tegel = tafelVerwerker.vraagNieuweTegel();
-
+				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
 				if (tegel == null)
 					child.close();
 				else {
@@ -151,12 +147,11 @@ public class QTInfo extends GInfo {
 					child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
 				}
 			} else {
-				Tegel tegel = new Tegel();
-				tegel = tafelVerwerker.vraagNieuweTegel();
+				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
+				tegel.setOrientatie((short)0);
 				
 				child.show();
-				child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
-				tafelVerwerker.vraagNieuweTegel().setOrientatie((short)0);
+				child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));				
 			}
 		}
 	}

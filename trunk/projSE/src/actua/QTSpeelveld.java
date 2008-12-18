@@ -66,15 +66,12 @@ public class QTSpeelveld extends GSpeelveld {
 		
 		protected void wheelEvent(QWheelEvent event) {
 	    	int zoomFactor = -event.delta()/8/15;
-	    	System.out.println(zoomFactor);
 	    	zooming(zoomFactor);
 	    }
 		
 		protected void dragEnterEvent(QDragEnterEvent event)
 	    {
-	    	System.out.println("dragEnter");
 	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
-		    	System.out.println("bla4");
 		    	kleurMogelijkhedenGroen();
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
@@ -89,9 +86,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	    protected void dragMoveEvent(QDragMoveEvent event)
 	    {
-	    	System.out.println("dragMove");
 	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
-		    	System.out.println("bla2");
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
 	                event.accept();
