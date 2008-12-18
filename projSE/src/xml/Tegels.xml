@@ -33,9 +33,9 @@
 		<zuid><wei id="0" /></zuid>
 		<zuidWest><wei id="0" /></zuidWest>
 
-		<westZuid><stad id="1" /></westZuid>
-		<west><stad id="1" /></west>
-		<westNoord><stad id="1" /></westNoord>
+		<westZuid><stad id="2" /></westZuid>
+		<west><stad id="2" /></west>
+		<westNoord><stad id="2" /></westNoord>
 			
 		<midden><wei id="0" /></midden>
 	</tegel>
