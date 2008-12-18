@@ -160,9 +160,9 @@
 
 		<oostNoord><wei id="1" /></oostNoord>
 		<oost><weg id="2" /></oost>
-		<oostZuid><wei id="1" /></oostZuid>
+		<oostZuid><wei id="3" /></oostZuid>
 
-		<zuidOost><wei id="1" /></zuidOost>
+		<zuidOost><wei id="3" /></zuidOost>
 		<zuid><weg id="2" /></zuid>
 		<zuidWest><wei id="1" /></zuidWest>
 
