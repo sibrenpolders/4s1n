@@ -188,5 +188,14 @@ public abstract class GSpeelveld {
 		}
 	}
 
+	public int getBiggestSize() {
+		int size=gTegels.get(0).size();
+		
+		for (int i=1;i<gTegels.size();i++)
+			if (gTegels.get(i).size()>size)
+				size=gTegels.get(i).size();
+		
+		return size;
+	}
 	
 }
