@@ -1,0 +1,24 @@
+<html><head></head><body><p class="fixed">vr. 3/10/08: 13u30 - 14u30: groepsvergadering<br>
+do. 9/10/08: 9u00 - 12u30: groepsvergadering<br>
+vr. 10/10/08: 13u00 - 16u00: groepsvergadering<br>
+ma. 13/10/08: 15u00 - 18u00: groepsvergadering<br>
+do. 16/10/08: 14u00 - 15u00 &amp; 15u30 - 17u30: groepsvergadering (contracten)<br>
+vr. 17/10/08: 11u00 - 12u30: groepsvergadering (overlopen resultaat)<br>
+do. 23/10/08: 15u30 - 17u00: groepsvergadering (collaboratiediagrammen)<br>
+vr. 24/10/08: 10u00 - 13u00 &amp; 14u00 - 14u30: groepsvergadering (collaboratiediagrammen)<br>
+do. 30/10/08: 14u15 - 14u45 &amp; 15u30 - 18u30: groepsvergadering (collaboratiediagrammen)<br>
+vr. 31/10/08: 10u45 - 12u45 &amp; 13u30 - 18u00: groepsvergadering (collaboratiediagrammen, klassediagram, design patterns)<br>
+vr. 7/11/08: 11u00 - 11u30: groepsvergadering<br>
+wo. 12/11/08: 11u30 - 12u30 &amp; 15u30 - 17u00: groepsvergadering (design patterns)<br>
+vr. 14/11/08: 10u30 - 12u00 &amp; 14u00 - 14u30 &amp; 15u00 - 18u30: groepsvergadering (design patterns, klassediagram)<br>
+ma. 17/11/08: 15u15 - 17u15: groepsvergadering (design patterns, klassediagram)<br>
+di. 18/11/08: 10u00 - 12u30: groepsvergadering (klassediagram)<br>
+wo. 19/11/08: 15u30 - 18u00: groepsvergadering (klassediagram)<br>
+vr. 21/11/08: 10u30 - 12u30 &amp; 14u00 - 17u00: groepsvergadering (klassediagram, code classes)<br>
+wo. 26/11/08: 16u15 - 18u15: groepsvergadering (unit tests)<br>
+do. 27/11/08: 14u30 - 15u30: groepsvergadering (unit tests)<br>
+vr. 28/11/08: 10u15 - 13u15 &amp; 15u00-18u00: groepsvergadering (unit tests, uml-diagram, code)<br>
+do. 11/12/08: 10u00 - 13u00 &amp; 14u00 - 17u30: groepsvergadering (code)<br>
+vr. 12/12/08: 11u00 - 13u00 &amp; 14u00 - 18u00: groepsvergadering (code)<br>
+<br>
+</p></body></html>
