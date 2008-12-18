@@ -55,7 +55,7 @@ public class QTTegel extends GTegel {
 		QMatrix matrix = new QMatrix();
 		
 		tegel.draaiTegel(richting);
-		matrix = matrix.rotate(90.0*tegel.getOrientatie());
+		matrix = matrix.rotate(90.0*(double)tegel.getOrientatie());
 		pixmap = new QPixmap(pixmap.transformed(matrix, TransformationMode.FastTransformation));
 	}
 
