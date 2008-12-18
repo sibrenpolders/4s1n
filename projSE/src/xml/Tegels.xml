@@ -291,13 +291,13 @@
 		<noord><weg id="1" /></noord>
 		<noordOost><wei id="2" /></noordOost>
 
-		<oostNoord><wei id="0" /></oostNoord>
-		<oost><wei id="0" /></oost>
-		<oostZuid><wei id="0" /></oostZuid>
+		<oostNoord><wei id="2" /></oostNoord>
+		<oost><wei id="2" /></oost>
+		<oostZuid><wei id="2" /></oostZuid>
 
 		<zuidOost><wei id="2" /></zuidOost>
 		<zuid><weg id="1" /></zuid>
-		<zuidWest><wei id="1" /></zuidWest>
+		<zuidWest><wei id="0" /></zuidWest>
 
 		<westZuid><wei id="0" /></westZuid>
 		<west><wei id="0" /></west>
