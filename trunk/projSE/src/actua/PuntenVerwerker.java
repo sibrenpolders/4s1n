@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.sun.xml.internal.bind.v2.runtime.Coordinator;
 
-public class Score {
+public class PuntenVerwerker {
 	private static final int WEG_PUNTEN = 1;
 	private static final int STAD_PUNTEN = 2;
 	private static final int KLOOSTER_PUNTEN = 9;
@@ -17,7 +17,7 @@ public class Score {
 	private long spelerOranje;
 	private int aantalTegels;
 	
-	public Score() {
+	public PuntenVerwerker() {
 		spelerRood = 0;
 		spelerBlauw = 0;
 		spelerWit = 0;

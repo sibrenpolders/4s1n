@@ -2,28 +2,26 @@ package testcases;
 
 import junit.framework.TestCase;
 import actua.Easy;
+import actua.Spel;
 import actua.Tafel;
 import actua.Tegel;
 import actua.AI;
 import actua.Pion;
+import actua.Speler;
+import actua.Vector2D;
 
 public class JunitAISpelerTest extends TestCase {
-	private AI ai;
+	Spel spel;
 
 	protected void setUp() throws Exception {
-		super.setUp();
-
-		ai = new AI();
-	}
-
-	protected void tearDown() throws Exception {
-		super.tearDown();
+		spel = new Spel();
+		spel.getSpelerVerwerker().voegSpelerToe(AI.EASY, "test",
+				Speler.SPELER_GEEL, 0, spel.getTafelVerwerker());
 	}
 
 	public void testPlaatsPion() {
-		Tafel tafel = new Tafel();
-		Pion p;
-		boolean geplaatst;
+		Tegel tegel = spel.getTafelVerwerker().neemTegelVanStapel();
+		Vector2D v = spel.getSpelerVerwerker().geefHuidigeSpeler().
 
 		p = ai.neemPion(tafel);
 

@@ -20,14 +20,14 @@ public class Tafel implements Serializable {
 	private Tegel laatstGeplaatsteTegel;
 	private ArrayList<ArrayList<Tegel>> veld;
 	private Vector2D startTegel;
-	private Score score;
+	private PuntenVerwerker puntenVerwerker;
 	
 	public Tafel() {
 		clear();
 	}
 
-	public Tafel(Score score) {
-		this.score = score;
+	public Tafel(PuntenVerwerker puntenVerwerker) {
+		this.puntenVerwerker = puntenVerwerker;
 		clear();
 	}
 	
@@ -685,6 +685,6 @@ public class Tafel implements Serializable {
 	public void updateScore(Vector2D coord) {
 		Vector2D veldCoord = zetOmInVeldCoord(coord);
 		
-		score.updateScore(veldCoord, veld);
+		puntenVerwerker.updateScore(veldCoord, veld);
 	}
 }

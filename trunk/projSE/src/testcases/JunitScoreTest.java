@@ -3,7 +3,7 @@ package testcases;
 import java.util.ArrayList;
 
 import actua.Pion;
-import actua.Score;
+import actua.PuntenVerwerker;
 import actua.Speler;
 import actua.Tafel;
 import actua.Tegel;
@@ -27,8 +27,8 @@ public class JunitScoreTest extends TestCase {
 	public void testUpdateScore() {
 		ArrayList<Tegel> tegels = maakTegels();
 		ArrayList<Vector2D> coords = maakCoord();
-		Score score = new Score();
-		Tafel tafel = new Tafel(score);
+		PuntenVerwerker puntenVerwerker = new PuntenVerwerker();
+		Tafel tafel = new Tafel(puntenVerwerker);
 		
 		for (int i = 0; i < 4; ++i) {
 			if(!tafel.plaatsTegel(tegels.get(i), coords.get(i))) {
@@ -37,7 +37,7 @@ public class JunitScoreTest extends TestCase {
 		}
 		// nog geen pion geplaatst
 		tafel.updateScore(coords.get(4));		
-		assertEquals(0, score.getSpelerRood());
+		assertEquals(0, puntenVerwerker.getSpelerRood());
 		
 		Pion pion = new Pion(Speler.SPELER_ROOD);
 		pion.zetGeplaatst(true);
@@ -47,12 +47,12 @@ public class JunitScoreTest extends TestCase {
 		
 		// veld is niet volledig
 		tafel.updateScore(coords.get(4));		
-		assertEquals(0, score.getSpelerRood());
+		assertEquals(0, puntenVerwerker.getSpelerRood());
 		
 		tafel.plaatsTegel(tegels.get(4), coords.get(4));
 		// score kan berekend worden
 		tafel.updateScore(coords.get(4));		
-		assertEquals(10, score.getSpelerRood());
+		assertEquals(10, puntenVerwerker.getSpelerRood());
 	}
 
 	private ArrayList<Vector2D> maakCoord() {

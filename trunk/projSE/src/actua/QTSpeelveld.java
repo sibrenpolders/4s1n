@@ -240,7 +240,7 @@ public class QTSpeelveld extends GSpeelveld {
 			return true;
 		}
 		else {
-			getSpel().getTafelVerwerker().vraagNieuweTegel().setOrientatie((short) 0);
+			tegel.setOrientatie((short) 0);
 			return false;
 		}
 	}
