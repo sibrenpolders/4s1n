@@ -3,6 +3,7 @@ package actua;
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
+import com.trolltech.qt.core.QPoint;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QBrush;
@@ -10,6 +11,7 @@ import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QDrag;
 import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
+import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMouseEvent;
@@ -149,8 +151,11 @@ public class QTInfo extends GInfo {
 					child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
 				}
 			} else {
+				Tegel tegel = new Tegel();
+				tegel = tafelVerwerker.vraagNieuweTegel();
+				
 				child.show();
-				child.setPixmap(pixmap);
+				child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
 				tafelVerwerker.vraagNieuweTegel().setOrientatie((short)0);
 			}
 		}
