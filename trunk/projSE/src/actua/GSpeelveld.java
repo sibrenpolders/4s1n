@@ -170,17 +170,26 @@ public abstract class GSpeelveld {
 	private void adjustAll(int rij, int kolom) {
 		ArrayList<GTegel> kolomVector;
 		int aantal = (int) Math.abs(kolom - startGTegel.getY());
-
-		System.out.println(aantal);
+		int offset;
+		
 		for (int i = 0; i < gTegels.size(); ++i) {
 			kolomVector = gTegels.get(i);
-
-			for (int j = 0; j < aantal - kolomVector.size()+1; ++j) {
+			offset = getNegativeSize(kolomVector);
+			for (int j = 0; j < aantal+1 - offset; ++j) {
 				kolomVector.add(0, null);
 			}
 		}
 	}
 
+	private int getNegativeSize(ArrayList<GTegel> kolomVector) {
+		int aantal = 0;
+		for (int i = 0; i <= startGTegel.getY(); ++i) {
+			++aantal;
+		}
+		
+		return aantal;
+	}
+	
 	private void addSpacers(int rij, int kolom) {
 		ArrayList<GTegel> kolomVector = gTegels.get(rij);
 		for (int i = kolomVector.size(); i < kolom; ++i) {

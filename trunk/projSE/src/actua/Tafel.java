@@ -178,14 +178,24 @@ public class Tafel implements Serializable {
 	private void adjustAll(int rij, int kolom) {
 		ArrayList<Tegel> kolomVector;
 		int aantal = (int) Math.abs(kolom - startTegel.getY());
-
+		int offset;
+		
 		for (int i = 0; i < veld.size(); ++i) {
 			kolomVector = veld.get(i);
-
-			for (int j = 0; j < aantal - kolomVector.size()+1; ++j) {
+			offset = getNegativeSize(kolomVector);
+			for (int j = 0; j < aantal+1 - offset; ++j) {
 				kolomVector.add(0, null);
 			}
 		}
+	}
+
+	private int getNegativeSize(ArrayList<Tegel> kolomVector) {
+		int aantal = 0;
+		for (int i = 0; i <= startTegel.getY(); ++i) {
+			++aantal;
+		}
+		
+		return aantal;
 	}
 
 	/**

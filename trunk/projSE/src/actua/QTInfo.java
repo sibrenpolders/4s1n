@@ -151,6 +151,7 @@ public class QTInfo extends GInfo {
 			} else {
 				child.show();
 				child.setPixmap(pixmap);
+				tafelVerwerker.vraagNieuweTegel().setOrientatie((short)0);
 			}
 		}
 	}
