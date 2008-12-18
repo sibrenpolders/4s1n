@@ -50,7 +50,7 @@ public class Tafel implements Serializable {
 	 * @return
 	 */
 	public Vector2D getStartTegel() {
-		return new Vector2D(0, 0);
+		return startTegel;
 	}
 	
 	/**
