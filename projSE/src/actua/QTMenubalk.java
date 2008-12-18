@@ -71,12 +71,8 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	private void infoVenster() {
-		QMessageBox
-				.about(
-						menubar,
-						"Over Applicatie",
-						"Deze <b>Applicatie</b> is mogelijk gemaakt door "
-								+ "Niels, Sam, Sam, <s>Mr. Sibrand</s>, Sibren en Bart Peeters ");
+		QMessageBox.about(menubar,"Over Applicatie","Deze <b>Applicatie</b> is mogelijk gemaakt door "
+								+ "Niels, Sam, Sam, Sibrand, Sibren en Bart Peeters ");
 	}
 
 	private QMenu addMenuItem(String titel) {
