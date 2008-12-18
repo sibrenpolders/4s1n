@@ -8,7 +8,7 @@ public class Applicatie {
 		}
 
 		GWindow window = f.getWindow(new Spel(), new OptieVerwerker("src/xml/opties.txt"),
-				new HelpVerwerker());
+				new HelpVerwerker(),new BestandsVerwerker());
 		window.show();
 	}
 

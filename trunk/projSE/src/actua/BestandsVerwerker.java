@@ -9,7 +9,7 @@ public class BestandsVerwerker {
 	public BestandsVerwerker() {
 	}
 
-	public boolean bestandBestaat(String naam) {
+	public boolean checkBestaan(String naam) {
 		File f = new File(naam);
 		return f.exists();
 	}
@@ -18,22 +18,23 @@ public class BestandsVerwerker {
 		return naam.endsWith(extensie);
 	}
 
-	public boolean slaSpelToestandOp(String naam, Spel spel, Memento me,
-			boolean confirm) {
-		Bestand bestand = new Bestand();
-		if (heeftExtensie(naam, extensie)
-				&& (!bestandBestaat(naam) || (bestandBestaat(naam) && confirm))) {
-			bestand.schrijfNaarBestand(spel, me, naam);
+	public boolean slaSpelToestandOp(String naam, Spel spel) {		
+		return slaSpelToestandOp(naam, spel, false);
+	}
+	
+	public boolean slaSpelToestandOp(String naam, Spel spel, boolean confirm) {		
+		if (!checkBestaan(naam) || confirm) {
+			Bestand bestand = new Bestand();
+			bestand.schrijfNaarBestand(spel, naam);
 			return true;
 		}
-
 		return false;
 	}
 
-	public boolean laadSpelToestandIn(Spel spel, Memento me, String naam, boolean confirm) {
-		Bestand bestand = new Bestand();
-		if (heeftExtensie(naam, extensie) && bestandBestaat(naam) && confirm) {
-			bestand.leesVanBestand(spel, me, naam);
+	public boolean startLaden(Spel spel, String naam) {		
+		if (heeftExtensie(naam, extensie) && checkBestaan(naam)) {
+			Bestand bestand = new Bestand();
+			bestand.leesVanBestand(spel, naam);
 			return true;
 		}
 		return false;
@@ -41,9 +42,5 @@ public class BestandsVerwerker {
 
 	public Spel getSpel() {
 		return bestand.getSpel();
-	}
-
-	public Memento getMemento() {
-		return bestand.getMemento();
 	}
 }
