@@ -226,7 +226,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector2D coord = new Vector2D(camera.getHuidigeVector().getX()+gridCoord.getX(),camera.getHuidigeVector().getY()+gridCoord.getY());
 		
 		if (getSpel().getTafelVerwerker().isTegelPlaatsingGeldig(tegel,coord)) {
-			getSpel().getTafelVerwerker().neemTegelVanStapel();
+			tegel = getSpel().getTafelVerwerker().neemTegelVanStapel();
 			getSpel().getTafelVerwerker().plaatsTegel(tegel,coord);
 			voegTegelToeAanGrafischeLijst(tegel,coord,pixmap);
 			((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(
@@ -367,5 +367,11 @@ public class QTSpeelveld extends GSpeelveld {
 
 	public void setGridWidget(QWidget gridWidget) {
 		this.gridWidget = gridWidget;
+	}
+
+	@Override
+	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

@@ -85,7 +85,7 @@ public class TafelVerwerker implements Serializable{
 	 * @param pion
 	 *            pion die geplaatst moet worden.
 	 */
-	public boolean plaatstPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
+	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
 		return tafel.plaatsPion(tegelCoord, pionCoord, pion);
 	}
 

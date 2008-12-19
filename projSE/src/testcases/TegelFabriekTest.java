@@ -27,8 +27,10 @@ public class TegelFabriekTest extends TestCase {
 		assertEquals(72, stapel.size());
 		
 		for (int i = 0; i < stapel.size(); ++i) {
+			assertEquals(0, stapel.peekFirst().getOrientatie());
 			assertNotNull(stapel.pop());
 		}
+		
 	}
 
 }
