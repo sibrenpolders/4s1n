@@ -60,7 +60,7 @@ public abstract class GSpeelveld {
 	public abstract void hide();
 	public abstract void show();
 	
-	
+	public abstract boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion);
 	
 	/**
 	 * Zal de het veldoverzicht wijzigen.
