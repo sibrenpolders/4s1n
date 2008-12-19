@@ -50,7 +50,7 @@ public class AI extends Speler {
 		SpelBeurtResultaat result = null;
 
 		while (!gedaan) {
-			Tegel t = tafelVerwerker.neemTegelVanStapel();
+			String[] t = tafelVerwerker.neemTegelVanStapel();
 			Vector2D plaats = null;
 			if ((plaats = berekenPlaatsTegel(t)) != null) {
 				gedaan = true;
@@ -65,11 +65,11 @@ public class AI extends Speler {
 		return result;
 	}
 
-	private Vector2D berekenPlaatsTegel(Tegel t) {
+	private Vector2D berekenPlaatsTegel(String[] t) {
 		return strategy.berekenPlaatsTegel(t);
 	}
 
-	private int berekenPlaatsPion(Pion p, Tegel t, Vector2D tegelCoord) {
+	private int berekenPlaatsPion(Pion p, String[] t, Vector2D tegelCoord) {
 		if (this.isEigenaarVan(p))
 			return strategy.berekenPlaatsPion(p, t, tegelCoord);
 		else

@@ -21,6 +21,8 @@ public class Tafel implements Serializable {
 	private ArrayList<ArrayList<Tegel>> veld;
 	private Vector2D startTegel;
 	private PuntenVerwerker puntenVerwerker;
+	private static final int TEGEL_PRESENTATIE = 0;
+	private static final int ID_PRESENTATIE = 1;
 	
 	public Tafel() {
 		clear();
@@ -55,16 +57,17 @@ public class Tafel implements Serializable {
 	
 	/**
 	 * Zal een tegel op het speelveld plaatsen op de coördinaten gegeven door coord.
-	 * @param tegel
+	 * @param t
 	 *            De tegel die op de tafel gelegd moet worden.
 	 * @param coord
 	 *            De coördinaten van de tegel.
 	 * @return Geeft true als de tegel geplaatst is. False als de tegel niet
 	 *         geplaatst kan worden
 	 */
-	public boolean plaatsTegel(Tegel tegel, Vector2D coord) {
+	public boolean plaatsTegel(String[] t, Vector2D coord) {
 		// startTegel wordt gezet
 		// coord maken niet uit startTegel staat op (0, 0)
+		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE ], t[ID_PRESENTATIE]);
 		if (veld == null) {
 			setStartTegel(tegel);
 			return true;
@@ -328,12 +331,15 @@ public class Tafel implements Serializable {
 	 */
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
 		Tegel t = bepaalTegel(tegelCoord);
-
+		String[] stringRepresentatie = new String[2];
+		stringRepresentatie[0] = t.getTegelPresentatie();
+		stringRepresentatie[1] = t.getIdPresentatie();
+		
 		if (t != laatstGeplaatsteTegel) {
 			return false;
 		}
 		
-		return t != null && isPionPlaatsingGeldig(t, tegelCoord, pionCoord)
+		return t != null && isPionPlaatsingGeldig(stringRepresentatie, tegelCoord, pionCoord)
 				&& t.plaatsPion(pionCoord, pion);
 	}
 
@@ -347,17 +353,18 @@ public class Tafel implements Serializable {
 	 * @return
 	 * 	True indien de tegelplaatsing mogelijk is, False anders.
 	 */
-	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
+	public boolean isTegelPlaatsingGeldig(String[] t, Vector2D coord) {
 		int rij = startTegel.getX() + coord.getX();
 		int kolom = startTegel.getY() + coord.getY();
 
+		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE], t[ID_PRESENTATIE]);
 		return tegelKanGeplaatstWorden(tegel, rij, kolom);
 	}
 
 	/**
 	 * Deze functie zal nagaan of een pion plaatsing kan gebeuren op tegel met coördinaten tegelCoord op het
 	 * landsdeel met coördinaten pionCoord. Deze functie zal niet de pion echt gaan plaatsen op de tegel.
-	 * @param tegel
+	 * @param t
 	 * 	De tegel waarop de pion geplaatst moet worden.
 	 * @param tegelCoord
 	 * 	De coördinaten van de tegel waarop de pion geplaatst moet worden.
@@ -366,10 +373,11 @@ public class Tafel implements Serializable {
 	 * @return
 	 * 	True als de pion geplaatst kan worden, False anders.
 	 */
-	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
+	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
 			int pionCoord) {
 		Vector2D  veldCoord = zetOmInVeldCoord(tegelCoord);
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
+		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE], t[ID_PRESENTATIE]);
 		return isPionPlaatsingGeldig(pionCoord, tegel, veldCoord, checked);
 	}
 	

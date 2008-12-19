@@ -24,19 +24,21 @@ import com.trolltech.qt.gui.QWidget;
 
 public class QTInfo extends GInfo {
 	private QWidget qtInfo;
+	private int TEGEL_PRESENTATIE = 0;
+	private int ID_PRESENTATIE = 1;
 
 	private class Stapel extends QWidget {
-		private TafelVerwerker tafelVerwerker;
+		private Spel spel;
 		QLabel tegelIcon;
 
 		public Stapel(Spel spel) {
 			super();
-			Tegel tegel = new Tegel();
+			this.spel = spel;
+			
 			tegelIcon = new QLabel(this);
-			tafelVerwerker = spel.getTafelVerwerker();
-
-			tegel = tafelVerwerker.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
+			
+			String[] tegel = spel.vraagNieuweTegel();
+			tegelIcon.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 			tegelIcon.setMinimumSize(new QSize(90, 90));
 			tegelIcon.setMaximumSize(new QSize(90, 90));
 
@@ -47,7 +49,7 @@ public class QTInfo extends GInfo {
 			QLabel child = (QLabel) childAt(0, 0);
 
 			if (child != null) {
-				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
+				String[] tegel = spel.vraagNieuweTegel();
 				
 				if (tegel != null) {
 					QTTegel qtTegel = new QTTegel(tegel);
@@ -62,28 +64,24 @@ public class QTInfo extends GInfo {
 			QLabel child = (QLabel) childAt(0, 0);
 
 			if (child != null) {
-				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
+				String[] tegel = spel.vraagNieuweTegel();
 				if (tegel != null) {
-					System.err.print(tegel.getOrientatie()+"=====>");
 					QTTegel qtTegel = new QTTegel(tegel);
 					qtTegel.roteer(false);
 					child.clear();
 					child.setPixmap(new QPixmap(qtTegel.getPixmap()));
-					System.err.println(tegel.getOrientatie());
 				}
 			}
 		}
 		
 		public void nieuweTegel(){
-			Tegel tegel = tafelVerwerker.neemTegelVanStapel();
-			tegel.setOrientatie((short)0);
-			tafelVerwerker.legTerugEinde(tegel);
+			String[] tegel = spel.neemTegelVanStapel();
+			spel.legTerugEinde(tegel);
 			
 			QLabel child = (QLabel) childAt(0, 0);
-			tegel = tafelVerwerker.vraagNieuweTegel();
-			assert(tegel.getOrientatie() != 0);
+			tegel = spel.vraagNieuweTegel();
 			child.clear();
-			child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
+			child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
@@ -141,19 +139,18 @@ public class QTInfo extends GInfo {
 			child.setPixmap(tempPixmap);
 
 			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
-				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
+				String[] tegel = spel.vraagNieuweTegel();
 				if (tegel == null)
 					child.close();
 				else {
 					child.show();
-					child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));
+					child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 				}
 			} else {
-				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
-				tegel.setOrientatie((short)0);
+				String[] tegel = spel.vraagNieuweTegel();
 				
 				child.show();
-				child.setPixmap(new QPixmap("src/icons/"+ tegel.getTegelPresentatie() + ".png"));				
+				child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));				
 			}
 		}
 	}

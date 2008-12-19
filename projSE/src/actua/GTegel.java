@@ -1,25 +1,30 @@
 package actua;
 
 public abstract class GTegel {
-	protected Tegel tegel;
-
+	protected String[] tegel;
+	int orientatie;
+	
 	public GTegel() {
-		
+		orientatie = 0;
 	}
 	
-	public GTegel(Tegel tegel) {
-		this.tegel=tegel;
+	public GTegel(String[] tegel2) {
+		this.tegel=tegel2;
+		orientatie = 0;
 	}
 	
 	public abstract void roteer(boolean richting);
 
-	protected Tegel getTegel() {
+	protected String[] getTegel() {
 		return tegel;
 	}
 
-	protected void setTegel(Tegel tegel) {
+	protected void setTegel(String[] tegel) {
 		this.tegel = tegel;
 	}
 	
+	public int getOrientatie() {
+		return orientatie;
+	}
 }
 

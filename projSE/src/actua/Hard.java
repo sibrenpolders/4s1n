@@ -7,7 +7,7 @@ public class Hard implements Strategy {
 		this.tafelVerwerker = tv;
 	}
 
-	public int berekenPlaatsPion(Pion p, Tegel t, Vector2D tegelCoord) {
+	public int berekenPlaatsPion(Pion p, String[] t, Vector2D tegelCoord) {
 		if (p.getGeplaatst() == false)
 			for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
 				if (tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, i))
@@ -19,7 +19,7 @@ public class Hard implements Strategy {
 
 	// indien mogelijk, wordt een plaats teruggegeven waar dan een pion kan
 	// geplaatst worden
-	public Vector2D berekenPlaatsTegel(Tegel t) {
+	public Vector2D berekenPlaatsTegel(String[] t) {
 		int breedte = tafelVerwerker.getBreedte();
 		int hoogte = tafelVerwerker.getHoogte();
 		Vector2D coordsStartTegel = tafelVerwerker.getBeginPositie();
@@ -42,7 +42,7 @@ public class Hard implements Strategy {
 		return backup;
 	}
 
-	private boolean plaatsingPionMogelijk(Tegel t, Vector2D plaats) {
+	private boolean plaatsingPionMogelijk(String[] t, Vector2D plaats) {
 		for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
 			if (tafelVerwerker.plaatsingPionMogelijk(t, plaats, i))
 				return true;
