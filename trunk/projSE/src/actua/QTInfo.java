@@ -64,10 +64,12 @@ public class QTInfo extends GInfo {
 			if (child != null) {
 				Tegel tegel = tafelVerwerker.vraagNieuweTegel();
 				if (tegel != null) {
+					System.err.print(tegel.getOrientatie()+"=====>");
 					QTTegel qtTegel = new QTTegel(tegel);
 					qtTegel.roteer(false);
 					child.clear();
 					child.setPixmap(new QPixmap(qtTegel.getPixmap()));
+					System.err.println(tegel.getOrientatie());
 				}
 			}
 		}

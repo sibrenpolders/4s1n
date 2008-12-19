@@ -1,13 +1,9 @@
 package actua;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
 import com.trolltech.qt.core.QPoint;
-import com.trolltech.qt.core.QPointF;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.gui.QBrush;
 import com.trolltech.qt.gui.QColor;
@@ -16,15 +12,9 @@ import com.trolltech.qt.gui.QDragLeaveEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QGraphicsScene;
-import com.trolltech.qt.gui.QGraphicsSceneDragDropEvent;
-import com.trolltech.qt.gui.QGraphicsSceneMouseEvent;
-import com.trolltech.qt.gui.QGraphicsSceneWheelEvent;
 import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
-import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QKeySequence;
-import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QShortcut;
@@ -110,13 +100,6 @@ public class QTSpeelveld extends GSpeelveld {
 	            pixmap.readFrom(dataStream);
 	            offset.readFrom(dataStream);
 	                    
-	            /*QLabel newIcon = new QLabel();
-	            newIcon.setPixmap(pixmap);
-	            newIcon.move(event.pos().subtract(offset));
-	           
-	            newIcon.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose);
-	            scene.addWidget(newIcon);*/
-	            
 	            if (voegTegelToe(gridCoord,pixmap))
 	            	gevuld=true;
 	            
@@ -132,8 +115,7 @@ public class QTSpeelveld extends GSpeelveld {
 	            event.ignore();
 	        }
 	    }
-	    protected void dragLeaveEvent(QDragLeaveEvent event)
-	    {
+	    protected void dragLeaveEvent(QDragLeaveEvent event) {
 	    	clearGroen();
 	    }
 
@@ -145,6 +127,7 @@ public class QTSpeelveld extends GSpeelveld {
 			this.gevuld = gevuld;
 		}
 	};	
+	
 	private QWidget gridWidget;
 	private QGridLayout gridLayout;
 	private int rows = 7;
@@ -223,13 +206,15 @@ public class QTSpeelveld extends GSpeelveld {
 	
 	public boolean voegTegelToe(Vector2D gridCoord,QPixmap pixmap) {
 		Tegel tegel = getSpel().getTafelVerwerker().vraagNieuweTegel();
-		Vector2D coord = new Vector2D(camera.getHuidigeVector().getX()+gridCoord.getX(),camera.getHuidigeVector().getY()+gridCoord.getY());
+		Vector2D coord = new Vector2D(camera.getHuidigeVector().getX()+gridCoord.getX(),
+				camera.getHuidigeVector().getY()+gridCoord.getY());
 		
 		if (getSpel().getTafelVerwerker().isTegelPlaatsingGeldig(tegel,coord)) {
 			tegel = getSpel().getTafelVerwerker().neemTegelVanStapel();
 			getSpel().getTafelVerwerker().plaatsTegel(tegel,coord);
 			voegTegelToeAanGrafischeLijst(tegel,coord,pixmap);
-			((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(
+			((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),
+					gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(
 					((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,
 					((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
 			return true;
