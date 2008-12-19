@@ -4,9 +4,9 @@ public class SpelBeurtResultaat {
 	private Vector2D plaatsingTegel;
 	private short plaatsingPion;
 	private Pion pion;
-	private Tegel tegel;
+	private String[] tegel;
 
-	public SpelBeurtResultaat(Tegel t, Vector2D pT, Pion p, short pP) {
+	public SpelBeurtResultaat(String[] t, Vector2D pT, Pion p, short pP) {
 		tegel = t;
 		plaatsingPion = pP;
 		pion = p;
@@ -17,7 +17,7 @@ public class SpelBeurtResultaat {
 		return pion;
 	}
 
-	public Tegel getTegel() {
+	public String[] getTegel() {
 		return tegel;
 	}
 

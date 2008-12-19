@@ -16,8 +16,8 @@ public class SpelerVerwerker implements Serializable{
 		spelers = new ArrayList<Speler>();
 	}
 
-	public Speler geefHuidigeSpeler() {
-		return spelers.get(huidigeSpelerIndex);
+	public char geefHuidigeSpeler() {
+		return spelers.get(huidigeSpelerIndex).getKleur();
 	}
 
 	public void gaNaarVolgendeSpeler() {
@@ -51,6 +51,10 @@ public class SpelerVerwerker implements Serializable{
 				spelers.remove(i);
 				return;
 			}
+	}
+	
+	public void volgendeSpeler() {
+		huidigeSpelerIndex = (huidigeSpelerIndex+1) % spelers.size();
 	}
 	
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {

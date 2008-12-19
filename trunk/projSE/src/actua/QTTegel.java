@@ -6,6 +6,8 @@ import com.trolltech.qt.gui.QMatrix;
 import com.trolltech.qt.gui.QPixmap;
 
 public class QTTegel extends GTegel {
+	private static final int TEGEL_PRESENTATIE = 0;
+	private static final int MAX_DRAAIING = 4;
 	private QPixmap pixmap;
 
 	public QTTegel() {
@@ -13,18 +15,18 @@ public class QTTegel extends GTegel {
 		pixmap = new QPixmap(90,90);
 	}
 	
-	public QTTegel(Tegel tegel) {
+	public QTTegel(String[] tegel) {
 		super(tegel);
 		pixmap = new QPixmap(90,90);
 		kiesAfbeelding();
 	}
 	
-	public QTTegel(Tegel tegel,QPixmap pixmap) {
+	public QTTegel(String[] tegel,QPixmap pixmap) {
 		super(tegel);
 		this.pixmap = new QPixmap(pixmap);
 	}
 	
-	public Tegel getTegel(){
+	public String[] getTegel(){
 		return super.getTegel();
 	}
 
@@ -48,15 +50,18 @@ public class QTTegel extends GTegel {
 	 * Kruispunt = r
 	*/
 	private void kiesAfbeelding(){
-		pixmap.load("src/icons/"+getTegel().getTegelPresentatie()+".png");
+		pixmap.load("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png");
 	}
 
-	static int i = 0;
 	public void roteer(boolean richting) {
 		QMatrix matrix = new QMatrix();
 		
-		tegel.draaiTegel(richting);
-		matrix = matrix.rotate(90.0*(double)tegel.getOrientatie());
+		if (richting) {
+			orientatie = (orientatie + 1)%MAX_DRAAIING;
+		} else {
+			orientatie = (MAX_DRAAIING + orientatie - 1)%MAX_DRAAIING;
+		}
+		matrix = matrix.rotate(90.0*(double)orientatie);
 		pixmap = new QPixmap(pixmap.transformed(matrix, TransformationMode.FastTransformation));
 	}
 

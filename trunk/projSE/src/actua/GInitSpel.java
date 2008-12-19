@@ -21,15 +21,11 @@ public abstract class GInitSpel {
 	
 	public void voegSpelerToe(String naam,char kleur,String niveau){
 		if(niveau.equals("Mens")){
-			spel.getSpelerVerwerker().voegSpelerToe((short) -1,naam,kleur,0,spel.getTafelVerwerker());
+			spel.voegSpelerToe((short) -1,naam,kleur,0);
 		}else if(niveau.equals("Easy")){
-			spel.getSpelerVerwerker().voegSpelerToe((short) 0,naam,kleur,0,spel.getTafelVerwerker());
+			spel.voegSpelerToe((short) 0,naam,kleur,0);
 		}else if(niveau.equals("Hard")){
-			spel.getSpelerVerwerker().voegSpelerToe((short) 1,naam,kleur,0,spel.getTafelVerwerker());
+			spel.voegSpelerToe((short) 1,naam,kleur,0);
 		}
-	}
-	
-	public void aantalTegels(int aantal){
-		spel.getTafelVerwerker().vulStapel(aantal);
-	}
+	}	
 }

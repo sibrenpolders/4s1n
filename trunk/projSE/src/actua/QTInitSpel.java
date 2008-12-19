@@ -75,8 +75,6 @@ public class QTInitSpel extends GInitSpel{
 			}
 		}
 		
-		aantalTegels(tegels.value());
-		
 		venster.close();
 	}
 	

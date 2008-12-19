@@ -7,7 +7,7 @@ public abstract class GSpeelveld {
 	private static String DEFAULT_BACKGROUND;
 	protected ArrayList<ArrayList<GTegel>> gTegels;
 	private String achtergrond;
-	private Spel spel;
+	protected Spel spel;
 	private Vector2D startGTegel;
 	protected Camera camera;
 	
@@ -109,7 +109,7 @@ public abstract class GSpeelveld {
 	//werken hier op een qt dubbele arraylist
 	//misschien tijdelijk
 	
-	public boolean  voegTegelToeAanGrafischeLijst(Tegel tegel, Vector2D coord,QPixmap pixmap) {
+	public boolean  voegTegelToeAanGrafischeLijst(String[] tegel, Vector2D coord,QPixmap pixmap) {
 		// startTegel wordt gezet
 		// coord maken niet uit startTegel staat op (0, 0)
 		if (gTegels == null) {

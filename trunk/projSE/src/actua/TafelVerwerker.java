@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 public class TafelVerwerker implements Serializable{
 	private static final long serialVersionUID = -6431108242978335095L;
 	private static final int AANTAL_TEGELS = 72;
-	private ArrayDeque<Tegel> stapel;
+	private ArrayDeque<String[]> stapel;
 	private Tafel tafel;
 
 	public TafelVerwerker() {
@@ -23,27 +24,27 @@ public class TafelVerwerker implements Serializable{
 		tafel = new Tafel();
 	}
 	
-	public ArrayDeque<Tegel> getStapel() {
+	public ArrayDeque<String[]> getStapel() {
 		return stapel;
 	}
 
-	public Tegel neemLaatsteTegel(){
+	public String[] neemLaatsteTegel(){
 		return stapel.pollFirst();
 	}
 	
-	public Tegel vraagNieuweTegel() {
+	public String[] vraagNieuweTegel() {
 		return stapel.peekFirst();
 	}
 
-	public Tegel neemTegelVanStapel() {
+	public String[] neemTegelVanStapel() {
 		return stapel.pop();
 	}
 	
-	public void legTerugEinde(Tegel tegel){
+	public void legTerugEinde(String[] tegel){
 		stapel.addLast(tegel);
 	}
 	
-	public void legTerugTop(Tegel tegel){
+	public void legTerugTop(String[] tegel){
 		stapel.addFirst(tegel);
 	}
 	
@@ -65,15 +66,15 @@ public class TafelVerwerker implements Serializable{
 	 *            (relatief t.o.v. de starttegel)
 	 * @return True indien de tegel geplaatst kon worden False anders
 	 */
-	public boolean plaatsTegel(Tegel tegel, Vector2D coord) {
+	public boolean plaatsTegel(String[] tegel, Vector2D coord) {
 		return tafel.plaatsTegel(tegel, coord);
 	}
 
-	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
-		return tafel.isTegelPlaatsingGeldig(tegel, coord);
+	public boolean isTegelPlaatsingGeldig(String[] t, Vector2D coord) {
+		return tafel.isTegelPlaatsingGeldig(t, coord);
 	}
-	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord, int pionCoord) {
-		return tafel.isPionPlaatsingGeldig(tegel, tegelCoord, pionCoord);
+	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord, int pionCoord) {
+		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
 	}
 	
 	/**
@@ -119,7 +120,7 @@ public class TafelVerwerker implements Serializable{
 		return tafel.getStartTegel();
 	}
 
-	public boolean plaatsingPionMogelijk(Tegel t, Vector2D tegelCoord, int pionCoord) {
+	public boolean plaatsingPionMogelijk(String[] t, Vector2D tegelCoord, int pionCoord) {
 		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
 	}
 	
@@ -129,7 +130,7 @@ public class TafelVerwerker implements Serializable{
 	 }
 	 
 	 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-		 stapel = (ArrayDeque<Tegel>) in.readObject();
+		 stapel = (ArrayDeque<String[]>) in.readObject();
 		 tafel = (Tafel) in.readObject();
 	 }
 	 
@@ -141,4 +142,12 @@ public class TafelVerwerker implements Serializable{
 		 
 		 return true;
 	 }
+
+	public int getStapelSize() {
+		return stapel.size();
+	}
+
+	public ArrayList<Vector2D> geefGeldigeMogenlijkheden(String[] tegel) {
+		return null;
+	}
 }

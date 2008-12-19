@@ -8,7 +8,7 @@ public class Easy implements Strategy {
 	}
 
 	// eerste geldige plaats wordt gebruikt
-	public int berekenPlaatsPion(Pion p, Tegel t, Vector2D tegelCoord) {
+	public int berekenPlaatsPion(Pion p, String[] t, Vector2D tegelCoord) {
 		if (p.getGeplaatst() == false)
 			for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
 				if (tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, i))
@@ -20,7 +20,7 @@ public class Easy implements Strategy {
 
 	// eerste geldige plaats wordt teruggegeven, ongeacht of men er een pion op
 	// kan plaatsen of niet
-	public Vector2D berekenPlaatsTegel(Tegel t) {
+	public Vector2D berekenPlaatsTegel(String[] t) {
 		int breedte = tafelVerwerker.getBreedte();
 		int hoogte = tafelVerwerker.getHoogte();
 		Vector2D coordsStartTegel = tafelVerwerker.getBeginPositie();

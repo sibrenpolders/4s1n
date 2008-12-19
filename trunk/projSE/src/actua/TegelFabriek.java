@@ -25,9 +25,9 @@ public class TegelFabriek {
 	 * 		De tegelStapel
 	 */
 	// TODO random functie belijken
-	public ArrayDeque<Tegel> maakTegelDeque(int aantal) {
+	public ArrayDeque<String[]> maakTegelDeque(int aantal) {
 		TegelFabriekBestandLezer tfbl = new TegelFabriekBestandLezer(tegelsBestand);
-		ArrayList<Tegel> stapel = new ArrayList<Tegel>();
+		ArrayList<String[]> stapel = new ArrayList<String[]>();
 		
 		int aantalVerschillendeTegels = tfbl.getAantalTegels();
 		int aantalTegelsTeMaken = aantal;
@@ -51,46 +51,19 @@ public class TegelFabriek {
 
 		voegTegelsToe(stapel, i, aantalTegelsTeMaken, tfbl);
 		
-		ArrayDeque<Tegel> queue = shakeNotStir(stapel);
+		ArrayDeque<String[]> queue = shakeNotStir(stapel);
 		
 		return queue;
-		
-//		ArrayDeque<Tegel> tegels = new ArrayDeque<Tegel>();
-//		
-////		tegels.add(new Tegel("wssswgwwgwwwg", "0111023320002"));
-//		tegels.add(new Tegel("wwwwwgwwgwwgr", "0000012234456"));
-//		Tegel t = new Tegel("sssssssssssss", "0000000000000");
-//		tegels.add(t);
-//		t = new Tegel("wwwwwgwwgwwgr", "0000012234456");
-//		tegels.add(t);
-//		t = new Tegel("wwgwwwwwgwwwg", "0012222210002");
-//		tegels.add(t);
-//		t = new Tegel("swwwssswwwsss", "0111000222000");
-//		tegels.add(t);
-//		t = new Tegel("sssssssssssss", "0000000000000");
-//		tegels.add(t);
-//		t = new Tegel("ssssssswgwsss", "0000000123000");
-//		tegels.add(t);
-//		t = new Tegel("swwwssswwwsss", "0111000222000");
-//		tegels.add(t);
-//		t = new Tegel("wssswgwwgwwgr", "0111023345567");
-//		tegels.add(t);
-//		t = new Tegel("wwwwwwwwwwwwk", "0000000000001");
-//		tegels.add(t);
-//		t = new Tegel("wwwwwgwwgwwgr", "0000012234456");
-//		tegels.add(t);
-//		
-//		return tegels;
 	}
 
-	public Tegel geefStartTegel() {
+	public String[] geefStartTegel() {
 		int i = (int) (Math.floor(Math.random()*3));
 		
-		return new Tegel(startTegels[i][0], startTegels[i][1]);
+		return startTegels[i];
 	}
 	
-	private ArrayDeque<Tegel> shakeNotStir(ArrayList<Tegel> stapel) {
-		ArrayDeque<Tegel> queue = new ArrayDeque<Tegel>();
+	private ArrayDeque<String[]> shakeNotStir(ArrayList<String[]> stapel) {
+		ArrayDeque<String[]> queue = new ArrayDeque<String[]>();
 
 		int next;
 		for (int i = 0; i < stapel.size(); ++i) {
@@ -101,17 +74,12 @@ public class TegelFabriek {
 		return queue;
 	}
 
-	private void voegTegelsToe(ArrayList<Tegel> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
+	private void voegTegelsToe(ArrayList<String[]> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
 		String[] tegelStrings = tfbl.getTegelStrings(tegelNummer);
-		Tegel tegel = new Tegel(tegelStrings[0], tegelStrings[1]);
-		stapel.add(tegel);
+		stapel.add(tegelStrings);
 
-		assert(tegel.getOrientatie() != 0);
 		for (int i = 1; i < aantalTegels; ++i) {
-			Tegel nieuweTegel = new Tegel(tegel.getTegelPresentatie(), 
-					tegel.getIdPresentatie());
-			assert(tegel.getOrientatie() != 0);
-			stapel.add(nieuweTegel);
+			stapel.add(tegelStrings);
 			
 		}
 	}	
