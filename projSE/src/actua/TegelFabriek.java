@@ -26,33 +26,61 @@ public class TegelFabriek {
 	 */
 	// TODO random functie belijken
 	public ArrayDeque<Tegel> maakTegelDeque(int aantal) {
-		TegelFabriekBestandLezer tfbl = new TegelFabriekBestandLezer(tegelsBestand);
-		ArrayList<Tegel> stapel = new ArrayList<Tegel>();
+//		TegelFabriekBestandLezer tfbl = new TegelFabriekBestandLezer(tegelsBestand);
+//		ArrayList<Tegel> stapel = new ArrayList<Tegel>();
+//		
+//		int aantalVerschillendeTegels = tfbl.getAantalTegels();
+//		int aantalTegelsTeMaken = aantal;
+//		int aantalTegels = 0;
+//		int x = 8;
+//		
+//		int i;
+//		int som = 0;
+//		for (i = 0; i < aantalVerschillendeTegels-1; ++i) {
+//			if (aantalTegelsTeMaken < x) {
+//				x = aantalTegelsTeMaken;
+//			}
+//			aantalTegels = (int)(Math.floor((Math.random()*aantalTegelsTeMaken)/(aantalTegelsTeMaken/x)));
+//			if (aantalTegels != 0) {
+//				voegTegelsToe(stapel, i, aantalTegels, tfbl);
+//			}
+//			
+//			aantalTegelsTeMaken -= aantalTegels;
+//			som += aantalTegels;
+//		}
+//
+//		voegTegelsToe(stapel, i, aantalTegelsTeMaken, tfbl);
+//		
+//		ArrayDeque<Tegel> queue = shakeNotStir(stapel);
+//		
+//		return queue;
 		
-		int aantalVerschillendeTegels = tfbl.getAantalTegels();
-		int aantalTegelsTeMaken = aantal;
-		int aantalTegels = 0;
-		int x = 8;
+		ArrayDeque<Tegel> tegels = new ArrayDeque<Tegel>();
 		
-		int i;
-		int som = 0;
-		for (i = 0; i < aantalVerschillendeTegels-1; ++i) {
-			if (aantalTegelsTeMaken < x) {
-				x = aantalTegelsTeMaken;
-			}
-			aantalTegels = (int)(Math.floor((Math.random()*aantalTegelsTeMaken)/(aantalTegelsTeMaken/x)));
-			if (aantalTegels != 0) {
-				voegTegelsToe(stapel, i, aantalTegels, tfbl);
-			}
-			
-			aantalTegelsTeMaken -= aantalTegels;
-			som += aantalTegels;
-		}
-
-		voegTegelsToe(stapel, i, aantalTegelsTeMaken, tfbl);
+//		tegels.add(new Tegel("wssswgwwgwwwg", "0111023320002"));
+		tegels.add(new Tegel("wwwwwgwwgwwgr", "0000012234456"));
+		Tegel t = new Tegel("sssssssssssss", "0000000000000");
+		tegels.add(t);
+		t = new Tegel("wwwwwgwwgwwgr", "0000012234456");
+		tegels.add(t);
+		t = new Tegel("wwgwwwwwgwwwg", "0012222210002");
+		tegels.add(t);
+		t = new Tegel("swwwssswwwsss", "0111000222000");
+		tegels.add(t);
+		t = new Tegel("sssssssssssss", "0000000000000");
+		tegels.add(t);
+		t = new Tegel("ssssssswgwsss", "0000000123000");
+		tegels.add(t);
+		t = new Tegel("swwwssswwwsss", "0111000222000");
+		tegels.add(t);
+		t = new Tegel("wssswgwwgwwgr", "0111023345567");
+		tegels.add(t);
+		t = new Tegel("wwwwwwwwwwwwk", "0000000000001");
+		tegels.add(t);
+		t = new Tegel("wwwwwgwwgwwgr", "0000012234456");
+		tegels.add(t);
 		
-		ArrayDeque<Tegel> queue = shakeNotStir(stapel);
-		return queue;
+		return tegels;
 	}
 
 	public Tegel geefStartTegel() {
