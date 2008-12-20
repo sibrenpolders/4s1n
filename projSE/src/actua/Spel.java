@@ -18,6 +18,10 @@ public class Spel extends Observable implements Serializable {
 	public static final char GEEL = 'g';
 	public static final short MAXAANTALSPELERS = 5;
 	public static final short MINAANTALSPELERS = 2;
+
+	//
+	// Berichten die observer kunnen ontvangen
+	//
 	public static final String SPELERVERANDERD = "Speler veranderd";
 	public static final String HUIDIGESPELERVERANDERD = "Huidige speler veranderd";
 	public static final String SPELERVERWIJDERD = "Speler verwijderd";
@@ -38,12 +42,22 @@ public class Spel extends Observable implements Serializable {
 
 	public void verwijderSpelers() {
 		spelerVerwerker.verwijderSpelers();
+		setChanged();
 		notifyObservers(SPELERVERWIJDERD);
 	}
 
 	public void voegSpelerToe(short s, String naam, char kleur, int i) {
 		spelerVerwerker.voegSpelerToe(s, naam, kleur, i, tafelVerwerker);
+		setChanged();
 		notifyObservers(SPELERTOEGEVOEGD);
+	}
+
+	public int geefAantalSpelers() {
+		return spelerVerwerker.geefAantalSpelers();
+	}
+
+	public char geefKleurVanSpeler(int i) {
+		return spelerVerwerker.geefKleurVanSpeler(i);
 	}
 
 	public char geefHuidigeSpeler() {

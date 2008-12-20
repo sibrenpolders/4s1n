@@ -7,9 +7,9 @@ public abstract class GSpelerInfo implements Observer {
 	protected char kleur;
 
 	public GSpelerInfo(Spel spel, char kleur) {
+		spel.addObserver(this);
 		this.spel = spel;
 		this.kleur = kleur;
-		spel.addObserver(this);
 	}
 
 	public abstract void updateSpeler();
