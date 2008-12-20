@@ -218,9 +218,10 @@ public class QTSpeelveld extends GSpeelveld {
 					((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,
 					((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
 			return true;
-		}
+		} 
 		
-		return false;
+			tegel[2] = new String("0");
+			return false;
 	}
 	
 	private void zooming(int zoomFactor) {
