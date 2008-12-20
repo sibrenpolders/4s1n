@@ -8,11 +8,10 @@ import com.trolltech.qt.gui.QMessageBox;
 public class QTMenubalk extends GMenubalk {
 	private QMenuBar menubar;
 
-	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help,BestandsVerwerker bestand) {
-		super(spel);
+	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help,BestandsVerwerker bestand, QTInitSpel qtInitSpel) {
+		super(spel, qtInitSpel);
 		setGHelp(new QTHelp(help));
 		setGOptie(new QTOptie(opties));
-		setGInitSpel(new QTInitSpel(spel));
 
 		menubar = new QMenuBar();
 		menubar.setMaximumWidth(1024);

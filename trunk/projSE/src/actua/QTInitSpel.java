@@ -14,7 +14,7 @@ import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QSpinBox;
 import com.trolltech.qt.gui.QWidget;
 
-public class QTInitSpel extends GInitSpel {
+public class QTInitSpel extends GInitSpel{
 	private QMainWindow venster;
 	private Vector<QLineEdit> naam = new Vector<QLineEdit>();
 	private Vector<QComboBox> kleur = new Vector<QComboBox>();
@@ -96,7 +96,9 @@ public class QTInitSpel extends GInitSpel {
 					(char) (kleur.get(i).currentText().charAt(0) + 'a' - 'A'),
 					0);
 		}
-
+		setChanged();
+		notifyObservers();
+		
 		venster.close();
 	}
 
