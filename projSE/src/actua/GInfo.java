@@ -1,8 +1,9 @@
 package actua;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
-public abstract class GInfo {
+public abstract class GInfo implements Observer {
 	private ArrayList<GSpelerInfo> gSpelers;
 	protected Spel mSpel;
 	protected OptieVerwerker mOptie;
