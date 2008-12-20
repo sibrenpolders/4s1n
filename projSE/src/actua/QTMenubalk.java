@@ -24,6 +24,7 @@ public class QTMenubalk extends GMenubalk {
 		if (menubar == null)
 			throw new NullPointerException();
 		spel();
+		speler();
 		bewerken();
 		opties();
 		help();
@@ -39,6 +40,15 @@ public class QTMenubalk extends GMenubalk {
 		laden = addActionItem(spel, "Laden");
 
 		nSpel.triggered.connect(this.gInitSpel, "show()");
+	}
+	
+	private void speler() {
+		QMenu spel;
+		QAction nSpel, opslaan, laden;
+
+		spel = addMenuItem("Huidige Speler");
+		nSpel = addActionItem(spel, "Verwijderen");
+		opslaan = addActionItem(spel, "Naar AI omzetten");
 	}
 
 	private void bewerken() {

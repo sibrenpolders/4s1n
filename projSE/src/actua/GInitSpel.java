@@ -19,7 +19,7 @@ public abstract class GInitSpel {
 	public abstract void hide();
 	public abstract void begin();
 	
-	public void voegSpelerToe(String naam,char kleur,String niveau){
+	public void voegSpelerToe(String naam, char kleur,String niveau){
 		if(niveau.equals("Mens")){
 			spel.voegSpelerToe((short) -1,naam,kleur,0);
 		}else if(niveau.equals("Easy")){
