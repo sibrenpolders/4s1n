@@ -170,7 +170,6 @@ public class QTInfo extends GInfo {
 		qtInfo = new QWidget();
 		stapel = new Stapel(spel);
 		vBox = new QVBoxLayout();
-		qtInfo.setLayout(vBox);
 	}
 
 	public void updateInfo() {
@@ -232,6 +231,7 @@ public class QTInfo extends GInfo {
 			roteerL.clicked.connect(stapel, "roteerLinks()");
 			nieuweTegel.clicked.connect(stapel, "nieuweTegel()");
 			neemPion.clicked.connect(this, "neemPion()");
+			qtInfo.setLayout(vBox);
 			qtInfo.setPalette(palette);			
 		}
 	}
