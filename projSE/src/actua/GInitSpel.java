@@ -1,6 +1,8 @@
 package actua;
 
-public abstract class GInitSpel {
+import java.util.Observable;
+
+public abstract class GInitSpel extends Observable{
 	protected Spel spel;
 
 	public GInitSpel(Spel spel) {
