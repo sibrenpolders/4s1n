@@ -56,6 +56,14 @@ public class Tegel {
 		this.idPresentatie = idPresentatie;
 	}
 
+	public Tegel(String tegelPresentatie, String idPresentatie, 
+			short orientatie) {
+		this.tegelPresentatie = tegelPresentatie;
+		setLandsdelen(new String(idPresentatie));
+		this.idPresentatie = idPresentatie;
+		this.orientatie = orientatie;
+	}
+
 	public String getIdPresentatie() {
 		return idPresentatie;
 	}

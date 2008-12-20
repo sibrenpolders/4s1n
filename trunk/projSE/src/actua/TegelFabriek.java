@@ -6,8 +6,9 @@ import java.util.ArrayList;
 public class TegelFabriek {
 	private static final String TEGELS_BESTAND = "src/xml/Tegels.xml";
 	private String tegelsBestand;
-	private String[][] startTegels = { {"wssswgwwwwwgg", "0111023333322"}, 
-			{"wssswwwwgwwgg", "0111000023322"}, {"wssswgwwgwwwg", "0111023320002"}};
+	// {{TEGEL_PRESENTATIE, ID_PRESENTATIE, ORIENTATIE}}
+	private String[][] startTegels = { {"wssswgwwwwwgg", "0111023333322", "0"}, 
+			{"wssswwwwgwwgg", "0111000023322", "0"}, {"wssswgwwgwwwg", "0111023320002", "0"}};
 	public TegelFabriek() {
 		tegelsBestand = TEGELS_BESTAND;
 	}
@@ -76,10 +77,16 @@ public class TegelFabriek {
 
 	private void voegTegelsToe(ArrayList<String[]> stapel, int tegelNummer, int aantalTegels, TegelFabriekBestandLezer tfbl) {
 		String[] tegelStrings = tfbl.getTegelStrings(tegelNummer);
-		stapel.add(tegelStrings);
+		String[] nieuweTegel = new String[3];
+		nieuweTegel[0] = new String(tegelStrings[0]);
+		nieuweTegel[1] = new String(tegelStrings[1]);
+		nieuweTegel[2] = "0";
+		tegelStrings = null;
+		
+		stapel.add(nieuweTegel);
 
 		for (int i = 1; i < aantalTegels; ++i) {
-			stapel.add(tegelStrings);
+			stapel.add(nieuweTegel);
 			
 		}
 	}	

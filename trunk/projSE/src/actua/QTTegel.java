@@ -62,6 +62,7 @@ public class QTTegel extends GTegel {
 			orientatie = (MAX_DRAAIING + orientatie - 1)%MAX_DRAAIING;
 		}
 		matrix = matrix.rotate(90.0*(double)orientatie);
+		tegel[2] = new String("" + orientatie);
 		pixmap = new QPixmap(pixmap.transformed(matrix, TransformationMode.FastTransformation));
 	}
 

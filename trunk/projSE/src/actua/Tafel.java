@@ -23,6 +23,7 @@ public class Tafel implements Serializable {
 	private PuntenVerwerker puntenVerwerker;
 	private static final int TEGEL_PRESENTATIE = 0;
 	private static final int ID_PRESENTATIE = 1;
+	private static final int ORIENTATIE = 2;
 	
 	public Tafel() {
 		clear();
@@ -67,7 +68,9 @@ public class Tafel implements Serializable {
 	public boolean plaatsTegel(String[] t, Vector2D coord) {
 		// startTegel wordt gezet
 		// coord maken niet uit startTegel staat op (0, 0)
-		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE ], t[ID_PRESENTATIE]);
+		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE ], t[ID_PRESENTATIE], 
+				Short.parseShort(t[ORIENTATIE]));
+		
 		if (veld == null) {
 			setStartTegel(tegel);
 			return true;
@@ -357,7 +360,8 @@ public class Tafel implements Serializable {
 		int rij = startTegel.getX() + coord.getX();
 		int kolom = startTegel.getY() + coord.getY();
 
-		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE], t[ID_PRESENTATIE]);
+		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE], t[ID_PRESENTATIE],
+				Short.parseShort(t[ORIENTATIE]));
 		return tegelKanGeplaatstWorden(tegel, rij, kolom);
 	}
 
@@ -377,7 +381,8 @@ public class Tafel implements Serializable {
 			int pionCoord) {
 		Vector2D  veldCoord = zetOmInVeldCoord(tegelCoord);
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
-		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE], t[ID_PRESENTATIE]);
+		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE], t[ID_PRESENTATIE],
+				Short.parseShort(t[ORIENTATIE]));
 		return isPionPlaatsingGeldig(pionCoord, tegel, veldCoord, checked);
 	}
 	
