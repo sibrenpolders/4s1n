@@ -148,7 +148,7 @@ public class QTInfo extends GInfo {
 				}
 			} else {
 				String[] tegel = spel.vraagNieuweTegel();
-				
+				tegel[2] = new String("0"); // orientatie resetten
 				child.show();
 				child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));				
 			}
