@@ -1,21 +1,16 @@
 package actua;
 
-public abstract class GSpelerInfo {
-	protected Speler speler;
+import java.util.Observer;
 
-	public GSpelerInfo(Speler speler) {
-		this.speler = speler;
+public abstract class GSpelerInfo implements Observer {
+	protected Spel spel;
+	protected char kleur;
+
+	public GSpelerInfo(Spel spel, char kleur) {
+		this.spel = spel;
+		this.kleur = kleur;
+		spel.addObserver(this);
 	}
-
-	protected Speler getSpeler() {
-		return speler;
-	}
-
-	protected void setSpeler(Speler speler) {
-		this.speler = speler;
-	}
-
-	public abstract void toonSpeler();
 
 	public abstract void updateSpeler();
 

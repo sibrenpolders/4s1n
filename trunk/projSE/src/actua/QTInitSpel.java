@@ -6,7 +6,6 @@ import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QLayoutItemInterface;
 import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMessageBox;
@@ -81,12 +80,21 @@ public class QTInitSpel extends GInitSpel {
 			return;
 		}
 
-		/*
-		 * for (int i = 0; i < 5; ++i) { if
-		 * (!soort[i].currentText().equals("Inactief")) {
-		 * this.voegSpelerToe(naam[i].text(), kleur[i].currentText() .charAt(0),
-		 * soort[i].currentText()); } }
-		 */
+		spel.verwijderSpelers();
+
+		for (int i = 0; i < soort.size(); ++i) {
+			int niveau = 0;
+			if (soort.get(i).currentText().compareTo("Mens") == 0) {
+				niveau = -1;
+			} else if (soort.get(i).currentText().compareTo("Easy AI") == 0) {
+				niveau = 0;
+			} else if (soort.get(i).currentText().compareTo("Hard AI") == 0) {
+				niveau = 1;
+			}
+
+			spel.voegSpelerToe((short) 0, naam.get(i).text(), kleur.get(i)
+					.currentText().charAt(0), niveau);
+		}
 
 		venster.close();
 	}
@@ -133,7 +141,7 @@ public class QTInitSpel extends GInitSpel {
 		} else {
 			QLabel labelNaam = new QLabel("Naam:");
 			QLabel labelKleur = new QLabel("Kleur:");
-			QLabel labelSoort = new QLabel("Soort:");
+			QLabel labelSoort = new QLabel("Type:");
 			QPixmap pixmap = new QPixmap(16, 16);
 			naam.add(new QLineEdit("Speler" + (++nbPlayersVisible)));
 			kleur.add(new QComboBox());
