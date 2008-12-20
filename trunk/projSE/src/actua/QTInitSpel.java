@@ -92,8 +92,9 @@ public class QTInitSpel extends GInitSpel {
 				niveau = 1;
 			}
 
-			spel.voegSpelerToe((short) 0, naam.get(i).text(), kleur.get(i)
-					.currentText().charAt(0), niveau);
+			spel.voegSpelerToe((short) niveau, naam.get(i).text(),
+					(char) (kleur.get(i).currentText().charAt(0) + 'a' - 'A'),
+					0);
 		}
 
 		venster.close();
@@ -136,7 +137,7 @@ public class QTInitSpel extends GInitSpel {
 	}
 
 	private void voegSpelerOptieVeldToe() {
-		if (nbPlayersVisible > Spel.MAXAANTALSPELERS) {
+		if (nbPlayersVisible >= Spel.MAXAANTALSPELERS) {
 			foutDialoog("Maximum aantal spelers is bereikt !");
 		} else {
 			QLabel labelNaam = new QLabel("Naam:");

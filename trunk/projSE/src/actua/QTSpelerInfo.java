@@ -2,11 +2,16 @@ package actua;
 
 import java.util.Observable;
 
+import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QPainter;
+import com.trolltech.qt.gui.QPalette;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QStyle;
+import com.trolltech.qt.gui.QStyleOptionFocusRect;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTSpelerInfo extends GSpelerInfo {
@@ -15,7 +20,6 @@ public class QTSpelerInfo extends GSpelerInfo {
 	private QLabel naam;
 	private QLabel color;
 	private QLabel score;
-	private QPushButton button;
 
 	public QTSpelerInfo(Spel spel, char kleur, QWidget parent) {
 		super(spel, kleur);
@@ -24,8 +28,7 @@ public class QTSpelerInfo extends GSpelerInfo {
 		naam = new QLabel(spel.geefSpelerNaam(kleur));
 		punten = new QLabel();
 		color = new QLabel();
-		score = new QLabel("Score");
-		button = new QPushButton("Neem pion");
+		score = new QLabel("Score:");
 		QGridLayout layout = new QGridLayout(spelerInfoveld);
 
 		color.setPixmap(spelerKleur());
@@ -33,24 +36,22 @@ public class QTSpelerInfo extends GSpelerInfo {
 		layout.addWidget(naam, 0, 1);
 		layout.addWidget(score, 1, 0);
 		layout.addWidget(punten, 1, 1);
-		layout.addWidget(button, 2, 0, 1, 2);
 
 		updateSpeler();
 		spelerInfoveld.setLayout(layout);
 	}
 
+	public QWidget getSpelerInfoveld() {
+		return spelerInfoveld;
+	}
+
 	public void updateSpeler() {
 		String naam_ = spel.geefSpelerNaam(kleur);
 		long score_ = spel.geefSpelerScore(kleur);
-		short aantalOngeplaatstePionnen = spel
-				.geefAantalOngeplaatstePionnen(kleur);
 		naam.setText(naam_);
-		punten.setText(String.valueOf(score_));
-
-		if (aantalOngeplaatstePionnen > 0)
-			button.setEnabled(true);
-		else
-			button.setEnabled(false);
+		punten.setNum(score_);
+		if (kleur == spel.geefHuidigeSpeler())
+			naam.setText(naam_.toUpperCase());
 	}
 
 	private QPixmap spelerKleur() {
@@ -81,7 +82,7 @@ public class QTSpelerInfo extends GSpelerInfo {
 	}
 
 	public void update(Observable o, Object arg) {
-		if (o.equals(spel) && arg.equals(spel.SPELERVERANDERD)) {
+		if (o.equals(spel) && arg.equals(Spel.SPELERVERANDERD)) {
 			updateSpeler();
 		}
 	}

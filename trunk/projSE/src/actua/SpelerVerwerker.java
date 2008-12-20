@@ -23,6 +23,14 @@ public class SpelerVerwerker implements Serializable {
 		huidigeSpelerIndex = (huidigeSpelerIndex + 1) % spelers.size();
 	}
 
+	public int geefAantalSpelers() {
+		return spelers.size();
+	}
+
+	public char geefKleurVanSpeler(int i) {
+		return spelers.get(i).getKleur();
+	}
+
 	public void maakAI(Speler mens, short niveau, TafelVerwerker tv) {
 		for (int i = 0; i < spelers.size(); ++i)
 			if (spelers.get(i) == mens) {
@@ -59,6 +67,8 @@ public class SpelerVerwerker implements Serializable {
 	// niveau = -1 voor Mens
 	public void voegSpelerToe(short niveau, String naam, char kleur,
 			long score, TafelVerwerker tv) {
+		if (huidigeSpelerIndex == -1)
+			huidigeSpelerIndex = 0;
 		spelers.add(SpelerFactory.maakSpeler(naam, kleur, score, niveau, tv));
 	}
 
