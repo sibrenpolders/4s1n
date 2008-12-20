@@ -10,7 +10,11 @@ public abstract class GTegel {
 	
 	public GTegel(String[] tegel2) {
 		this.tegel=tegel2;
-		orientatie = 0;
+		if (tegel2.length == 3) {
+			orientatie = Integer.parseInt(tegel2[2]);
+		} else {
+			orientatie = 0;
+		}
 	}
 	
 	public abstract void roteer(boolean richting);
