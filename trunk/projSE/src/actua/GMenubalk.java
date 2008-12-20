@@ -13,6 +13,13 @@ public abstract class GMenubalk {
 		gInitSpel = null;
 		this.spel=spel;
 	}
+	
+	public GMenubalk(Spel spel, GInitSpel gInitSpel) {
+		gHelp = null;
+		gOptie = null;
+		this.gInitSpel = gInitSpel;
+		this.spel=spel;
+	}
 
 	public abstract void show();
 
