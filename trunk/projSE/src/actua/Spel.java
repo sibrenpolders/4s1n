@@ -8,8 +8,6 @@ import java.util.ArrayList;
 public class Spel implements Serializable{
 	private static final long serialVersionUID = 2689906234458876556L;
 	private TafelVerwerker tafelVerwerker;
-	// waarom heeft een spel een bestandsverwerken nodig?
-	//hij heeft er geen nodig
 	private SpelerVerwerker spelerVerwerker;
 	
 	public static final char ROOD = 'r';
@@ -17,6 +15,8 @@ public class Spel implements Serializable{
 	public static final char WIT = 'w';
 	public static final char ORANJE = 'o';
 	public static final char GEEL = 'g';
+	public static final short MAXAANTALSPELERS = 5; //cfr. het aantal beschikbare kleuren
+	public static final short MINAANTALSPELERS = 2;
 	
 	public Spel() {
 		tafelVerwerker = new TafelVerwerker();

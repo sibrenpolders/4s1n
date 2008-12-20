@@ -1,176 +1,175 @@
 package actua;
 
+import java.util.Vector;
 import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QComboBox;
-import com.trolltech.qt.gui.QErrorMessage;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QLayoutItemInterface;
 import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QMainWindow;
+import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QSpinBox;
 import com.trolltech.qt.gui.QWidget;
 
-public class QTInitSpel extends GInitSpel{
-	QMainWindow venster; 
-	QLineEdit[] naam = new QLineEdit[5];
-	QComboBox[] kleur = new QComboBox[5];
-	QComboBox[] soort = new QComboBox[5];
-	QSpinBox tegels;
+public class QTInitSpel extends GInitSpel {
+	private QMainWindow venster;
+	private Vector<QLineEdit> naam = new Vector<QLineEdit>();
+	private Vector<QComboBox> kleur = new Vector<QComboBox>();
+	private Vector<QComboBox> soort = new Vector<QComboBox>();
+	private QGridLayout layout;
+	private QWidget widget;
+	private QSpinBox tegels;
+	private short nbPlayersVisible = 0;
+	private short LAYOUTWIDTH = 6;
 
 	public QTInitSpel(Spel spel) {
 		super(spel);
+	}
+
+	public void hide() {
+		venster.hide();
+	}
+
+	public void show() {
+		naam = new Vector<QLineEdit>();
+		kleur = new Vector<QComboBox>();
+		soort = new Vector<QComboBox>();
+		nbPlayersVisible = 0;
+
 		venster = new QMainWindow();
-		QWidget widget = new QWidget(venster);
-		QGridLayout layout = new QGridLayout(widget);
-		QPushButton begin = new QPushButton("Begin",widget);
-		QPushButton annuleer = new QPushButton("Annuleer",widget);
-		QLabel aantal = new QLabel("Aantal Tegels:");
+		widget = new QWidget(venster);
+		layout = new QGridLayout(widget);
+
+		QPushButton begin = new QPushButton("Start", widget);
+		QPushButton annuleer = new QPushButton("Annuleer", widget);
+		QPushButton extraSpeler = new QPushButton("Nog een speler toevoegen",
+				widget);
+		QLabel aantal = new QLabel("Aantal tegels:");
 		tegels = new QSpinBox(widget);
-		
-		for(int i = 0; i < 5; ++i)
-			spelerOptieVeld(layout, i);
-		
-		layout.addWidget(aantal,7,4);
+
+		layout.addWidget(extraSpeler, 0, 0);
+		layout.addWidget(begin, 0, 4);
+		layout.addWidget(annuleer, 0, 5);
+		layout.addWidget(aantal, 1, 0);
 		tegels.setValue(72);
-		layout.addWidget(tegels,7,5);
-		layout.addWidget(begin,9,4);
-		layout.addWidget(annuleer,9,5);
-		
+		layout.addWidget(tegels, 1, 1);
+
 		annuleer.clicked.connect(this.venster, "close()");
 		begin.clicked.connect(this, "begin()");
-		
+		extraSpeler.clicked.connect(this, "voegSpelerOptieVeldToe()");
+
+		voegSpelerOptieVeldToe(); // nbPlayersVisible is nu 1
+
 		venster.setCentralWidget(widget);
 		venster.setWindowTitle("Begin een nieuw Spel");
+		venster.show();
 	}
 
-	@Override
-	public void hide() {
-		venster.hide();	
-	}
-
-	@Override
-	public void show() {
-		venster.show();	
-	}
-
-	@Override
 	public void begin() {
-		if(!checkSoort()){
-			foutDialoog("Te weinig spelers");
+		if (!checkAantal()) {
+			foutDialoog("Te weinig spelers !");
 			return;
-		}else if(!checkNaam()){
-			foutDialoog("Twee of meerdere spelers hebben dezelfde naam");
+		} else if (!checkNaam()) {
+			foutDialoog("Twee of meerdere spelers hebben dezelfde naam !");
 			return;
-		}else if(!checkKleur()){
-			foutDialoog("Twee of meerdere spelers hebben dezelfde kleur");
+		} else if (!checkKleur()) {
+			foutDialoog("Twee of meerdere spelers hebben dezelfde kleur !");
 			return;
 		}
-		
-		for(int i = 0; i < 5; ++i){
-			if(!soort[i].currentText().equals("Inactief")){
-				this.voegSpelerToe(naam[i].text(), kleur[i].currentText().charAt(0), soort[i].currentText());
-			}
-		}
-		
+
+		/*
+		 * for (int i = 0; i < 5; ++i) { if
+		 * (!soort[i].currentText().equals("Inactief")) {
+		 * this.voegSpelerToe(naam[i].text(), kleur[i].currentText() .charAt(0),
+		 * soort[i].currentText()); } }
+		 */
+
 		venster.close();
 	}
-	
-	private boolean checkSoort(){
-		int numSpelers = 0;
-		
-		for(int i = 0; i < 5; ++i){
-			if( !soort[i].currentText().equals("Inactief"))
-				++numSpelers;
-		}
-		
-		return numSpelers >= 2;
+
+	private boolean checkAantal() {
+		return nbPlayersVisible >= Spel.MINAANTALSPELERS;
 	}
 
-	private boolean checkNaam(){
-		String naamSpeler = new String();
-		
-		for(int i = 0; i < 5; ++i){
-			if( !soort[i].currentText().equals("Inactief")){
-				naamSpeler = naam[i].text();
-				for(int j = 0; j < 5; ++j){
-					if( !soort[j].currentText().equals("Inactief") )
-						if( j != i && naamSpeler.equals(naam[j].text()))
-							return false;
-				}
-			}
+	private boolean checkNaam() {
+		String naamSpeler;
+
+		for (int i = 0; i < naam.size(); ++i) {
+			naamSpeler = naam.get(i).text();
+			for (int j = 0; j < naam.size(); ++j)
+				if (j != i && naamSpeler.compareTo(naam.get(j).text()) == 0)
+					return false;
 		}
-			
-		return true;	
-	}
-	
-	private boolean checkKleur(){
-		String kleurSpeler = new String();
-		
-		for(int i = 0; i < 5; ++i){
-			if( !soort[i].currentText().equals("Inactief")){
-				kleurSpeler = kleur[i].currentText();
-				for(int j = 0; j < 5; ++j){
-					if( !soort[j].currentText().equals("Inactief"))
-						if( j != i && kleurSpeler.equals(kleur[j].currentText()))
-							return false;
-				}
-			}
-		}
-			
-		return true;	
-	}
-	
-	private void foutDialoog(String fout){
-		QErrorMessage dialoog = new QErrorMessage();
-		
-		dialoog.setWindowTitle("Fout 404");
-		dialoog.showMessage(fout);
-	}
-	
-	private void spelerOptieVeld(QGridLayout layout,int i){
-		QLabel labelNaam = new QLabel("Naam:");
-		QLabel labelKleur = new QLabel("Kleur:");
-		QLabel labelSoort = new QLabel("Soort:");
-		QPixmap pixmap = new QPixmap(16,16);
-		naam[i] = new QLineEdit("Speler" + (i+1));
-		kleur[i] = new QComboBox();
-		soort[i] = new QComboBox();
-		QIcon kleurIcon;
-		
-		pixmap.fill(new QColor(255,0,0));
-		kleurIcon = new QIcon(pixmap);	
-		kleur[i].addItem(kleurIcon,"Rood");
-		//----------
-		pixmap.fill(new QColor(0,0,255));
-		kleurIcon = new QIcon(pixmap);	
-		kleur[i].addItem(kleurIcon,"Blauw");
-		//----------
-		pixmap.fill(new QColor(255,255,0));
-		kleurIcon = new QIcon(pixmap);		
-		kleur[i].addItem(kleurIcon,"Geel");
-		//----------
-		pixmap.fill(new QColor(255,255,255));
-		kleurIcon = new QIcon(pixmap);	
-		kleur[i].addItem(kleurIcon,"Wit");
-		//----------
-		pixmap.fill(new QColor(255,160,0));
-		kleurIcon = new QIcon(pixmap);		
-		kleur[i].addItem(kleurIcon,"Oranje");
-		
-		soort[i].addItem("Inactief");
-		soort[i].addItem("Mens");
-		soort[i].addItem("Easy");
-		soort[i].addItem("Hard");				
-		
-		layout.addWidget(labelNaam, i, 0);
-		layout.addWidget(naam[i], i, 1);
-		layout.addWidget(labelKleur, i, 2);
-		layout.addWidget(kleur[i], i, 3);
-		layout.addWidget(labelSoort, i, 4);
-		layout.addWidget(soort[i], i, 5);
+		return true;
 	}
 
+	private boolean checkKleur() {
+		String kleurSpeler;
+
+		for (int i = 0; i < soort.size(); ++i) {
+			kleurSpeler = kleur.get(i).currentText();
+			for (int j = 0; j < soort.size(); ++j)
+				if (j != i
+						&& kleurSpeler.compareTo(kleur.get(j).currentText()) == 0)
+					return false;
+		}
+		return true;
+	}
+
+	private void foutDialoog(String fout) {
+		QMessageBox box = new QMessageBox();
+		box.setWindowTitle("Bericht");
+		box.setText(fout);
+		box.show();
+	}
+
+	private void voegSpelerOptieVeldToe() {
+		if (nbPlayersVisible > Spel.MAXAANTALSPELERS) {
+			foutDialoog("Maximum aantal spelers is bereikt !");
+		} else {
+			QLabel labelNaam = new QLabel("Naam:");
+			QLabel labelKleur = new QLabel("Kleur:");
+			QLabel labelSoort = new QLabel("Soort:");
+			QPixmap pixmap = new QPixmap(16, 16);
+			naam.add(new QLineEdit("Speler" + (++nbPlayersVisible)));
+			kleur.add(new QComboBox());
+			soort.add(new QComboBox());
+			QIcon kleurIcon;
+
+			pixmap.fill(new QColor(255, 0, 0));
+			kleurIcon = new QIcon(pixmap);
+			kleur.lastElement().addItem(kleurIcon, "Rood");
+			// ----------
+			pixmap.fill(new QColor(0, 0, 255));
+			kleurIcon = new QIcon(pixmap);
+			kleur.lastElement().addItem(kleurIcon, "Blauw");
+			// ----------
+			pixmap.fill(new QColor(255, 255, 0));
+			kleurIcon = new QIcon(pixmap);
+			kleur.lastElement().addItem(kleurIcon, "Geel");
+			// ----------
+			pixmap.fill(new QColor(255, 255, 255));
+			kleurIcon = new QIcon(pixmap);
+			kleur.lastElement().addItem(kleurIcon, "Wit");
+			// ----------
+			pixmap.fill(new QColor(255, 160, 0));
+			kleurIcon = new QIcon(pixmap);
+			kleur.lastElement().addItem(kleurIcon, "Oranje");
+
+			soort.lastElement().addItem("Mens");
+			soort.lastElement().addItem("Easy AI");
+			soort.lastElement().addItem("Hard AI");
+
+			layout.addWidget(labelNaam, nbPlayersVisible + 1, 0);
+			layout.addWidget(naam.lastElement(), nbPlayersVisible + 1, 1);
+			layout.addWidget(labelKleur, nbPlayersVisible + 1, 2);
+			layout.addWidget(kleur.lastElement(), nbPlayersVisible + 1, 3);
+			layout.addWidget(labelSoort, nbPlayersVisible + 1, 4);
+			layout.addWidget(soort.lastElement(), nbPlayersVisible + 1, 5);
+		}
+	}
 }
