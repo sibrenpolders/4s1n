@@ -208,6 +208,7 @@ public class QTSpeelveld extends GSpeelveld {
 		String[] tegel = spel.vraagNieuweTegel();
 		Vector2D coord = new Vector2D(camera.getHuidigeVector().getX()+gridCoord.getX(),
 				camera.getHuidigeVector().getY()+gridCoord.getY());
+		boolean isTegelGeplaatst = false;
 		
 		if (spel.isTegelPlaatsingGeldig(tegel,coord)) {
 			tegel = spel.neemTegelVanStapel();
@@ -217,11 +218,13 @@ public class QTSpeelveld extends GSpeelveld {
 					gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(
 					((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,
 					((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
-			return true;
+			isTegelGeplaatst = true;
 		} 
 		
+			// altijd resetten naar 0 hier, vermits we met referenties zitten
+			// te werken.
 			tegel[2] = new String("0");
-			return false;
+			return isTegelGeplaatst;
 	}
 	
 	private void zooming(int zoomFactor) {
