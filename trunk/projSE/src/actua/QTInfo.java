@@ -14,6 +14,7 @@ import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QLayoutItemInterface;
 import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPainter;
@@ -175,7 +176,6 @@ public class QTInfo extends GInfo {
 	public QTInfo(Spel spel, OptieVerwerker opties) {
 		super(spel, opties);
 		qtInfo = new QWidget();
-		stapel = new Stapel(spel);
 	}
 
 	public void updateInfo() {
@@ -196,15 +196,21 @@ public class QTInfo extends GInfo {
 	}
 
 	public void updateSpelers() {
+		qtInfo.hide();
 		if (vBox != null) {
-			for (int i = vBox.count() - 1; i >= 4; --i)
-				vBox.removeItem(vBox.itemAt(i));
+			for (int i = vBox.count() - 1; i >= 4; --i) {
+				QLayoutItemInterface item = vBox.itemAt(i);
+				vBox.removeItem(item);
+				item.invalidate();
+			}
 
 			for (int i = 0; i < mSpel.geefAantalSpelers(); ++i) {
 				vBox.addWidget(new QTSpelerInfo(mSpel, mSpel
 						.geefKleurVanSpeler(i), qtInfo).getSpelerInfoveld());
 			}
 		}
+		qtInfo.repaint();
+		qtInfo.show();
 	}
 
 	public QWidget getQtInfo() {
@@ -219,6 +225,15 @@ public class QTInfo extends GInfo {
 						.equals(Spel.HUIDIGESPELERVERANDERD))) {
 			updateSpelers();
 		} else {
+			if (qtInfo.layout() != null) {
+				for (int i = qtInfo.layout().count() - 1; i >= 0; --i) {
+					QLayoutItemInterface item = qtInfo.layout().itemAt(i);
+					qtInfo.layout().removeItem(item);
+				}
+				qtInfo.layout().dispose();
+			}
+
+			stapel = new Stapel(mSpel);
 			vBox = new QVBoxLayout();
 			hBox = new QWidget();
 			hbox = new QHBoxLayout();
@@ -240,10 +255,9 @@ public class QTInfo extends GInfo {
 
 			updateSpelers();
 
-			if (qtInfo.layout() != null)
-				qtInfo.layout().dispose();
 			qtInfo.setLayout(vBox);
-			qtInfo.setPalette(new QPalette());
+			if (qtInfo.palette() == null)
+				qtInfo.setPalette(new QPalette());
 
 			roteerR.clicked.connect(stapel, "roteerRechts()");
 			roteerL.clicked.connect(stapel, "roteerLinks()");
