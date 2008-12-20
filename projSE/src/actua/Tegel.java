@@ -51,16 +51,16 @@ public class Tegel {
 
 	public Tegel(String tegelPresentatie, String idPresentatie) {
 		orientatie = 0;
-		this.tegelPresentatie = tegelPresentatie;
+		this.tegelPresentatie = new String(tegelPresentatie);
 		setLandsdelen(new String(idPresentatie));
-		this.idPresentatie = idPresentatie;
+		this.idPresentatie = new String(idPresentatie);
 	}
 
 	public Tegel(String tegelPresentatie, String idPresentatie, 
 			short orientatie) {
-		this.tegelPresentatie = tegelPresentatie;
+		this.tegelPresentatie = new String(tegelPresentatie);
 		setLandsdelen(new String(idPresentatie));
-		this.idPresentatie = idPresentatie;
+		this.idPresentatie = new String(idPresentatie);
 		this.orientatie = orientatie;
 	}
 
