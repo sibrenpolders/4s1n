@@ -1,6 +1,7 @@
 package actua;
 
 import java.util.Observable;
+import java.util.Vector;
 
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
@@ -12,6 +13,7 @@ import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QDrag;
 import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
+import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QLayoutItemInterface;
@@ -21,20 +23,19 @@ import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPalette;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
-import com.trolltech.qt.gui.QSpacerItem;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTInfo extends GInfo {
+	private short rows;
 	private QWidget qtInfo;
-	private QWidget hBox;
-	private QHBoxLayout hbox;
-	private QVBoxLayout vBox;
+	private QGridLayout vBox;
 	private Stapel stapel;
 	private QPushButton roteerR;
 	private QPushButton roteerL;
 	private QPushButton nieuweTegel;
 	private QPushButton neemPion;
+	private Vector<QWidget> spelers;
 	private int TEGEL_PRESENTATIE = 0;
 	private int ID_PRESENTATIE = 1;
 
@@ -176,6 +177,28 @@ public class QTInfo extends GInfo {
 	public QTInfo(Spel spel, OptieVerwerker opties) {
 		super(spel, opties);
 		qtInfo = new QWidget();
+		stapel = new Stapel(mSpel);
+		vBox = new QGridLayout();
+		qtInfo.setLayout(vBox);
+		spelers = new Vector<QWidget>();
+
+		roteerR = new QPushButton("Draai Rechts");
+		roteerL = new QPushButton("Draai Links");
+		nieuweTegel = new QPushButton("Nieuwe Tegel");
+		neemPion = new QPushButton("Neem Pion");
+
+		vBox.addWidget(stapel, 0, 0, 1, 2);
+		vBox.addWidget(roteerL, 1, 0, 1, 1);
+		vBox.addWidget(roteerR, 1, 1, 1, 1);
+		vBox.addWidget(nieuweTegel, 2, 0, 1, 2);
+		vBox.addWidget(neemPion, 3, 0, 1, 2);
+		rows = 4;
+
+		qtInfo.hide();
+		roteerR.clicked.connect(stapel, "roteerRechts()");
+		roteerL.clicked.connect(stapel, "roteerLinks()");
+		nieuweTegel.clicked.connect(stapel, "nieuweTegel()");
+		neemPion.clicked.connect(this, "neemPion()");
 	}
 
 	public void updateInfo() {
@@ -195,74 +218,35 @@ public class QTInfo extends GInfo {
 		}
 	}
 
-	public void updateSpelers() {
-		qtInfo.hide();
+	public synchronized void updateSpelers() {
 		if (vBox != null) {
-			for (int i = vBox.count() - 1; i >= 4; --i) {
-				QLayoutItemInterface item = vBox.itemAt(i);
-				vBox.removeItem(item);
-				item.invalidate();
+			for (int i = 0; i < mSpel.geefAantalSpelers(); ++i) {
+				spelers.add(new QTSpelerInfo(mSpel,
+						mSpel.geefKleurVanSpeler(i), qtInfo)
+						.getSpelerInfoveld());
+				vBox.addWidget(spelers.lastElement(), rows++, 0, 1, 2);
 			}
 
-			for (int i = 0; i < mSpel.geefAantalSpelers(); ++i) {
-				vBox.addWidget(new QTSpelerInfo(mSpel, mSpel
-						.geefKleurVanSpeler(i), qtInfo).getSpelerInfoveld());
-			}
 		}
-		qtInfo.repaint();
-		qtInfo.show();
 	}
 
 	public QWidget getQtInfo() {
 		return qtInfo;
 	}
 
-	public void update(Observable o, Object arg) {
+	public synchronized void update(Observable o, Object arg) {
+		qtInfo.hide();
 		System.out.println((String) arg);
-		if (o.equals(mSpel)
-				&& (arg.equals(Spel.SPELERVERWIJDERD)
-						|| arg.equals(Spel.SPELERTOEGEVOEGD) || arg
-						.equals(Spel.HUIDIGESPELERVERANDERD))) {
-			updateSpelers();
-		} else {
-			if (qtInfo.layout() != null) {
-				for (int i = qtInfo.layout().count() - 1; i >= 0; --i) {
-					QLayoutItemInterface item = qtInfo.layout().itemAt(i);
-					qtInfo.layout().removeItem(item);
-				}
-				qtInfo.layout().dispose();
-			}
-
-			stapel = new Stapel(mSpel);
-			vBox = new QVBoxLayout();
-			hBox = new QWidget();
-			hbox = new QHBoxLayout();
-
-			roteerR = new QPushButton("Draai Rechts");
-			roteerL = new QPushButton("Draai Links");
-			nieuweTegel = new QPushButton("Nieuwe Tegel");
-			neemPion = new QPushButton("Neem Pion");
-
-			hbox.addWidget(stapel);
-			hbox.addWidget(roteerL);
-			hbox.addWidget(roteerR);
-			hBox.setLayout(hbox);
-
-			vBox.addWidget(stapel);
-			vBox.addWidget(hBox);
-			vBox.addWidget(nieuweTegel);
-			vBox.addWidget(neemPion);
-
-			updateSpelers();
-
-			qtInfo.setLayout(vBox);
-			if (qtInfo.palette() == null)
-				qtInfo.setPalette(new QPalette());
-
-			roteerR.clicked.connect(stapel, "roteerRechts()");
-			roteerL.clicked.connect(stapel, "roteerLinks()");
-			nieuweTegel.clicked.connect(stapel, "nieuweTegel()");
-			neemPion.clicked.connect(this, "neemPion()");
+		for (int i = spelers.size() - 1; i >= 0; --i) {
+			vBox.removeWidget(spelers.elementAt(i));
+			spelers.remove(i);
+			rows--;
 		}
+
+		updateSpelers();
+
+		qtInfo.setPalette(new QPalette());
+
+		qtInfo.show();
 	}
 }

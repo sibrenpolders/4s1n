@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Observer;
 
 public abstract class GInfo implements Observer {
-	protected ArrayList<GSpelerInfo> gSpelers;
 	protected Spel mSpel;
 	protected OptieVerwerker mOptie;
 
