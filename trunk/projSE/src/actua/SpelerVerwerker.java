@@ -109,4 +109,28 @@ public class SpelerVerwerker implements Serializable {
 	private void readObjectNoData() throws ObjectStreamException {
 
 	}
+
+	public boolean isHuidigeSpeler(char speler) {
+		return speler == geefHuidigeSpeler();
+	}
+
+	public Pion neemPionVan(char speler) {
+		Speler s = geefSpeler(speler);
+		
+		if (s != null) { 
+			return s.getOngeplaatstePion();
+		}
+		
+		return null;
+	}
+	
+	private Speler geefSpeler(char kleur) {
+		for (int i = 0; i < spelers.size(); ++i) {
+			if (spelers.get(i).getKleur() == kleur) {
+				return spelers.get(i);
+			}
+		}
+		
+		return null;
+	}
 }

@@ -69,6 +69,13 @@ public class QTSpeelveld extends GSpeelveld {
 	            } else {
 	                event.acceptProposedAction();
 	            }
+	        } else if (event.mimeData().hasFormat("application/x-pionitemdata")) {
+	        	if (event.source().equals(this)) {
+	                event.setDropAction(Qt.DropAction.MoveAction);
+	                event.accept();
+	            } else {
+	                event.acceptProposedAction();
+	            }
 	        } else {
 	            event.ignore();
 	        }
@@ -76,7 +83,8 @@ public class QTSpeelveld extends GSpeelveld {
 
 	    protected void dragMoveEvent(QDragMoveEvent event)
 	    {
-	        if (event.mimeData().hasFormat("application/x-dnditemdata")) {
+	        if (event.mimeData().hasFormat("application/x-dnditemdata") || 
+	        		event.mimeData().hasFormat("application/x-pionitemdata")) {
 	            if (event.source().equals(this)) {
 	                event.setDropAction(Qt.DropAction.MoveAction);
 	                event.accept();
@@ -90,8 +98,10 @@ public class QTSpeelveld extends GSpeelveld {
 	    }
 
 	    protected void dropEvent(QDropEvent event) {
+	    	boolean tegel = event.mimeData().hasFormat("application/x-dnditemdata");
+	    	boolean pion = event.mimeData().hasFormat("application/x-pionitemdata");
 	    	
-	        if (event.mimeData().hasFormat("application/x-dnditemdata") && !gevuld) {
+	        if (tegel && !gevuld) {
 	            QByteArray itemData = event.mimeData().data("application/x-dnditemdata");
 	            QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.ReadOnly);
 	        
@@ -104,17 +114,29 @@ public class QTSpeelveld extends GSpeelveld {
 	            	gevuld=true;
 	            
 	            clearGroen();
-	            
-	            if (event.source().equals(this)) {
-	                event.setDropAction(Qt.DropAction.MoveAction);
-	                event.accept();	        
-	            } else {
-	                event.acceptProposedAction();
-	            }
-	        } else {
-	            event.ignore();
+	        } else if (pion) { 	
+	        	QByteArray itemData = event.mimeData().data("application/x-dnditemdata");
+	        	QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.ReadOnly);
+	        
+	            QPixmap pixmap = new QPixmap();
+	            QPoint offset = new QPoint();
+	            pixmap.readFrom(dataStream);
+	            offset.readFrom(dataStream);
+	            voegPionToe(gridCoord, pixmap);
 	        }
-	    }
+
+	        if (tegel || pion) {
+	        	if (event.source().equals(this)) {
+	        		event.setDropAction(Qt.DropAction.MoveAction);
+	        		event.accept();	        
+	        	} else {
+	        		event.acceptProposedAction();
+	        	}
+	        } else {
+	        	event.ignore();
+	        }
+	    }	    
+
 	    protected void dragLeaveEvent(QDragLeaveEvent event) {
 	    	clearGroen();
 	    }
@@ -227,6 +249,29 @@ public class QTSpeelveld extends GSpeelveld {
 			return isTegelGeplaatst;
 	}
 	
+	private void voegPionToe(Vector2D gridCoord, QPixmap pixmap) {
+		String[] tegel = spel.vraagNieuweTegel();
+		Vector2D tegelCoord = new Vector2D(camera.getHuidigeVector().getX()+gridCoord.getX(),
+				camera.getHuidigeVector().getY()+gridCoord.getY());
+		boolean isTegelGeplaatst = false;
+
+		System.err.println(gridCoord.getX() + ", " + gridCoord.getY());
+//		if (spel.isTegelPlaatsingGeldig(tegel,coord)) {
+//			tegel = spel.neemTegelVanStapel();
+//			spel.plaatsTegel(tegel,coord);
+//			voegTegelToeAanGrafischeLijst(tegel,coord,pixmap);
+//			((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),
+//					gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(
+//							((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,
+//							((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
+//			isTegelGeplaatst = true;
+//		} 
+//
+//		// altijd resetten naar 0 hier, vermits we met referenties zitten
+//		// te werken.
+//		tegel[2] = new String("0");
+//		return isTegelGeplaatst;
+	}
 	private void zooming(int zoomFactor) {
 //    	Vector3D nieuwePositie = new Vector3D(getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getX()-zoomFactor,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getY()-zoomFactor,getSpel().getTafelVerwerker().getCamera().getHuidigeVector().getZ()+zoomFactor);
 //    	
