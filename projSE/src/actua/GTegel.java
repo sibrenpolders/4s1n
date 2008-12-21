@@ -3,12 +3,14 @@ package actua;
 public abstract class GTegel {
 	protected String[] tegel;
 	int orientatie;
+	Spel spel;
 	
 	public GTegel() {
 		orientatie = 0;
 	}
 	
-	public GTegel(String[] tegel2) {
+	public GTegel(String[] tegel2, Spel spel) {
+		this.spel = spel;
 		this.tegel=tegel2;
 		if (tegel2.length == 3) {
 			orientatie = Integer.parseInt(tegel2[2]);

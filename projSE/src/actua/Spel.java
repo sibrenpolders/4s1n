@@ -127,4 +127,16 @@ public class Spel extends Observable implements Serializable {
 	public Vector2D getStartTegelPos() {
 		return tafelVerwerker.getStartTegelPos();
 	}
+
+	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord,
+			char speler) {
+		if (spelerVerwerker.isHuidigeSpeler(speler)) {
+			Pion pion = spelerVerwerker.neemPionVan(speler);
+			if (pion != null) {
+				return tafelVerwerker.plaatsPion(tegelCoord, pionCoord, pion);
+			}
+		}
+		
+		return false;
+	}
 }

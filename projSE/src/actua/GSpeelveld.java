@@ -115,6 +115,7 @@ public abstract class GSpeelveld {
 		if (gTegels == null) {
 			gTegels = new ArrayList<ArrayList<GTegel>>();
 			gTegels.add(new ArrayList<GTegel>());
+			//TODO !!!!!!!!!!
 			gTegels.get(0).add(new QTTegel(tegel));
 			startGTegel = new Vector2D(0,0);
 			return true;

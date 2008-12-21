@@ -96,8 +96,9 @@ public class QTInitSpel extends GInitSpel{
 					(char) (kleur.get(i).currentText().charAt(0) + 'a' - 'A'),
 					0);
 		}
+		
 		setChanged();
-		notifyObservers();
+		notifyObservers(true);
 		
 		venster.close();
 	}
