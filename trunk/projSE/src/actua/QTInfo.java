@@ -7,8 +7,10 @@ import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt;
+import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QBrush;
 import com.trolltech.qt.gui.QColor;
+import com.trolltech.qt.gui.QCursor;
 import com.trolltech.qt.gui.QDrag;
 import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
@@ -212,6 +214,9 @@ public class QTInfo extends GInfo {
 				box.setWindowTitle("Bericht");
 				box.setText("Al uw pionnen zijn reeds geplaatst.");
 				box.show();
+			} else {
+				QApplication.setOverrideCursor(new QCursor(new QPixmap(
+						"src/icons/pion.png")));
 			}
 		}
 	}
