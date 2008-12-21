@@ -2,7 +2,6 @@ package actua;
 
 import java.util.Observable;
 import java.util.Vector;
-
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
@@ -14,16 +13,15 @@ import com.trolltech.qt.gui.QDrag;
 import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QGridLayout;
-import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QLayoutItemInterface;
 import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPalette;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
-import com.trolltech.qt.gui.QVBoxLayout;
+import com.trolltech.qt.gui.QStyle;
+import com.trolltech.qt.gui.QStyleOptionFocusRect;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTInfo extends GInfo {
@@ -226,7 +224,6 @@ public class QTInfo extends GInfo {
 						.getSpelerInfoveld());
 				vBox.addWidget(spelers.lastElement(), rows++, 0, 1, 2);
 			}
-
 		}
 	}
 
@@ -238,15 +235,16 @@ public class QTInfo extends GInfo {
 		qtInfo.hide();
 		System.out.println((String) arg);
 		for (int i = spelers.size() - 1; i >= 0; --i) {
-			vBox.removeWidget(spelers.elementAt(i));
+			QWidget item = spelers.elementAt(i);
+			vBox.removeWidget(item);
 			spelers.remove(i);
+			item.dispose();
 			rows--;
 		}
 
 		updateSpelers();
 
 		qtInfo.setPalette(new QPalette());
-
 		qtInfo.show();
 	}
 }
