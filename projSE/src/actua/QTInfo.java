@@ -47,7 +47,7 @@ public class QTInfo extends GInfo {
 	private static final int BREEDTE = 180;
 	private int hoogte;
 	private int breedte;
-	
+
 	private class Stapel extends QWidget {
 		private Spel spel;
 		QLabel tegelIcon;
@@ -58,7 +58,7 @@ public class QTInfo extends GInfo {
 
 			tegelIcon = new QLabel(this);
 			setSize(tegelIcon, 90, 90);
-			
+
 			String[] tegel = spel.vraagNieuweTegel();
 			tegelIcon.setPixmap(new QPixmap("src/icons/"
 					+ tegel[TEGEL_PRESENTATIE] + ".png"));
@@ -71,7 +71,7 @@ public class QTInfo extends GInfo {
 				String[] tegel = spel.vraagNieuweTegel();
 
 				if (tegel != null) {
-					QTTegel qtTegel = new QTTegel(tegel);
+					QTTegel qtTegel = new QTTegel(tegel, spel);
 					qtTegel.roteer(true);
 					child.clear();
 					child.setPixmap(new QPixmap(qtTegel.getPixmap()));
@@ -85,7 +85,7 @@ public class QTInfo extends GInfo {
 			if (child != null) {
 				String[] tegel = spel.vraagNieuweTegel();
 				if (tegel != null) {
-					QTTegel qtTegel = new QTTegel(tegel);
+					QTTegel qtTegel = new QTTegel(tegel, spel);
 					qtTegel.roteer(false);
 					child.clear();
 					child.setPixmap(new QPixmap(qtTegel.getPixmap()));
@@ -184,12 +184,12 @@ public class QTInfo extends GInfo {
 		super(spel, opties);
 		hoogte = HOOGTE;
 		breedte = BREEDTE;
-		
+
 		create();
 		resize();
-		add();						
+		add();
 		qtInfo.hide();
-		connect();		
+		connect();
 	}
 
 	private void connect() {
@@ -205,8 +205,8 @@ public class QTInfo extends GInfo {
 		box.addWidget(roteerR, 1, 1, 1, 1);
 		box.addWidget(nieuweTegel, 2, 0, 1, 1);
 		box.addWidget(neemPion, 2, 1, 1, 1);
-		
-		rows = 3;					
+
+		rows = 3;
 	}
 
 	private void resize() {
@@ -215,7 +215,7 @@ public class QTInfo extends GInfo {
 		setSize(roteerL, 80, BUTTON_HEIGHT);
 		setSize(nieuweTegel, 80, BUTTON_HEIGHT);
 		setSize(neemPion, 80, BUTTON_HEIGHT);
-		
+
 		setSize(qtInfo, breedte, hoogte);
 	}
 
@@ -223,7 +223,7 @@ public class QTInfo extends GInfo {
 		qtInfo = new QWidget();
 		box = new QGridLayout();
 		qtInfo.setLayout(box);
-		
+
 		stapel = new Stapel(mSpel);
 		spelers = new Vector<QWidget>();
 		roteerR = new QPushButton("Draai Rechts");
@@ -256,23 +256,25 @@ public class QTInfo extends GInfo {
 		if (box != null) {
 			QGroupBox group;
 			QVBoxLayout layout;
+			spelers.clear();
 			for (int i = 0; i < mSpel.geefAantalSpelers(); ++i) {
 				spelers.add(new QTSpelerInfo(mSpel,
 						mSpel.geefKleurVanSpeler(i), qtInfo)
 						.getSpelerInfoveld());
 				layout = new QVBoxLayout();
-				
-				group = new QGroupBox(mSpel.geefSpelerNaam(
-						mSpel.geefKleurVanSpeler(i)));
+
+				group = new QGroupBox(mSpel.geefSpelerNaam(mSpel
+						.geefKleurVanSpeler(i)));
 				layout.addWidget(spelers.lastElement());
 				group.setLayout(layout);
-				setSize(group, breedte-15, 90);
+				setSize(group, breedte - 15, 90);
 				box.addWidget(group, rows, 0, 1, 2);
 				++rows;
 			}
 		}
-		
-		spacer = new QSpacerItem(breedte, hoogte - 95 - 4*(BUTTON_HEIGHT+5) - mSpel.geefAantalSpelers()*95);
+
+		spacer = new QSpacerItem(breedte, hoogte - 95 - 4 * (BUTTON_HEIGHT + 5)
+				- mSpel.geefAantalSpelers() * 95);
 		box.addItem(spacer, rows, 0, 1, 2);
 	}
 
@@ -287,7 +289,7 @@ public class QTInfo extends GInfo {
 			rows--;
 		}
 	}
-	
+
 	public QWidget getQtInfo() {
 		return qtInfo;
 	}
@@ -296,14 +298,15 @@ public class QTInfo extends GInfo {
 		if (!arg.equals(true)) {
 			return;
 		}
-		
+
 		verwijderSpelers();
 		updateSpelers();
+		stapel.nieuweTegel();
 
 		qtInfo.setPalette(new QPalette());
 		qtInfo.show();
 	}
-	
+
 	private void setSize(QWidget widget, int w, int h) {
 		widget.setMaximumSize(w, h);
 		widget.setMinimumSize(w, h);

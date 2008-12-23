@@ -38,34 +38,7 @@ public class Speler implements Serializable {
 		this("unnamed", INACTIVE_COLOR);
 	}
 
-	public boolean isEigenaarVan(Pion p) {
-		return p != null && p.getKleur() == this.getKleur();
-	}
-
-	public void haalVanTafel(Pion p) {
-		if (isEigenaarVan(p))
-			p.zetGeplaatst(false);
-	}
-
-	public void zetOpTafel(Pion p) {
-		if (isEigenaarVan(p))
-			p.zetGeplaatst(true);
-	}
-
-	public Pion getOngeplaatstePion() {
-		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
-			if (pionnen.get(i).getGeplaatst() == false)
-				return pionnen.get(i);
-		return null;
-	}
-
-	public short getAantalOngeplaatstePion() {
-		short result = 0;
-		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
-			if (pionnen.get(i).getGeplaatst() == false)
-				result++;
-		return result;
-	}
+	// GETTERS en SETTERS
 
 	public String getNaam() {
 		return naam;
@@ -99,13 +72,46 @@ public class Speler implements Serializable {
 		score += nb;
 	}
 
+	public void verwijder() {
+		setKleur(INACTIVE_COLOR);
+	}
+
+	// PIONNEN
+
+	public boolean isEigenaarVan(Pion p) {
+		return p != null && p.getKleur() == this.getKleur();
+	}
+
+	public void haalVanTafel(Pion p) {
+		if (isEigenaarVan(p))
+			p.zetGeplaatst(false);
+	}
+
+	public void zetOpTafel(Pion p) {
+		if (isEigenaarVan(p))
+			p.zetGeplaatst(true);
+	}
+
+	public Pion getOngeplaatstePion() {
+		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
+			if (pionnen.get(i).getGeplaatst() == false)
+				return pionnen.get(i);
+		return null;
+	}
+
+	public short getAantalOngeplaatstePion() {
+		short result = 0;
+		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
+			if (pionnen.get(i).getGeplaatst() == false)
+				result++;
+		return result;
+	}
+
 	protected ArrayList<Pion> getPionnen() {
 		return pionnen;
 	}
 
-	public void verwijder() {
-		setKleur(INACTIVE_COLOR);
-	}
+	// FILE I/O
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		out.writeObject(naam);

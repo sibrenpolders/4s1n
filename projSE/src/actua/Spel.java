@@ -10,6 +10,7 @@ public class Spel extends Observable implements Serializable {
 	private static final long serialVersionUID = 2689906234458876556L;
 	private TafelVerwerker tafelVerwerker;
 	private SpelerVerwerker spelerVerwerker;
+	private boolean pionGeplaatst = false;
 
 	public static final char ROOD = 'r';
 	public static final char BLAUW = 'b';
@@ -19,31 +20,36 @@ public class Spel extends Observable implements Serializable {
 	public static final short MAXAANTALSPELERS = 5;
 	public static final short MINAANTALSPELERS = 2;
 
-	//
-	// Berichten die observer kunnen ontvangen
-	//
+	// OBSERVERBERICHTEN
+
 	public static final String SPELERVERANDERD = "Speler veranderd";
 	public static final String HUIDIGESPELERVERANDERD = "Huidige speler veranderd";
 	public static final String SPELERVERWIJDERD = "Speler verwijderd";
 	public static final String SPELERTOEGEVOEGD = "Speler toegevoegd";
+	public static final String TEGELGEPLAATST = "Tegel toegevoegd";
+	public static final String PIONGEPLAATST = "Pion toegevoegd";
+	public static final String PIONTERUGGENOMEN = "Pion verwijderd";
 
 	public Spel() {
+		pionGeplaatst = false;
 		tafelVerwerker = new TafelVerwerker();
 		spelerVerwerker = new SpelerVerwerker();
 	}
 
-	//
-	// SPELERSGROEP
-	//
-	public void volgendeSpeler() {
-		spelerVerwerker.volgendeSpeler();
-		notifyObservers(HUIDIGESPELERVERANDERD);
-	}
-
-	public void verwijderSpelers() {
+	public void restart() {
+		pionGeplaatst = false;
 		spelerVerwerker.verwijderSpelers();
+		tafelVerwerker.restart();
 		setChanged();
 		notifyObservers(SPELERVERWIJDERD);
+	}
+
+	// SPELERSGROEP
+
+	public void volgendeSpeler() {
+		pionGeplaatst = false;
+		spelerVerwerker.volgendeSpeler();
+		notifyObservers(HUIDIGESPELERVERANDERD);
 	}
 
 	public void voegSpelerToe(short s, String naam, char kleur, int i) {
@@ -65,6 +71,7 @@ public class Spel extends Observable implements Serializable {
 	}
 
 	// SPELER
+
 	public String geefSpelerNaam(char kleur) {
 		return spelerVerwerker.geefSpelerNaam(kleur);
 	}
@@ -77,27 +84,10 @@ public class Spel extends Observable implements Serializable {
 		return spelerVerwerker.geefAantalOngeplaatstePionnen(kleur);
 	}
 
-	public ArrayList<Vector2D> geefGeldigeMogenlijkheden(String[] tegel) {
-		return tafelVerwerker.geefGeldigeMogenlijkheden(tegel);
-	}
+	// STAPEL
 
-	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-		out.writeObject(tafelVerwerker);
-		out.writeObject(spelerVerwerker);
-	}
-
-	private void readObject(java.io.ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
-		tafelVerwerker = (TafelVerwerker) in.readObject();
-		spelerVerwerker = (SpelerVerwerker) in.readObject();
-	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-
-	}
-
-	public void vulStapel(int aantal) {
-		tafelVerwerker.vulStapel(aantal);
+	public String[] geefStartTegel() {
+		return tafelVerwerker.geefStartTegel();
 	}
 
 	public String[] vraagNieuweTegel() {
@@ -116,6 +106,12 @@ public class Spel extends Observable implements Serializable {
 		return tafelVerwerker.getStapelSize();
 	}
 
+	// TEGEL + TEGELPLAATSING
+
+	public ArrayList<Vector2D> geefGeldigeMogelijkheden(String[] tegel) {
+		return tafelVerwerker.geefGeldigeMogelijkheden(tegel);
+	}
+
 	public boolean plaatsTegel(String[] tegel, Vector2D coord) {
 		return tafelVerwerker.plaatsTegel(tegel, coord);
 	}
@@ -125,18 +121,42 @@ public class Spel extends Observable implements Serializable {
 	}
 
 	public Vector2D getStartTegelPos() {
-		return tafelVerwerker.getStartTegelPos();
+		return tafelVerwerker.getStartTegelPositie();
 	}
 
-	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord,
-			char speler) {
-		if (spelerVerwerker.isHuidigeSpeler(speler)) {
+	// PION + PIONPLAATSING
+
+	public boolean pionBijBeurtReedsGeplaatst() {
+		return pionGeplaatst;
+	}
+
+	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, char speler) {
+		if (spelerVerwerker.isHuidigeSpeler(speler) && !pionGeplaatst) {
 			Pion pion = spelerVerwerker.neemPionVan(speler);
 			if (pion != null) {
-				return tafelVerwerker.plaatsPion(tegelCoord, pionCoord, pion);
+				pionGeplaatst = tafelVerwerker.plaatsPion(tegelCoord,
+						pionCoord, pion);
+				return pionGeplaatst;
 			}
 		}
-		
+
 		return false;
+	}
+
+	// FILE I/O
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.writeObject(tafelVerwerker);
+		out.writeObject(spelerVerwerker);
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		tafelVerwerker = (TafelVerwerker) in.readObject();
+		spelerVerwerker = (SpelerVerwerker) in.readObject();
+	}
+
+	private void readObjectNoData() throws ObjectStreamException {
+
 	}
 }

@@ -6,55 +6,94 @@ import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-public class TafelVerwerker implements Serializable{
+public class TafelVerwerker implements Serializable {
 	private static final long serialVersionUID = -6431108242978335095L;
 	private static final int AANTAL_TEGELS = 72;
 	private ArrayDeque<String[]> stapel;
 	private Tafel tafel;
+	private String[] startTegel;
 
 	public TafelVerwerker() {
-		TegelFabriek tfb = new TegelFabriek();
-		stapel = tfb.maakTegelDeque(AANTAL_TEGELS-1);
-		tafel = new Tafel();
+		this(AANTAL_TEGELS);
 	}
 
 	public TafelVerwerker(int aantalTegels) {
-		TegelFabriek tfb = new TegelFabriek();
-		stapel = tfb.maakTegelDeque(aantalTegels-1);
-		tafel = new Tafel();
+		restart(aantalTegels);
 	}
-	
+
+	public void restart() {
+		restart(AANTAL_TEGELS);
+	}
+
+	public void restart(int aantalTegels) {
+		TegelFabriek tfb = new TegelFabriek();
+		stapel = tfb.maakTegelDeque(aantalTegels - 1);
+		tafel = new Tafel();
+		startTegel = tfb.geefStartTegel();
+		tafel.setStartTegel(startTegel);
+	}
+
+	public String[] geefStartTegel() {
+		return startTegel;
+	}
+
+	// STAPEL
+
 	public ArrayDeque<String[]> getStapel() {
 		return stapel;
 	}
 
-	public String[] neemLaatsteTegel(){
-		return stapel.pollFirst();
+	public int getStapelSize() {
+		return stapel.size();
 	}
-	
+
 	public String[] vraagNieuweTegel() {
 		return stapel.peekFirst();
+	}
+
+	public String[] neemLaatsteTegel() {
+		return stapel.pollFirst();
 	}
 
 	public String[] neemTegelVanStapel() {
 		return stapel.pop();
 	}
-	
-	public void legTerugEinde(String[] tegel){
+
+	public void legTerugEinde(String[] tegel) {
 		stapel.addLast(tegel);
 	}
-	
-	public void legTerugTop(String[] tegel){
+
+	public void legTerugTop(String[] tegel) {
 		stapel.addFirst(tegel);
 	}
-	
-	public void verwerkTegel() {
 
+	// TEGELVELD
+
+	public Vector2D getBeginPositie() {
+		return tafel.getBeginPositie();
 	}
 
-	public Vector2D vraagCoord() {
-		return null;
+	public int getHoogte() {
+		return tafel.getHoogte();
 	}
+
+	public int getBreedte() {
+		return tafel.getBreedte();
+	}
+
+	public int aantalTegels() {
+		return stapel.size();
+	}
+
+	public Tegel getLaatstGeplaatsteTegel() {
+		return tafel.getLaatstGeplaatsteTegel();
+	}
+
+	public Vector2D getStartTegelPositie() {
+		return tafel.getStartTegel();
+	}
+
+	// TEGELPLAATSING
 
 	/**
 	 * Zal de method aanroepen die een tegel op het veld plaatst
@@ -73,10 +112,23 @@ public class TafelVerwerker implements Serializable{
 	public boolean isTegelPlaatsingGeldig(String[] t, Vector2D coord) {
 		return tafel.isTegelPlaatsingGeldig(t, coord);
 	}
-	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord, int pionCoord) {
+
+	public boolean isTegelPlaatsBaar(Tegel tegel) {
+
+		return true;
+	}
+
+	public ArrayList<Vector2D> geefGeldigeMogelijkheden(String[] tegel) {
+		return null;
+	}
+
+	// PIONPLAATSING
+
+	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
+			int pionCoord) {
 		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
 	}
-	
+
 	/**
 	 * @param tegelCoord
 	 *            De tegel waarop de pion geplaatst moet worden (coordinaten
@@ -90,64 +142,25 @@ public class TafelVerwerker implements Serializable{
 		return tafel.plaatsPion(tegelCoord, pionCoord, pion);
 	}
 
-	public Vector2D getBeginPositie() {
-		return tafel.getBeginPositie();
-	}
-
-	public int getHoogte() {
-		return tafel.getHoogte();
-	}
-
-	public int getBreedte() {
-		return tafel.getBreedte();
-	}
-	
-	public void vulStapel(int aantal){
-		TegelFabriek tfb = new TegelFabriek();
-		
-		stapel = tfb.maakTegelDeque(aantal-1);
-	}
-	
-	public int aantalTegels(){
-		return stapel.size();
-	}
-
-	public Tegel getLaatstGeplaatsteTegel() {
-		return tafel.getLaatstGeplaatsteTegel();
-	}
-	
-	public Vector2D getStartTegelPos() {
-		return tafel.getStartTegel();
-	}
-
-	public boolean plaatsingPionMogelijk(String[] t, Vector2D tegelCoord, int pionCoord) {
+	public boolean plaatsingPionMogelijk(String[] t, Vector2D tegelCoord,
+			int pionCoord) {
 		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
 	}
-	
-	 private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-			out.writeObject(stapel);
-			out.writeObject(tafel);
-	 }
-	 
-	 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-		 stapel = (ArrayDeque<String[]>) in.readObject();
-		 tafel = (Tafel) in.readObject();
-	 }
-	 
-	 private void readObjectNoData() throws ObjectStreamException {
-		 
-	 }
-	 
-	 public boolean isTegelPlaatsBaar(Tegel tegel) {
-		 
-		 return true;
-	 }
 
-	public int getStapelSize() {
-		return stapel.size();
+	// FILE I/O
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.writeObject(stapel);
+		out.writeObject(tafel);
 	}
 
-	public ArrayList<Vector2D> geefGeldigeMogenlijkheden(String[] tegel) {
-		return null;
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		stapel = (ArrayDeque<String[]>) in.readObject();
+		tafel = (Tafel) in.readObject();
+	}
+
+	private void readObjectNoData() throws ObjectStreamException {
+
 	}
 }

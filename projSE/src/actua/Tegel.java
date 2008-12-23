@@ -3,17 +3,14 @@ package actua;
 import java.io.IOException;
 import java.io.ObjectStreamException;
 
-/**
- * 
- */
 /*
- * ________________ 
- * |0\1  | 2 |3/4 | 
- * |-----|---|----| 
- * | 11  | 12|  5 |
- * |--------------| 
- * |10/9 | 8 |7 \6| 
- * |______________|
+ * _______________
+ * |0\1 | 2 |3/4 | 
+ * |----|---|----| 
+ * | 11 | 12| 5  |
+ * |-------------| 
+ * |10/9| 8 |7 \6| 
+ * |_____________|
  */
 public class Tegel {
 	// een tegel is verdeeld in een 3x3 matrix van landsdelen
@@ -23,7 +20,7 @@ public class Tegel {
 	// tegel aan te duiden,
 	// zonder te weten hoe ze worden voorgesteld.
 	public static final int NOORD_WEST = 1;
-	public static final int NOORD = 2;	
+	public static final int NOORD = 2;
 	public static final int NOORD_OOST = 3;
 	public static final int OOST_NOORD = 4;
 	public static final int OOST = 5;
@@ -35,51 +32,53 @@ public class Tegel {
 	public static final int WEST = 11;
 	public static final int WEST_NOORD = 0;
 	public static final int MIDDEN = 12;
-	
+
 	private static final char WEG = 'g';
-	
+
 	// TODO nog nakijken maar dacht dat dit een testvariabele was -> verwijderen
 	// dus
 	private short orientatie;
 	private Landsdeel[] landsdelen;
 	private String tegelPresentatie;
 	private String idPresentatie;
-	
+
 	public Tegel() {
 		orientatie = 0;
 	}
 
 	public Tegel(String tegelPresentatie, String idPresentatie) {
-		orientatie = 0;
-		this.tegelPresentatie = new String(tegelPresentatie);
-		setLandsdelen(new String(idPresentatie));
-		this.idPresentatie = new String(idPresentatie);
+		this(tegelPresentatie, idPresentatie, (short) 0);
 	}
 
-	public Tegel(String tegelPresentatie, String idPresentatie, 
-			short orientatie) {
+	public Tegel(String tegelPresentatie, String idPresentatie, short orientatie) {
 		this.tegelPresentatie = new String(tegelPresentatie);
 		setLandsdelen(new String(idPresentatie));
 		this.idPresentatie = new String(idPresentatie);
 		this.orientatie = orientatie;
 	}
 
+	public Tegel(String tegelPresentatie, String idPresentatie,
+			String orientatie) {
+		this(tegelPresentatie, idPresentatie, Short.parseShort(orientatie));
+	}
+
 	public String getIdPresentatie() {
 		return idPresentatie;
 	}
-	
+
 	private void setLandsdelen(String idPresentatie) {
 		if (idPresentatie == null || idPresentatie.length() != MAX_GROOTTE) {
-			System.err.println("Foutieve string idPresentatie: " + idPresentatie);
+			System.err.println("Foutieve string idPresentatie: "
+					+ idPresentatie);
 			return;
 		}
-		
+
 		landsdelen = new Landsdeel[tegelPresentatie.length()];
-		
+
 		for (int i = 0; i < MAX_GROOTTE; ++i) {
 			if (landsdelen[i] == null) {
 				landsdelen[i] = new Landsdeel(tegelPresentatie.charAt(i));
-				
+
 				for (int j = i; j < MAX_GROOTTE; ++j) {
 					if (idPresentatie.charAt(i) == idPresentatie.charAt(j)) {
 						landsdelen[j] = landsdelen[i];
@@ -87,8 +86,8 @@ public class Tegel {
 				}
 			}
 		}
-		
-		for(int j = 0; j < 10; ++j) {
+
+		for (int j = 0; j < 10; ++j) {
 			;
 		}
 	}
@@ -147,23 +146,23 @@ public class Tegel {
 		return true;
 	}
 
-//	// TODO invullen!!!!
+	// // TODO invullen!!!!
 	public Tegel clone() {
 		Tegel t = new Tegel();
 		t.orientatie = orientatie;
 		t.landsdelen = new Landsdeel[landsdelen.length];
-		
+
 		for (int i = 0; i < landsdelen.length; ++i) {
 			if (t.landsdelen[i] == null) {
 				t.landsdelen[i] = landsdelen[i].clone();
 				for (int j = i; j < landsdelen.length; ++j) {
-					if (landsdelen[i] == landsdelen[j]){
+					if (landsdelen[i] == landsdelen[j]) {
 						t.landsdelen[j] = t.landsdelen[i];
 					}
 				}
 			}
 		}
-		
+
 		t.landsdelen = landsdelen.clone();
 		t.tegelPresentatie = new String(tegelPresentatie);
 
@@ -179,7 +178,7 @@ public class Tegel {
 	}
 
 	public void updateLandsdeel(int zijde, Tegel nieuweTegel) {
-		switch(zijde) {
+		switch (zijde) {
 		case NOORD:
 			updateLd(landsdelen[NOORD_WEST], nieuweTegel.landsdelen[ZUID_WEST]);
 			updateLd(landsdelen[NOORD], nieuweTegel.landsdelen[ZUID]);
@@ -205,7 +204,7 @@ public class Tegel {
 
 	public void updateLandsdeel(Landsdeel changeTo, int pos, boolean[] changed) {
 		Landsdeel changeFrom = bepaalLandsdeel(pos);
-		
+
 		for (int i = 0; i < MAX_GROOTTE; ++i) {
 			if (landsdelen[i] == changeFrom) {
 				landsdelen[i] = changeTo;
@@ -213,14 +212,14 @@ public class Tegel {
 			}
 		}
 	}
-	
+
 	/**
 	 * Deze functie zal elk voorkomen van huidigLd vervangen door nieuwLd.
 	 * 
 	 * @param huidigLd
-	 * Het landsdeel dat vervangen moet worden.
+	 *            Het landsdeel dat vervangen moet worden.
 	 * @param nieuwLd
-	 * Het landsdeel dat we willen hebben.
+	 *            Het landsdeel dat we willen hebben.
 	 */
 	private void updateLd(Landsdeel huidigLd, Landsdeel nieuwLd) {
 		for (int i = 0; i < MAX_GROOTTE; ++i) {
@@ -229,52 +228,53 @@ public class Tegel {
 			}
 		}
 	}
-	
+
 	public String getTegelPresentatie() {
 		return tegelPresentatie;
 	}
-	
+
 	public short getOrientatie() {
 		return orientatie;
 	}
-	
-	 public void setOrientatie(short orientatie) {		
+
+	public void setOrientatie(short orientatie) {
 		this.orientatie = orientatie;
 	}
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-		 out.writeShort(orientatie);
-		 out.writeObject(idPresentatie);
-		 out.writeObject(tegelPresentatie);
-		 // TODO pion plaatsing erin zetten (morgen)
-	 }
-	 
-	 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-		 orientatie = in.readShort();
-		 idPresentatie = (String) in.readObject();
-		 tegelPresentatie = (String) in.readObject();
-		 setLandsdelen(new String(idPresentatie));
-	 }
-	 
-	 private void readObjectNoData() throws ObjectStreamException {
-		 
-	 }
+		out.writeShort(orientatie);
+		out.writeObject(idPresentatie);
+		out.writeObject(tegelPresentatie);
+		// TODO pion plaatsing erin zetten (morgen)
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		orientatie = in.readShort();
+		idPresentatie = (String) in.readObject();
+		tegelPresentatie = (String) in.readObject();
+		setLandsdelen(new String(idPresentatie));
+	}
+
+	private void readObjectNoData() throws ObjectStreamException {
+
+	}
 
 	public Pion neemPionTerug(int landsdeel) {
 		if (landsdeel >= 0 && landsdeel < MAX_GROOTTE) {
 			return landsdelen[landsdeel].neemPionnenTerug();
 		}
-		
+
 		return null;
 	}
-	
+
 	private int getPos(int pos) {
 		if (pos == MIDDEN || orientatie == 0) {
 			return pos;
 		}
-		
+
 		int beginPos = 1;
-		
+
 		if (orientatie == 1) {
 			beginPos = 9;
 		} else if (orientatie == 2) {
@@ -282,7 +282,7 @@ public class Tegel {
 		} else if (orientatie == 3) {
 			beginPos = 3;
 		}
-		
-		return (beginPos+pos)%12;
+
+		return (beginPos + pos) % 12;
 	}
 }
