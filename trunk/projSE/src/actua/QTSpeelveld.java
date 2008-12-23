@@ -60,6 +60,55 @@ public class QTSpeelveld extends GSpeelveld {
 			gevuld = false;
 		}
 
+		// -------------
+		// | 0 | 1 | 2 |
+		// | 3 | 4 | 5 |
+		// | 6 | 7 | 8 |
+		// -------------
+		// Tegel is dus gewoon in een raster verdeeld.
+		// Als de pion in een hoek losgelaten wordt: doe niks zou ik zeggen,
+		// want 't kan makkelijk een fout van de gebruiker geweest zijn.
+		// Of mappen op een hoek als er één een geldig landsdeel is.
+		private short getZone(int localX, int localY) {
+			int width = width() - 5;
+			int height = height() - 5;
+			int x = localX + 5;
+			int y = localY + 5;
+
+			// eerste rij
+			if (y >= 0 && y < height / 3) {
+				if (x >= 0 && x < width / 3) {
+					return 0;
+				} else if (x < 2 * (width / 3)) {
+					return 1;
+				} else {
+					return 2;
+				}
+			}
+			// tweede rij
+			else if (y < 2 * (height / 3)) {
+				if (x >= 0 && x < width / 3) {
+					return 3;
+				} else if (x < 2 * (width / 3)) {
+					return 4;
+				} else {
+					return 5;
+				}
+			}
+			// laatste rij
+			else if (y <= height) {
+				if (x >= 0 && x < width / 3) {
+					return 6;
+				} else if (x < 2 * (width / 3)) {
+					return 7;
+				} else {
+					return 8;
+				}
+			}
+
+			return -1; // unknown
+		}
+
 		protected void dragEnterEvent(QDragEnterEvent event) {
 			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
 				kleurMogelijkhedenGroen();
@@ -127,7 +176,8 @@ public class QTSpeelveld extends GSpeelveld {
 				QPoint offset = new QPoint();
 				pixmap.readFrom(dataStream);
 				offset.readFrom(dataStream);
-				voegPionToe(gridCoord, pixmap);
+				short zone = getZone(event.pos().x(), event.pos().y());
+				voegPionToe(gridCoord, zone, pixmap);
 			}
 
 			if (tegel || pion) {
@@ -263,29 +313,9 @@ public class QTSpeelveld extends GSpeelveld {
 		return isTegelGeplaatst;
 	}
 
-	private void voegPionToe(Vector2D gridCoord, QPixmap pixmap) {
-		String[] tegel = spel.vraagNieuweTegel();
-		Vector2D tegelCoord = new Vector2D(camera.getHuidigeVector().getX()
-				+ gridCoord.getX(), camera.getHuidigeVector().getY()
-				+ gridCoord.getY());
-		boolean isTegelGeplaatst = false;
-
-		System.err.println(gridCoord.getX() + ", " + gridCoord.getY());
-		// if (spel.isTegelPlaatsingGeldig(tegel,coord)) {
-		// tegel = spel.neemTegelVanStapel();
-		// spel.plaatsTegel(tegel,coord);
-		// voegTegelToeAanGrafischeLijst(tegel,coord,pixmap);
-		// ((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),
-		// gridCoord.getY()).widget()).scene().addPixmap(pixmap.scaled(
-		// ((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).width()-5,
-		// ((QtGraphicsView)gridLayout.itemAtPosition(gridCoord.getX(),gridCoord.getY()).widget()).height()-5));
-		// isTegelGeplaatst = true;
-		// }
-		//
-		// // altijd resetten naar 0 hier, vermits we met referenties zitten
-		// // te werken.
-		// tegel[2] = new String("0");
-		// return isTegelGeplaatst;
+	private void voegPionToe(Vector2D gridCoord, short zone, QPixmap pixmap) {
+		System.out.println("Pion gedropped in vakje: " + gridCoord.getX()
+				+ ", " + gridCoord.getY() + ", en in zone: " + zone);
 	}
 
 	private void cameraUp() {
