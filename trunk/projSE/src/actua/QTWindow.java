@@ -17,13 +17,13 @@ public class QTWindow implements GWindow {
 		initMainWindow(spel, opties, help, bestand);
 	}
 
-	private void initMainWindow(Spel spel, OptieVerwerker opties,HelpVerwerker help, BestandsVerwerker bestand) {
+	private void initMainWindow(Spel spel, OptieVerwerker opties,
+			HelpVerwerker help, BestandsVerwerker bestand) {
 		QTInitSpel qtInitSpel = new QTInitSpel(spel);
 		QTInfo qInfo = new QTInfo(spel, opties);
-		
-		qtInitSpel.addObserver(qInfo);
-		
-		QTMenubalk qMenubalk = new QTMenubalk(spel, opties, help, bestand, qtInitSpel);
+
+		QTMenubalk qMenubalk = new QTMenubalk(spel, opties, help, bestand,
+				qtInitSpel);
 		mainWindow.setMenuBar(qMenubalk.getMenubar());
 
 		QWidget container = new QWidget(mainWindow);
@@ -32,6 +32,9 @@ public class QTWindow implements GWindow {
 		QTSpeelveld qSpeelveld = new QTSpeelveld(spel, opties);
 		hbox.addWidget(qSpeelveld.getGridWidget());
 		hbox.addWidget(qInfo.getQtInfo());
+
+		qtInitSpel.addObserver(qInfo);
+		qtInitSpel.addObserver(qSpeelveld);
 
 		container.setLayout(hbox);
 		container.show();

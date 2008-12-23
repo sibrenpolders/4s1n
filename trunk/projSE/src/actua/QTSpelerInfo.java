@@ -27,25 +27,24 @@ public class QTSpelerInfo extends GSpelerInfo {
 	private QLabel score;
 	private QGridLayout layout;
 	private static final int TEXT_HOOGTE = 15;
-	
+
 	public QTSpelerInfo(Spel spel, char kleur, QWidget parent) {
 		super(spel, kleur);
-		
 		create(parent);
 		resize();
 		setFont();
-//		connect();
 		add();
 		addPionnen();
 	}
 
 	private void addPionnen() {
 		QHBoxLayout hBox = new QHBoxLayout();
-		
+		boolean flag = spel.geefHuidigeSpeler() == this.kleur;
+
 		for (int i = 0; i < spel.geefAantalOngeplaatstePionnen(kleur); ++i) {
-			hBox.addWidget(new QtPion(kleur));
+			hBox.addWidget(new QTPion(kleur, flag));
 		}
-		
+
 		layout.addLayout(hBox, 2, 0, 1, 2);
 	}
 
@@ -58,12 +57,12 @@ public class QTSpelerInfo extends GSpelerInfo {
 	}
 
 	private void create(QWidget parent) {
-		spelerInfoveld = new QWidget(parent);		
+		spelerInfoveld = new QWidget(parent);
 		naam = new QLabel(spel.geefSpelerNaam(kleur));
 		punten = new QLabel("0");
 		color = new QLabel();
 		score = new QLabel("Score:");
-		
+
 		layout = new QGridLayout(spelerInfoveld);
 		layout.setVerticalSpacing(3);
 	}
@@ -83,7 +82,7 @@ public class QTSpelerInfo extends GSpelerInfo {
 		layout.addWidget(punten, 1, 1);
 
 		spelerInfoveld.setLayout(layout);
-		updateSpeler();		
+		updateSpeler();
 	}
 
 	public QWidget getSpelerInfoveld() {
@@ -101,7 +100,7 @@ public class QTSpelerInfo extends GSpelerInfo {
 
 	private QPixmap spelerKleur() {
 		QPixmap pixmap = new QPixmap(40, 10);
-		
+
 		switch (kleur) {
 		case Spel.ROOD:
 			pixmap.fill(new QColor(255, 0, 0));
@@ -130,12 +129,12 @@ public class QTSpelerInfo extends GSpelerInfo {
 		if (!o.hasChanged()) {
 			return;
 		}
-		
+
 		if (o.equals(spel) && arg.equals(Spel.SPELERVERANDERD)) {
 			updateSpeler();
-		}		
+		}
 	}
-	
+
 	private void setSize(QWidget widget, int w, int h) {
 		QSize size = new QSize(w, h);
 		widget.setMaximumSize(size);

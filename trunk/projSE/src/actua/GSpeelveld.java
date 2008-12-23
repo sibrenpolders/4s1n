@@ -1,166 +1,60 @@
 package actua;
+
 import java.util.ArrayList;
+import java.util.Observer;
 
-import com.trolltech.qt.gui.QPixmap;
-
-public abstract class GSpeelveld {
-	private static String DEFAULT_BACKGROUND;
+public abstract class GSpeelveld implements Observer {
+	protected static String DEFAULT_BACKGROUND;
 	protected ArrayList<ArrayList<GTegel>> gTegels;
-	private String achtergrond;
+	protected String achtergrond;
 	protected Spel spel;
-	private Vector2D startGTegel;
+	protected Vector2D startGTegel;
 	protected Camera camera;
-	
+
 	public GSpeelveld() {
 		camera = new Camera();
-	}
-	
-	public GSpeelveld(Spel spel) {
-		this.spel=spel;
-		camera = new Camera();
+		gTegels = new ArrayList<ArrayList<GTegel>>();
 	}
 
-	public ArrayList<ArrayList<GTegel>> getGTegels() {
+	public GSpeelveld(Spel spel) {
+		this.spel = spel;
+		camera = new Camera();
+		gTegels = new ArrayList<ArrayList<GTegel>>();
+	}
+
+	protected ArrayList<ArrayList<GTegel>> getGTegels() {
 		return gTegels;
 	}
 
-	public void setGTegels(ArrayList<ArrayList<GTegel>> tegels) {
-		gTegels = tegels;
-	}
-
-	public String getAchtergrond() {
+	protected String getAchtergrond() {
 		return achtergrond;
 	}
 
-	public void setAchtergrond(String achtergrond) {
+	protected void setAchtergrond(String achtergrond) {
 		this.achtergrond = achtergrond;
 	}
-	
 
-	public Spel getSpel() {
+	protected Spel getSpel() {
 		return spel;
 	}
 
-	public void setSpel(Spel spel) {
+	protected void setSpel(Spel spel) {
 		this.spel = spel;
 	}
 
-	public void toonSpeelveld () {
-		
-	}
+	protected abstract void clearSpeelveld();
 
-	public void updateSpeelveld () {
-		
-	}
-	
-	public void voegTegelToe() {
-		
-	}
-	
-	public abstract void hide();
-	public abstract void show();
-	
-	public abstract boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion);
-	
-	/**
-	 * Zal de het veldoverzicht wijzigen.
-	 * @param nieuwePositie
-	 * 	De nieuwe positie van het centrum van het veld (Vector3D)
-	 */
-	protected boolean beweegCamera(Vector3D nieuwePositie) {
-		if (cameraBewegingGeldig(nieuwePositie)) {
-			camera.veranderStandpunt(nieuwePositie);
-			return true;
-		}
-		
-		return false;
-	}
+	protected abstract void initialiseerSpeelveld();
 
-	/**
-	 * Zal nagaan of het veldoverzicht kan gewijzigd worden naar
-	 * de ingegeven positie.
-	 * 
-	 * @param nieuwePositie
-	 * 	De positie naar waar de veldwijziging gedaan zal worden.
-	 * @return
-	 * 	True als de veldwijziging geldig is, Fals anders.
-	 */
-	protected boolean cameraBewegingGeldig(Vector3D nieuwePositie) {
-		return camera.bewegingGeldig(nieuwePositie);
-	}
-	
-	/**
-	 * Deze functie zal het veld overzicht weer op de standaard waarden 
-	 * zetten.
-	 */
-	protected void herstelOverzicht() {
-		camera.herstelOverzicht();
-	}
-	
-	protected void setOogpunt(Camera camera) {
-		this.camera= camera;
-	}
+	protected abstract void updateSpeelveld();
 
-	protected Camera getOogpunt() {
-		return camera;
-	}
-	
-	//functies van tafel m.b.t. dubbele arraylist 
-	//werken hier op een qt dubbele arraylist
-	//misschien tijdelijk
-	
-	public boolean  voegTegelToeAanGrafischeLijst(String[] tegel, Vector2D coord,QPixmap pixmap) {
-		// startTegel wordt gezet
-		// coord maken niet uit startTegel staat op (0, 0)
-		if (gTegels == null) {
-			gTegels = new ArrayList<ArrayList<GTegel>>();
-			gTegels.add(new ArrayList<GTegel>());
-			//TODO !!!!!!!!!!
-			gTegels.get(0).add(new QTTegel(tegel));
-			startGTegel = new Vector2D(0,0);
-			return true;
-		}
+	protected abstract void voegTegelToe(String[] tegel, Vector2D coord);
 
-		int rij = startGTegel.getX() + coord.getX();
-		int kolom = startGTegel.getY() + coord.getY();
-		// mag de tegel hier gezet worden? M.a.w. zijn zijn buren geldig?
-		// TODO
+	//
+	// functies voor gTegels
+	//
 
-		ArrayList<GTegel> kolomVector;
-
-		// boven of onder de starttegel
-		if (rij == -1) {
-			rij = 0;
-			kolomVector = addRij(rij);
-			startGTegel.setX(startGTegel.getX() + 1);
-		} else if (rij == gTegels.size()) {
-			kolomVector = addRij(rij);
-		} else { // toevoegen in een bestaande rij
-			kolomVector = gTegels.get(rij);
-		}
-
-		// links of rechts van de starttegel
-		if (kolom == -1) {
-			adjustAll(rij, kolom);
-			startGTegel.setY(startGTegel.getY() + 1);
-			kolom = (kolom < 0) ? 0 : kolom;
-		} else if (kolom > gTegels.get(rij).size()) {
-			addSpacers(rij, kolom);
-		}
-
-		if (kolom < kolomVector.size() && kolomVector.get(kolom) == null) {
-			kolomVector.remove(kolom);
-		}
-
-
-		kolomVector.add(kolom, new QTTegel(tegel,pixmap));
-//		// TODO functie update landsdelen schrijven
-//		updateLandsdelen(rij, kolom);
-		
-		return true;
-	}
-	
-	private ArrayList<GTegel> addRij(int rij) {
+	protected ArrayList<GTegel> addRij(int rij) {
 		ArrayList<GTegel> kolomVector = new ArrayList<GTegel>();
 		gTegels.add(rij, kolomVector);
 		kolomVector = gTegels.get(rij);
@@ -168,30 +62,30 @@ public abstract class GSpeelveld {
 		return kolomVector;
 	}
 
-	private void adjustAll(int rij, int kolom) {
+	protected void adjustAll(int rij, int kolom) {
 		ArrayList<GTegel> kolomVector;
 		int aantal = (int) Math.abs(kolom - startGTegel.getY());
 		int offset;
-		
+
 		for (int i = 0; i < gTegels.size(); ++i) {
 			kolomVector = gTegels.get(i);
 			offset = getNegativeSize(kolomVector);
-			for (int j = 0; j < aantal+1 - offset; ++j) {
+			for (int j = 0; j < aantal + 1 - offset; ++j) {
 				kolomVector.add(0, null);
 			}
 		}
 	}
 
-	private int getNegativeSize(ArrayList<GTegel> kolomVector) {
+	protected int getNegativeSize(ArrayList<GTegel> kolomVector) {
 		int aantal = 0;
 		for (int i = 0; i <= startGTegel.getY(); ++i) {
 			++aantal;
 		}
-		
+
 		return aantal;
 	}
-	
-	private void addSpacers(int rij, int kolom) {
+
+	protected void addSpacers(int rij, int kolom) {
 		ArrayList<GTegel> kolomVector = gTegels.get(rij);
 		for (int i = kolomVector.size(); i < kolom; ++i) {
 			kolomVector.add(null);
@@ -199,13 +93,12 @@ public abstract class GSpeelveld {
 	}
 
 	public int getBiggestSize() {
-		int size=gTegels.get(0).size();
-		
-		for (int i=1;i<gTegels.size();i++)
-			if (gTegels.get(i).size()>size)
-				size=gTegels.get(i).size();
-		
+		int size = gTegels.get(0).size();
+
+		for (int i = 1; i < gTegels.size(); i++)
+			if (gTegels.get(i).size() > size)
+				size = gTegels.get(i).size();
+
 		return size;
 	}
-	
 }
