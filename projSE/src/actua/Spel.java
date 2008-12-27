@@ -10,6 +10,7 @@ public class Spel extends Observable implements Serializable {
 	private static final long serialVersionUID = 2689906234458876556L;
 	private TafelVerwerker tafelVerwerker;
 	private SpelerVerwerker spelerVerwerker;
+	private StatusBijhouder statusBijhouder;
 	private boolean pionGeplaatst = false;
 
 	public static final char ROOD = 'r';
@@ -34,12 +35,14 @@ public class Spel extends Observable implements Serializable {
 		pionGeplaatst = false;
 		tafelVerwerker = new TafelVerwerker();
 		spelerVerwerker = new SpelerVerwerker();
+		statusBijhouder = new StatusBijhouder();
 	}
 
 	public void restart() {
 		pionGeplaatst = false;
 		spelerVerwerker.verwijderSpelers();
 		tafelVerwerker.restart();
+		statusBijhouder = new StatusBijhouder();
 		setChanged();
 		notifyObservers(SPELERVERWIJDERD);
 	}
@@ -151,11 +154,21 @@ public class Spel extends Observable implements Serializable {
 	}
 	
 	public boolean undo() {
-		return false;
+		if (statusBijhouder.pop_undo() == null) {
+			return false;
+		} else {
+			// TODO doe iets
+			return true;
+		}
 	}
 	
 	public boolean redo() {
-		return false;
+		if (statusBijhouder.pop_redo() == null) {
+			return false;
+		} else {
+			// TODO doe iets
+			return true;
+		}
 	}
 	
 	// FILE I/O
