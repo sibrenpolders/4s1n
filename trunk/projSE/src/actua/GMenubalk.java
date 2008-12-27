@@ -3,6 +3,7 @@ package actua;
 public abstract class GMenubalk {
 	protected GHelp gHelp;
 	protected GOptie gOptie;
+	protected BestandsVerwerker bestand;
 	protected GInitSpel gInitSpel;
 	protected GWindow gParent;
 	protected Spel spel;
@@ -48,5 +49,8 @@ public abstract class GMenubalk {
 	protected void setGInitSpel(GInitSpel initSpel) {
 		gInitSpel = initSpel;
 	}
-
+	
+	protected void setBestand(BestandsVerwerker bestand) {
+		this.bestand = bestand;
+	}
 }
