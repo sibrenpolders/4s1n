@@ -1,6 +1,8 @@
 package actua;
 
 import com.trolltech.qt.gui.QAction;
+import com.trolltech.qt.gui.QApplication;
+import com.trolltech.qt.gui.QFileDialog;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMenuBar;
@@ -14,7 +16,8 @@ public class QTMenubalk extends GMenubalk {
 		super(spel, qtInitSpel);
 		setGHelp(new QTHelp(help));
 		setGOptie(new QTOptie(opties));
-
+		setBestand(bestand);
+		
 		menubar = new QMenuBar();
 		menubar.setMaximumWidth(1024);
 		menubar.setMinimumWidth(1024);
@@ -32,15 +35,25 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	private void spel() {
-		QMenu spel;
-		QAction nSpel, opslaan, laden;
-
-		spel = addMenuItem("Spel");
-		nSpel = addActionItem(spel, "Nieuw Spel");
-		opslaan = addActionItem(spel, "Opslaan");
-		laden = addActionItem(spel, "Laden");
-
+		QMenu spel = addMenuItem("Spel");
+		QAction nSpel = addActionItem(spel, "Nieuw Spel");
+		
+		spel.addSeparator();
+		
+		QAction opslaan = addActionItem(spel, "Opslaan");
+		QAction opslaanAls = addActionItem(spel, "Opslaan Als");
+		
+		QAction laden = addActionItem(spel, "Laden");
+		
+		spel.addSeparator();
+		QAction afsluiten = addActionItem(spel, "Afsluiten()");
+		
 		nSpel.triggered.connect(this.gInitSpel, "show()");
+		opslaan.triggered.connect(this, "opslaan()");
+		opslaanAls.triggered.connect(this, "opslaanAls()");
+		laden.triggered.connect(this, "laden()");
+		// TODO confirm?
+		afsluiten.triggered.connect(QApplication.instance(), "quit()");
 	}
 	
 	private void speler() {
@@ -59,6 +72,9 @@ public class QTMenubalk extends GMenubalk {
 		bewerken = addMenuItem("Bewerken");
 		undo = addActionItem(bewerken, "Ongedaan maken");
 		redo = addActionItem(bewerken, "Opnieuw uitvoeren");
+		
+		undo.triggered.connect(spel, "undo()");
+		redo.triggered.connect(spel, "redo()");
 	}
 
 	private void opties() {
@@ -109,5 +125,23 @@ public class QTMenubalk extends GMenubalk {
 
 	public void setMenubar(QMenuBar menubar) {
 		this.menubar = menubar;
+	}
+	
+	private void opslaanAls() {
+		String naam = QFileDialog.getSaveFileName();
+		bestand.slaSpelToestandOp(naam, spel);
+	}
+	
+	private void opslaan() {
+		if (bestand.getNaam() != null) {
+			bestand.slaSpelToestandOp(spel);
+		} else {
+			opslaanAls();
+		}
+		
+	}
+	private void laden() {
+		String naam = QFileDialog.getOpenFileName();
+		bestand.startLaden(spel, naam);
 	}
 }

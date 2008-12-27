@@ -18,6 +18,10 @@ public class BestandsVerwerker {
 		return naam.endsWith(extensie);
 	}
 
+	public boolean slaSpelToestandOp(Spel spel) {		
+		return slaSpelToestandOp(bestand.getNaam(), spel, false);
+	}
+	
 	public boolean slaSpelToestandOp(String naam, Spel spel) {		
 		return slaSpelToestandOp(naam, spel, false);
 	}
@@ -42,5 +46,9 @@ public class BestandsVerwerker {
 
 	public Spel getSpel() {
 		return bestand.getSpel();
+	}
+	
+	public String getNaam() {
+		return bestand.getNaam();
 	}
 }

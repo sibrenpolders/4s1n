@@ -2,6 +2,7 @@ package actua;
 
 import java.io.IOException;
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 
 /*
  * _______________
@@ -12,7 +13,8 @@ import java.io.ObjectStreamException;
  * |10/9| 8 |7 \6| 
  * |_____________|
  */
-public class Tegel {
+public class Tegel implements Serializable {
+	private static final long serialVersionUID = -6031518212157821335L;
 	// een tegel is verdeeld in een 3x3 matrix van landsdelen
 	public static final int MAX_GROOTTE = 13;
 	private static final short MAX_DRAAIING = 4;

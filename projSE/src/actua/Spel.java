@@ -149,7 +149,15 @@ public class Spel extends Observable implements Serializable {
 
 		return false;
 	}
-
+	
+	public boolean undo() {
+		return false;
+	}
+	
+	public boolean redo() {
+		return false;
+	}
+	
 	// FILE I/O
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
@@ -165,5 +173,5 @@ public class Spel extends Observable implements Serializable {
 
 	private void readObjectNoData() throws ObjectStreamException {
 
-	}
+	}	
 }
