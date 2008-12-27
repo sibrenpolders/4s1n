@@ -1,8 +1,25 @@
 package actua;
 
+import com.trolltech.qt.core.QByteArray;
+import com.trolltech.qt.core.QDataStream;
+import com.trolltech.qt.core.QIODevice;
+import com.trolltech.qt.core.QPoint;
+import com.trolltech.qt.core.QRectF;
+import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.core.Qt.TransformationMode;
+import com.trolltech.qt.gui.QBrush;
+import com.trolltech.qt.gui.QDragEnterEvent;
+import com.trolltech.qt.gui.QDragLeaveEvent;
+import com.trolltech.qt.gui.QDragMoveEvent;
+import com.trolltech.qt.gui.QDropEvent;
+import com.trolltech.qt.gui.QGraphicsScene;
+import com.trolltech.qt.gui.QGraphicsView;
+import com.trolltech.qt.gui.QGridLayout;
+import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMatrix;
+import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QWidget;
 
 public class QTTegel extends GTegel {
 	private static final int TEGEL_PRESENTATIE = 0;
@@ -10,7 +27,74 @@ public class QTTegel extends GTegel {
 	private QPixmap pixmap;
 	private QTPion pion[];
 	private Vector2D tegelCoord;
+	private QGraphicsView qGraphicsView;
+	
+	private class QtGraphicsView extends QGraphicsView {
+		public QtGraphicsView(QGraphicsScene parent) {
+			super(parent);
+			init();
+			setAcceptDrops(true);
+		}
 
+		private void init() {
+			setMaximumSize(90, 90);
+			setMinimumSize(90, 90);			
+		}
+
+		protected void dragEnterEvent(QDragEnterEvent event) {
+			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
+				if (event.source().equals(this)) {
+					event.setDropAction(Qt.DropAction.MoveAction);
+					event.accept();
+				} else {
+					event.acceptProposedAction();
+				}
+			} else if (event.mimeData().hasFormat("application/x-pionitemdata")) {
+				if (event.source().equals(this)) {
+					event.setDropAction(Qt.DropAction.MoveAction);
+					event.accept();
+				} else {
+					event.acceptProposedAction();
+				}
+			} else {
+				event.ignore();
+			}
+		}
+
+		protected void dragMoveEvent(QDragMoveEvent event) {
+			if (event.mimeData().hasFormat("application/x-dnditemdata")
+					|| event.mimeData().hasFormat("application/x-pionitemdata")) {
+				if (event.source().equals(this)) {
+					event.setDropAction(Qt.DropAction.MoveAction);
+					event.accept();
+
+				} else {
+					event.acceptProposedAction();
+				}
+			} else {
+				event.ignore();
+			}
+		}
+
+		protected void dropEvent(QDropEvent event) {
+			System.err.println("ERR");
+		}
+
+		protected void dragLeaveEvent(QDragLeaveEvent event) {
+		}
+		
+		protected void drawBackground(QPainter painter,
+                QRectF rect) {
+			QPixmap pixmap = backgroundBrush().texture();
+			painter.drawPixmap(-45, -45, 90, 90, pixmap);
+		}
+		
+		public void setPixmap(QPixmap pixmap) {
+			setBackgroundBrush(new QBrush(pixmap));
+			backgroundBrush().transform().reset();
+		}
+	}
+	
 	public QTTegel() {
 		super();
 		pixmap = new QPixmap(90, 90);
@@ -22,11 +106,17 @@ public class QTTegel extends GTegel {
 		pixmap = new QPixmap(90, 90);
 		pion = new QTPion[9];
 		kiesAfbeelding();
+		QtGraphicsView g = new QtGraphicsView(new QGraphicsScene());
+		g.setPixmap(pixmap);
+		qGraphicsView = g;
 	}
 
 	public QTTegel(String[] tegel, Spel spel, QPixmap pixmap) {
 		super(tegel, spel);
 		this.pixmap = new QPixmap(pixmap);
+		QtGraphicsView g = new QtGraphicsView(new QGraphicsScene());
+		g.setPixmap(pixmap);
+		qGraphicsView = g;
 	}
 
 	public boolean plaatsPionInSectie(int pionCoord, QTPion p) {
@@ -83,4 +173,7 @@ public class QTTegel extends GTegel {
 				TransformationMode.FastTransformation));
 	}
 
+	public QGraphicsView getGraphicsView() {
+		return qGraphicsView;
+	}
 }

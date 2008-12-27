@@ -1,9 +1,11 @@
 package actua;
 
 import com.trolltech.qt.gui.QAction;
+import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMenuBar;
 import com.trolltech.qt.gui.QMessageBox;
+import com.trolltech.qt.gui.QPixmap;
 
 public class QTMenubalk extends GMenubalk {
 	private QMenuBar menubar;
@@ -89,7 +91,8 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	private QAction addActionItem(QMenu menu, String titel) {
-		return menu.addAction(titel);
+		return menu.addAction(new QIcon(new QPixmap("src/icons/" + titel + ".png")), 
+				titel);
 	}
 
 	public void hide() {
