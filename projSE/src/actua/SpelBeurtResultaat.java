@@ -3,17 +3,17 @@ package actua;
 public class SpelBeurtResultaat {
 	private Vector2D plaatsingTegel;
 	private short plaatsingPion;
-	private Pion pion;
+	private char pion;
 	private String[] tegel;
 
-	public SpelBeurtResultaat(String[] t, Vector2D pT, Pion p, short pP) {
+	public SpelBeurtResultaat(String[] t, Vector2D pT, char p, short pP) {
 		tegel = t;
 		plaatsingPion = pP;
 		pion = p;
 		plaatsingTegel = pT;
 	}
 
-	public Pion getPion() {
+	public char getPion() {
 		return pion;
 	}
 

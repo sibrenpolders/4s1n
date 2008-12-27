@@ -17,8 +17,7 @@ public class Tegel {
 	public static final int MAX_GROOTTE = 13;
 	private static final short MAX_DRAAIING = 4;
 	// Deze constanten geven andere klassen de mogelijkheid om zijkanten van de
-	// tegel aan te duiden,
-	// zonder te weten hoe ze worden voorgesteld.
+	// tegel aan te duiden, zonder te weten hoe ze worden voorgesteld.
 	public static final int NOORD_WEST = 1;
 	public static final int NOORD = 2;
 	public static final int NOORD_OOST = 3;
@@ -35,14 +34,17 @@ public class Tegel {
 
 	private static final char WEG = 'g';
 
-	// TODO nog nakijken maar dacht dat dit een testvariabele was -> verwijderen
-	// dus
 	private short orientatie;
 	private Landsdeel[] landsdelen;
 	private String tegelPresentatie;
 	private String idPresentatie;
+	private char pionnen[];
 
 	public Tegel() {
+		pionnen = new char[MAX_GROOTTE];
+		for(int i = 0; i < MAX_GROOTTE; ++i)
+			pionnen[i] = 0; // geen pion in dat vakje dus
+		
 		orientatie = 0;
 	}
 
@@ -51,6 +53,10 @@ public class Tegel {
 	}
 
 	public Tegel(String tegelPresentatie, String idPresentatie, short orientatie) {
+		pionnen = new char[MAX_GROOTTE];
+		for(int i = 0; i < MAX_GROOTTE; ++i)
+			pionnen[i] = 0; // geen pion in dat vakje dus
+		
 		this.tegelPresentatie = new String(tegelPresentatie);
 		setLandsdelen(new String(idPresentatie));
 		this.idPresentatie = new String(idPresentatie);
@@ -62,10 +68,38 @@ public class Tegel {
 		this(tegelPresentatie, idPresentatie, Short.parseShort(orientatie));
 	}
 
+	// GETTERS en SETTERS	
+	
 	public String getIdPresentatie() {
 		return idPresentatie;
 	}
 
+	public String getTegelPresentatie() {
+		return tegelPresentatie;
+	}
+
+	public short getOrientatie() {
+		return orientatie;
+	}
+
+	public void setOrientatie(short orientatie) {
+		this.orientatie = orientatie;
+	}
+
+	/**
+	 * @param richting
+	 *            True wijzerzin draaien. False tegenwijzerzin draaien.
+	 */
+	public void draaiTegel(boolean richting) {
+		if (richting) {
+			orientatie = (short) ((orientatie + 1) % MAX_DRAAIING);
+		} else {
+			orientatie = (short) ((MAX_DRAAIING + orientatie - 1) % MAX_DRAAIING);
+		}
+	}
+
+	// LANDSDELEN
+	
 	private void setLandsdelen(String idPresentatie) {
 		if (idPresentatie == null || idPresentatie.length() != MAX_GROOTTE) {
 			System.err.println("Foutieve string idPresentatie: "
@@ -101,82 +135,7 @@ public class Tegel {
 
 		return landsdelen[getPos(pos)];
 	}
-
-	public boolean plaatsPion(int pos, Pion pion) {
-		// er zijn foute coördinaten zijn doorgegeven.
-		if (!coordinatenOk(pos)) {
-			return false;
-		}
-
-		// Op dit moment is pos zeker een geldige pion plaatsing
-		landsdelen[pos].plaatsPion(pion);
-
-		return true;
-	}
-
-	// als het doelLandsdeel een hoofdletter is dan staat er al een pion
-	// op deze positie
-	public boolean isPionGeplaatst(int pos) {
-		// bij foute coordinaten mag er zeker geen pion gezet worden!
-		if (!coordinatenOk(pos)) {
-			return true;
-		}
-
-		return landsdelen[pos].isPionGeplaatst();
-	}
-
-	/**
-	 * @param richting
-	 *            True wijzerzin draaien. False tegenwijzerzin draaien.
-	 */
-	public void draaiTegel(boolean richting) {
-		if (richting) {
-			orientatie = (short) ((orientatie + 1) % MAX_DRAAIING);
-		} else {
-			orientatie = (short) ((MAX_DRAAIING + orientatie - 1) % MAX_DRAAIING);
-		}
-	}
-
-	private boolean coordinatenOk(int pos) {
-		// de foute coördinaten zijn doorgegeven.
-		if (pos < 0 || pos > MAX_GROOTTE) {
-			return false;
-		}
-
-		return true;
-	}
-
-	// // TODO invullen!!!!
-	public Tegel clone() {
-		Tegel t = new Tegel();
-		t.orientatie = orientatie;
-		t.landsdelen = new Landsdeel[landsdelen.length];
-
-		for (int i = 0; i < landsdelen.length; ++i) {
-			if (t.landsdelen[i] == null) {
-				t.landsdelen[i] = landsdelen[i].clone();
-				for (int j = i; j < landsdelen.length; ++j) {
-					if (landsdelen[i] == landsdelen[j]) {
-						t.landsdelen[j] = t.landsdelen[i];
-					}
-				}
-			}
-		}
-
-		t.landsdelen = landsdelen.clone();
-		t.tegelPresentatie = new String(tegelPresentatie);
-
-		return t;
-	}
-
-	public boolean equals(Tegel t) {
-		boolean orientatieB, soortTegelB = true;
-
-		orientatieB = orientatie == t.orientatie;
-
-		return orientatieB && soortTegelB;
-	}
-
+	
 	public void updateLandsdeel(int zijde, Tegel nieuweTegel) {
 		switch (zijde) {
 		case NOORD:
@@ -204,7 +163,7 @@ public class Tegel {
 
 	public void updateLandsdeel(Landsdeel changeTo, int pos, boolean[] changed) {
 		Landsdeel changeFrom = bepaalLandsdeel(pos);
-
+	
 		for (int i = 0; i < MAX_GROOTTE; ++i) {
 			if (landsdelen[i] == changeFrom) {
 				landsdelen[i] = changeTo;
@@ -229,23 +188,110 @@ public class Tegel {
 		}
 	}
 
-	public String getTegelPresentatie() {
-		return tegelPresentatie;
+	private int getPos(int pos) {
+		if (pos == MIDDEN || orientatie == 0) {
+			return pos;
+		}
+	
+		int beginPos = 1;
+	
+		if (orientatie == 1) {
+			beginPos = 9;
+		} else if (orientatie == 2) {
+			beginPos = 6;
+		} else if (orientatie == 3) {
+			beginPos = 3;
+		}
+	
+		return (beginPos + pos) % 12;
 	}
 
-	public short getOrientatie() {
-		return orientatie;
+	private boolean coordinatenOk(int pos) {
+		// de foute coördinaten zijn doorgegeven.
+		if (pos < 0 || pos > MAX_GROOTTE) {
+			return false;
+		}
+	
+		return true;
 	}
 
-	public void setOrientatie(short orientatie) {
-		this.orientatie = orientatie;
+	// PIONNEN
+	
+	public boolean plaatsPion(int pos, char kleur) {
+		if(pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] != 0)
+			return false;
+		else
+		{
+			pionnen[pos]  = kleur;
+			return true;
+		}
 	}
 
+	public boolean isPionGeplaatst(int pos) {
+		if (pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] != 0)
+			return true;
+
+		return false;
+	}
+	
+	public char geefPionKleur(int pos)
+	{
+		if (pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] == 0)
+			return 0;
+
+		return pionnen[pos];
+	}
+	
+	public void verwijderPion(int pos)
+	{
+		if (pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] == 0)
+			;
+		else
+			pionnen[pos] = 0;		
+	}
+
+	// TODO invullen!!!!
+	public Tegel clone() {
+		Tegel t = new Tegel();
+		t.orientatie = orientatie;
+		t.landsdelen = new Landsdeel[landsdelen.length];
+
+		for (int i = 0; i < landsdelen.length; ++i) {
+			if (t.landsdelen[i] == null) {
+				t.landsdelen[i] = landsdelen[i].clone();
+				for (int j = i; j < landsdelen.length; ++j) {
+					if (landsdelen[i] == landsdelen[j]) {
+						t.landsdelen[j] = t.landsdelen[i];
+					}
+				}
+			}
+		}
+
+		t.landsdelen = landsdelen.clone();
+		t.tegelPresentatie = new String(tegelPresentatie);
+
+		return t;
+	}
+
+	public boolean equals(Tegel t) {
+		boolean orientatieB, soortTegelB = true;
+	
+		orientatieB = orientatie == t.orientatie;
+	
+		return orientatieB && soortTegelB;
+	}
+
+	// FILE I/O
+	
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		out.writeShort(orientatie);
 		out.writeObject(idPresentatie);
 		out.writeObject(tegelPresentatie);
 		// TODO pion plaatsing erin zetten (morgen)
+	}
+
+	private void readObjectNoData() throws ObjectStreamException {
+	
 	}
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
@@ -254,35 +300,5 @@ public class Tegel {
 		idPresentatie = (String) in.readObject();
 		tegelPresentatie = (String) in.readObject();
 		setLandsdelen(new String(idPresentatie));
-	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-
-	}
-
-	public Pion neemPionTerug(int landsdeel) {
-		if (landsdeel >= 0 && landsdeel < MAX_GROOTTE) {
-			return landsdelen[landsdeel].neemPionnenTerug();
-		}
-
-		return null;
-	}
-
-	private int getPos(int pos) {
-		if (pos == MIDDEN || orientatie == 0) {
-			return pos;
-		}
-
-		int beginPos = 1;
-
-		if (orientatie == 1) {
-			beginPos = 9;
-		} else if (orientatie == 2) {
-			beginPos = 6;
-		} else if (orientatie == 3) {
-			beginPos = 3;
-		}
-
-		return (beginPos + pos) % 12;
 	}
 }

@@ -54,11 +54,10 @@ public class AI extends Speler {
 			Vector2D plaats = null;
 			if ((plaats = berekenPlaatsTegel(t)) != null) {
 				gedaan = true;
-				Pion p = null;
 				short plaatsPion = -1;
-				if ((p = this.getOngeplaatstePion()) != null)
-					plaatsPion = (short) berekenPlaatsPion(p, t, plaats);
-				result = new SpelBeurtResultaat(t, plaats, p, plaatsPion);
+				if (this.ongeplaatstePionAanwezig())
+					plaatsPion = (short) berekenPlaatsPion(kleur, t, plaats);
+				result = new SpelBeurtResultaat(t, plaats, kleur, plaatsPion);
 			}
 		}
 
@@ -69,10 +68,7 @@ public class AI extends Speler {
 		return strategy.berekenPlaatsTegel(t);
 	}
 
-	private int berekenPlaatsPion(Pion p, String[] t, Vector2D tegelCoord) {
-		if (this.isEigenaarVan(p))
-			return strategy.berekenPlaatsPion(p, t, tegelCoord);
-		else
-			return -1;
+	private int berekenPlaatsPion(char kleur, String[] t, Vector2D tegelCoord) {
+		return strategy.berekenPlaatsPion(kleur, t, tegelCoord);
 	}
 }

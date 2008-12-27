@@ -180,7 +180,8 @@ public class PuntenVerwerker {
 				++aantalTegels;
 				t = veld.get(x-1).get(y);
 				if (t.isPionGeplaatst(Tegel.ZUID)) {
-					pionnen.add(t.neemPionTerug(Tegel.ZUID));
+					//TODO Aanpassen -> pionnen zijn kleuren geworden om een low coupling te bekomen
+					//pionnen.add(t.neemPionTerug(Tegel.ZUID));
 				}
 				updateScoreWeg(veld, coord, Tegel.ZUID, ld, pionnen);
 			}
@@ -190,7 +191,8 @@ public class PuntenVerwerker {
 				++aantalTegels;
 				t = veld.get(x).get(y+1);
 				if (t.isPionGeplaatst(Tegel.WEST)) {
-					pionnen.add(t.neemPionTerug(Tegel.WEST));
+					//TODO  Aanpassen -> pionnen zijn kleuren geworden om een low coupling te bekomen
+					//pionnen.add(t.neemPionTerug(Tegel.WEST));
 				}
 				updateScoreWeg(veld, coord, Tegel.ZUID, ld, pionnen);				
 			}
@@ -200,7 +202,8 @@ public class PuntenVerwerker {
 				++aantalTegels;
 				t = veld.get(x+1).get(y);
 				if (t.isPionGeplaatst(Tegel.NOORD)) {
-					pionnen.add(t.neemPionTerug(Tegel.NOORD));
+					//TODO  Aanpassen -> pionnen zijn kleuren geworden om een low coupling te bekomen
+					//pionnen.add(t.neemPionTerug(Tegel.NOORD));
 				}
 				updateScoreWeg(veld, coord, Tegel.ZUID, ld, pionnen);
 			}
@@ -210,7 +213,8 @@ public class PuntenVerwerker {
 				++aantalTegels;
 				t = veld.get(x).get(y-1);
 				if (t.isPionGeplaatst(Tegel.OOST)) {
-					pionnen.add(t.neemPionTerug(Tegel.OOST));
+					//TODO  Aanpassen -> pionnen zijn kleuren geworden om een low coupling te bekomen
+					//pionnen.add(t.neemPionTerug(Tegel.OOST));
 				}
 				updateScoreWeg(veld, coord, Tegel.OOST, ld, pionnen);
 			}

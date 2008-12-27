@@ -19,7 +19,7 @@ import com.trolltech.qt.gui.QGraphicsScene;
 import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QKeySequence;
-import com.trolltech.qt.gui.QPalette;
+import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QShortcut;
@@ -30,9 +30,12 @@ public class QTSpeelveld extends GSpeelveld {
 	private class QtGraphicsView extends QGraphicsView {
 		private boolean gevuld;
 		private Vector2D gridCoord;
+		private QGridLayout layout;
 
 		public QtGraphicsView(QGraphicsScene parent, Vector2D coord) {
 			super(parent);
+			layout = new QGridLayout();
+			this.setLayout(layout);
 			init();
 			setAcceptDrops(true);
 			gevuld = false;
@@ -45,6 +48,7 @@ public class QTSpeelveld extends GSpeelveld {
 			setCacheMode(new QGraphicsView.CacheMode(
 					QGraphicsView.CacheModeFlag.CacheBackground));
 			setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.FullViewportUpdate);
+
 		}
 
 		private void setPixmap(QPixmap pixmap) {
@@ -60,16 +64,11 @@ public class QTSpeelveld extends GSpeelveld {
 			gevuld = false;
 		}
 
-		// -------------
-		// | 0 | 1 | 2 |
-		// | 3 | 4 | 5 |
-		// | 6 | 7 | 8 |
-		// -------------
-		// Tegel is dus gewoon in een raster verdeeld.
-		// Als de pion in een hoek losgelaten wordt: doe niks zou ik zeggen,
-		// want 't kan makkelijk een fout van de gebruiker geweest zijn.
-		// Of mappen op een hoek als er één een geldig landsdeel is.
-		private short getZone(int localX, int localY) {
+		// TODO Verdeling is dezelfde als in Tegel
+		// Niet ideaal voor low coupling, maar 'k weet niet hoe anders een
+		// eenduidige voorstelling te bekomen die door zowel Spel als door
+		// QTTegel/Speelveld kan gebruikt worden.
+		private short getLandsdeel(int localX, int localY) {
 			int width = width() - 5;
 			int height = height() - 5;
 			int x = localX + 5;
@@ -80,17 +79,17 @@ public class QTSpeelveld extends GSpeelveld {
 				if (x >= 0 && x < width / 3) {
 					return 0;
 				} else if (x < 2 * (width / 3)) {
-					return 1;
-				} else {
 					return 2;
+				} else {
+					return 4;
 				}
 			}
 			// tweede rij
 			else if (y < 2 * (height / 3)) {
 				if (x >= 0 && x < width / 3) {
-					return 3;
+					return 11;
 				} else if (x < 2 * (width / 3)) {
-					return 4;
+					return 12;
 				} else {
 					return 5;
 				}
@@ -98,15 +97,45 @@ public class QTSpeelveld extends GSpeelveld {
 			// laatste rij
 			else if (y <= height) {
 				if (x >= 0 && x < width / 3) {
-					return 6;
+					return 10;
 				} else if (x < 2 * (width / 3)) {
-					return 7;
-				} else {
 					return 8;
+				} else {
+					return 6;
 				}
 			}
 
 			return -1; // unknown
+		}
+
+		private short getCol(int localX, int localY) {
+			int width = width() - 5;
+			int x = localX + 5;
+
+			if (x >= 0 && x < width / 3) {
+				return 0;
+			} else if (x < 2 * (width / 3)) {
+				return 1;
+			} else {
+				return 2;
+			}
+		}
+
+		private short getRow(int localX, int localY) {
+			int height = height() - 5;
+			int y = localY + 5;
+
+			// eerste rij
+			if (y >= 0 && y < height / 3) {
+				return 0;
+			}
+			// tweede rij
+			else if (y < 2 * (height / 3)) {
+				return 1;
+			}
+			// laatste rij
+			else
+				return 2;
 		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
@@ -176,8 +205,10 @@ public class QTSpeelveld extends GSpeelveld {
 				QPoint offset = new QPoint();
 				pixmap.readFrom(dataStream);
 				offset.readFrom(dataStream);
-				short zone = getZone(event.pos().x(), event.pos().y());
-				voegPionToe(gridCoord, zone, pixmap);
+				short zone = getLandsdeel(event.pos().x(), event.pos().y());
+				int row = getRow(event.pos().x(), event.pos().y());
+				int col = getCol(event.pos().x(), event.pos().y());
+				voegPionToe(gridCoord, zone, row, col, pixmap);
 			}
 
 			if (tegel || pion) {
@@ -189,6 +220,20 @@ public class QTSpeelveld extends GSpeelveld {
 				}
 			} else {
 				event.ignore();
+			}
+		}
+
+		private void voegPionToe(Vector2D gridCoord, short zone, int row,
+				int col, QPixmap pixmap) {
+			Vector2D coord = new Vector2D(camera.getHuidigeVector().getX()
+					+ gridCoord.getX(), camera.getHuidigeVector().getY()
+					+ gridCoord.getY());
+
+			if (spel.plaatsPion(coord, zone)) {
+				QLabel test = new QLabel();
+				test.setPixmap(pixmap);
+				layout.addWidget(test, row, col);
+				test.show();
 			}
 		}
 
@@ -311,11 +356,6 @@ public class QTSpeelveld extends GSpeelveld {
 		// te werken.
 		tegel[2] = new String("0");
 		return isTegelGeplaatst;
-	}
-
-	private void voegPionToe(Vector2D gridCoord, short zone, QPixmap pixmap) {
-		System.out.println("Pion gedropped in vakje: " + gridCoord.getX()
-				+ ", " + gridCoord.getY() + ", en in zone: " + zone);
 	}
 
 	private void cameraUp() {
