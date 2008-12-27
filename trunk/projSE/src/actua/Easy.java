@@ -8,12 +8,11 @@ public class Easy implements Strategy {
 	}
 
 	// eerste geldige plaats wordt gebruikt
-	public int berekenPlaatsPion(Pion p, String[] t, Vector2D tegelCoord) {
-		if (p.getGeplaatst() == false)
-			for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
-				if (tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, i))
-					return i;
-			}
+	public int berekenPlaatsPion(char kleur, String[] t, Vector2D tegelCoord) {
+		for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
+			if (tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, i))
+				return i;
+		}
 
 		return -1;
 	}

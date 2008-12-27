@@ -82,21 +82,29 @@ public class Speler implements Serializable {
 		return p != null && p.getKleur() == this.getKleur();
 	}
 
-	public void haalVanTafel(Pion p) {
-		if (isEigenaarVan(p))
-			p.zetGeplaatst(false);
-	}
-
-	public void zetOpTafel(Pion p) {
-		if (isEigenaarVan(p))
-			p.zetGeplaatst(true);
-	}
-
-	public Pion getOngeplaatstePion() {
+	public boolean ongeplaatstePionAanwezig() {
 		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
 			if (pionnen.get(i).getGeplaatst() == false)
-				return pionnen.get(i);
-		return null;
+				return true;
+		return false;
+	}
+
+	public boolean plaatsOngeplaatstePion() {
+		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
+			if (pionnen.get(i).getGeplaatst() == false) {
+				pionnen.get(i).toggleGeplaatst();
+				return true;
+			}
+		return false;
+	}
+
+	public boolean neemGeplaatstePionTerug() {
+		for (int i = 0; i < DEFAULT_AANTALPIONNEN; ++i)
+			if (pionnen.get(i).getGeplaatst() == true) {
+				pionnen.get(i).toggleGeplaatst();
+				return true;
+			}
+		return false;
 	}
 
 	public short getAantalOngeplaatstePion() {

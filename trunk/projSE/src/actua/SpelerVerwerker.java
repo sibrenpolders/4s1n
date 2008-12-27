@@ -74,14 +74,34 @@ public class SpelerVerwerker implements Serializable {
 		return 0;
 	}
 
-	public Pion neemPionVan(char speler) {
+	public boolean neemPionVan(char speler) {
 		Speler s = geefSpeler(speler);
 
 		if (s != null) {
-			return s.getOngeplaatstePion();
+			return s.ongeplaatstePionAanwezig();
 		}
 
-		return null;
+		return false;
+	}
+
+	public boolean plaatsPionVan(char speler) {
+		Speler s = geefSpeler(speler);
+
+		if (s != null) {
+			return s.plaatsOngeplaatstePion();
+		}
+
+		return false;
+	}
+
+	public boolean neemPionTerugVan(char speler) {
+		Speler s = geefSpeler(speler);
+
+		if (s != null) {
+			return s.neemGeplaatstePionTerug();
+		}
+
+		return false;
 	}
 
 	public char geefKleurVanSpeler(int i) {

@@ -148,22 +148,21 @@ public class Tafel implements Serializable {
 	// PIONPLAATSING
 
 	/**
-	 * Zal indien mogelijk pion plaatsen op de tegel met coÃ¶rdinaten
-	 * tegelCoord. pionCoord zal bepalen op welk landsdeel de pion zal staan.
-	 * vb: Tegel.NOORD_OOST
+	 * Zal indien mogelijk pion plaatsen op de tegel met coördinaten tegelCoord.
+	 * pionCoord zal bepalen op welk deel de pion zal staan.
 	 * 
 	 * @param tegelCoord
-	 *            coÃ¶rdinaten van de tegel waar een pion op geplaatst zal
+	 *            coördinaten van de tegel waar een pion op geplaatst zal
 	 *            worden.
 	 * @param pionCoord
-	 *            coÃ¶rdinaten van het landsdeel op de tegel waar de pion zal
+	 *            coördinaten van het landsdeel op de tegel waar de pion zal
 	 *            geplaatst worden.
 	 * @param pion
 	 *            de pion die zal geplaatst worden.
 	 * @return True als de pion geplaatst is, False als hij niet geplaatst kan
 	 *         worden.
 	 */
-	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, Pion pion) {
+	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, char pion) {
 		Tegel t = bepaalTegel(tegelCoord);
 		String[] stringRepresentatie = new String[2];
 		stringRepresentatie[0] = t.getTegelPresentatie();
@@ -178,26 +177,40 @@ public class Tafel implements Serializable {
 						pionCoord) && t.plaatsPion(pionCoord, pion);
 	}
 
+	public boolean isPionGeplaatst(Vector2D tegelCoord, int pionCoord) {
+		Tegel t = bepaalTegel(tegelCoord);
+		return t.isPionGeplaatst(pionCoord);
+	}
+
+	public char geefPionKleur(Vector2D tegelCoord, int pionCoord) {
+		Tegel t = bepaalTegel(tegelCoord);
+		return t.geefPionKleur(pionCoord);
+	}
+
+	public void verwijderPion(Vector2D tegelCoord, int pionCoord) {
+		Tegel t = bepaalTegel(tegelCoord);
+		t.verwijderPion(pionCoord);
+	}
+
 	/**
 	 * Deze functie zal nagaan of een pion plaatsing kan gebeuren op tegel met
-	 * coÃ¶rdinaten tegelCoord op het landsdeel met coÃ¶rdinaten pionCoord. Deze
+	 * coördinaten tegelCoord op het landsdeel met coÃ¶rdinaten pionCoord. Deze
 	 * functie zal niet de pion echt gaan plaatsen op de tegel.
 	 * 
 	 * @param t
 	 *            De tegel waarop de pion geplaatst moet worden.
 	 * @param tegelCoord
-	 *            De coÃ¶rdinaten van de tegel waarop de pion geplaatst moet
+	 *            De coördinaten van de tegel waarop de pion geplaatst moet
 	 *            worden.
 	 * @param pionCoord
-	 *            De coÃ¶rdinaten van het lansdeel waarop de pion geplaatst moet
+	 *            De coördinaten van het landsdeel waarop de pion geplaatst moet
 	 *            worden.
 	 * @return True als de pion geplaatst kan worden, False anders.
 	 */
 	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
 			int pionCoord) {
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
-		Tegel tegel = new Tegel(t[TEGEL_PRESENTATIE], t[ID_PRESENTATIE], Short
-				.parseShort(t[ORIENTATIE]));
+		Tegel tegel = (Tegel) veld.get(tegelCoord);
 		return isPionPlaatsingGeldig(pionCoord, tegel, tegelCoord, checked);
 	}
 
