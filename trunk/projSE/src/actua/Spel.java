@@ -153,6 +153,11 @@ public class Spel extends Observable implements Serializable {
 		return false;
 	}
 	
+	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord, 
+			int pionCoord) {
+		return tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);		
+	}
+	
 	public boolean undo() {
 		if (statusBijhouder.pop_undo() == null) {
 			return false;
