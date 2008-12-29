@@ -1,0 +1,632 @@
+package actua;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import com.trolltech.qt.core.QByteArray;
+import com.trolltech.qt.core.QDataStream;
+import com.trolltech.qt.core.QIODevice;
+import com.trolltech.qt.core.QObject;
+import com.trolltech.qt.core.QPoint;
+import com.trolltech.qt.core.QSize;
+import com.trolltech.qt.gui.QBrush;
+import com.trolltech.qt.gui.QColor;
+import com.trolltech.qt.gui.QDragEnterEvent;
+import com.trolltech.qt.gui.QDragLeaveEvent;
+import com.trolltech.qt.gui.QDragMoveEvent;
+import com.trolltech.qt.gui.QDropEvent;
+import com.trolltech.qt.gui.QGraphicsScene;
+import com.trolltech.qt.gui.QGraphicsView;
+import com.trolltech.qt.gui.QGridLayout;
+import com.trolltech.qt.gui.QKeySequence;
+import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QShortcut;
+import com.trolltech.qt.gui.QWidget;
+import com.trolltech.qt.core.Qt;
+
+public class QTSpeelveld extends GSpeelveld {
+	private class QtGraphicsView extends QGraphicsView {
+		private boolean gevuld;
+		private Vector2D gridCoord;
+		private QGridLayout layout;
+
+		public QtGraphicsView(QGraphicsScene parent, Vector2D coord) {
+			super(parent);
+			layout = new QGridLayout();
+			this.setLayout(layout);
+			init();
+			setAcceptDrops(true);
+			gevuld = false;
+			this.gridCoord = coord;
+		}
+
+		private void init() {
+			setBackgroundBrush(new QBrush(new QPixmap(
+					"src/icons/background.xpm")));
+			setCacheMode(new QGraphicsView.CacheMode(
+					QGraphicsView.CacheModeFlag.CacheBackground));
+			setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.FullViewportUpdate);
+
+		}
+
+		private void removePixmap() {
+			scene().clear();
+			update();
+			gevuld = false;
+		}
+
+		// TODO Verdeling is dezelfde als in Tegel
+		// Niet ideaal voor low coupling, maar 'k weet niet hoe anders een
+		// eenduidige voorstelling te bekomen die door zowel Spel als door
+		// QTTegel/Speelveld kan gebruikt worden.
+		private short getLandsdeel(int localX, int localY) {
+			int width = width() - 5;
+			int height = height() - 5;
+			int x = localX + 5;
+			int y = localY + 5;
+
+			// eerste rij
+			if (y >= 0 && y < height / 3) {
+				if (x >= 0 && x < width / 3) {
+					return 0;
+				} else if (x < 2 * (width / 3)) {
+					return 2;
+				} else {
+					return 4;
+				}
+			}
+			// tweede rij
+			else if (y < 2 * (height / 3)) {
+				if (x >= 0 && x < width / 3) {
+					return 11;
+				} else if (x < 2 * (width / 3)) {
+					return 12;
+				} else {
+					return 5;
+				}
+			}
+			// laatste rij
+			else if (y <= height) {
+				if (x >= 0 && x < width / 3) {
+					return 10;
+				} else if (x < 2 * (width / 3)) {
+					return 8;
+				} else {
+					return 6;
+				}
+			}
+
+			return -1; // unknown
+		}
+
+		private short getCol(int localX, int localY) {
+			int width = width() - 5;
+			int x = localX + 5;
+
+			if (x >= 0 && x < width / 3) {
+				return 0;
+			} else if (x < 2 * (width / 3)) {
+				return 1;
+			} else {
+				return 2;
+			}
+		}
+
+		private short getRow(int localX, int localY) {
+			int height = height() - 5;
+			int y = localY + 5;
+
+			// eerste rij
+			if (y >= 0 && y < height / 3) {
+				return 0;
+			}
+			// tweede rij
+			else if (y < 2 * (height / 3)) {
+				return 1;
+			}
+			// laatste rij
+			else
+				return 2;
+		}
+
+		protected void dragEnterEvent(QDragEnterEvent event) {
+			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
+				kleurMogelijkhedenGroen();
+				if (event.source().equals(this)) {
+					event.setDropAction(Qt.DropAction.MoveAction);
+					event.accept();
+				} else {
+					event.acceptProposedAction();
+				}
+			} else if (event.mimeData().hasFormat("application/x-pionitemdata")) {
+				if (event.source().equals(this)) {
+					event.setDropAction(Qt.DropAction.MoveAction);
+					event.accept();
+				} else {
+					event.acceptProposedAction();
+				}
+			} else {
+				event.ignore();
+			}
+		}
+
+		protected void dragMoveEvent(QDragMoveEvent event) {
+			if (event.mimeData().hasFormat("application/x-dnditemdata")
+					|| event.mimeData().hasFormat("application/x-pionitemdata")) {
+				if (event.source().equals(this)) {
+					event.setDropAction(Qt.DropAction.MoveAction);
+					event.accept();
+
+				} else {
+					event.acceptProposedAction();
+				}
+			} else {
+				event.ignore();
+			}
+		}
+
+		protected void dropEvent(QDropEvent event) {
+			boolean tegel = event.mimeData().hasFormat(
+					"application/x-dnditemdata");
+			boolean pion = event.mimeData().hasFormat(
+					"application/x-pionitemdata");
+
+			if (tegel && !gevuld) {
+				QByteArray itemData = event.mimeData().data(
+						"application/x-dnditemdata");
+				QDataStream dataStream = new QDataStream(itemData,
+						QIODevice.OpenModeFlag.ReadOnly);
+
+				QPixmap pixmap = new QPixmap();
+				QPoint offset = new QPoint();
+				pixmap.readFrom(dataStream);
+				offset.readFrom(dataStream);
+
+				if (voegTegelToe(gridCoord, pixmap))
+					gevuld = true;
+
+				clearGroen();
+			} else if (pion) {
+				QByteArray itemData = event.mimeData().data(
+						"application/x-dnditemdata");
+				QDataStream dataStream = new QDataStream(itemData,
+						QIODevice.OpenModeFlag.ReadOnly);
+
+				QPixmap pixmap = new QPixmap();
+				QPoint offset = new QPoint();
+				pixmap.readFrom(dataStream);
+				offset.readFrom(dataStream);
+				short zone = getLandsdeel(event.pos().x(), event.pos().y());
+				int row = getRow(event.pos().x(), event.pos().y());
+				int col = getCol(event.pos().x(), event.pos().y());
+				voegPionToe(gridCoord, zone, row, col, pixmap);
+			}
+
+			if (tegel || pion) {
+				if (event.source().equals(this)) {
+					event.setDropAction(Qt.DropAction.MoveAction);
+					event.accept();
+				} else {
+					event.acceptProposedAction();
+				}
+			} else {
+				event.ignore();
+			}
+		}
+
+		private void voegPionToe(Vector2D gridCoord, short zone, int row,
+				int col, QPixmap pixmap) {
+			Vector2D coord = new Vector2D(camera.getHuidigeVector().getX()
+					+ gridCoord.getX(), camera.getHuidigeVector().getY()
+					+ gridCoord.getY());
+
+			if (spel.plaatsPion(coord, zone)) {
+				QLabel test = new QLabel();
+				test.setPixmap(pixmap);
+				layout.addWidget(test, row, col);
+				test.show();
+			}
+		}
+
+		protected void dragLeaveEvent(QDragLeaveEvent event) {
+			clearGroen();
+		}
+
+		public boolean isGevuld() {
+			return gevuld;
+		}
+
+		public void setGevuld(boolean gevuld) {
+			this.gevuld = gevuld;
+		}
+	};
+
+	private class VeldWidget extends QWidget {
+		private QGridLayout gridLayout;
+
+		public VeldWidget() {
+			gridLayout = new QGridLayout();
+		}
+
+		public void init() {
+			layout().dispose();
+			List<QObject> list = children();
+			for (int i = list.size() - 1; i >= 0; --i) {
+				QObject item = list.get(i);
+				item.dispose();
+			}
+			gridLayout = new QGridLayout(this);
+			setUpdatesEnabled(true);
+			gridLayout.setSpacing(0);
+
+			// elke tegel is 90x90... zodus
+			setGeometry(0, 0, 810, 630);
+			setMaximumSize(new QSize(810, 630));
+			setMinimumSize(new QSize(810, 630));
+
+			int rasterrow = upperLeftRow;
+			for (int i = 0; i < rows; i++) {
+				int rastercol = upperLeftCol;
+				for (int j = 0; j < columns; j++) {
+					QTTegel tegel = new QTTegel(rasterrow, rastercol);
+					mainWidget.insertTegel(tegel, i, j);
+					rastercol++;
+				}
+				rasterrow++;
+			}
+		}
+
+		public void insertTegel(QTTegel tegel, int row, int col) {
+			if (gridLayout.itemAtPosition(row, col) != null) {
+				QWidget temp = (QWidget) gridLayout.itemAtPosition(row, col);
+				gridLayout.removeWidget(temp);
+			}
+
+			gridLayout.addWidget(tegel.getGraphicsView(), row, col);
+		}
+	}
+
+	private ArrayList<QTTegel> gelegdeTegels;
+	private VeldWidget mainWidget;
+	private static int DEFAULT_ROWS = 7;
+	private static int DEFAULT_COLS = 9;
+	private static int DEFAULT_ULROW = -3;
+	private static int DEFAULT_ULCOL = -4;
+	private int rows = DEFAULT_ROWS;
+	private int columns = DEFAULT_COLS;
+	private int upperLeftRow = DEFAULT_ULROW;
+	private int upperLeftCol = DEFAULT_ULCOL;
+
+	public QTSpeelveld(Spel spel, OptieVerwerker opties) {
+		super(spel);
+		mainWidget = new VeldWidget();
+		clearSpeelveld();
+	}
+
+	public QWidget getGridWidget() {
+		return mainWidget;
+	}
+
+	// Clear héél het speelveld -> vul het met default tegels.
+	protected void clearSpeelveld() {
+		upperLeftRow = DEFAULT_ULROW;
+		upperLeftCol = DEFAULT_ULCOL;
+		gelegdeTegels = new ArrayList<QTTegel>();
+		mainWidget.init();
+
+		// camera dizzle
+		camera.setMinVector(new Vector3D(-spel.getStapelSize(), -spel
+				.getStapelSize(), 0));
+		camera.setMaxVector(new Vector3D(spel.getStapelSize(), spel
+				.getStapelSize(), 6));
+		camera.setHuidigeVector(new Vector3D(-3, -4, 3));
+
+		QPushButton buttonUp = new QPushButton("^", mainWidget);
+		buttonUp.setGeometry(mainWidget.width() / 2 - 18, 0, 35, 25);
+		buttonUp.clicked.connect(this, "cameraUp()");
+		QPushButton buttonDown = new QPushButton("v", mainWidget);
+		buttonDown.setGeometry(mainWidget.width() / 2 - 18,
+				mainWidget.height() - 26, 35, 25);
+		buttonDown.clicked.connect(this, "cameraDown()");
+		QPushButton buttonLeft = new QPushButton("<", mainWidget);
+		buttonLeft.setGeometry(0, mainWidget.height() / 2 - 13, 25, 35);
+		buttonLeft.clicked.connect(this, "cameraLeft()");
+		QPushButton buttonRight = new QPushButton(">", mainWidget);
+		buttonRight.setGeometry(mainWidget.width() - 26,
+				mainWidget.height() / 2 - 13, 25, 35);
+		buttonRight.clicked.connect(this, "cameraRight()");
+
+		QShortcut shortcut = new QShortcut(new QKeySequence("Up"), mainWidget);
+		shortcut.activated.connect(this, "cameraUp()");
+		shortcut = new QShortcut(new QKeySequence("Down"), mainWidget);
+		shortcut.activated.connect(this, "cameraDown()");
+		shortcut = new QShortcut(new QKeySequence("Left"), mainWidget);
+		shortcut.activated.connect(this, "cameraLeft()");
+		shortcut = new QShortcut(new QKeySequence("Right"), mainWidget);
+		shortcut.activated.connect(this, "cameraRight()");
+	}
+
+	protected void initialiseerSpeelveld() {
+		gelegdeTegels = new ArrayList<QTTegel>();
+		QTTegel startTegel = new QTTegel(spel.geefStartTegel(), spel,
+				(rows - 1) / 2, (columns - 1) / 2);
+		mainWidget.insertTegel(startTegel, (rows - 1) / 2, (columns - 1) / 2);
+		gelegdeTegels.add(startTegel);
+	}
+
+	private void cameraUp() {
+		upperLeftRow--;
+		Vector3D nieuwePositie = new Vector3D(
+				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
+						.getY(), camera.getHuidigeVector().getZ());
+
+		if (camera.veranderStandpunt(nieuwePositie))
+			veranderZicht();
+	}
+
+	private void cameraDown() {
+		upperLeftRow++;
+		Vector3D nieuwePositie = new Vector3D(
+				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
+						.getY(), camera.getHuidigeVector().getZ());
+
+		if (camera.veranderStandpunt(nieuwePositie))
+			veranderZicht();
+	}
+
+	private void cameraLeft() {
+		upperLeftCol--;
+		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
+				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
+						.getZ());
+
+		if (camera.veranderStandpunt(nieuwePositie))
+			veranderZicht();
+	}
+
+	private void cameraRight() {
+		upperLeftCol++;
+		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
+				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
+						.getZ());
+
+		if (camera.veranderStandpunt(nieuwePositie))
+			veranderZicht();
+	}
+
+	private QTTegel getTegel(int row, int col) {
+		for (int i = 0; i < gelegdeTegels.size(); ++i) {
+			QTTegel result = (QTTegel) ((gelegdeTegels.get(i)));
+			if (result.getCol() == col && result.getRow() == row)
+				return result;
+		}
+		return null;
+	}
+
+	private void veranderZicht() {
+		for (int i = upperLeftCol; i < upperLeftCol + columns; ++i)
+			for (int j = upperLeftRow; j < upperLeftRow + rows; ++j) {
+				QTTegel tegel = getTegel(j, i);
+				if (tegel != null)
+					mainWidget.insertTegel(tegel, j - upperLeftRow, i
+							- upperLeftCol);
+				else
+					mainWidget.insertTegel(new QTTegel(j, i), j - upperLeftRow,
+							i - upperLeftCol);
+			}
+
+		this.mainWidget.show();
+	}
+
+	private boolean voegTegelToe(Vector2D gridCoord, QTTegel t) {
+		String[] tegel = spel.vraagNieuweTegel();// == t.tegel
+		Vector2D coord = new Vector2D(upperLeftCol + gridCoord.getX(),
+				upperLeftRow + gridCoord.getY());
+		boolean isTegelGeplaatst = false;
+
+		if (spel.isTegelPlaatsingGeldig(t.tegel, coord)) {
+			tegel = spel.neemTegelVanStapel();
+			spel.plaatsTegel(tegel, coord);
+			t.setCoords(coord.getY(), coord.getX());
+			mainWidget.insertTegel(t, gridCoord.getY(), gridCoord.getX());
+			gelegdeTegels.add(t);
+			isTegelGeplaatst = true;
+		}
+
+		// altijd resetten naar 0 hier
+		// we werken met referenties
+		tegel[2] = new String("0");
+		return isTegelGeplaatst;
+	}
+
+	public boolean voegTegelToe(Vector2D gridCoord, QPixmap pixmap) {
+		String[] tegel = spel.vraagNieuweTegel();
+		Vector2D coord = new Vector2D(camera.getHuidigeVector().getX()
+				+ gridCoord.getX(), camera.getHuidigeVector().getY()
+				+ gridCoord.getY());
+		boolean isTegelGeplaatst = false;
+
+		if (spel.isTegelPlaatsingGeldig(tegel, coord)) {
+			tegel = spel.neemTegelVanStapel();
+			spel.plaatsTegel(tegel, coord);
+			QTTegel qTegel = new QTTegel(tegel, spel, pixmap);
+			voegTegelToeAanGrafischeLijst(tegel, coord, pixmap);
+			gridLayout.addWidget(qTegel.getGraphicsView(), gridCoord.getX(),
+					gridCoord.getY(), 1, 1);
+			isTegelGeplaatst = true;
+		}
+
+		// altijd resetten naar 0 hier, vermits we met referenties zitten
+		// te werken.
+		tegel[2] = new String("0");
+		return isTegelGeplaatst;
+	}
+
+	// nog een paar foutjes
+	private void veranderZicht2() {
+		Vector2D startTegelPos = spel.getStartTegelPos();
+		if (startTegelPos != null) {
+			int offsetX = startTegelPos.getX();
+			int offsetY = startTegelPos.getY();
+			int startX, startY, i = 0, j = 0, y;
+			int sizeX = gTegels.size();
+			int sizeY;
+
+			startX = offsetX + camera.getHuidigeVector().getX();
+			startY = offsetY + camera.getHuidigeVector().getY();
+
+			for (; i < rows && startX < 0; startX++, i++)
+				for (y = 0; y < columns; y++) {
+					((QtGraphicsView) gridLayout.itemAtPosition(i, y).widget())
+							.removePixmap();
+				}
+
+			for (; i < rows; i++, startX++) {
+				for (y = startY; j < columns && y < 0; y++) {
+					((QtGraphicsView) gridLayout.itemAtPosition(i, j).widget())
+							.removePixmap();
+					j++;
+				}
+
+				if (startX < sizeX)
+					sizeY = gTegels.get(startX).size();
+				else
+					sizeY = 0;
+				for (; j < columns; j++, y++) {
+					if (startX < sizeX && y < sizeY
+							&& gTegels.get(startX).get(y) != null) {
+						// ((QtGraphicsView) gridLayout.itemAtPosition(i, j)
+						// .widget()).setPixmap(((QTTegel) gTegels.get(
+						// startX).get(y)).getPixmap());
+					} else {
+						((QtGraphicsView) gridLayout.itemAtPosition(i, j)
+								.widget()).removePixmap();
+					}
+				}
+				j = 0;
+			}
+		}
+	}
+
+	// werkt
+	private void kleurMogelijkhedenGroen() {
+		String[] tegel = spel.vraagNieuweTegel();
+		Vector2D coord = new Vector2D();
+		Vector2D startTegelPos = spel.getStartTegelPos();
+
+		if (startTegelPos != null) {
+			int offsetX = startTegelPos.getX();
+			int offsetY = startTegelPos.getY();
+			int startX, startY, i = 0, j = 0, y;
+			int sizeX = gTegels.size();
+			int sizeY = getBiggestSize();
+
+			startX = offsetX + camera.getHuidigeVector().getX();
+			startY = offsetY + camera.getHuidigeVector().getY();
+
+			for (; i < rows && startX < -1; startX++, i++)
+				;
+
+			for (; i < rows && startX <= sizeX; i++, startX++) {
+				for (y = startY; j < columns && y < -1; y++, j++)
+					;
+
+				for (; j < columns && y <= sizeY; j++, y++) {
+					coord.setXY(camera.getHuidigeVector().getX() + i, camera
+							.getHuidigeVector().getY()
+							+ j);
+					if (y <= sizeY) {
+						if (!((QtGraphicsView) gridLayout.itemAtPosition(i, j)
+								.widget()).isGevuld()
+								&& spel.isTegelPlaatsingGeldig(tegel, coord)) {
+							((QtGraphicsView) gridLayout.itemAtPosition(i, j)
+									.widget()).setForegroundBrush(new QBrush(
+									new QColor(0, 255, 0, 127)));
+						}
+					}
+				}
+				j = 0;
+			}
+		}
+	}
+
+	private void clearGroen() {
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < columns; j++)
+				((QtGraphicsView) gridLayout.itemAtPosition(i, j).widget())
+						.setForegroundBrush(null);
+	}
+
+	public boolean voegTegelToeAanGrafischeLijst(String[] tegel,
+			Vector2D coord, QPixmap pixmap) {
+		// startTegel wordt gezet
+		// coord maken niet uit startTegel staat op (0, 0)
+		if (gTegels == null || gTegels.size() == 0) {
+			gTegels = new ArrayList<ArrayList<GTegel>>();
+			gTegels.add(new ArrayList<GTegel>());
+			// TODO !!!!!!!!!!
+			gTegels.get(0).add(new QTTegel(tegel, spel));
+			startGTegel = new Vector2D(0, 0);
+			return true;
+		}
+
+		int rij = startGTegel.getX() + coord.getX();
+		int kolom = startGTegel.getY() + coord.getY();
+		// mag de tegel hier gezet worden? M.a.w. zijn zijn buren geldig?
+		// TODO
+
+		ArrayList<GTegel> kolomVector;
+
+		// boven of onder de starttegel
+		if (rij == -1) {
+			rij = 0;
+			kolomVector = addRij(rij);
+			startGTegel.setX(startGTegel.getX() + 1);
+		} else if (rij == gTegels.size()) {
+			kolomVector = addRij(rij);
+		} else { // toevoegen in een bestaande rij
+			kolomVector = gTegels.get(rij);
+		}
+
+		// links of rechts van de starttegel
+		if (kolom == -1) {
+			adjustAll(rij, kolom);
+			startGTegel.setY(startGTegel.getY() + 1);
+			kolom = (kolom < 0) ? 0 : kolom;
+		} else if (kolom > gTegels.get(rij).size()) {
+			addSpacers(rij, kolom);
+		}
+
+		if (kolom < kolomVector.size() && kolomVector.get(kolom) == null) {
+			kolomVector.remove(kolom);
+		}
+
+		kolomVector.add(kolom, new QTTegel(tegel, spel, pixmap));
+		// // TODO functie update landsdelen schrijven
+		// updateLandsdelen(rij, kolom);
+
+		return true;
+	}
+
+	protected void updateSpeelveld() {
+		veranderZicht();
+	}
+
+	@Override
+	protected void voegTegelToe(String[] tegel, Vector2D coord) {
+		;
+	}
+
+	public void update(Observable arg0, Object arg1) {
+		if (!arg1.equals(true)) {
+			return;
+		}
+
+		clearSpeelveld();
+		initialiseerSpeelveld();
+
+		this.mainWidget.show();
+	}
+}
