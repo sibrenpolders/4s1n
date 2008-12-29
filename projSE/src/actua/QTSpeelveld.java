@@ -3,10 +3,6 @@ package actua;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-
-import com.trolltech.qt.core.QByteArray;
-import com.trolltech.qt.core.QDataStream;
-import com.trolltech.qt.core.QIODevice;
 import com.trolltech.qt.core.QObject;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt;
@@ -19,6 +15,7 @@ import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QKeySequence;
+import com.trolltech.qt.gui.QLayoutItemInterface;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QShortcut;
 import com.trolltech.qt.gui.QWidget;
@@ -61,7 +58,7 @@ public class QTSpeelveld extends GSpeelveld {
 			for (int i = 0; i < rows; i++) {
 				int rastercol = upperLeftCol;
 				for (int j = 0; j < columns; j++) {
-					QTTegel tegel = new QTTegel(rasterrow, rastercol);
+					QTTegel tegel = new QTTegel(spel, rasterrow, rastercol);
 					mainWidget.insertTegel(tegel, i, j);
 					rastercol++;
 				}
@@ -69,27 +66,37 @@ public class QTSpeelveld extends GSpeelveld {
 			}
 		}
 
-		public void insertTegel(QTTegel tegel, int row, int col) {
-			if (gridLayout.itemAtPosition(row, col) != null) {
-				QWidget temp = (QWidget) gridLayout.itemAtPosition(row, col);
-				gridLayout.removeWidget(temp);
+		public void insertTegel(QTTegel tegel, int gridRow, int gridCol) {
+			if (parent.getTegel(upperLeftRow + gridRow, upperLeftCol + gridCol) != null) {
+				QTTegel tegelPrev = parent.getTegel(upperLeftRow + gridRow,
+						upperLeftCol + gridCol);
+				gridLayout.removeWidget(tegelPrev.getPrevGraphicsView());
 			}
 
-			gridLayout.addWidget(tegel.getGraphicsView(), row, col);
+			// tegel.getGraphicsView() maakt altijd een nieuwe instantie aan
+			gridLayout.addWidget(tegel.getGraphicsView(this), gridRow, gridCol);
+
 		}
 
-		public void setGroen(int row, int col) {
-			QGraphicsView view = (QGraphicsView) gridLayout.itemAtPosition(row,
-					col);
-			view.setForegroundBrush(new QBrush(new QColor(0, 255, 0, 127)));
+		public void setGroen(int gridRow, int gridCol) {
+			QTTegel tegel = parent.getTegel(upperLeftRow + gridRow,
+					upperLeftCol + gridCol);
+			if (tegel != null) {
+				QGraphicsView view = tegel.getPrevGraphicsView();
+				view.setForegroundBrush(new QBrush(new QColor(0, 255, 0, 127)));
+			}
 		}
 
 		public void clearGroen() {
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < columns; j++) {
-					QGraphicsView view = (QGraphicsView) gridLayout
-							.itemAtPosition(i, j);
-					view.setForegroundBrush(null);
+
+					QTTegel tegel = parent.getTegel(upperLeftRow + i,
+							upperLeftCol + j);
+					if (tegel != null) {
+						QGraphicsView view = tegel.getPrevGraphicsView();
+						view.setForegroundBrush(null);
+					}
 				}
 			}
 		}
@@ -285,8 +292,8 @@ public class QTSpeelveld extends GSpeelveld {
 					mainWidget.insertTegel(tegel, j - upperLeftRow, i
 							- upperLeftCol);
 				else
-					mainWidget.insertTegel(new QTTegel(j, i), j - upperLeftRow,
-							i - upperLeftCol);
+					mainWidget.insertTegel(new QTTegel(spel, j, i), j
+							- upperLeftRow, i - upperLeftCol);
 			}
 
 		this.mainWidget.show();
@@ -301,8 +308,8 @@ public class QTSpeelveld extends GSpeelveld {
 		if (spel.isTegelPlaatsingGeldig(tegel, coord)) {
 			tegel = spel.neemTegelVanStapel();
 			spel.plaatsTegel(tegel, coord);
-			QTTegel qTegel = new QTTegel(tegel, spel);
-			qTegel.setCoords(coord.getY(), coord.getX());
+			QTTegel qTegel = new QTTegel(tegel, spel, coord.getY(), coord
+					.getX());
 			mainWidget.insertTegel(qTegel, gridCoord.getY(), gridCoord.getX());
 			gelegdeTegels.add(qTegel);
 			isTegelGeplaatst = true;
