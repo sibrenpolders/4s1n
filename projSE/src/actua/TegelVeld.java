@@ -100,6 +100,7 @@ public class TegelVeld implements Serializable {
 	}
 
 	public Object get(Vector2D coord) {
+		System.out.println("(" + coord.getX() + ", " + coord.getY() + " )");
 		return tegelAt(coord);
 	}
 

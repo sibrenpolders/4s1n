@@ -1,5 +1,8 @@
 package actua;
 
+import com.trolltech.qt.core.QByteArray;
+import com.trolltech.qt.core.QDataStream;
+import com.trolltech.qt.core.QIODevice;
 import com.trolltech.qt.core.QRectF;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.core.Qt.TransformationMode;
@@ -8,34 +11,47 @@ import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragLeaveEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QDropEvent;
+import com.trolltech.qt.gui.QFrame;
+import com.trolltech.qt.gui.QGraphicsScene;
 import com.trolltech.qt.gui.QGraphicsView;
+import com.trolltech.qt.gui.QGridLayout;
+import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMatrix;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPixmap;
+import com.trolltech.qt.gui.QSpacerItem;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTTegel extends GTegel {
 
 	private class tegelView extends QGraphicsView {
-		private QTTegel parent;
+		private QGridLayout gridLayout;
 
-		public tegelView(QTTegel parent, QWidget p) {
-			super(p);
-			this.parent = parent;
+		public tegelView() {
 			init();
-			setBackgroundBrush(new QBrush(pixmap));
 			setAcceptDrops(true);
 		}
 
-		public QTTegel getParent() {
-			return parent;
-		}
-
 		private void init() {
+			QGraphicsScene scene = new QGraphicsScene();
+			setScene(scene);
 			setMaximumSize(90, 90);
 			setMinimumSize(90, 90);
+			gridLayout = new QGridLayout();
+			gridLayout.setSpacing(0);
+			setLayout(gridLayout);
+			createEmpty();
 		}
 
+		private void createEmpty() {
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					gridLayout.addItem(new QSpacerItem(30, 30),
+							i, j, 1, 1);
+				}
+			}
+		}
+		
 		protected void dragEnterEvent(QDragEnterEvent event) {
 			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
 				if (event.source().equals(this)) {
@@ -72,15 +88,22 @@ public class QTTegel extends GTegel {
 		}
 
 		protected void dropEvent(QDropEvent event) {
-			if (event.mimeData().hasFormat("application/x-dnditemdata"))
-				; // doe niks... QTSpeelveld handelt dit al af
-			else if (event.mimeData().hasFormat("application/x-pionitemdata")) {
-				short zone = getLandsdeel(event.pos().x(), event.pos().y());
-				int row = getRow(event.pos().x(), event.pos().y());
-				int col = getCol(event.pos().x(), event.pos().y());
-				parent.voegPionToe(zone, row, col);
-				System.out.println("Pion dropped at row: " + row + ", col: "
-						+ col);
+			if (event.mimeData().hasFormat("application/x-pionitemdata")) {
+				int row = event.pos().y()/30;
+				int col = event.pos().x()/30;
+				short zone = getZone(row, col);
+				
+				QByteArray itemData = event.mimeData().data("application/x-pionitemdata");
+	            QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.ReadOnly);
+				QPixmap pixmap = new QPixmap();
+				pixmap.readFrom(dataStream);
+				
+				System.out.println("Z: " + zone);
+				if (spel.plaatsPion(tegelCoord, zone)) {
+					QLabel label = new QLabel();
+					label.setPixmap(new QPixmap(pixmap));
+					gridLayout.addWidget(label, col, row, 1, 1);
+				}
 			}
 		}
 
@@ -88,52 +111,24 @@ public class QTTegel extends GTegel {
 			; // doe niks
 		}
 
-		protected void drawBackground(QPainter painter, QRectF rect) {
-			painter.drawPixmap(-45, -45, 90, 90, pixmap);
-		}
-
 		// TODO Verdeling is dezelfde als in Tegel
 		// Niet ideaal voor low coupling, maar 'k weet niet hoe anders een
 		// eenduidige voorstelling te bekomen die door zowel Spel als door
 		// QTTegel/Speelveld kan gebruikt worden.
-		private short getLandsdeel(int localX, int localY) {
-			int width = width() - 5;
-			int height = height() - 5;
-			int x = localX + 5;
-			int y = localY + 5;
-
-			// eerste rij
-			if (y >= 0 && y < height / 3) {
-				if (x >= 0 && x < width / 3) {
-					return 0;
-				} else if (x < 2 * (width / 3)) {
-					return 2;
-				} else {
-					return 4;
-				}
+		private short getZone(int row, int col) {
+			if (row == 0 && col == 1) {
+				return (short) 2;
+			} else if (row == 1 && col == 0) {
+				return (short) 11;
+			} else if (row == 1 && col == 1) {
+				return (short) 12;
+			} else if (row == 1 && col == 2) {
+				return (short) 5;
+			} else if (row == 2 && col == 1) {
+				return (short) 8;
+			} else {
+				return (short) -1;
 			}
-			// tweede rij
-			else if (y < 2 * (height / 3)) {
-				if (x >= 0 && x < width / 3) {
-					return 11;
-				} else if (x < 2 * (width / 3)) {
-					return 12;
-				} else {
-					return 5;
-				}
-			}
-			// laatste rij
-			else if (y <= height) {
-				if (x >= 0 && x < width / 3) {
-					return 10;
-				} else if (x < 2 * (width / 3)) {
-					return 8;
-				} else {
-					return 6;
-				}
-			}
-
-			return -1; // unknown
 		}
 
 		private short getCol(int localX, int localY) {
@@ -165,6 +160,16 @@ public class QTTegel extends GTegel {
 			else
 				return 2;
 		}
+
+		protected void drawBackground(QPainter painter,
+                QRectF rect) {
+			painter.drawPixmap(-width()/2+1, -height()/2+1, width(), height(), 
+					pixmap);
+		}
+		
+		public void setPixmap(QPixmap pixmap) {
+//			setBackgroundBrush(new QBrush(pixmap));
+		}
 	}
 
 	private static final int TEGEL_PRESENTATIE = 0;
@@ -176,19 +181,19 @@ public class QTTegel extends GTegel {
 	public tegelView view;
 
 	// default constructor die een background image bevat
-	public QTTegel(Spel spel, int row, int col) {
+	public QTTegel(Spel spel, Vector2D tegelCoord) {
 		super(spel);
 		isBackground = true;
-		tegelCoord = new Vector2D(col, row);
+		this.tegelCoord = new Vector2D(tegelCoord);
 		pion = new char[3][3];
 		pixmap = new QPixmap(90, 90);
 		pixmap.load("src/icons/background.xpm");
 	}
 
-	public QTTegel(String[] tegel, Spel spel, int row, int col) {
+	public QTTegel(String[] tegel, Spel spel, Vector2D tegelCoord) {
 		super(tegel, spel);
 		isBackground = false;
-		tegelCoord = new Vector2D(col, row);
+		this.tegelCoord = new Vector2D(tegelCoord);
 		pion = new char[3][3];
 		pixmap = new QPixmap(90, 90);
 		kiesAfbeelding();
@@ -223,11 +228,19 @@ public class QTTegel extends GTegel {
 	}
 
 	public int getRow() {
-		return this.tegelCoord.getY();
+		if (tegelCoord != null) {
+			return this.tegelCoord.getY();
+		}
+		
+		return -1;
 	}
 
 	public int getCol() {
-		return this.tegelCoord.getX();
+		if (tegelCoord != null) {
+			return this.tegelCoord.getX();
+		}
+		
+		return -1;
 	}
 
 	public void setCoords(int row, int col) {
@@ -244,7 +257,7 @@ public class QTTegel extends GTegel {
 	}
 
 	private void voegPionToe(short zone, int row, int col) {
-		if (!isBackground && spel.plaatsPion(this.tegelCoord, zone)) {
+		if (!isBackground && spel.plaatsPion(tegelCoord, zone)) {
 			char kleur = spel.geefHuidigeSpeler();
 			verwijderPionInSectie(row, col);
 			plaatsPionInSectie(row, col, kleur);
@@ -273,11 +286,9 @@ public class QTTegel extends GTegel {
 				TransformationMode.FastTransformation));
 	}
 
-	public QGraphicsView getGraphicsView(QWidget parent) {
-		if (view != null)
-			view.dispose();
-
-		view = new tegelView(this, parent);
+	public QGraphicsView getGraphicsView() {
+		view = new tegelView();		
+		view.setPixmap(pixmap);
 		return view;
 	}
 
