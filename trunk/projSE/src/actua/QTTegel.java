@@ -28,7 +28,7 @@ public class QTTegel extends GTegel {
 	private QTPion pion[];
 	private Vector2D tegelCoord;
 	private QGraphicsView qGraphicsView;
-	
+
 	private class QtGraphicsView extends QGraphicsView {
 		public QtGraphicsView(QGraphicsScene parent) {
 			super(parent);
@@ -38,7 +38,7 @@ public class QTTegel extends GTegel {
 
 		private void init() {
 			setMaximumSize(90, 90);
-			setMinimumSize(90, 90);			
+			setMinimumSize(90, 90);
 		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
@@ -82,23 +82,40 @@ public class QTTegel extends GTegel {
 
 		protected void dragLeaveEvent(QDragLeaveEvent event) {
 		}
-		
-		protected void drawBackground(QPainter painter,
-                QRectF rect) {
+
+		protected void drawBackground(QPainter painter, QRectF rect) {
 			QPixmap pixmap = backgroundBrush().texture();
 			painter.drawPixmap(-45, -45, 90, 90, pixmap);
 		}
-		
+
 		public void setPixmap(QPixmap pixmap) {
 			setBackgroundBrush(new QBrush(pixmap));
 			backgroundBrush().transform().reset();
 		}
 	}
-	
+
 	public QTTegel() {
 		super();
 		pixmap = new QPixmap(90, 90);
 		pion = new QTPion[9];
+	}
+
+	public QTTegel(int row, int col) {
+		super();
+		tegelCoord = new Vector2D(col, row);
+		pixmap = new QPixmap(90, 90);
+		pion = new QTPion[9];
+	}
+
+	public QTTegel(String[] tegel, Spel spel, int row, int col) {
+		super(tegel, spel);
+		tegelCoord = new Vector2D(col, row);
+		pixmap = new QPixmap(90, 90);
+		pion = new QTPion[9];
+		kiesAfbeelding();
+		QtGraphicsView g = new QtGraphicsView(new QGraphicsScene());
+		g.setPixmap(pixmap);
+		qGraphicsView = g;
 	}
 
 	public QTTegel(String[] tegel, Spel spel) {
@@ -150,6 +167,18 @@ public class QTTegel extends GTegel {
 
 	public void wijzigGroottePixmap(int pixels) {
 		pixmap = pixmap.scaled(pixels, pixels);
+	}
+
+	public int getRow() {
+		return this.tegelCoord.getY();
+	}
+
+	public int getCol() {
+		return this.tegelCoord.getX();
+	}
+
+	public void setCoords(int row, int col) {
+		this.tegelCoord = new Vector2D(col, row);
 	}
 
 	/**
