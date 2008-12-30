@@ -24,7 +24,7 @@ import com.trolltech.qt.gui.QWidget;
 
 public class QTTegel extends GTegel {
 
-	private class tegelView extends QGraphicsView {
+	private class tegelView extends QLabel {
 		private QGridLayout gridLayout;
 
 		public tegelView() {
@@ -33,8 +33,8 @@ public class QTTegel extends GTegel {
 		}
 
 		private void init() {
-			QGraphicsScene scene = new QGraphicsScene();
-			setScene(scene);
+//			QGraphicsScene scene = new QGraphicsScene();
+//			setScene(scene);
 			setMaximumSize(90, 90);
 			setMinimumSize(90, 90);
 			gridLayout = new QGridLayout();
@@ -131,35 +131,35 @@ public class QTTegel extends GTegel {
 			}
 		}
 
-		private short getCol(int localX, int localY) {
-			int width = width() - 5;
-			int x = localX + 5;
-
-			if (x >= 0 && x < width / 3) {
-				return 0;
-			} else if (x < 2 * (width / 3)) {
-				return 1;
-			} else {
-				return 2;
-			}
-		}
-
-		private short getRow(int localX, int localY) {
-			int height = height() - 5;
-			int y = localY + 5;
-
-			// eerste rij
-			if (y >= 0 && y < height / 3) {
-				return 0;
-			}
-			// tweede rij
-			else if (y < 2 * (height / 3)) {
-				return 1;
-			}
-			// laatste rij
-			else
-				return 2;
-		}
+//		private short getCol(int localX, int localY) {
+//			int width = width() - 5;
+//			int x = localX + 5;
+//
+//			if (x >= 0 && x < width / 3) {
+//				return 0;
+//			} else if (x < 2 * (width / 3)) {
+//				return 1;
+//			} else {
+//				return 2;
+//			}
+//		}
+//
+//		private short getRow(int localX, int localY) {
+//			int height = height() - 5;
+//			int y = localY + 5;
+//
+//			// eerste rij
+//			if (y >= 0 && y < height / 3) {
+//				return 0;
+//			}
+//			// tweede rij
+//			else if (y < 2 * (height / 3)) {
+//				return 1;
+//			}
+//			// laatste rij
+//			else
+//				return 2;
+//		}
 
 		protected void drawBackground(QPainter painter,
                 QRectF rect) {
@@ -167,9 +167,9 @@ public class QTTegel extends GTegel {
 					pixmap);
 		}
 		
-		public void setPixmap(QPixmap pixmap) {
-//			setBackgroundBrush(new QBrush(pixmap));
-		}
+//		public void setPixmap(QPixmap pixmap) {
+////			setBackgroundBrush(new QBrush(pixmap));
+//		}
 	}
 
 	private static final int TEGEL_PRESENTATIE = 0;
@@ -286,13 +286,13 @@ public class QTTegel extends GTegel {
 				TransformationMode.FastTransformation));
 	}
 
-	public QGraphicsView getGraphicsView() {
+	public QLabel getGraphicsView() {
 		view = new tegelView();		
 		view.setPixmap(pixmap);
 		return view;
 	}
 
-	public QGraphicsView getPrevGraphicsView() {
+	public QLabel getPrevGraphicsView() {
 		return view;
 	}
 }
