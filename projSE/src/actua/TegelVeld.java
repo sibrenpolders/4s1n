@@ -11,20 +11,20 @@ public class TegelVeld implements Serializable {
 	private static final int ZUID = 2;
 	private static final int WEST = 3;
 	private static final long serialVersionUID = 6148474637558416899L;
-	private Object laatstGeplaatsteTegel;
-	private ArrayList<ArrayList<Object>> veld;
+	private Tegel laatstGeplaatsteTegel;
+	private ArrayList<ArrayList<Tegel>> veld;
 	private static final int TEGEL_PRESENTATIE = 0;
 	private static final int ID_PRESENTATIE = 1;
 	private static final int ORIENTATIE = 2;
 	private Vector2D startTegel;
 
 	public TegelVeld() {
-		veld = new ArrayList<ArrayList<Object>>();
+		veld = new ArrayList<ArrayList<Tegel>>();
 	}
 
 	// GETTERS en SETTERS
 
-	private void setLaatstGeplaatsteTegel(Object laatstGeplaatsteTegel) {
+	private void setLaatstGeplaatsteTegel(Tegel laatstGeplaatsteTegel) {
 		this.laatstGeplaatsteTegel = laatstGeplaatsteTegel;
 	}
 
@@ -34,7 +34,7 @@ public class TegelVeld implements Serializable {
 	 * @return laatstGeplaatste tegel
 	 */
 	public Tegel getLaatstGeplaatsteTegel() {
-		return (Tegel) laatstGeplaatsteTegel;
+		return laatstGeplaatsteTegel;
 	}
 
 	/**
@@ -56,9 +56,9 @@ public class TegelVeld implements Serializable {
 		return startTegel;
 	}
 
-	public void setStartTegel(Object tegel) {
-		veld.add(new ArrayList<Object>());
-		Object startT = tegel;
+	public void setStartTegel(Tegel tegel) {
+		veld.add(new ArrayList<Tegel>());
+		Tegel startT = tegel;
 		veld.get(0).add(startT);
 		setLaatstGeplaatsteTegel(startT);
 		this.startTegel = new Vector2D(0, 0);
@@ -84,7 +84,7 @@ public class TegelVeld implements Serializable {
 		return hoogte;
 	}
 
-	private int getNegativeSize(ArrayList<Object> kolomVector) {
+	private int getNegativeSize(ArrayList<Tegel> kolomVector) {
 		int aantal = 0;
 		for (int i = 0; i <= startTegel.getY(); ++i) {
 			++aantal;
@@ -99,13 +99,11 @@ public class TegelVeld implements Serializable {
 		return new Vector2D(x, y);
 	}
 
-	public Object get(Vector2D coord) {
-		System.out.println("TegelVeld.get: Tegel at (X: " + coord.getX() + ", Y: "
-				+ coord.getY() + " ) requested.");
+	public Tegel get(Vector2D coord) {
 		return tegelAt(coord);
 	}
 
-	private Object tegelAt(Vector2D coord) {
+	private Tegel tegelAt(Vector2D coord) {
 		int x = coord.getX();
 		int y = coord.getY();
 
@@ -120,17 +118,17 @@ public class TegelVeld implements Serializable {
 	// TEGELPLAATSING
 
 	/**
-	 * Zal een tegel op het speelveld plaatsen op de coˆrdinaten gegeven door
+	 * Zal een tegel op het speelveld plaatsen op de coÔøΩrdinaten gegeven door
 	 * coord.
 	 * 
 	 * @param t
 	 *            De tegel die op de tafel gelegd moet worden.
 	 * @param coord
-	 *            De coˆrdinaten van de tegel.
+	 *            De coÔøΩrdinaten van de tegel.
 	 * @return Geeft true als de tegel geplaatst is. False als de tegel niet
 	 *         geplaatst kan worden
 	 */
-	public boolean plaatsTegel(Object tegel, Vector2D coord) {
+	public boolean plaatsTegel(Tegel tegel, Vector2D coord) {
 		if (veld == null || veld.size() == 0) {
 			setStartTegel(tegel);
 			return true;
@@ -145,7 +143,7 @@ public class TegelVeld implements Serializable {
 			return false;
 		}
 
-		ArrayList<Object> kolomVector;
+		ArrayList<Tegel> kolomVector;
 
 		// boven of onder de starttegel
 		if (rij == -1) {
@@ -187,7 +185,7 @@ public class TegelVeld implements Serializable {
 	 *            De co√∂rdinaten waar de tegel geplaatst moet worden.
 	 * @return True indien de tegelplaatsing mogelijk is, False anders.
 	 */
-	public boolean isTegelPlaatsingGeldig(Object tegel, Vector2D coord) {
+	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
 		int rij = startTegel.getX() + coord.getX();
 		int kolom = startTegel.getY() + coord.getY();
 
@@ -202,7 +200,7 @@ public class TegelVeld implements Serializable {
 	 * @return True als de tegel geplaatst kan worden. False als de tegel niet
 	 *         geplaatst kan worden.
 	 */
-	private boolean tegelKanGeplaatstWorden(Object tegel, int rij, int kolom) {
+	private boolean tegelKanGeplaatstWorden(Tegel tegel, int rij, int kolom) {
 		// De tegel zijn 4 buren zijn geldig en
 		// er is nog geen tegel geplaatst op deze positie
 		return !isGeplaatst(rij, kolom)
@@ -215,7 +213,7 @@ public class TegelVeld implements Serializable {
 	 * @return
 	 */
 	private boolean isGeplaatst(int rij, int kolom) {
-		ArrayList<Object> rijV = null;
+		ArrayList<Tegel> rijV = null;
 
 		// zoek de juist rij geeft null indien deze niet bestaat
 		if (veld != null && rij > 0 && rij < veld.size()) {
@@ -232,8 +230,8 @@ public class TegelVeld implements Serializable {
 		return false;
 	}
 
-	private ArrayList<Object> addRij(int rij) {
-		ArrayList<Object> kolomVector = new ArrayList<Object>();
+	private ArrayList<Tegel> addRij(int rij) {
+		ArrayList<Tegel> kolomVector = new ArrayList<Tegel>();
 		veld.add(rij, kolomVector);
 		kolomVector = veld.get(rij);
 
@@ -253,7 +251,7 @@ public class TegelVeld implements Serializable {
 	 *            De vector die opgevuld moet worden.
 	 */
 	private void addSpacers(int rij, int kolom) {
-		ArrayList<Object> kolomVector = veld.get(rij);
+		ArrayList<Tegel> kolomVector = veld.get(rij);
 		for (int i = kolomVector.size(); i < kolom; ++i) {
 			kolomVector.add(null);
 		}
@@ -270,7 +268,7 @@ public class TegelVeld implements Serializable {
 	 *            De kolom waarin een tegel gezet zal worden.
 	 */
 	private void adjustAll(int rij, int kolom) {
-		ArrayList<Object> kolomVector;
+		ArrayList<Tegel> kolomVector;
 		int aantal = (int) Math.abs(kolom - startTegel.getY());
 		int offset;
 
@@ -285,13 +283,13 @@ public class TegelVeld implements Serializable {
 
 	// ALGORITMISCH STRUCTUREN UIT DE ADT HALEN
 
-	public Object[] getBuren(Vector2D coord) {
+	public Tegel[] getBuren(Vector2D coord) {
 		Vector2D veldCoord = zetOmInVeldCoord(coord);
 		return getBurenHulp(veldCoord);
 	}
 
-	private Object[] getBurenHulp(Vector2D coord) {
-		Object[] buren = new Tegel[4];
+	private Tegel[] getBurenHulp(Vector2D coord) {
+		Tegel[] buren = new Tegel[4];
 		Vector2D veldCoord = new Vector2D(coord);
 
 		// noord buur
@@ -401,7 +399,7 @@ public class TegelVeld implements Serializable {
 		boolean gevonden = false;
 
 		for (int i = 0; !gevonden && i < veld.size(); ++i) {
-			ArrayList<Object> kolomVector = veld.get(i);
+			ArrayList<Tegel> kolomVector = veld.get(i);
 			for (int j = 0; !gevonden && j < kolomVector.size(); ++i) {
 				if (kolomVector.get(j) == this.laatstGeplaatsteTegel) {
 					kolomVector.remove(j);
@@ -428,7 +426,7 @@ public class TegelVeld implements Serializable {
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		boolean gevonden = false;
-		ArrayList<Object> kolomVector;
+		ArrayList<Tegel> kolomVector;
 		Vector2D coordLaatstGeplaatsteTegel = null;
 
 		for (int i = 0; !gevonden && i < veld.size(); ++i) {
@@ -449,7 +447,7 @@ public class TegelVeld implements Serializable {
 			ClassNotFoundException {
 		Vector2D coordLaatstGeplaatsteTegel = (Vector2D) in.readObject();
 		startTegel = (Vector2D) in.readObject();
-		veld = (ArrayList<ArrayList<Object>>) in.readObject();
+		veld = (ArrayList<ArrayList<Tegel>>) in.readObject();
 
 		int x = coordLaatstGeplaatsteTegel.getX();
 		int y = coordLaatstGeplaatsteTegel.getY();

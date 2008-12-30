@@ -175,4 +175,9 @@ public class TafelVerwerker implements Serializable {
 	private void readObjectNoData() throws ObjectStreamException {
 
 	}
+	
+	public ArrayList<Vector2D> geefMogelijkeZetten() {
+		String[] tegel = vraagNieuweTegel();
+		return tafel.geefMogelijkeZetten(tegel);
+	}
 }

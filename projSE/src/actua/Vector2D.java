@@ -57,6 +57,10 @@ public class Vector2D implements Serializable{
 		this.x = x;
 		this.y = y;
 	}
+
+	public String toString() {
+		return new String("(" + x + ", " + y + ")");
+	}
 	
 	 private void writeObject(java.io.ObjectOutputStream out)throws IOException {
 		 out.writeInt(x);

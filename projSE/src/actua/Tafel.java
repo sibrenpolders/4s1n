@@ -148,14 +148,14 @@ public class Tafel implements Serializable {
 	// PIONPLAATSING
 
 	/**
-	 * Zal indien mogelijk pion plaatsen op de tegel met coördinaten tegelCoord.
+	 * Zal indien mogelijk pion plaatsen op de tegel met coï¿½rdinaten tegelCoord.
 	 * pionCoord zal bepalen op welk deel de pion zal staan.
 	 * 
 	 * @param tegelCoord
-	 *            coördinaten van de tegel waar een pion op geplaatst zal
+	 *            coï¿½rdinaten van de tegel waar een pion op geplaatst zal
 	 *            worden.
 	 * @param pionCoord
-	 *            coördinaten van het landsdeel op de tegel waar de pion zal
+	 *            coï¿½rdinaten van het landsdeel op de tegel waar de pion zal
 	 *            geplaatst worden.
 	 * @param pion
 	 *            de pion die zal geplaatst worden.
@@ -163,7 +163,7 @@ public class Tafel implements Serializable {
 	 *         worden.
 	 */
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, char pion) {
-		Tegel t = bepaalTegel(tegelCoord);
+		Tegel t = veld.get(tegelCoord);
 		String[] stringRepresentatie = new String[2];
 		stringRepresentatie[0] = t.getTegelPresentatie();
 		stringRepresentatie[1] = t.getIdPresentatie();
@@ -194,16 +194,16 @@ public class Tafel implements Serializable {
 
 	/**
 	 * Deze functie zal nagaan of een pion plaatsing kan gebeuren op tegel met
-	 * coördinaten tegelCoord op het landsdeel met coÃ¶rdinaten pionCoord. Deze
+	 * coï¿½rdinaten tegelCoord op het landsdeel met coÃ¶rdinaten pionCoord. Deze
 	 * functie zal niet de pion echt gaan plaatsen op de tegel.
 	 * 
 	 * @param t
 	 *            De tegel waarop de pion geplaatst moet worden.
 	 * @param tegelCoord
-	 *            De coördinaten van de tegel waarop de pion geplaatst moet
+	 *            De coï¿½rdinaten van de tegel waarop de pion geplaatst moet
 	 *            worden.
 	 * @param pionCoord
-	 *            De coördinaten van het landsdeel waarop de pion geplaatst moet
+	 *            De coï¿½rdinaten van het landsdeel waarop de pion geplaatst moet
 	 *            worden.
 	 * @return True als de pion geplaatst kan worden, False anders.
 	 */
@@ -349,5 +349,28 @@ public class Tafel implements Serializable {
 
 	private void readObjectNoData() throws ObjectStreamException {
 		// TODO invullen??
+	}
+
+	public ArrayList<Vector2D> geefMogelijkeZetten(String[] t) {
+		ArrayList<Vector2D> mogelijkeZetten = new ArrayList<Vector2D>();
+		
+		int breedte = getBreedte();
+		int hoogte = getHoogte();
+		Vector2D coordsStartTegel = getBeginPositie();
+		int xMin = coordsStartTegel.getX() - 1;
+		int yMin = coordsStartTegel.getY() - 1;
+		int xMax = xMin + breedte + 2;
+		int yMax = yMin + hoogte + 2;
+
+		for (int x = xMin; x <= xMax; ++x)
+			for (int y = yMin; y <= yMax; ++y) {
+				Vector2D temp = new Vector2D(x, y);
+				if (isTegelPlaatsingGeldig(t, temp)) {
+					mogelijkeZetten.add(new Vector2D(temp.getX() - coordsStartTegel.getX(), 
+							temp.getY() - coordsStartTegel.getY()));
+				}
+			}
+
+		return mogelijkeZetten;
 	}
 }
