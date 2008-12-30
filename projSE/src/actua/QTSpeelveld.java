@@ -8,6 +8,7 @@ import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
 import com.trolltech.qt.core.QObject;
+import com.trolltech.qt.core.QRect;
 import com.trolltech.qt.core.QRectF;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt;
@@ -89,7 +90,8 @@ public class QTSpeelveld extends GSpeelveld {
 
 		}
 
-		public void setGroen(int gridRow, int gridCol) {
+		public void setGroen(/*int gridRow, int gridCol*/) {
+			update();
 //			QTTegel tegel = getTegel(upperLeftRow + gridRow,
 //					upperLeftCol + gridCol);
 //			if (tegel != null) {
@@ -211,6 +213,18 @@ public class QTSpeelveld extends GSpeelveld {
 		public void addEmpty(QTTegel tegel, int i, int j) {
 			gridLayout.addItem(new QSpacerItem(90, 90), i, j, 1, 1);
 		}
+		
+		protected void drawForeground(QPainter painter,
+                QRectF rect) {
+//			Vector2D tmp;
+//			for (int i = 0; i < mogelijkeZetten.size(); ++i) {
+//				tmp = mogelijkeZetten.get(i);
+//				QLabel label = new QLabel();
+//				label.setPixmap(new QPixmap("src/icons/pion.png"));
+//				label.setMouseTracking(false);
+//				gridLayout.addWidget(label, tmp.getX(), tmp.getY(), 1, 1);
+//			}
+		}
 	}
 
 	private ArrayList<QTTegel> gelegdeTegels;
@@ -224,6 +238,7 @@ public class QTSpeelveld extends GSpeelveld {
 	private int upperLeftRow = DEFAULT_ULROW;
 	private int upperLeftCol = DEFAULT_ULCOL;
 	private Vector2D startTegelPos;
+	private ArrayList<Vector2D> mogelijkeZetten;
 
 	public QTSpeelveld(Spel spel, OptieVerwerker opties) {
 		super(spel);
@@ -402,6 +417,23 @@ public class QTSpeelveld extends GSpeelveld {
 //								- upperLeftCol);
 //					}
 //		}
+		
+		ArrayList<Vector2D> _mogelijkeZetten = spel.geefMogelijkeZetten();
+		mogelijkeZetten = new ArrayList<Vector2D>();
+		
+		Vector2D tmp;
+		int row, col;		
+		for (int i = 0; i < _mogelijkeZetten.size(); ++i) {
+			tmp = _mogelijkeZetten.get(i);
+			row = tmp.getX() + startTegelPos.getX();
+			col = tmp.getY() + startTegelPos.getY();
+			
+			if (row >= 0 && row < rows && col >= 0 && col < columns) {
+				mogelijkeZetten.add(new Vector2D(row, col));
+			}
+		}
+		
+		mainWidget.setGroen();
 	}
 
 	private void clearGroen() {
