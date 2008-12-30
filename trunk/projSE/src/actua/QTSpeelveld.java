@@ -45,6 +45,7 @@ public class QTSpeelveld extends GSpeelveld {
 		public VeldWidget(/*QTSpeelveld parent*/) {
 			gridLayout = new QGridLayout();
 			gridLayout.setSpacing(0);
+			setLayout(gridLayout);
 			QGraphicsScene scene = new QGraphicsScene();
 			setScene(scene);
 //			this.parent = parent;
@@ -65,18 +66,14 @@ public class QTSpeelveld extends GSpeelveld {
 		
 		public void clear() {
 			if (layout() != null) {
-				layout().dispose();
 				List<QObject> list = children();
+				int start = list.size() - gelegdeTegels.size();
 				int size = list.size();
-				for (int i = 0; i < size; ++i) {
-					list.get(i).dispose();	
+				for (int i = start; i < size; ++i) {
+					list.get(start).dispose();
+					list.remove(start);
 				}
-				list.clear();
 			}
-			
-			gridLayout = new QGridLayout();
-			gridLayout.setSpacing(0);
-			setLayout(gridLayout);
 		}
 		
 		public void insertTegel(QTTegel tegel, int gridRow, int gridCol) {
@@ -248,7 +245,7 @@ public class QTSpeelveld extends GSpeelveld {
 		return null;
 	}
 
-	// Clear héél het speelveld -> vul het met default tegels.
+	// Clear hÃ©Ã©l het speelveld -> vul het met default tegels.
 	protected void clearSpeelveld() {
 		upperLeftRow = DEFAULT_ULROW;
 		upperLeftCol = DEFAULT_ULCOL;
@@ -339,7 +336,7 @@ public class QTSpeelveld extends GSpeelveld {
 	}
 
 	private void veranderZicht() {
-		mainWidget.init();
+		mainWidget.clear();
 		for (int i = upperLeftCol; i < upperLeftCol + columns; ++i)
 			for (int j = upperLeftRow; j < upperLeftRow + rows; ++j) {
 				QTTegel tegel = getTegel(j, i);
