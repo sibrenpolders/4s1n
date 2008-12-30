@@ -315,7 +315,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraLeft() {
 		upperLeftCol--;
-		startTegelPos.setX(startTegelPos.getY()-1);
+		startTegelPos.setY(startTegelPos.getY()-1);
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
 						.getZ());
@@ -326,7 +326,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraRight() {
 		upperLeftCol++;
-		startTegelPos.setX(startTegelPos.getX()+1);
+		startTegelPos.setY(startTegelPos.getY()+1);
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
 						.getZ());
@@ -337,20 +337,31 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void veranderZicht() {
 		mainWidget.clear();
-		for (int i = upperLeftCol; i < upperLeftCol + columns; ++i)
-			for (int j = upperLeftRow; j < upperLeftRow + rows; ++j) {
-				QTTegel tegel = getTegel(j, i);
-				if (tegel != null) {
-					mainWidget.insertTegel(tegel, j - upperLeftRow, i
-							- upperLeftCol);
-				}
-				else {
-					mainWidget.addEmpty(tegel, j - upperLeftRow, i
-							- upperLeftCol);
-				}
-//					mainWidget.insertTegel(new QTTegel(spel, j, i), j
-//							- upperLeftRow, i - upperLeftCol);
+		mainWidget.createEmptyTegels();
+		for (int i = 0; i < gelegdeTegels.size(); ++i) {
+			QTTegel tegel = gelegdeTegels.get(i);
+			int col = startTegelPos.getX() + tegel.getCol();
+			int row = startTegelPos.getY() + tegel.getRow();
+			
+			if (col >= 0 && col < columns && row >= 0 && row < rows) {
+				mainWidget.insertTegel(tegel, col, row);
 			}
+		}
+		
+//		for (int i = upperLeftCol; i < upperLeftCol + columns; ++i)
+//			for (int j = upperLeftRow; j < upperLeftRow + rows; ++j) {
+//				QTTegel tegel = getTegel(j, i);
+//				if (tegel != null) {
+//					mainWidget.insertTegel(tegel, j - upperLeftRow, i
+//							- upperLeftCol);
+//				}
+//				else {
+//					mainWidget.addEmpty(tegel, j - upperLeftRow, i
+//							- upperLeftCol);
+//				}
+////					mainWidget.insertTegel(new QTTegel(spel, j, i), j
+////							- upperLeftRow, i - upperLeftCol);
+//			}
 
 		this.mainWidget.show();
 	}
