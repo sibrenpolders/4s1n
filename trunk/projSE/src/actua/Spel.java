@@ -127,6 +127,10 @@ public class Spel extends Observable implements Serializable {
 		return tafelVerwerker.getStartTegelPositie();
 	}
 
+	public ArrayList<Vector2D> geefMogelijkeZetten() {
+		return tafelVerwerker.geefMogelijkeZetten();
+	}
+	
 	// PION + PIONPLAATSING
 
 	public boolean pionBijBeurtReedsGeplaatst() {
