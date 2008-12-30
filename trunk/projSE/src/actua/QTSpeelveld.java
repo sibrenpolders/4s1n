@@ -17,104 +17,94 @@ import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragLeaveEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QDropEvent;
+import com.trolltech.qt.gui.QGraphicsRectItem;
 import com.trolltech.qt.gui.QGraphicsScene;
 import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QKeySequence;
-import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QLayoutItemInterface;
-import com.trolltech.qt.gui.QPaintEvent;
 import com.trolltech.qt.gui.QPainter;
-import com.trolltech.qt.gui.QPalette;
+import com.trolltech.qt.gui.QPen;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QShortcut;
 import com.trolltech.qt.gui.QSpacerItem;
 import com.trolltech.qt.gui.QWidget;
-import com.trolltech.qt.gui.QPalette.ColorRole;
 
 public class QTSpeelveld extends GSpeelveld {
 
 	private class VeldWidget extends QGraphicsView {
-		private QGridLayout gridLayout;
-//		private QTSpeelveld parent;
 
-		// TODO er is geen aanvaardbare reden waarom deze private inner class een QTSpeelveld parent zou
-		// mogen meekrijgen. A. Hij kan aan alles van zijn parent
-		//                   B. Hij is nooit zichtbaar buiten deze klasse.
-		public VeldWidget(/*QTSpeelveld parent*/) {
+		private QGridLayout gridLayout;
+		private ArrayList<QGraphicsRectItem> groenVakjes;
+		QGraphicsScene scene;
+
+		public VeldWidget() {
+			scene = new QGraphicsScene();
+			this.setScene(scene);
 			gridLayout = new QGridLayout();
 			gridLayout.setSpacing(0);
-			QGraphicsScene scene = new QGraphicsScene();
-			setScene(scene);
-//			this.parent = parent;
+			setLayout(gridLayout);
 			setAcceptDrops(true);
+			groenVakjes = new ArrayList<QGraphicsRectItem>();
 		}
 
 		public void init() {
-			if (layout() != null) {
-				layout().dispose();
-				List<QObject> list = children();
-//				list.clear();
+			if (layout() != null) {				
+				List<QObject> list = layout().children();
 				int size = list.size();
 				for (int i = 0; i < size; ++i) {
-					list.remove(0);					
+					QObject o = list.get(0);
+					list.remove(0);
+					o.dispose();
 				}
+				layout().dispose();
 			}
 
+			if (this.scene() != null)
+				this.scene().dispose();
+
+			scene = new QGraphicsScene();
+			this.setScene(scene);
+
+			groenVakjes.clear();
+
 			setBackgroundBrush(new QBrush(getBackgroundTexture()));
-			
-			// TODO vind deze methode beter. Die methode van de parent meegeven aan de constructor, da's C 
-			// bullshit. Wat ge deed:
-			// gridLayout = new QGridLayout(this) -> gridlayout weet van zijn parent != goede OO
-			// nu: parent.setLayout() -> parent weet van zijn kinderen == goede OO
-			
+
 			gridLayout = new QGridLayout();
 			gridLayout.setSpacing(0);
 			setLayout(gridLayout);
 			setUpdatesEnabled(true);
-			
+
 			// elke tegel is 90x90... zodus
-			// waarschijnlijk een stomme naam. Maar ik dacht dat _ voor een functie betekende dat het een
-			// member functie was ofzo...
-			_resize(810, 630);
-			createEmptyTegels();						
+			_resize(columns * 90, rows * 90);
+			createEmptyTegels();
 		}
-		
-		public void insertTegel(QTTegel tegel, int gridRow, int gridCol) {
-//			 TODO niet van toepassing
-//			if (getTegel(gridRow, gridCol) != null) {
-//				QTTegel tegelPrev = getTegel(upperLeftRow + gridRow,
-//						upperLeftCol + gridCol);
-//				gridLayout.removeWidget(tegelPrev.getPrevGraphicsView());
-//			}
 
-			// tegel.getGraphicsView() maakt altijd een nieuwe instantie aan
-			gridLayout.addWidget(tegel.getGraphicsView(), gridRow, gridCol, 1, 1);
+		private void _resize(int width, int height) {
+			setGeometry(0, 0, width, height);
+			setMaximumSize(new QSize(width, height));
+			setMinimumSize(new QSize(width, height));
+		}
 
+		private QPixmap getBackgroundTexture() {
+			QPixmap pixmap = new QPixmap("src/icons/background.xpm");
+			pixmap.scaled(width(), height());
+
+			return pixmap;
 		}
 
 		public void setGroen(int gridRow, int gridCol) {
-//			QTTegel tegel = getTegel(upperLeftRow + gridRow,
-//					upperLeftCol + gridCol);
-//			if (tegel != null) {
-//				QLabel view = tegel.getPrevGraphicsView();
-////				view.setForegroundBrush(new QBrush(new QColor(0, 255, 0, 127)));
-//			}
+			QGraphicsRectItem item = scene.addRect(0, 0, 90, 90, new QPen(),
+					new QBrush(new QColor(0, 255, 0, 127)));
+			groenVakjes.add(item);
 		}
 
 		public void clearGroen() {
-//			for (int i = 0; i < rows; i++) {
-//				for (int j = 0; j < columns; j++) {
-//
-//					QTTegel tegel = getTegel(upperLeftRow + i,
-//							upperLeftCol + j);
-//					if (tegel != null) {
-////						QGraphicsView view = tegel.getPrevGraphicsView();
-////						view.setForegroundBrush(null);
-//					}
-//				}
-//			}
+			for (int i = groenVakjes.size() - 1; i >= 0; i--)
+				scene.removeItem(groenVakjes.get(i));
+
+			groenVakjes.clear();
+
 		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
@@ -126,14 +116,6 @@ public class QTSpeelveld extends GSpeelveld {
 				} else {
 					event.acceptProposedAction();
 				}
-				// TODO dit moet gefixed worden in QTTegel
-//			} else if (event.mimeData().hasFormat("application/x-pionitemdata")) {
-//				if (event.source().equals(this)) {
-//					event.setDropAction(Qt.DropAction.MoveAction);
-//					event.accept();
-//				} else {
-//					event.acceptProposedAction();
-//				}
 			} else {
 				event.ignore();
 			}
@@ -160,16 +142,18 @@ public class QTSpeelveld extends GSpeelveld {
 
 		protected void dropEvent(QDropEvent event) {
 			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
-				int y = event.pos().x();
-				int x = event.pos().y();
-				x = x / 90 - startTegelPos.getX();
-				y = y / 90 - startTegelPos.getY();
-				
-				QByteArray itemData = event.mimeData().data("application/x-dnditemdata");
-	            QDataStream dataStream = new QDataStream(itemData, QIODevice.OpenModeFlag.ReadOnly);
+				int x = event.pos().x();
+				int y = event.pos().y();
+				x = x / 90;
+				y = y / 90;
+
+				QByteArray itemData = event.mimeData().data(
+						"application/x-dnditemdata");
+				QDataStream dataStream = new QDataStream(itemData,
+						QIODevice.OpenModeFlag.ReadOnly);
 				QPixmap pixmap = new QPixmap();
 				pixmap.readFrom(dataStream);
-				
+
 				voegTegelToe(new Vector2D(x, y), pixmap);
 				clearGroen();
 
@@ -182,39 +166,29 @@ public class QTSpeelveld extends GSpeelveld {
 			} else {
 				event.ignore();
 			}
-		}		
-		
+		}
+
 		private void createEmptyTegels() {
 			int rasterrow = upperLeftRow;
 			for (int i = 0; i < rows; i++) {
 				int rastercol = upperLeftCol;
 				for (int j = 0; j < columns; j++) {
 					gridLayout.addItem(new QSpacerItem(90, 90), i, j, 1, 1);
-//				}
-//					QTTegel tegel = new QTTegel(spel, rasterrow, rastercol);
-//					insertTegel(tegel, i, j);
 					rastercol++;
 				}
 				rasterrow++;
-			}			
-		}
-		
-		private void _resize(int width, int height) {
-			setGeometry(0, 0, width, height);
-			setMaximumSize(new QSize(width, height));
-			setMinimumSize(new QSize(width, height));
-		}
-		
-		// Kan misschien handig zijn moest de veldgrootte ooit wijzigen?
-		private QPixmap getBackgroundTexture() {
-			QPixmap pixmap = new QPixmap("src/icons/background.xpm");
-			pixmap.scaled(width(), height());
-			
-			return pixmap;
+			}
+
+			update();
 		}
 
-		public void addEmpty(QTTegel tegel, int i, int j) {
-			gridLayout.addItem(new QSpacerItem(90, 90), i, j, 1, 1);
+		public void addEmpty(QTTegel tegel, int gridRow, int gridCol) {
+			gridLayout.addItem(new QSpacerItem(90, 90), gridRow, gridCol, 1, 1);
+		}
+
+		public void insertTegel(QTTegel tegel, int gridRow, int gridCol) {
+			gridLayout.addWidget(tegel.getGraphicsView(), gridRow, gridCol, 1,
+					1);
 		}
 	}
 
@@ -233,7 +207,7 @@ public class QTSpeelveld extends GSpeelveld {
 	public QTSpeelveld(Spel spel, OptieVerwerker opties) {
 		super(spel);
 		mainWidget = new VeldWidget();
-		startTegelPos = new Vector2D((rows-1)/2, (columns-1)/2);
+		startTegelPos = new Vector2D((rows - 1) / 2, (columns - 1) / 2);
 		clearSpeelveld();
 	}
 
@@ -291,14 +265,16 @@ public class QTSpeelveld extends GSpeelveld {
 
 	protected void initialiseerSpeelveld() {
 		gelegdeTegels = new ArrayList<QTTegel>();
-		QTTegel startTegel = new QTTegel(spel.geefStartTegel(), spel, new Vector2D(0, 0));
-		mainWidget.insertTegel(startTegel, startTegelPos.getX(), startTegelPos.getY());
+		QTTegel startTegel = new QTTegel(spel.geefStartTegel(), spel,
+				new Vector2D(0, 0));
+		mainWidget.insertTegel(startTegel, startTegelPos.getX(), startTegelPos
+				.getY());
 		gelegdeTegels.add(startTegel);
 	}
 
 	private void cameraUp() {
 		upperLeftRow--;
-		startTegelPos.setX(startTegelPos.getX()-1);
+		startTegelPos.setX(startTegelPos.getX() - 1);
 		Vector3D nieuwePositie = new Vector3D(
 				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
@@ -309,7 +285,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraDown() {
 		upperLeftRow++;
-		startTegelPos.setX(startTegelPos.getX()+1);
+		startTegelPos.setX(startTegelPos.getX() + 1);
 		Vector3D nieuwePositie = new Vector3D(
 				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
@@ -320,7 +296,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraLeft() {
 		upperLeftCol--;
-		startTegelPos.setX(startTegelPos.getY()-1);
+		startTegelPos.setX(startTegelPos.getY() - 1);
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
 						.getZ());
@@ -331,7 +307,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraRight() {
 		upperLeftCol++;
-		startTegelPos.setX(startTegelPos.getX()+1);
+		startTegelPos.setX(startTegelPos.getX() + 1);
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
 						.getZ());
@@ -348,31 +324,31 @@ public class QTSpeelveld extends GSpeelveld {
 				if (tegel != null) {
 					mainWidget.insertTegel(tegel, j - upperLeftRow, i
 							- upperLeftCol);
-				}
-				else {
+				} else {
 					mainWidget.addEmpty(tegel, j - upperLeftRow, i
 							- upperLeftCol);
 				}
-//					mainWidget.insertTegel(new QTTegel(spel, j, i), j
-//							- upperLeftRow, i - upperLeftCol);
 			}
 
 		this.mainWidget.show();
 	}
 
-	private boolean voegTegelToe(Vector2D coord, QPixmap pixmap) {
+	private boolean voegTegelToe(Vector2D gridCoord, QPixmap pixmap) {
 		String[] tegel = spel.vraagNieuweTegel();
 		boolean isTegelGeplaatst = false;
+		Vector2D coord = new Vector2D(gridCoord.getX() + upperLeftCol,
+				gridCoord.getY() + upperLeftRow);
 
+		System.out
+				.println("QTSpeelveld.voegTegelToe: trying to lay Tegel at (X: "
+						+ gridCoord.getX() + ", Y: " + gridCoord.getY() + ").");
 		if (spel.isTegelPlaatsingGeldig(tegel, coord)) {
 			tegel = spel.neemTegelVanStapel();
-			spel.plaatsTegel(tegel, coord);
+			spel.plaatsTegel(tegel, gridCoord);
 			QTTegel qTegel = new QTTegel(tegel, spel, coord);
 			qTegel.setPixmap(pixmap);
-			
-			Vector2D gridCoord = new Vector2D(coord.getX() + startTegelPos.getX(), 
-					coord.getY() + startTegelPos.getY());
-			mainWidget.insertTegel(qTegel, gridCoord.getX(), gridCoord.getY());
+
+			mainWidget.insertTegel(qTegel, gridCoord.getY(), gridCoord.getX());
 			gelegdeTegels.add(qTegel);
 			isTegelGeplaatst = true;
 		}
@@ -384,22 +360,19 @@ public class QTSpeelveld extends GSpeelveld {
 	}
 
 	private void kleurMogelijkhedenGroen() {
-//		String[] tegel = spel.vraagNieuweTegel();
-//		Vector2D startTegelPos = spel.getStartTegelPos();
-//
-//		if (startTegelPos != null) {
-//			for (int row = upperLeftRow; row < upperLeftRow + rows; ++row)
-//				for (int col = upperLeftCol; col < upperLeftCol + columns; ++col)
-//					if (spel.isTegelPlaatsingGeldig(tegel, new Vector2D(col,
-//							row))) {						
-//						mainWidget.setGroen(row - upperLeft, col
-//								- upperLeftCol);
-//					}
-//		}
-	}
+		String[] tegel = spel.vraagNieuweTegel();
+		Vector2D startTegelPos = spel.getStartTegelPos();
+		if (startTegelPos != null) {
+			for (int row = 0; row < rows; ++row)
+				for (int col = 0; col < columns; ++col) {
+					int x = col - startTegelPos.getX();
+					int y = row - startTegelPos.getY();
 
-	private void clearGroen() {
-		mainWidget.clearGroen();
+					if (spel.isTegelPlaatsingGeldig(tegel, new Vector2D(x, y))) {
+						mainWidget.setGroen(y - upperLeftRow, x - upperLeftCol);
+					}
+				}
+		}
 	}
 
 	protected void updateSpeelveld() {
