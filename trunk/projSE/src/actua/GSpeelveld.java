@@ -1,9 +1,10 @@
 package actua;
 
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.Observer;
 
-public abstract class GSpeelveld implements Observer {
+public abstract class GSpeelveld extends Observable implements Observer {
 	protected static String DEFAULT_BACKGROUND;
 	protected ArrayList<ArrayList<GTegel>> gTegels;
 	protected String achtergrond;
@@ -14,6 +15,7 @@ public abstract class GSpeelveld implements Observer {
 	public GSpeelveld() {
 		camera = new Camera();
 		gTegels = new ArrayList<ArrayList<GTegel>>();
+		this.addObserver(this);
 	}
 
 	public GSpeelveld(Spel spel) {
