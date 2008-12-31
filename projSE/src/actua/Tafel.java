@@ -359,12 +359,12 @@ public class Tafel implements Serializable {
 		Vector2D coordsStartTegel = getBeginPositie();
 		int xMin = coordsStartTegel.getX() - 1;
 		int yMin = coordsStartTegel.getY() - 1;
-		int xMax = xMin + breedte + 2;
-		int yMax = yMin + hoogte + 2;
+		int xMax = xMin + hoogte + 2;
+		int yMax = yMin + breedte + 2;
 
 		for (int x = xMin; x <= xMax; ++x)
 			for (int y = yMin; y <= yMax; ++y) {
-				Vector2D temp = new Vector2D(x, y);
+				Vector2D temp = new Vector2D(x,y);
 				if (isTegelPlaatsingGeldig(t, temp)) {
 					mogelijkeZetten.add(new Vector2D(temp.getX() - coordsStartTegel.getX(), 
 							temp.getY() - coordsStartTegel.getY()));
