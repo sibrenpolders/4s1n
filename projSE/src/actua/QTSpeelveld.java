@@ -53,12 +53,12 @@ public class QTSpeelveld extends GSpeelveld {
 
 		public void setGroen() {
 			scene().setForegroundBrush(new QBrush(new QColor(0, 255, 0, 127)));
-//			update();
+			((QWidget)this).update();
 		}
 
 		public void clearGroen() {
 			scene().setForegroundBrush(null);
-//			update();
+			((QWidget)this).update();
 		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
@@ -90,7 +90,7 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 
 		protected void dragLeaveEvent(QDragLeaveEvent event) {
-			clearGroen();
+			clearAllGroen();
 		}
 
 		protected void dropEvent(QDropEvent event) {
@@ -103,7 +103,7 @@ public class QTSpeelveld extends GSpeelveld {
 				Vector2D tegelCoord = new Vector2D(coord.getX() - startTegelPos.getX(),
 						coord.getY() - startTegelPos.getY());
 				voegTegelToe(tegelCoord, pixmap);
-				clearGroen();
+				clearAllGroen();
 
 				if (event.source().equals(this)) {
 					event.setDropAction(Qt.DropAction.MoveAction);
@@ -153,6 +153,7 @@ public class QTSpeelveld extends GSpeelveld {
 		gridWidget.setMaximumSize(810, 630);
 		gridLayout = new QGridLayout(gridWidget);
 		startTegelPos = new Vector2D((rows-1)/2, (columns-1)/2);
+		mogelijkeZetten = new ArrayList<Vector2D>();
 		clearSpeelveld();
 	}
 
@@ -274,14 +275,15 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void kleurMogelijkhedenGroen() {
 		ArrayList<Vector2D> _mogelijkeZetten = spel.geefMogelijkeZetten();
-		mogelijkeZetten = new ArrayList<Vector2D>();
+		//mogelijkeZetten = new ArrayList<Vector2D>();
+		mogelijkeZetten.clear();
 		
 		Vector2D tmp;
 		int row, col;		
 		for (int i = 0; i < _mogelijkeZetten.size(); ++i) {
 			tmp = _mogelijkeZetten.get(i);
-			row = tmp.getX() + startTegelPos.getX();
-			col = tmp.getY() + startTegelPos.getY();
+			row = tmp.getX() + startTegelPos.getX()-spel.getStartTegelPos().getX();
+			col = tmp.getY() + startTegelPos.getY()-spel.getStartTegelPos().getY();
 			
 			if (row >= 0 && row < rows && col >= 0 && col < columns) {
 				mogelijkeZetten.add(new Vector2D(row, col));
@@ -304,7 +306,7 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 	}
 	
-	public void clearGroen() {
+	public void clearAllGroen() {
 		if (mogelijkeZetten != null) {
 			Vector2D tmp;
 			VeldWidget widget;
