@@ -163,12 +163,12 @@ public class Tafel implements Serializable {
 	 *         worden.
 	 */
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, char pion) {
-		tegelCoord.setXY(tegelCoord.getX() - getBeginPositie().getX(), tegelCoord.getY() - getBeginPositie().getY());
 		Tegel t = veld.get(tegelCoord);
-		String[] stringRepresentatie = new String[2];
-		stringRepresentatie[0] = t.getTegelPresentatie();
-		stringRepresentatie[1] = t.getIdPresentatie();
-
+//		String[] stringRepresentatie = new String[3];
+//		stringRepresentatie[0] = t.getTegelPresentatie();
+//		stringRepresentatie[1] = t.getIdPresentatie();
+//		stringRepresentatie[2] = "" + t.getOrientatie();
+		
 		if (t != (Tegel) veld.getLaatstGeplaatsteTegel()) {
 			return false;
 		}
@@ -211,7 +211,6 @@ public class Tafel implements Serializable {
 	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
 			int pionCoord) {
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
-		//Tegel tegel = (Tegel) veld.get(tegelCoord);
 		return isPionPlaatsingGeldig(pionCoord, tegel, tegelCoord, checked);
 	}
 	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
@@ -223,6 +222,9 @@ public class Tafel implements Serializable {
 
 	private boolean isPionPlaatsingGeldig(int pionCoord, Tegel tegel,
 			Vector2D veldCoord, ArrayList<Tegel> checked) {
+		if (tegel == null || alGechecked(checked, tegel)) {
+			return true;
+		}
 		if (pionCoord < 0 || pionCoord >= Tegel.MAX_GROOTTE
 				|| tegel.isPionGeplaatst(pionCoord)) {
 			return false;
@@ -231,101 +233,121 @@ public class Tafel implements Serializable {
 		checked.add(tegel);
 
 		Tegel[] buren = (Tegel[]) veld.getBuren(veldCoord);
-		char matchLandsdeel = tegel.bepaalLandsdeel(pionCoord).getType();
+		Landsdeel matchLandsdeel = tegel.bepaalLandsdeel(pionCoord);
 
-		boolean pionPlaatsingGeldig = true;
-
-		if (buren[0] != null && !alGechecked(checked, buren[0])) {
-			veldCoord.setX(veldCoord.getX() - 1);
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(NOORD, matchLandsdeel,
-					buren[0], veldCoord, checked);
+		boolean pionPlaatsingGeldig = !matchLandsdeel.isPionGeplaatst();
+		
+		int buurPionCoord; // de pion coordinaat van de buur waarmee er vergeleken zal worden
+		int buurNr;
+		Vector2D buurCoord;
+		
+		for (int i = 0; pionPlaatsingGeldig && i < Tegel.MAX_GROOTTE; ++i) {
+			if (tegel.bepaalLandsdeel(i) == matchLandsdeel) {
+				buurPionCoord = getBuurPionCoord(i);
+				buurNr = getBuurNr(i);
+				buurCoord = getBuurCoord(buurNr, veldCoord);
+				if (buurNr != -1) { // Tegel.MIDDEN moet niet verder gecontroleerd worden
+					pionPlaatsingGeldig = isPionPlaatsingGeldig(buurPionCoord, 
+							buren[buurNr], buurCoord, checked);
+				}
+			}
 		}
-
-		if (buren[1] != null && !alGechecked(checked, buren[1])
-				&& pionPlaatsingGeldig) {
-			veldCoord.setY(veldCoord.getY() + 1);
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(OOST, matchLandsdeel,
-					buren[1], veldCoord, checked);
-		}
-
-		if (buren[2] != null && !alGechecked(checked, buren[2])
-				&& pionPlaatsingGeldig) {
-			veldCoord.setX(veldCoord.getX() + 1);
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(ZUID, matchLandsdeel,
-					buren[2], veldCoord, checked);
-		}
-
-		if (buren[3] != null && !alGechecked(checked, buren[3])
-				&& pionPlaatsingGeldig) {
-			veldCoord.setY(veldCoord.getY() - 1);
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(WEST, matchLandsdeel,
-					buren[3], veldCoord, checked);
-		}
-
+		
 		return pionPlaatsingGeldig;
 	}
 
-	private boolean isPionPlaatsingGeldig(int windrichting,
-			char matchLandsdeel, Tegel tegel, Vector2D tegelCoord,
-			ArrayList<Tegel> checked) {
-		boolean pionPlaatsingGeldig = true;
-
-		switch (windrichting) {
-		case NOORD:
-			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord,
-					matchLandsdeel, Tegel.ZUID_WEST, Tegel.ZUID,
-					Tegel.ZUID_OOST, checked);
+	private Vector2D getBuurCoord(int buurNr, Vector2D veldCoord) {
+		Vector2D buurCoord = null;
+		
+		switch(buurNr) {
+		case NOORD: // NOORD BUUR
+			buurCoord = new Vector2D(veldCoord.getX()-1, veldCoord.getY());
 			break;
-		case OOST:
-			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord,
-					matchLandsdeel, Tegel.WEST_NOORD, Tegel.WEST,
-					Tegel.WEST_ZUID, checked);
+		case OOST: // OOST BUUR
+			buurCoord = new Vector2D(veldCoord.getX(), veldCoord.getY()+1);
 			break;
-		case ZUID:
-			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord,
-					matchLandsdeel, Tegel.NOORD_OOST, Tegel.NOORD,
-					Tegel.NOORD_WEST, checked);
+		case ZUID: // ZUID BUUR
+			buurCoord = new Vector2D(veldCoord.getX()+1, veldCoord.getY());
 			break;
-		case WEST:
-			pionPlaatsingGeldig = pionPlaatsingGeldig(tegel, tegelCoord,
-					matchLandsdeel, Tegel.OOST_ZUID, Tegel.OOST,
-					Tegel.OOST_NOORD, checked);
+		case WEST: // WEST BUUR
+			buurCoord = new Vector2D(veldCoord.getX(), veldCoord.getY()-1);
 			break;
 		}
-
-		return pionPlaatsingGeldig;
+		
+		return buurCoord;
 	}
 
-	private boolean pionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
-			char matchLandsdeel, int windrichting, int windrichting2,
-			int windrichting3, ArrayList<Tegel> checked) {
-		boolean pionPlaatsingGeldig = true;
-		Landsdeel vorigeLd = null;
-		Landsdeel huidigeLd;
-		huidigeLd = tegel.bepaalLandsdeel(windrichting);
-
-		if (huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting, tegel,
-					tegelCoord, checked);
+	private int getBuurNr(int i) {
+		int buurNr = -1;
+		
+		switch (i) {
+		case Tegel.NOORD_WEST:
+		case Tegel.NOORD:
+		case Tegel.NOORD_OOST:
+			buurNr = NOORD;
+			break;
+		case Tegel.OOST_NOORD:
+		case Tegel.OOST:
+		case Tegel.OOST_ZUID:
+			buurNr = OOST;
+			break;
+		case Tegel.ZUID_OOST:
+		case Tegel.ZUID:
+		case Tegel.ZUID_WEST:
+			buurNr = ZUID;
+			break;
+		case Tegel.WEST_NOORD:
+		case Tegel.WEST:
+		case Tegel.WEST_ZUID:
+			buurNr = WEST;
+			break;
 		}
+		
+		return buurNr;
+	}
 
-		vorigeLd = huidigeLd;
-		huidigeLd = tegel.bepaalLandsdeel(windrichting2);
-		if (pionPlaatsingGeldig && vorigeLd != huidigeLd
-				&& huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting2, tegel,
-					tegelCoord, checked);
+	private int getBuurPionCoord(int i) {
+		int buurPionCoord = -1;
+		
+		switch (i) {
+		case Tegel.NOORD_WEST:
+			buurPionCoord = Tegel.ZUID_WEST;
+			break;
+		case Tegel.NOORD:
+			buurPionCoord = Tegel.ZUID;
+			break;
+		case Tegel.NOORD_OOST:
+			buurPionCoord = Tegel.ZUID_OOST;
+			break;
+		case Tegel.OOST_NOORD:
+			buurPionCoord = Tegel.WEST_NOORD;
+			break;
+		case Tegel.OOST:
+			buurPionCoord = Tegel.WEST;
+			break;
+		case Tegel.OOST_ZUID:
+			buurPionCoord = Tegel.WEST_ZUID;
+			break;
+		case Tegel.ZUID_OOST:
+			buurPionCoord = Tegel.NOORD_OOST;
+			break;
+		case Tegel.ZUID:
+			buurPionCoord = Tegel.NOORD;
+			break;
+		case Tegel.ZUID_WEST:
+			buurPionCoord = Tegel.NOORD_WEST;
+			break;
+		case Tegel.WEST_NOORD:
+			buurPionCoord = Tegel.OOST_NOORD;
+			break;
+		case Tegel.WEST:
+			buurPionCoord = Tegel.OOST;
+			break;
+		case Tegel.WEST_ZUID:
+			buurPionCoord = Tegel.OOST_ZUID;
+			break;
 		}
-
-		vorigeLd = huidigeLd;
-		huidigeLd = tegel.bepaalLandsdeel(windrichting3);
-		if (pionPlaatsingGeldig && vorigeLd != huidigeLd
-				&& huidigeLd.getType() == matchLandsdeel) {
-			pionPlaatsingGeldig = isPionPlaatsingGeldig(windrichting3, tegel,
-					tegelCoord, checked);
-		}
-
-		return pionPlaatsingGeldig;
+		return buurPionCoord;
 	}
 
 	/**

@@ -92,7 +92,7 @@ public class TegelVeld implements Serializable {
 		return aantal;
 	}
 
-	public Vector2D zetOmInVeldCoord(Vector2D coord) {
+	private Vector2D zetOmInVeldCoord(Vector2D coord) {
 		int x = startTegel.getX() + coord.getX();
 		int y = startTegel.getY() + coord.getY();
 
@@ -100,7 +100,8 @@ public class TegelVeld implements Serializable {
 	}
 
 	public Tegel get(Vector2D coord) {
-		return tegelAt(coord);
+		Vector2D veldCoord = zetOmInVeldCoord(coord);
+		return tegelAt(veldCoord);
 	}
 
 	private Tegel tegelAt(Vector2D coord) {
@@ -284,8 +285,8 @@ public class TegelVeld implements Serializable {
 	// ALGORITMISCH STRUCTUREN UIT DE ADT HALEN
 
 	public Tegel[] getBuren(Vector2D coord) {
-		//Vector2D veldCoord = zetOmInVeldCoord(coord);
-		return getBurenHulp(coord);
+		Vector2D veldCoord = zetOmInVeldCoord(coord);
+		return getBurenHulp(veldCoord);
 	}
 
 	private Tegel[] getBurenHulp(Vector2D coord) {
