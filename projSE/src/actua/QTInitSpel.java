@@ -45,8 +45,7 @@ public class QTInitSpel extends GInitSpel {
 
 		QPushButton begin = new QPushButton("Start", widget);
 		QPushButton annuleer = new QPushButton("Annuleer", widget);
-		QPushButton extraSpeler = new QPushButton("Nog een speler toevoegen",
-				widget);
+		QPushButton extraSpeler = new QPushButton("Nog een speler toevoegen",widget);
 		QLabel aantal = new QLabel("Aantal tegels:");
 		tegels = new QSpinBox(widget);
 
@@ -62,7 +61,8 @@ public class QTInitSpel extends GInitSpel {
 		extraSpeler.clicked.connect(this, "voegSpelerOptieVeldToe()");
 
 		voegSpelerOptieVeldToe(); // nbPlayersVisible is nu 1
-
+		voegSpelerOptieVeldToe();
+		
 		venster.setCentralWidget(widget);
 		venster.setWindowTitle("Begin een nieuw Spel");
 		venster.show();
