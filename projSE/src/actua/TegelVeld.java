@@ -101,7 +101,7 @@ public class TegelVeld implements Serializable {
 
 	public Tegel get(Vector2D coord) {
 		Vector2D veldCoord = zetOmInVeldCoord(coord);
-		return tegelAt(coord);
+		return tegelAt(veldCoord);
 	}
 
 	private Tegel tegelAt(Vector2D coord) {
