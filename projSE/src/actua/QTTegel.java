@@ -6,8 +6,6 @@ import com.trolltech.qt.core.QIODevice;
 import com.trolltech.qt.core.QRectF;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.core.Qt.TransformationMode;
-import com.trolltech.qt.gui.QBrush;
-import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragLeaveEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
@@ -109,7 +107,6 @@ public class QTTegel extends GTegel {
 				QPixmap pionpixmap = new QPixmap();
 				pionpixmap.readFrom(dataStream);
 
-				System.out.println("Z: " + zone);
 				if (spel.plaatsPion(tegelCoord, zone)) {
 					QLabel label = new QLabel();
 					label.setPixmap(new QPixmap(pionpixmap));
