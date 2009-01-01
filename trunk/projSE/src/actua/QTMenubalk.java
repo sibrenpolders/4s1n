@@ -46,13 +46,12 @@ public class QTMenubalk extends GMenubalk {
 		QAction laden = addActionItem(spel, "Laden");
 		
 		spel.addSeparator();
-		QAction afsluiten = addActionItem(spel, "Afsluiten()");
+		QAction afsluiten = addActionItem(spel, "Afsluiten");
 		
 		nSpel.triggered.connect(this.gInitSpel, "show()");
 		opslaan.triggered.connect(this, "opslaan()");
 		opslaanAls.triggered.connect(this, "opslaanAls()");
 		laden.triggered.connect(this, "laden()");
-		// TODO confirm?
 		afsluiten.triggered.connect(QApplication.instance(), "quit()");
 	}
 	
@@ -97,6 +96,7 @@ public class QTMenubalk extends GMenubalk {
 		about.triggered.connect(this, "infoVenster()");
 	}
 
+	@SuppressWarnings("unused")
 	private void infoVenster() {
 		QMessageBox.about(menubar,"Over Applicatie","Deze <b>Applicatie</b> is mogelijk gemaakt door "
 								+ "Niels, Sam, Sam, Sibrand, Sibren en Bart Peeters ");

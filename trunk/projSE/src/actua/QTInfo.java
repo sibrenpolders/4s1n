@@ -5,9 +5,7 @@ import java.util.Vector;
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
-import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.Qt;
-import com.trolltech.qt.core.Qt.Alignment;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QBrush;
 import com.trolltech.qt.gui.QColor;
@@ -17,7 +15,6 @@ import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QGroupBox;
-import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QMouseEvent;
@@ -63,6 +60,14 @@ public class QTInfo extends GInfo {
 
 			String[] tegel = spel.vraagNieuweTegel();
 			tegelIcon.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
+		}
+		
+		public boolean isTegelGenomen() {
+			return tegelGenomen;
+		}
+
+		public void setTegelGenomen(boolean tegelGenomen) {
+			this.tegelGenomen = tegelGenomen;
 		}
 
 		public void roteerRechts() {
@@ -132,46 +137,51 @@ public class QTInfo extends GInfo {
 		}
 
 		protected void mousePressEvent(QMouseEvent event) {
-			QLabel child = (QLabel) childAt(0, 0);
-			if (child == null)
-				return;
-
-			QPixmap pixmap = child.pixmap();
-
-			QByteArray itemData = new QByteArray();
-			QDataStream dataStream = new QDataStream(itemData,QIODevice.OpenModeFlag.WriteOnly);
-			pixmap.writeTo(dataStream);
-			event.pos().subtract(child.pos()).writeTo(dataStream);
-
-			com.trolltech.qt.core.QMimeData mimeData = new com.trolltech.qt.core.QMimeData();
-			mimeData.setData("application/x-dnditemdata", itemData);
-
-			QDrag drag = new QDrag(this);
-			drag.setMimeData(mimeData);
-			drag.setPixmap(pixmap);
-			drag.setHotSpot(event.pos().subtract(child.pos()));
-
-			QPixmap tempPixmap = new QPixmap(pixmap);
-			QPainter painter = new QPainter();
-			painter.begin(tempPixmap);
-			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,127, 127)));
-			painter.end();
-
-			child.setPixmap(tempPixmap);
-
-			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
-				String[] tegel = spel.vraagNieuweTegel();
-				if (tegel == null)
-					child.close();
-				else {
+			if (!tegelGenomen){
+				QLabel child = (QLabel) childAt(0, 0);
+				if (child == null)
+					return;
+	
+				tegelGenomen = true;
+				
+				QPixmap pixmap = child.pixmap();
+	
+				QByteArray itemData = new QByteArray();
+				QDataStream dataStream = new QDataStream(itemData,QIODevice.OpenModeFlag.WriteOnly);
+				pixmap.writeTo(dataStream);
+				event.pos().subtract(child.pos()).writeTo(dataStream);
+	
+				com.trolltech.qt.core.QMimeData mimeData = new com.trolltech.qt.core.QMimeData();
+				mimeData.setData("application/x-dnditemdata", itemData);
+	
+				QDrag drag = new QDrag(this);
+				drag.setMimeData(mimeData);
+				drag.setPixmap(pixmap);
+				drag.setHotSpot(event.pos().subtract(child.pos()));
+	
+				QPixmap tempPixmap = new QPixmap(pixmap);
+				QPainter painter = new QPainter();
+				painter.begin(tempPixmap);
+				painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,127, 127)));
+				painter.end();
+	
+				child.setPixmap(tempPixmap);
+	
+				if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
+					String[] tegel = spel.vraagNieuweTegel();
+					if (tegel == null)
+						child.close();
+					else {
+						child.show();
+						child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
+					}
+				} else {
+					String[] tegel = spel.vraagNieuweTegel();
+					tegel[2] = new String("0"); // orientatie resetten
 					child.show();
+					tegelGenomen = false;
 					child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 				}
-			} else {
-				String[] tegel = spel.vraagNieuweTegel();
-				tegel[2] = new String("0"); // orientatie resetten
-				child.show();
-				child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 			}
 		}
 	}
@@ -311,11 +321,13 @@ public class QTInfo extends GInfo {
 		widget.setMinimumSize(w, h);
 	}
 	
+	@SuppressWarnings("unused")
 	private void volgendeSpeler()
 	{	
 		mSpel.volgendeSpeler();
 		verwijderSpelers();
 		updateSpelers();
+		stapel.setTegelGenomen(false);
 	}
 	
 }

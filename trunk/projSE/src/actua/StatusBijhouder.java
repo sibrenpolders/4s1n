@@ -2,6 +2,8 @@ package actua;
 
 import java.util.ArrayDeque;
 
+// niemand mag hier aankomen behalve als de undo en redo willen fixen
+
 public class StatusBijhouder {
 	private static int MAX_SIZE = 100;
 	
