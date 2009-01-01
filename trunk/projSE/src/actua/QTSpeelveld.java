@@ -155,7 +155,7 @@ public class QTSpeelveld extends GSpeelveld {
 		startTegelPos = new Vector2D((rows-1)/2, (columns-1)/2);
 		mogelijkeZetten = new ArrayList<Vector2D>();
 		clearSpeelveld();
-		createEmptyTegels();
+		//createEmptyTegels();
 	}
 
 	public QWidget getGridWidget() {
@@ -226,6 +226,8 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector3D nieuwePositie = new Vector3D(
 				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
+		if (camera.bewegingGeldig(nieuwePositie))
+			camera.veranderStandpunt(nieuwePositie);
 
 		veranderZicht();
 	}
@@ -236,6 +238,8 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector3D nieuwePositie = new Vector3D(
 				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
+		if (camera.bewegingGeldig(nieuwePositie))
+			camera.veranderStandpunt(nieuwePositie);
 
 		veranderZicht();
 	}
@@ -246,6 +250,8 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
 						.getZ());
+		if (camera.bewegingGeldig(nieuwePositie))
+			camera.veranderStandpunt(nieuwePositie);
 
 		veranderZicht();
 	}
@@ -256,6 +262,8 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
 						.getZ());
+		if (camera.bewegingGeldig(nieuwePositie))
+			camera.veranderStandpunt(nieuwePositie);
 
 		veranderZicht();
 	}
