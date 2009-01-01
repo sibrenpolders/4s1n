@@ -163,6 +163,7 @@ public class Tafel implements Serializable {
 	 *         worden.
 	 */
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, char pion) {
+		tegelCoord.setXY(tegelCoord.getX() - getBeginPositie().getX(), tegelCoord.getY() - getBeginPositie().getY());
 		Tegel t = veld.get(tegelCoord);
 		String[] stringRepresentatie = new String[2];
 		stringRepresentatie[0] = t.getTegelPresentatie();
