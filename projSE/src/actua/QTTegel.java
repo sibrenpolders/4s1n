@@ -127,15 +127,15 @@ public class QTTegel extends GTegel {
 		// QTTegel/Speelveld kan gebruikt worden.
 		private short getZone(int row, int col) {
 			if (row == 0 && col == 1) {
-				return (short) 2;
+				return Tegel.NOORD;
 			} else if (row == 1 && col == 0) {
-				return (short) 11;
+				return Tegel.WEST;
 			} else if (row == 1 && col == 1) {
-				return (short) 12;
+				return Tegel.MIDDEN;
 			} else if (row == 1 && col == 2) {
-				return (short) 5;
+				return Tegel.OOST;
 			} else if (row == 2 && col == 1) {
-				return (short) 8;
+				return Tegel.ZUID;
 			} else {
 				return (short) -1;
 			}
