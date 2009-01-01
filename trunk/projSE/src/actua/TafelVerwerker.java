@@ -154,6 +154,7 @@ public class TafelVerwerker implements Serializable {
 		tafel.verwijderPion(tegelCoord, pionCoord);
 	}
 
+	//functie die hetzelfde doet als ispionplaatsingmogelijk en wordt ook niet gebruikt?
 	public boolean plaatsingPionMogelijk(String[] t, Vector2D tegelCoord,
 			int pionCoord) {
 		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
