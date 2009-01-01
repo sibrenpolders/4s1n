@@ -38,6 +38,7 @@ public class QTInfo extends GInfo {
 	private QPushButton roteerL;
 	private QPushButton nieuweTegel;
 	private QPushButton neemPion;
+	private QPushButton beurt;
 	private QSpacerItem spacer;
 	private Vector<QWidget> spelers;
 	private static final int TEGEL_PRESENTATIE = 0;
@@ -50,7 +51,8 @@ public class QTInfo extends GInfo {
 
 	private class Stapel extends QWidget {
 		private Spel spel;
-		QLabel tegelIcon;
+		private QLabel tegelIcon;
+		private boolean tegelGenomen;
 
 		public Stapel(Spel spel) {
 			super();
@@ -60,8 +62,7 @@ public class QTInfo extends GInfo {
 			setSize(tegelIcon, 90, 90);
 
 			String[] tegel = spel.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/"
-					+ tegel[TEGEL_PRESENTATIE] + ".png"));
+			tegelIcon.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 		}
 
 		public void roteerRechts() {
@@ -138,8 +139,7 @@ public class QTInfo extends GInfo {
 			QPixmap pixmap = child.pixmap();
 
 			QByteArray itemData = new QByteArray();
-			QDataStream dataStream = new QDataStream(itemData,
-					QIODevice.OpenModeFlag.WriteOnly);
+			QDataStream dataStream = new QDataStream(itemData,QIODevice.OpenModeFlag.WriteOnly);
 			pixmap.writeTo(dataStream);
 			event.pos().subtract(child.pos()).writeTo(dataStream);
 
@@ -154,28 +154,24 @@ public class QTInfo extends GInfo {
 			QPixmap tempPixmap = new QPixmap(pixmap);
 			QPainter painter = new QPainter();
 			painter.begin(tempPixmap);
-			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,
-					127, 127)));
+			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,127, 127)));
 			painter.end();
 
 			child.setPixmap(tempPixmap);
 
-			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
-					Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
+			if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
 				String[] tegel = spel.vraagNieuweTegel();
 				if (tegel == null)
 					child.close();
 				else {
 					child.show();
-					child.setPixmap(new QPixmap("src/icons/"
-							+ tegel[TEGEL_PRESENTATIE] + ".png"));
+					child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 				}
 			} else {
 				String[] tegel = spel.vraagNieuweTegel();
 				tegel[2] = new String("0"); // orientatie resetten
 				child.show();
-				child.setPixmap(new QPixmap("src/icons/"
-						+ tegel[TEGEL_PRESENTATIE] + ".png"));
+				child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 			}
 		}
 	}
@@ -197,6 +193,7 @@ public class QTInfo extends GInfo {
 		roteerL.clicked.connect(stapel, "roteerLinks()");
 		nieuweTegel.clicked.connect(stapel, "nieuweTegel()");
 		neemPion.clicked.connect(this, "neemPion()");
+		beurt.clicked.connect(this, "volgendeSpeler()");
 	}
 
 	private void add() {
@@ -205,8 +202,9 @@ public class QTInfo extends GInfo {
 		box.addWidget(roteerR, 1, 1, 1, 1);
 		box.addWidget(nieuweTegel, 2, 0, 1, 1);
 		box.addWidget(neemPion, 2, 1, 1, 1);
+		box.addWidget(beurt, 3, 0, 1, 2);
 
-		rows = 3;
+		rows = 4;
 	}
 
 	private void resize() {
@@ -230,6 +228,7 @@ public class QTInfo extends GInfo {
 		roteerL = new QPushButton("Draai Links");
 		nieuweTegel = new QPushButton("Nieuwe Tegel");
 		neemPion = new QPushButton("Neem Pion");
+		beurt = new QPushButton("Volgende Speler");
 	}
 
 	public void updateInfo() {
@@ -247,7 +246,7 @@ public class QTInfo extends GInfo {
 				box.show();
 			} else {
 				QApplication.setOverrideCursor(new QCursor(new QPixmap(
-						"src/icons/pion.png")));
+						"src/icons/"+mSpel.geefHuidigeSpeler()+".png")));
 			}
 		}
 	}
@@ -279,7 +278,7 @@ public class QTInfo extends GInfo {
 	}
 
 	public synchronized void verwijderSpelers() {
-		qtInfo.hide();
+		//qtInfo.hide();
 		box.removeItem(spacer);
 		for (int i = spelers.size() - 1; i >= 0; --i) {
 			QWidget item = spelers.elementAt(i);
@@ -311,4 +310,12 @@ public class QTInfo extends GInfo {
 		widget.setMaximumSize(w, h);
 		widget.setMinimumSize(w, h);
 	}
+	
+	private void volgendeSpeler()
+	{	
+		mSpel.volgendeSpeler();
+		verwijderSpelers();
+		updateSpelers();
+	}
+	
 }
