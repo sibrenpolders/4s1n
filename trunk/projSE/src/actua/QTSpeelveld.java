@@ -155,6 +155,7 @@ public class QTSpeelveld extends GSpeelveld {
 		startTegelPos = new Vector2D((rows-1)/2, (columns-1)/2);
 		mogelijkeZetten = new ArrayList<Vector2D>();
 		clearSpeelveld();
+		createEmptyTegels();
 	}
 
 	public QWidget getGridWidget() {
@@ -221,7 +222,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraUp() {
 		upperLeftRow--;
-		startTegelPos.setX(startTegelPos.getX()-1);
+		startTegelPos.setX(startTegelPos.getX()+1);
 		Vector3D nieuwePositie = new Vector3D(
 				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
@@ -231,7 +232,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraDown() {
 		upperLeftRow++;
-		startTegelPos.setX(startTegelPos.getX()+1);
+		startTegelPos.setX(startTegelPos.getX()-1);
 		Vector3D nieuwePositie = new Vector3D(
 				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
@@ -241,7 +242,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraLeft() {
 		upperLeftCol--;
-		startTegelPos.setY(startTegelPos.getY()-1);
+		startTegelPos.setY(startTegelPos.getY()+1);
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
 						.getZ());
@@ -251,7 +252,7 @@ public class QTSpeelveld extends GSpeelveld {
 
 	private void cameraRight() {
 		upperLeftCol++;
-		startTegelPos.setY(startTegelPos.getY()+1);
+		startTegelPos.setY(startTegelPos.getY()-1);
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
 						.getZ());
@@ -264,11 +265,11 @@ public class QTSpeelveld extends GSpeelveld {
 		createEmptyTegels();
 		for (int i = 0; i < gelegdeTegels.size(); ++i) {
 			QTTegel tegel = gelegdeTegels.get(i);
-			int col = startTegelPos.getX() + tegel.getCol();
-			int row = startTegelPos.getY() + tegel.getRow();
+			int row = startTegelPos.getX() + tegel.getCol();
+			int col = startTegelPos.getY() + tegel.getRow();
 			
 			if (col >= 0 && col < columns && row >= 0 && row < rows) {
-				gridLayout.addWidget(tegel.getTegelView(), col, row, 1, 1);
+				gridLayout.addWidget(tegel.getTegelView(), row, col, 1, 1);
 			}
 		}
 	}
@@ -340,6 +341,7 @@ public class QTSpeelveld extends GSpeelveld {
 			gridLayout.addWidget(qTegel.getTegelView(), gridCoord.getX(), gridCoord.getY(), 1, 1);
 			gelegdeTegels.add(qTegel);
 			isTegelGeplaatst = true;
+			spel.huidigeSpelerPlaatstTegel(true);
 		}
 
 		// altijd resetten naar 0 hier

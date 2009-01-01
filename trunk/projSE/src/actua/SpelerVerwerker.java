@@ -10,6 +10,7 @@ public class SpelerVerwerker implements Serializable {
 	private static final long serialVersionUID = 6790524642848337268L;
 	private ArrayList<Speler> spelers;
 	private int huidigeSpelerIndex;
+	private boolean huidigeSpelerHeeftTegelGeplaatst;
 
 	public SpelerVerwerker() {
 		spelers = new ArrayList<Speler>();
@@ -143,6 +144,15 @@ public class SpelerVerwerker implements Serializable {
 		if (huidigeSpelerIndex == -1)
 			huidigeSpelerIndex = 0;
 		spelers.add(SpelerFactory.maakSpeler(naam, kleur, score, niveau, tv));
+	}
+	
+	public boolean isHuidigeSpelerHeeftTegelGeplaatst() {
+		return huidigeSpelerHeeftTegelGeplaatst;
+	}
+
+	public void setHuidigeSpelerHeeftTegelGeplaatst(
+			boolean huidigeSpelerHeeftTegelGeplaatst) {
+		this.huidigeSpelerHeeftTegelGeplaatst = huidigeSpelerHeeftTegelGeplaatst;
 	}
 
 	// FILE I/O
