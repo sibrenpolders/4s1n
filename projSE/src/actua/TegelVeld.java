@@ -284,8 +284,8 @@ public class TegelVeld implements Serializable {
 	// ALGORITMISCH STRUCTUREN UIT DE ADT HALEN
 
 	public Tegel[] getBuren(Vector2D coord) {
-		Vector2D veldCoord = zetOmInVeldCoord(coord);
-		return getBurenHulp(veldCoord);
+		//Vector2D veldCoord = zetOmInVeldCoord(coord);
+		return getBurenHulp(coord);
 	}
 
 	private Tegel[] getBurenHulp(Vector2D coord) {
