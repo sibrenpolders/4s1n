@@ -137,12 +137,12 @@ public class QTInfo extends GInfo {
 		}
 
 		protected void mousePressEvent(QMouseEvent event) {
-			if (!tegelGenomen){
+			if (!spel.heeftHuidigeSpelerTegelGeplaatst()){
 				QLabel child = (QLabel) childAt(0, 0);
 				if (child == null)
 					return;
 	
-				tegelGenomen = true;
+				//tegelGenomen = true;
 				
 				QPixmap pixmap = child.pixmap();
 	
@@ -179,7 +179,7 @@ public class QTInfo extends GInfo {
 					String[] tegel = spel.vraagNieuweTegel();
 					tegel[2] = new String("0"); // orientatie resetten
 					child.show();
-					tegelGenomen = false;
+					//tegelGenomen = false;
 					child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 				}
 			}
@@ -327,7 +327,7 @@ public class QTInfo extends GInfo {
 		mSpel.volgendeSpeler();
 		verwijderSpelers();
 		updateSpelers();
-		stapel.setTegelGenomen(false);
+		mSpel.huidigeSpelerPlaatstTegel(false);
 	}
 	
 }

@@ -180,6 +180,14 @@ public class Spel extends Observable implements Serializable {
 		}
 	}
 	
+	public void huidigeSpelerPlaatstTegel(boolean geplaatst) {
+		spelerVerwerker.setHuidigeSpelerHeeftTegelGeplaatst(geplaatst);
+	}
+	
+	public boolean heeftHuidigeSpelerTegelGeplaatst() {
+		return spelerVerwerker.isHuidigeSpelerHeeftTegelGeplaatst();
+	}
+	
 	// FILE I/O
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
