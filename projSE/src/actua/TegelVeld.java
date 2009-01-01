@@ -100,7 +100,7 @@ public class TegelVeld implements Serializable {
 	}
 
 	public Tegel get(Vector2D coord) {
-		//Vector2D veldCoord = zetOmInVeldCoord(coord);
+		Vector2D veldCoord = zetOmInVeldCoord(coord);
 		return tegelAt(coord);
 	}
 
@@ -339,7 +339,7 @@ public class TegelVeld implements Serializable {
 				break;
 			}
 
-			if ((t = (Tegel) get(positie)) != null) {
+			if ((t = (Tegel) tegelAt(positie)) != null) {
 				buurGevonden = true;
 				burenGeldig = gelijkeLandsDelen(i, tegel, t);
 			}
