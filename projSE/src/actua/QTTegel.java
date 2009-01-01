@@ -113,7 +113,7 @@ public class QTTegel extends GTegel {
 				if (spel.plaatsPion(tegelCoord, zone)) {
 					QLabel label = new QLabel();
 					label.setPixmap(new QPixmap(pionpixmap));
-					gridLayout.addWidget(label, col, row, 1, 1);
+					gridLayout.addWidget(label, row, col, 1, 1);
 				}
 			} else {
 				event.ignore();
