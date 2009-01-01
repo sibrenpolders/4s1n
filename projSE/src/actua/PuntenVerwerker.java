@@ -45,25 +45,26 @@ public class PuntenVerwerker {
 		return spelerOranje;
 	}
 	
-	public void updateScore(Vector2D coord, ArrayList<ArrayList<Tegel>> veld) {
-		int x = coord.getX();
-		int y = coord.getY();
+	// de return is een array met alle pionnen (kleuren)
+	// de functie die deze method aanroept moet het zo maken dat
+	// de pionnen terug gegeven worden aan de juiste spelers
+	public ArrayList<Character> updateScore(Vector2D coord, TegelVeld veld) {
 		aantalTegels = 0;
+		ArrayList<Character> pionnen = new ArrayList<Character>();
 		
-		if (coord == null || veld == null || veld.size() <= x || x < 0 || y < 0 ||
-				veld.get(x).size() <= y) {
-			return;
-		}
-		
-		Tegel geplaatsteTegel = veld.get(x).get(y);
-		boolean checked[] = new boolean[Tegel.MAX_GROOTTE];
+		Tegel geplaatsteTegel = veld.get(coord);
+		if (geplaatsteTegel != null) {
+			boolean checked[] = new boolean[Tegel.MAX_GROOTTE];
 
-		for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
-			if (!checked[i]) {
-				updateScore(coord, veld, geplaatsteTegel, i);
-				updateChecked(checked, geplaatsteTegel, i);
+			for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
+				if (!checked[i]) {
+					pionnen.addAll(updateScore(coord, veld, geplaatsteTegel, i));
+					updateChecked(checked, geplaatsteTegel, i);
+				}
 			}
 		}
+		
+		return pionnen;
 	}
 
 	private void updateChecked(boolean[] checked, Tegel geplaatsteTegel, int i) {
@@ -76,55 +77,58 @@ public class PuntenVerwerker {
 		}
 	}
 
-	private void updateScore(Vector2D coord, ArrayList<ArrayList<Tegel>> veld,
+	private ArrayList<Character> updateScore(Vector2D coord, TegelVeld veld,
 			Tegel geplaatsteTegel, int i) {
 		Landsdeel ld = geplaatsteTegel.bepaalLandsdeel(i);
-		ArrayList<Pion> pionnen = new ArrayList<Pion>();	
+		ArrayList<Character> pionnen = new ArrayList<Character>();	
 		
 		if (ld.getType() == Landsdeel.KLOOSTER && ld.isPionGeplaatst()) {
-			updateScoreKlooster(veld, coord, i, ld);
+			pionnen = updateScoreKlooster(veld, coord, i, ld);
 		} else if (ld.getType() == Landsdeel.STAD) {
 			ArrayList<Tegel> checked = new ArrayList<Tegel>();
 			if(updateScoreStad(veld, coord, ld, pionnen, checked)) { 
 				updateScore(pionnen, STAD_PUNTEN);
 			}
 		} else if (ld.getType() == Landsdeel.WEG) {
-			updateScoreWeg(veld, coord, i, ld, pionnen);
+			if (updateScoreWeg(veld, coord, i, ld, pionnen)){
+				updateScore(pionnen, WEG_PUNTEN);
+			}
 		}
+		
+		return pionnen;
 	}
 
-	private void updateScoreWeg(ArrayList<ArrayList<Tegel>> veld,
-			Vector2D coord, int inGaandePos, Landsdeel ld, ArrayList<Pion> pionnen) {
+	private boolean updateScoreWeg(TegelVeld veld,
+			Vector2D coord, int inGaandePos, Landsdeel ld, ArrayList<Character> pionnen) {
 		aantalTegels = 1;
 		
 		if (ld.isPionGeplaatst()) {
-			pionnen.add(ld.neemPionnenTerug());
+			pionnen.add(new Character(ld.neemPionnenTerug()));
 		}
 		
 		int uitgaandePos = -1; // hier gaat de weg over van deze tegel naar zijn buur
-		Tegel t = veld.get(coord.getX()).get(coord.getY());		
-		if (t.bepaalLandsdeel(Tegel.MIDDEN) == ld) {
-			uitgaandePos = vindUitgaanWeg(t, inGaandePos, ld);
+		Tegel t = veld.get(coord);		
+		if (t.bepaalLandsdeel(Tegel.MIDDEN) == ld) { // is het midden ook een weg?
+			uitgaandePos = vindUitgaanWeg(t, inGaandePos, ld);  // het midden is een weg -> 
+																// zoek waar de weg uit de tegel gaat.
 		}
 		
 		boolean gebiedCompleet = vindBuren(inGaandePos, pionnen, veld, ld, coord);
 		
 		if (uitgaandePos != -1 && gebiedCompleet) {
 			gebiedCompleet = vindBuren(uitgaandePos, pionnen, veld, ld, coord);
-		}
+		}		
 		
-		if (gebiedCompleet) {
-			updateScore(pionnen, WEG_PUNTEN);
-		}
+		return gebiedCompleet;
 	}
 
-	private void updateScore(ArrayList<Pion> pionnen, int wegPunten) {
-		int score = wegPunten*aantalTegels;
+	private void updateScore(ArrayList<Character> pionnen, int punten) {
+		int score = punten*aantalTegels;
 		int[] aantalPionnen = new int[5];
 		int maximum = -1;
 		
 		for (int i = 0; i < pionnen.size(); ++i) {
-			switch(pionnen.get(i).getKleur()) {
+			switch(pionnen.get(i).charValue()) {
 			case Speler.SPELER_ROOD:
 				++aantalPionnen[0];
 				maximum = (aantalPionnen[0] > maximum)? aantalPionnen[0] : maximum;
@@ -169,58 +173,44 @@ public class PuntenVerwerker {
 		}
 	}
 
-	private boolean vindBuren(int wegPos, ArrayList<Pion> pionnen,
-			ArrayList<ArrayList<Tegel>> veld, Landsdeel ld, Vector2D coord) {
+	private boolean vindBuren(int wegPos, ArrayList<Character> pionnen,
+			TegelVeld veld, Landsdeel ld, Vector2D coord) {
 		int x = coord.getX();
 		int y = coord.getY();
-		Tegel t;		
+		Tegel t;
+		boolean eindeGevonden = true;
+		
 		switch(wegPos) {
 		case Tegel.NOORD:
-			if (x-1 >= 0) {
+			if (null != (t = veld.get(new Vector2D(x-1, y)))) {
 				++aantalTegels;
-				t = veld.get(x-1).get(y);
-				if (t.isPionGeplaatst(Tegel.ZUID)) {
-					//TODO Aanpassen -> pionnen zijn kleuren geworden om een low coupling te bekomen
-					//pionnen.add(t.neemPionTerug(Tegel.ZUID));
-				}
-				updateScoreWeg(veld, coord, Tegel.ZUID, ld, pionnen);
+				eindeGevonden = updateScoreWeg(veld, coord, Tegel.ZUID, 
+						t.bepaalLandsdeel(Tegel.ZUID), pionnen);
 			}
 			break;
 		case Tegel.OOST:
-			if (y+1 < veld.get(x).size()) {
+			if (null != (t = veld.get(new Vector2D(x, y+1)))) {
 				++aantalTegels;
-				t = veld.get(x).get(y+1);
-				if (t.isPionGeplaatst(Tegel.WEST)) {
-					//TODO  Aanpassen -> pionnen zijn kleuren geworden om een low coupling te bekomen
-					//pionnen.add(t.neemPionTerug(Tegel.WEST));
-				}
-				updateScoreWeg(veld, coord, Tegel.ZUID, ld, pionnen);				
+				eindeGevonden = updateScoreWeg(veld, coord, Tegel.WEST, 
+						t.bepaalLandsdeel(Tegel.WEST), pionnen);				
 			}
 			break;
 		case Tegel.ZUID:
-			if (x+1 < veld.size()) {
+			if (null != (t = veld.get(new Vector2D(x+1, y)))) {
 				++aantalTegels;
-				t = veld.get(x+1).get(y);
-				if (t.isPionGeplaatst(Tegel.NOORD)) {
-					//TODO  Aanpassen -> pionnen zijn kleuren geworden om een low coupling te bekomen
-					//pionnen.add(t.neemPionTerug(Tegel.NOORD));
-				}
-				updateScoreWeg(veld, coord, Tegel.ZUID, ld, pionnen);
+				eindeGevonden = updateScoreWeg(veld, coord, Tegel.NOORD, 
+						t.bepaalLandsdeel(Tegel.NOORD), pionnen);
 			}
 			break;
 		case Tegel.WEST:
-			if (y-1 >= 0) {
+			if (null != (t = veld.get(new Vector2D(x, y-1)))) {
 				++aantalTegels;
-				t = veld.get(x).get(y-1);
-				if (t.isPionGeplaatst(Tegel.OOST)) {
-					//TODO  Aanpassen -> pionnen zijn kleuren geworden om een low coupling te bekomen
-					//pionnen.add(t.neemPionTerug(Tegel.OOST));
-				}
-				updateScoreWeg(veld, coord, Tegel.OOST, ld, pionnen);
+				eindeGevonden = updateScoreWeg(veld, coord, Tegel.OOST, 
+						t.bepaalLandsdeel(Tegel.WEST), pionnen);
 			}
 			break;
 		}
-		return false;
+		return eindeGevonden;
 	}
 
 	private int vindUitgaanWeg(Tegel t, int inGaandePos, Landsdeel ld) {
@@ -248,15 +238,15 @@ public class PuntenVerwerker {
 		return uitGaandeWeg;
 	}
 
-	private boolean updateScoreStad(ArrayList<ArrayList<Tegel>> veld,
-			Vector2D coord, Landsdeel ld, ArrayList<Pion> pionnen, ArrayList<Tegel> checked) {
+	private boolean updateScoreStad(TegelVeld veld,
+			Vector2D coord, Landsdeel ld, ArrayList<Character> pionnen, ArrayList<Tegel> checked) {
 		if (ld.isPionGeplaatst()) {
 			pionnen.add(ld.neemPionnenTerug());
 		}
 		
 		++aantalTegels;
 		
-		Tegel t = veld.get(coord.getX()).get(coord.getY());
+		Tegel t = veld.get(coord);
 		checked.add(t);
 		int x = coord.getX();
 		int y = coord.getY();
@@ -287,18 +277,21 @@ public class PuntenVerwerker {
 		return eindeGevonden;
 	}
 
-	private boolean updateScoreStad(ArrayList<ArrayList<Tegel>> veld,
-			Vector2D coordBuur, Landsdeel ld, int windrichting, ArrayList<Pion> pionnen,
+	private boolean updateScoreStad(TegelVeld veld,
+			Vector2D coordBuur, Landsdeel ld, int windrichting, ArrayList<Character> pionnen,
 			ArrayList<Tegel> checked) {
 		int x = coordBuur.getX();
 		int y = coordBuur.getY();
-		Tegel tegel = veld.get(x).get(y);
+		Tegel tegel = veld.get(coordBuur);
+		if (tegel == null) {
+			return false;
+		}
+		
 		Landsdeel ldWindrichting = tegel.bepaalLandsdeel(windrichting);
 		
 		boolean eindeGevonden = true;
 		
-		if (x >= 0 && x < veld.size() && y >= 0 && y < veld.get(x).size() && 
-				ld.getType() == ldWindrichting.getType() && !alGechecked(checked, tegel)) {
+		if (ld.getType() == ldWindrichting.getType() && !alGechecked(checked, tegel)) {
 			eindeGevonden = updateScoreStad(veld, coordBuur, ldWindrichting, pionnen, checked);
 		}
 		
@@ -315,12 +308,13 @@ public class PuntenVerwerker {
 		return false;
 	}
 
-	private void updateScoreKlooster(ArrayList<ArrayList<Tegel>> veld,
+	private ArrayList<Character> updateScoreKlooster(TegelVeld veld,
 			Vector2D coord, int i, Landsdeel ld) {
+		ArrayList<Character> pionnen = new ArrayList<Character>();
 		if (telBuren(veld, coord) == 4) {
-			Pion pion = ld.neemPionnenTerug();
-			pion.zetGeplaatst(false);
-			switch(pion.getKleur()) {
+			char pion = ld.neemPionnenTerug();
+			pionnen.add(new Character(pion));
+			switch(pion) {
 			case Speler.SPELER_BLAUW:
 				spelerBlauw += KLOOSTER_PUNTEN;
 				break;
@@ -338,30 +332,32 @@ public class PuntenVerwerker {
 				break;
 			}
 		}
+		
+		return pionnen;
 	}
 
-	private int telBuren(ArrayList<ArrayList<Tegel>> veld, Vector2D coord) {
+	private int telBuren(TegelVeld veld, Vector2D coord) {
 		int aantalBuren = 0;
 		int x = coord.getX();
 		int y = coord.getY();
 		
 		// NOORD buur
-		if (x-1 >= 0) {
+		if (null != veld.get(new Vector2D(x-1, y))) {
 			++aantalBuren;
 		}
 		
 		// OOST buur
-		if (veld.get(x).size() > y+1) {
+		if (null != veld.get(new Vector2D(x, y+1))) {
 			++aantalBuren;
 		}
 	
 		// ZUID buur
-		if (veld.size() > x) {
+		if (null != veld.get(new Vector2D(x+1, y))) {
 			++aantalBuren;
 		}
 		
 		// WEST buur
-		if (y-1 > 0) {
+		if (null != veld.get(new Vector2D(x, y-1))) {
 			++aantalBuren;			
 		}
 		
