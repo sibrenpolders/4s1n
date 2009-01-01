@@ -123,9 +123,10 @@ public class Tegel implements Serializable {
 			}
 		}
 
-		for (int j = 0; j < 10; ++j) {
-			;
-		}
+		// random for-loop die niks doet
+//		for (int j = 0; j < 10; ++j) {
+//			;
+//		}
 	}
 
 	public Landsdeel bepaalLandsdeel(int pos) {
@@ -195,13 +196,13 @@ public class Tegel implements Serializable {
 			return pos;
 		}
 	
-		int beginPos = 1;
+		int beginPos;
 	
 		if (orientatie == 1) {
 			beginPos = 9;
 		} else if (orientatie == 2) {
 			beginPos = 6;
-		} else if (orientatie == 3) {
+		} else /*if (orientatie == 3)*/ {
 			beginPos = 3;
 		}
 	
@@ -220,7 +221,7 @@ public class Tegel implements Serializable {
 	// PIONNEN
 	
 	public boolean plaatsPion(int pos, char kleur) {
-		if(pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] != 0)
+		if(pionnen[pos] != 0 || pos < 0 || pos >= MAX_GROOTTE)
 			return false;
 		else
 		{
@@ -230,7 +231,7 @@ public class Tegel implements Serializable {
 	}
 
 	public boolean isPionGeplaatst(int pos) {
-		if (pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] != 0)
+		if(pionnen[pos] != 0 || pos < 0 || pos >= MAX_GROOTTE)
 			return true;
 
 		return false;
@@ -238,7 +239,7 @@ public class Tegel implements Serializable {
 	
 	public char geefPionKleur(int pos)
 	{
-		if (pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] == 0)
+		if(pionnen[pos] != 0 || pos < 0 || pos >= MAX_GROOTTE)
 			return 0;
 
 		return pionnen[pos];

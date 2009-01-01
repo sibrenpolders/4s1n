@@ -96,6 +96,7 @@ public class QTSpelerInfo extends GSpelerInfo {
 		punten.setNum(score_);
 		if (kleur == spel.geefHuidigeSpeler())
 			naam.setText(naam_.toUpperCase());
+		addPionnen();
 	}
 
 	private QPixmap spelerKleur() {

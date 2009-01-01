@@ -245,7 +245,7 @@ public class QTTegel extends GTegel {
 	private void voegPionToe(short zone, int row, int col) {
 		if (!isBackground && spel.plaatsPion(tegelCoord, zone)) {
 			char kleur = spel.geefHuidigeSpeler();
-			verwijderPionInSectie(row, col);
+			verwijderPionInSectie(row, col); // waarom ? ik zou dit weglate
 			plaatsPionInSectie(row, col, kleur);
 		}
 	}
@@ -268,8 +268,7 @@ public class QTTegel extends GTegel {
 		}
 		matrix = matrix.rotate(90.0 * (double) orientatie);
 		tegel[2] = new String("" + orientatie);
-		setPixmap(new QPixmap(pixmap.transformed(matrix,
-				TransformationMode.FastTransformation)));
+		setPixmap(new QPixmap(pixmap.transformed(matrix,TransformationMode.FastTransformation)));
 	}
 
 	public tegelView getTegelView() {
