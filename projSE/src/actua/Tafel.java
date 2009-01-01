@@ -243,6 +243,8 @@ public class Tafel implements Serializable {
 		
 		for (int i = 0; pionPlaatsingGeldig && i < Tegel.MAX_GROOTTE; ++i) {
 			if (tegel.bepaalLandsdeel(i) == matchLandsdeel) {
+				if (tegel.isPionGeplaatst(i))
+					pionPlaatsingGeldig=false;
 				buurPionCoord = getBuurPionCoord(i);
 				buurNr = getBuurNr(i);
 				buurCoord = getBuurCoord(buurNr, veldCoord);
