@@ -98,7 +98,7 @@ public class QTTegel extends GTegel {
 			if (event.mimeData().hasFormat("application/x-pionitemdata")) {
 				int row = event.pos().y() / 30;
 				int col = event.pos().x() / 30;
-				short zone = getZone(row, col);
+					short zone = getZone(row, col);
 
 				QByteArray itemData = event.mimeData().data(
 						"application/x-pionitemdata");
