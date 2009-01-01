@@ -40,13 +40,8 @@ public class Tegel implements Serializable {
 	private Landsdeel[] landsdelen;
 	private String tegelPresentatie;
 	private String idPresentatie;
-	private char pionnen[];
 
 	public Tegel() {
-		pionnen = new char[MAX_GROOTTE];
-		for(int i = 0; i < MAX_GROOTTE; ++i)
-			pionnen[i] = 0; // geen pion in dat vakje dus
-		
 		orientatie = 0;
 	}
 
@@ -55,10 +50,6 @@ public class Tegel implements Serializable {
 	}
 
 	public Tegel(String tegelPresentatie, String idPresentatie, short orientatie) {
-		pionnen = new char[MAX_GROOTTE];
-		for(int i = 0; i < MAX_GROOTTE; ++i)
-			pionnen[i] = 0; // geen pion in dat vakje dus
-		
 		this.tegelPresentatie = new String(tegelPresentatie);
 		setLandsdelen(new String(idPresentatie));
 		this.idPresentatie = new String(idPresentatie);
@@ -221,36 +212,36 @@ public class Tegel implements Serializable {
 	// PIONNEN
 	
 	public boolean plaatsPion(int pos, char kleur) {
-		if(pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] != 0 )
+		if(pos < 0 || pos >= MAX_GROOTTE || landsdelen[pos].isPionGeplaatst() ) {
 			return false;
-		else
-		{
-			pionnen[pos]  = kleur;
+		} else {
+			landsdelen[pos].plaatsPion(kleur);
 			return true;
 		}
 	}
 
 	public boolean isPionGeplaatst(int pos) {
-		if(pionnen[pos] != 0 || pos < 0 || pos >= MAX_GROOTTE)
+		if(pos < 0 || pos >= MAX_GROOTTE || landsdelen[pos].isPionGeplaatst()) {
 			return true;
+		}
 
 		return false;
 	}
 	
-	public char geefPionKleur(int pos)
-	{
-		if(pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] != 0 )
+	public char geefPionKleur(int pos) {
+		if(pos < 0 || pos >= MAX_GROOTTE) { 
 			return 0;
-
-		return pionnen[pos];
+		}
+		
+		return landsdelen[pos].neemPionnenTerug();
 	}
 	
-	public void verwijderPion(int pos)
-	{
-		if (pos < 0 || pos >= MAX_GROOTTE || pionnen[pos] == 0)
+	public void verwijderPion(int pos) {
+		if (pos < 0 || pos >= MAX_GROOTTE || !landsdelen[pos].isPionGeplaatst()) {
 			;
-		else
-			pionnen[pos] = 0;		
+		} else {
+			landsdelen[pos].plaatsPion((char)0);
+		}
 	}
 
 	// TODO invullen!!!!

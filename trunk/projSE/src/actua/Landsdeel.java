@@ -9,30 +9,28 @@ public class Landsdeel {
 	public static final char KLOOSTER= 'k';
 	public static final char KRUISPUNT = 'r';
 	
-	private Pion pion;
+	private char pion;
 	private char type;
 
 	public Landsdeel() {
-		pion= null;
+		pion = 0;
 	}
 
 	public Landsdeel(char type) {
 		this.type = type;
-		pion= null;
+		pion = 0;
 	}
 	
 	public char getType() {
 		return type;
 	}
 
-	public void plaatsPion(Pion pion) {
-		if (pion != null) {
-			this.pion = pion;
-		}
+	public void plaatsPion(char pion) {
+		this.pion = pion;		
 	}
 
 	public boolean isPionGeplaatst() {
-		return pion != null;
+		return pion != 0;
 	}
 	
 	public Landsdeel clone() {
@@ -40,10 +38,10 @@ public class Landsdeel {
 		return ld;
 	}
 	
-	public Pion neemPionnenTerug() {
-		Pion returnPion = pion;
-		this.pion = null;
-		return returnPion;
+	public char neemPionnenTerug() {
+//		Pion returnPion = pion;
+//		this.pion = ;
+		return pion;
 	}
 }
 
