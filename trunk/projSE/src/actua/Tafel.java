@@ -174,7 +174,7 @@ public class Tafel implements Serializable {
 		}
 
 		return t != null
-				&& isPionPlaatsingGeldig(stringRepresentatie, tegelCoord,
+				&& isPionPlaatsingGeldig(t, tegelCoord,
 						pionCoord) && t.plaatsPion(pionCoord, pion);
 	}
 
@@ -208,6 +208,12 @@ public class Tafel implements Serializable {
 	 *            worden.
 	 * @return True als de pion geplaatst kan worden, False anders.
 	 */
+	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
+			int pionCoord) {
+		ArrayList<Tegel> checked = new ArrayList<Tegel>();
+		//Tegel tegel = (Tegel) veld.get(tegelCoord);
+		return isPionPlaatsingGeldig(pionCoord, tegel, tegelCoord, checked);
+	}
 	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
 			int pionCoord) {
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
