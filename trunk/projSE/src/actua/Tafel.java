@@ -249,7 +249,9 @@ public class Tafel implements Serializable {
 				if (buurNr != -1) { // Tegel.MIDDEN moet niet verder gecontroleerd worden
 					pionPlaatsingGeldig = isPionPlaatsingGeldig(buurPionCoord, 
 							buren[buurNr], buurCoord, checked);
-				} else if (tegel.isPionGeplaatst(i)){
+				} 
+				
+				if (tegel.isPionGeplaatst(i)){
 					pionPlaatsingGeldig = false;
 				}
 			}
