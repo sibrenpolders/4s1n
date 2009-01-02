@@ -27,7 +27,7 @@ public class Landsdeel {
 	
 	public boolean isKruispunt()
 	{
-		return type != KRUISPUNT;
+		return type == KRUISPUNT;
 	}
 
 	public void plaatsPion(char pion) {
