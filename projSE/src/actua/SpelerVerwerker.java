@@ -14,11 +14,13 @@ public class SpelerVerwerker implements Serializable {
 
 	public SpelerVerwerker() {
 		spelers = new ArrayList<Speler>();
+		huidigeSpelerHeeftTegelGeplaatst = false;
 	}
 
 	public void verwijderSpelers() {
 		spelers.clear();
 		huidigeSpelerIndex = -1;
+		huidigeSpelerHeeftTegelGeplaatst = false;
 	}
 
 	// HUIDIGE SPELER
@@ -145,7 +147,7 @@ public class SpelerVerwerker implements Serializable {
 			huidigeSpelerIndex = 0;
 		spelers.add(SpelerFactory.maakSpeler(naam, kleur, score, niveau, tv));
 	}
-	
+
 	public boolean isHuidigeSpelerHeeftTegelGeplaatst() {
 		return huidigeSpelerHeeftTegelGeplaatst;
 	}
