@@ -34,7 +34,6 @@ public class QTInfo extends GInfo {
 	private QPushButton roteerR;
 	private QPushButton roteerL;
 	private QPushButton nieuweTegel;
-	private QPushButton neemPion;
 	private QPushButton beurt;
 	private QSpacerItem spacer;
 	private Vector<QWidget> spelers;
@@ -201,7 +200,6 @@ public class QTInfo extends GInfo {
 		roteerR.clicked.connect(stapel, "roteerRechts()");
 		roteerL.clicked.connect(stapel, "roteerLinks()");
 		nieuweTegel.clicked.connect(stapel, "nieuweTegel()");
-		neemPion.clicked.connect(this, "neemPion()");
 		beurt.clicked.connect(this, "volgendeSpeler()");
 	}
 
@@ -209,8 +207,7 @@ public class QTInfo extends GInfo {
 		box.addWidget(stapel, 0, 0, 1, 2);
 		box.addWidget(roteerL, 1, 0, 1, 1);
 		box.addWidget(roteerR, 1, 1, 1, 1);
-		box.addWidget(nieuweTegel, 2, 0, 1, 1);
-		box.addWidget(neemPion, 2, 1, 1, 1);
+		box.addWidget(nieuweTegel, 2, 0, 1, 2);
 		box.addWidget(beurt, 3, 0, 1, 2);
 
 		rows = 4;
@@ -220,8 +217,6 @@ public class QTInfo extends GInfo {
 		setSize(stapel, 90, 90);
 		setSize(roteerR, 80, BUTTON_HEIGHT);
 		setSize(roteerL, 80, BUTTON_HEIGHT);
-		setSize(nieuweTegel, 80, BUTTON_HEIGHT);
-		setSize(neemPion, 80, BUTTON_HEIGHT);
 
 		setSize(qtInfo, breedte, hoogte);
 	}
@@ -236,7 +231,6 @@ public class QTInfo extends GInfo {
 		roteerR = new QPushButton("Draai Rechts");
 		roteerL = new QPushButton("Draai Links");
 		nieuweTegel = new QPushButton("Nieuwe Tegel");
-		neemPion = new QPushButton("Neem Pion");
 		beurt = new QPushButton("Volgende Speler");
 	}
 
