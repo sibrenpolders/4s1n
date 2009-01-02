@@ -126,6 +126,11 @@ public class Spel extends Observable implements Serializable {
 		}
 		return false;
 	}
+	
+	public boolean isTegelPlaatsbaar(String[] tegel)
+	{
+		return tafelVerwerker.isTegelPlaatsbaar(tegel);
+	}
 
 	public boolean isTegelPlaatsingGeldig(String[] tegel, Vector2D coord) {
 		return tafelVerwerker.isTegelPlaatsingGeldig(tegel, coord);

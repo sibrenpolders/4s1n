@@ -113,13 +113,21 @@ public class TafelVerwerker implements Serializable {
 		return tafel.isTegelPlaatsingGeldig(t, coord);
 	}
 
-	public boolean isTegelPlaatsBaar(Tegel tegel) {
-
-		return true;
+	public boolean isTegelPlaatsbaar(String[] t) 
+	{	
+		Tegel tegel = new Tegel(t[0], t[1], Short.parseShort(t[2]));
+		
+		for(int i = 0; i < 4; ++i){
+			tegel.draaiTegel(true);
+			if(geefGeldigeMogelijkheden(tegel.getTegelString()).size() != 0)
+				return true;
+		}
+		
+		return false;
 	}
 
 	public ArrayList<Vector2D> geefGeldigeMogelijkheden(String[] tegel) {
-		return null;
+		return tafel.geefMogelijkeZetten(tegel);
 	}
 
 	public ArrayList<Vector2D> geefMogelijkeZetten() {
