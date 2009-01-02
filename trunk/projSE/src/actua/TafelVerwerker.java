@@ -122,6 +122,11 @@ public class TafelVerwerker implements Serializable {
 		return null;
 	}
 
+	public ArrayList<Vector2D> geefMogelijkeZetten() {
+		String[] tegel = vraagNieuweTegel();
+		return tafel.geefMogelijkeZetten(tegel);
+	}
+
 	// PIONPLAATSING
 
 	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
@@ -154,7 +159,8 @@ public class TafelVerwerker implements Serializable {
 		tafel.verwijderPion(tegelCoord, pionCoord);
 	}
 
-	//functie die hetzelfde doet als ispionplaatsingmogelijk en wordt ook niet gebruikt?
+	// functie die hetzelfde doet als ispionplaatsingmogelijk en wordt ook niet
+	// gebruikt?
 	public boolean plaatsingPionMogelijk(String[] t, Vector2D tegelCoord,
 			int pionCoord) {
 		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
@@ -176,9 +182,5 @@ public class TafelVerwerker implements Serializable {
 	private void readObjectNoData() throws ObjectStreamException {
 
 	}
-	
-	public ArrayList<Vector2D> geefMogelijkeZetten() {
-		String[] tegel = vraagNieuweTegel();
-		return tafel.geefMogelijkeZetten(tegel);
-	}
+
 }
