@@ -312,8 +312,8 @@ public class QTSpeelveld extends GSpeelveld {
 		int row, col;
 		for (int i = 0; i < _mogelijkeZetten.size(); ++i) {
 			tmp = _mogelijkeZetten.get(i);
-			row = tmp.getX();
-			col = tmp.getY();
+			row = tmp.getX() - spel.getStartTegelPos().getX();
+			col = tmp.getY() - spel.getStartTegelPos().getY();
 
 			if (getAchtergrondTegel(row, col) != null)
 				getAchtergrondTegel(row, col).setGroen();
@@ -330,6 +330,7 @@ public class QTSpeelveld extends GSpeelveld {
 				if (getAchtergrondTegel(tmp.getY(), tmp.getX()) != null)
 					getAchtergrondTegel(tmp.getY(), tmp.getX()).clearGroen();
 			}
+			mogelijkeZetten.clear();
 		}
 	}
 
