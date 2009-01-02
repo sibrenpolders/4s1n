@@ -24,6 +24,11 @@ public class Landsdeel {
 	public char getType() {
 		return type;
 	}
+	
+	public boolean isKruispunt()
+	{
+		return type != KRUISPUNT;
+	}
 
 	public void plaatsPion(char pion) {
 		this.pion = pion;		

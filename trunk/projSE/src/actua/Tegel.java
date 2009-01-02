@@ -202,7 +202,7 @@ public class Tegel implements Serializable {
 
 	private boolean coordinatenOk(int pos) {
 		// de foute coördinaten zijn doorgegeven.
-		if (pos < 0 || pos > MAX_GROOTTE) {
+		if (pos < 0 || pos >= MAX_GROOTTE) {
 			return false;
 		}
 	
@@ -212,7 +212,7 @@ public class Tegel implements Serializable {
 	// PIONNEN
 	
 	public boolean plaatsPion(int pos, char kleur) {
-		if(pos < 0 || pos >= MAX_GROOTTE || landsdelen[pos].isPionGeplaatst() ) {
+		if(pos < 0 || pos >= MAX_GROOTTE || landsdelen[pos].isKruispunt() || landsdelen[pos].isPionGeplaatst() ) {
 			return false;
 		} else {
 			landsdelen[pos].plaatsPion(kleur);
