@@ -44,11 +44,11 @@ public class QTTegel extends GTegel {
 		}
 
 		private void createEmpty() {
-//			this.setBackgroundBrush(new QBrush(pixmap));
+			// this.setBackgroundBrush(new QBrush(pixmap));
 
-			for (int i = 0; i < 3; ++i) {
+			for (int i = 0; i < 5; ++i) {
 				for (int j = 0; j < 3; ++j) {
-					gridLayout.addItem(new QSpacerItem(30, 30), i, j, 1, 1);
+					gridLayout.addItem(new QSpacerItem(30, 18), i, j, 1, 1);
 				}
 			}
 		}
@@ -96,9 +96,10 @@ public class QTTegel extends GTegel {
 
 		protected void dropEvent(QDropEvent event) {
 			if (event.mimeData().hasFormat("application/x-pionitemdata")) {
-				int row = event.pos().y() / 30;
+				int row = event.pos().y() / 18;
 				int col = event.pos().x() / 30;
-					short zone = getZone(row, col);
+				short zone = getZone(row, col);
+				System.out.println("Pion dropped in zone " + zone);
 
 				QByteArray itemData = event.mimeData().data(
 						"application/x-pionitemdata");
@@ -107,7 +108,11 @@ public class QTTegel extends GTegel {
 				QPixmap pionpixmap = new QPixmap();
 				pionpixmap.readFrom(dataStream);
 
-				if (spel.plaatsPion(tegelCoord, zone)) {
+				// TODO X == horizontale as == kolomnummer !!!
+				// Y == verticale as == rijnummer !!!
+				// Ik heb het hier aangepast, maar Tafel en TegelVeld heb ik zo gelaten.
+				Vector2D lompeCoord = new Vector2D(tegelCoord.getY(), tegelCoord.getX());
+				if (spel.plaatsPion(lompeCoord, zone)) {
 					QLabel label = new QLabel();
 					label.setPixmap(new QPixmap(pionpixmap));
 					gridLayout.addWidget(label, row, col, 1, 1);
@@ -117,24 +122,33 @@ public class QTTegel extends GTegel {
 			}
 		}
 
-		protected void dragLeaveEvent(QDragLeaveEvent event) {
-			; // TODO iets doen hier?
-		}
-
-		// TODO Verdeling is dezelfde als in Tegel
-		// Niet ideaal voor low coupling, maar 'k weet niet hoe anders een
-		// eenduidige voorstelling te bekomen die door zowel Spel als door
-		// QTTegel/Speelveld kan gebruikt worden.
+		// TODO 3x3 -> 5x3
 		private short getZone(int row, int col) {
-			if (row == 0 && col == 1) {
+			if (row == 0 && col == 0) {
+				return Tegel.NOORD_WEST;
+			} else if ((row == 0 || row == 1) && col == 1) {
 				return Tegel.NOORD;
+			} else if (row == 0 && col == 2) {
+				return Tegel.NOORD_OOST;
 			} else if (row == 1 && col == 0) {
-				return Tegel.WEST;
-			} else if (row == 1 && col == 1) {
-				return Tegel.MIDDEN;
+				return Tegel.WEST_NOORD;
 			} else if (row == 1 && col == 2) {
-				return Tegel.OOST;
+				return Tegel.OOST_NOORD;
+			} else if (row == 2 && col == 0) {
+				return Tegel.WEST;
 			} else if (row == 2 && col == 1) {
+				return Tegel.MIDDEN;
+			} else if (row == 2 && col == 2) {
+				return Tegel.OOST;
+			} else if (row == 3 && col == 0) {
+				return Tegel.WEST_ZUID;
+			} else if (row == 3 && col == 2) {
+				return Tegel.OOST_ZUID;
+			} else if (row == 4 && col == 0) {
+				return Tegel.ZUID_WEST;
+			} else if (row == 4 && col == 2) {
+				return Tegel.ZUID_OOST;
+			} else if ((row == 3 || row == 4) && col == 1) {
 				return Tegel.ZUID;
 			} else {
 				return (short) -1;
@@ -161,8 +175,7 @@ public class QTTegel extends GTegel {
 		view = new tegelView();
 	}
 
-	public QTTegel(String[] tegel, Spel spel,
-			Vector2D tegelCoord) {
+	public QTTegel(String[] tegel, Spel spel, Vector2D tegelCoord) {
 		super(tegel, spel);
 		isBackground = false;
 		this.tegelCoord = new Vector2D(tegelCoord);
@@ -240,9 +253,9 @@ public class QTTegel extends GTegel {
 	}
 
 	private void voegPionToe(short zone, int row, int col) {
-		if (!isBackground && spel.plaatsPion(tegelCoord, zone)) {
+		Vector2D lompeCoord = new Vector2D(tegelCoord.getY(), tegelCoord.getX());
+		if (!isBackground && spel.plaatsPion(lompeCoord, zone)) {
 			char kleur = spel.geefHuidigeSpeler();
-			verwijderPionInSectie(row, col); // waarom ? ik zou dit weglate
 			plaatsPionInSectie(row, col, kleur);
 		}
 	}
@@ -265,18 +278,11 @@ public class QTTegel extends GTegel {
 		}
 		matrix = matrix.rotate(90.0 * (double) orientatie);
 		tegel[2] = new String("" + orientatie);
-		setPixmap(new QPixmap(pixmap.transformed(matrix,TransformationMode.FastTransformation)));
+		setPixmap(new QPixmap(pixmap.transformed(matrix,
+				TransformationMode.FastTransformation)));
 	}
 
 	public tegelView getTegelView() {
 		return view;
 	}
-
-//	public tegelView getTegelView(QTSpeelveld cont) {
-//		return (view = new tegelView(new QGraphicsScene(), cont));
-//	}
-
-//	public tegelView getCurrTegelView(QTSpeelveld cont) {
-//		return view;
-//	}
 }
