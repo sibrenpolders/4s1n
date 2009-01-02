@@ -6,17 +6,14 @@ import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
 import com.trolltech.qt.core.Qt;
-import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QBrush;
 import com.trolltech.qt.gui.QColor;
-import com.trolltech.qt.gui.QCursor;
 import com.trolltech.qt.gui.QDrag;
 import com.trolltech.qt.gui.QDragEnterEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QGroupBox;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPalette;
@@ -236,22 +233,6 @@ public class QTInfo extends GInfo {
 
 	public void updateInfo() {
 
-	}
-
-	public void neemPion() {
-		if (mSpel.geefAantalSpelers() > 0) {
-			int overigePionnen = mSpel.geefAantalOngeplaatstePionnen(mSpel
-					.geefHuidigeSpeler());
-			if (overigePionnen == 0) {
-				QMessageBox box = new QMessageBox();
-				box.setWindowTitle("Bericht");
-				box.setText("Al uw pionnen zijn reeds geplaatst.");
-				box.show();
-			} else {
-				QApplication.setOverrideCursor(new QCursor(new QPixmap(
-						"src/icons/" + mSpel.geefHuidigeSpeler() + ".png")));
-			}
-		}
 	}
 
 	public synchronized void updateSpelers() {
