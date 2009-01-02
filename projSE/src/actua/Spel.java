@@ -12,6 +12,7 @@ public class Spel extends Observable implements Serializable {
 	private SpelerVerwerker spelerVerwerker;
 	private StatusBijhouder statusBijhouder;
 	private boolean pionGeplaatst = false;
+	private Vector2D tegelGeplaatst;
 
 	public static final char ROOD = 'r';
 	public static final char BLAUW = 'b';
@@ -33,6 +34,7 @@ public class Spel extends Observable implements Serializable {
 
 	public Spel() {
 		pionGeplaatst = false;
+		tegelGeplaatst = null;
 		tafelVerwerker = new TafelVerwerker();
 		spelerVerwerker = new SpelerVerwerker();
 		statusBijhouder = new StatusBijhouder();
@@ -40,6 +42,7 @@ public class Spel extends Observable implements Serializable {
 
 	public void restart() {
 		pionGeplaatst = false;
+		tegelGeplaatst = null;
 		spelerVerwerker.verwijderSpelers();
 		tafelVerwerker.restart();
 		statusBijhouder = new StatusBijhouder();
@@ -51,6 +54,7 @@ public class Spel extends Observable implements Serializable {
 
 	public void volgendeSpeler() {
 		pionGeplaatst = false;
+		tegelGeplaatst = null;
 		spelerVerwerker.volgendeSpeler();
 		notifyObservers(HUIDIGESPELERVERANDERD);
 	}
@@ -116,7 +120,11 @@ public class Spel extends Observable implements Serializable {
 	}
 
 	public boolean plaatsTegel(String[] tegel, Vector2D coord) {
-		return tafelVerwerker.plaatsTegel(tegel, coord);
+		if (tafelVerwerker.plaatsTegel(tegel, coord) == true) {
+			tegelGeplaatst = new Vector2D(coord.getX(), coord.getY());
+			return true;
+		}
+		return false;
 	}
 
 	public boolean isTegelPlaatsingGeldig(String[] tegel, Vector2D coord) {
@@ -130,7 +138,7 @@ public class Spel extends Observable implements Serializable {
 	public ArrayList<Vector2D> geefMogelijkeZetten() {
 		return tafelVerwerker.geefMogelijkeZetten();
 	}
-	
+
 	// PION + PIONPLAATSING
 
 	public boolean pionBijBeurtReedsGeplaatst() {
@@ -143,7 +151,10 @@ public class Spel extends Observable implements Serializable {
 	}
 
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, char speler) {
-		if (spelerVerwerker.isHuidigeSpeler(speler) && !pionGeplaatst) {
+		if (spelerVerwerker.isHuidigeSpeler(speler) && !pionGeplaatst
+				&& tegelGeplaatst != null
+				&& tegelGeplaatst.getX() == tegelCoord.getX()
+				&& tegelGeplaatst.getY() == tegelCoord.getY()) {
 			boolean pion = spelerVerwerker.neemPionVan(speler);
 			if (pion != false) {
 				pionGeplaatst = tafelVerwerker.plaatsPion(tegelCoord,
@@ -156,12 +167,12 @@ public class Spel extends Observable implements Serializable {
 
 		return false;
 	}
-	
-	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord, 
+
+	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
 			int pionCoord) {
-		return tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);		
+		return tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
 	}
-	
+
 	public boolean undo() {
 		if (statusBijhouder.pop_undo() == null) {
 			return false;
@@ -170,7 +181,7 @@ public class Spel extends Observable implements Serializable {
 			return true;
 		}
 	}
-	
+
 	public boolean redo() {
 		if (statusBijhouder.pop_redo() == null) {
 			return false;
@@ -179,15 +190,15 @@ public class Spel extends Observable implements Serializable {
 			return true;
 		}
 	}
-	
+
 	public void huidigeSpelerPlaatstTegel(boolean geplaatst) {
 		spelerVerwerker.setHuidigeSpelerHeeftTegelGeplaatst(geplaatst);
 	}
-	
+
 	public boolean heeftHuidigeSpelerTegelGeplaatst() {
 		return spelerVerwerker.isHuidigeSpelerHeeftTegelGeplaatst();
 	}
-	
+
 	// FILE I/O
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
@@ -203,5 +214,5 @@ public class Spel extends Observable implements Serializable {
 
 	private void readObjectNoData() throws ObjectStreamException {
 
-	}	
+	}
 }
