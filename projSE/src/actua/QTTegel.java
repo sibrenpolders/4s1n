@@ -99,7 +99,7 @@ public class QTTegel extends GTegel {
 				int row = event.pos().y() / 18;
 				int col = event.pos().x() / 30;
 				short zone = getZone(row, col);
-				System.out.println("Pion dropped in zone " + zone);
+				// System.out.println("Pion dropped in zone " + zone);
 
 				QByteArray itemData = event.mimeData().data(
 						"application/x-pionitemdata");
@@ -110,8 +110,10 @@ public class QTTegel extends GTegel {
 
 				// TODO X == horizontale as == kolomnummer !!!
 				// Y == verticale as == rijnummer !!!
-				// Ik heb het hier aangepast, maar Tafel en TegelVeld heb ik zo gelaten.
-				Vector2D lompeCoord = new Vector2D(tegelCoord.getY(), tegelCoord.getX());
+				// Ik heb het hier aangepast, maar Tafel en TegelVeld heb ik zo
+				// gelaten.
+				Vector2D lompeCoord = new Vector2D(tegelCoord.getY(),
+						tegelCoord.getX());
 				if (spel.plaatsPion(lompeCoord, zone)) {
 					QLabel label = new QLabel();
 					label.setPixmap(new QPixmap(pionpixmap));

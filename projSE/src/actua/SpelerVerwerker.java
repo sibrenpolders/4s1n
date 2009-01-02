@@ -45,6 +45,7 @@ public class SpelerVerwerker implements Serializable {
 
 	public void gaNaarVolgendeSpeler() {
 		huidigeSpelerIndex = (huidigeSpelerIndex + 1) % spelers.size();
+		this.huidigeSpelerHeeftTegelGeplaatst = false;
 	}
 
 	// SPELERSGROEP
