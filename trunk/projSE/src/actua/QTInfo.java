@@ -162,13 +162,29 @@ public class QTInfo extends GInfo {
 
 				if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
 						Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
-					String[] tegel = spel.vraagNieuweTegel();
-					if (tegel == null)
-						child.close();
-					else {
+					boolean gedaan = false;
+					String[] tegel;
+					int stapelSize, teller = 0;
+					
+					tegel = spel.vraagNieuweTegel();
+					
+//					stapelSize = spel.getStapelSize();
+//					do{
+//						tegel = spel.vraagNieuweTegel();					
+//						teller++;
+//						if(teller > stapelSize){
+//							gedaan = true;
+//							break;
+//						}
+//					}while(!spel.isTegelPlaatsbaar(tegel));
+					
+					if (gedaan || tegel == null){
 						child.show();
-						child.setPixmap(new QPixmap("src/icons/"
-								+ tegel[TEGEL_PRESENTATIE] + ".png"));
+						child.setPixmap(new QPixmap("src/icons/test.gif"));
+						tegelGenomen = true;
+					}else {
+						child.show();
+						child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
 					}
 				} else {
 					String[] tegel = spel.vraagNieuweTegel();
