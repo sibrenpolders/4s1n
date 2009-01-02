@@ -73,17 +73,13 @@ public class Tegel<temp> implements Serializable {
 	
 	public String[] getTegelString()
 	{
-		String[] tegel = new String[3];
+		String[] tmp = new String[3];
 		
-		tegel[0] = new String();
-		tegel[0] = tegelPresentatie;
-		tegel[1] = new String();
-		tegel[1] = idPresentatie;
-		tegel[2] = new String();
-		tegel[2] = "" + orientatie;
+		tmp[0] = new String(tegelPresentatie);
+		tmp[1] = new String(idPresentatie);
+		tmp[2] = new String("" + orientatie);
 		
-		
-		return tegel;
+		return tmp;
 	}
 
 	public short getOrientatie() {
