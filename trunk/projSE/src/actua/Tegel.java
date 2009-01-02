@@ -124,11 +124,6 @@ public class Tegel<temp> implements Serializable {
 				}
 			}
 		}
-
-		// random for-loop die niks doet
-//		for (int j = 0; j < 10; ++j) {
-//			;
-//		}
 	}
 
 	public Landsdeel bepaalLandsdeel(int pos) {
