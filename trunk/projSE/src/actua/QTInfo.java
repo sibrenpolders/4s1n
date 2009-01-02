@@ -59,9 +59,10 @@ public class QTInfo extends GInfo {
 			setSize(tegelIcon, 90, 90);
 
 			String[] tegel = spel.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
+			tegelIcon.setPixmap(new QPixmap("src/icons/"
+					+ tegel[TEGEL_PRESENTATIE] + ".png"));
 		}
-		
+
 		public boolean isTegelGenomen() {
 			return tegelGenomen;
 		}
@@ -112,12 +113,8 @@ public class QTInfo extends GInfo {
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
 			if (event.mimeData().hasFormat("application/x-dnditemdata")) {
-				// if (event.source().equals(this)) {
 				event.setDropAction(Qt.DropAction.MoveAction);
 				event.accept();
-				// } else {
-				// event.acceptProposedAction();
-				// }
 			} else {
 				event.ignore();
 			}
@@ -137,50 +134,52 @@ public class QTInfo extends GInfo {
 		}
 
 		protected void mousePressEvent(QMouseEvent event) {
-			if (!spel.heeftHuidigeSpelerTegelGeplaatst()){
+			if (!spel.heeftHuidigeSpelerTegelGeplaatst()) {
 				QLabel child = (QLabel) childAt(0, 0);
 				if (child == null)
 					return;
-	
-				//tegelGenomen = true;
-				
+
 				QPixmap pixmap = child.pixmap();
-	
+
 				QByteArray itemData = new QByteArray();
-				QDataStream dataStream = new QDataStream(itemData,QIODevice.OpenModeFlag.WriteOnly);
+				QDataStream dataStream = new QDataStream(itemData,
+						QIODevice.OpenModeFlag.WriteOnly);
 				pixmap.writeTo(dataStream);
 				event.pos().subtract(child.pos()).writeTo(dataStream);
-	
+
 				com.trolltech.qt.core.QMimeData mimeData = new com.trolltech.qt.core.QMimeData();
 				mimeData.setData("application/x-dnditemdata", itemData);
-	
+
 				QDrag drag = new QDrag(this);
 				drag.setMimeData(mimeData);
 				drag.setPixmap(pixmap);
 				drag.setHotSpot(event.pos().subtract(child.pos()));
-	
+
 				QPixmap tempPixmap = new QPixmap(pixmap);
 				QPainter painter = new QPainter();
 				painter.begin(tempPixmap);
-				painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,127, 127)));
+				painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,
+						127, 127)));
 				painter.end();
-	
+
 				child.setPixmap(tempPixmap);
-	
-				if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
+
+				if (drag.exec(new Qt.DropActions(Qt.DropAction.CopyAction,
+						Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
 					String[] tegel = spel.vraagNieuweTegel();
 					if (tegel == null)
 						child.close();
 					else {
 						child.show();
-						child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
+						child.setPixmap(new QPixmap("src/icons/"
+								+ tegel[TEGEL_PRESENTATIE] + ".png"));
 					}
 				} else {
 					String[] tegel = spel.vraagNieuweTegel();
 					tegel[2] = new String("0"); // orientatie resetten
 					child.show();
-					//tegelGenomen = false;
-					child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
+					child.setPixmap(new QPixmap("src/icons/"
+							+ tegel[TEGEL_PRESENTATIE] + ".png"));
 				}
 			}
 		}
@@ -256,7 +255,7 @@ public class QTInfo extends GInfo {
 				box.show();
 			} else {
 				QApplication.setOverrideCursor(new QCursor(new QPixmap(
-						"src/icons/"+mSpel.geefHuidigeSpeler()+".png")));
+						"src/icons/" + mSpel.geefHuidigeSpeler() + ".png")));
 			}
 		}
 	}
@@ -288,7 +287,6 @@ public class QTInfo extends GInfo {
 	}
 
 	public synchronized void verwijderSpelers() {
-		//qtInfo.hide();
 		box.removeItem(spacer);
 		for (int i = spelers.size() - 1; i >= 0; --i) {
 			QWidget item = spelers.elementAt(i);
@@ -320,14 +318,12 @@ public class QTInfo extends GInfo {
 		widget.setMaximumSize(w, h);
 		widget.setMinimumSize(w, h);
 	}
-	
+
 	@SuppressWarnings("unused")
-	private void volgendeSpeler()
-	{	
+	private void volgendeSpeler() {
 		mSpel.volgendeSpeler();
 		verwijderSpelers();
 		updateSpelers();
-		mSpel.huidigeSpelerPlaatstTegel(false);
 	}
-	
+
 }

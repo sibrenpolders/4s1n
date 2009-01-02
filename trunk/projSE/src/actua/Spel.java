@@ -55,7 +55,7 @@ public class Spel extends Observable implements Serializable {
 	public void volgendeSpeler() {
 		pionGeplaatst = false;
 		tegelGeplaatst = null;
-		spelerVerwerker.volgendeSpeler();
+		spelerVerwerker.gaNaarVolgendeSpeler();
 		notifyObservers(HUIDIGESPELERVERANDERD);
 	}
 
