@@ -315,7 +315,8 @@ public class QTSpeelveld extends GSpeelveld {
 			row = tmp.getX();
 			col = tmp.getY();
 
-			getAchtergrondTegel(row, col).setGroen();
+			if (getAchtergrondTegel(row, col) != null)
+				getAchtergrondTegel(row, col).setGroen();
 			mogelijkeZetten.add(new Vector2D(col, row));
 
 		}
