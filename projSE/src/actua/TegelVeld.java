@@ -187,10 +187,11 @@ public class TegelVeld implements Serializable {
 	 * @return True indien de tegelplaatsing mogelijk is, False anders.
 	 */
 	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
-		int rij = startTegel.getX() + coord.getX();
-		int kolom = startTegel.getY() + coord.getY();
-
-		return tegelKanGeplaatstWorden(tegel, rij, kolom);
+//		int rij = startTegel.getX() + coord.getX();
+//		int kolom = startTegel.getY() + coord.getY();
+		
+		Vector2D veldCoord = zetOmInVeldCoord(coord);
+		return tegelKanGeplaatstWorden(tegel, veldCoord.getX(), veldCoord.getY());
 	}
 
 	/**
@@ -217,12 +218,12 @@ public class TegelVeld implements Serializable {
 		ArrayList<Tegel> rijV = null;
 
 		// zoek de juist rij geeft null indien deze niet bestaat
-		if (veld != null && rij > 0 && rij < veld.size()) {
+		if (veld != null && rij >= 0 && rij < veld.size()) {
 			rijV = veld.get(rij);
 		}
 
 		// ga na of er al een Tegel op positie (rij, kolom) staat/
-		if (rijV != null && kolom > 0 && kolom < rijV.size()) {
+		if (rijV != null && kolom >= 0 && kolom < rijV.size()) {
 			if (rijV.get(kolom) != null) {
 				return true;
 			}
