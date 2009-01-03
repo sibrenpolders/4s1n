@@ -15,13 +15,14 @@ public abstract class GSpeelveld extends Observable implements Observer {
 	public GSpeelveld() {
 		camera = new Camera();
 		gTegels = new ArrayList<ArrayList<GTegel>>();
-		this.addObserver(this);
+		spel.addObserver(this);
 	}
 
 	public GSpeelveld(Spel spel) {
 		this.spel = spel;
 		camera = new Camera();
 		gTegels = new ArrayList<ArrayList<GTegel>>();
+		spel.addObserver(this);
 	}
 
 	protected ArrayList<ArrayList<GTegel>> getGTegels() {

@@ -13,6 +13,7 @@ public class Spel extends Observable implements Serializable {
 	private StatusBijhouder statusBijhouder;
 	private boolean pionGeplaatst = false;
 	private Vector2D tegelGeplaatst;
+	private SpelBeurtResultaat laatsteAIZet;
 
 	public static final char ROOD = 'r';
 	public static final char BLAUW = 'b';
@@ -43,6 +44,7 @@ public class Spel extends Observable implements Serializable {
 	public void restart() {
 		pionGeplaatst = false;
 		tegelGeplaatst = null;
+		laatsteAIZet = null;
 		spelerVerwerker.verwijderSpelers();
 		tafelVerwerker.restart();
 		statusBijhouder = new StatusBijhouder();
@@ -56,6 +58,11 @@ public class Spel extends Observable implements Serializable {
 		pionGeplaatst = false;
 		tegelGeplaatst = null;
 		spelerVerwerker.gaNaarVolgendeSpeler();
+		laatsteAIZet = spelerVerwerker.geefResultaatAI();
+		if (isHuidigeSpelerAI())
+			spelerVerwerker.gaNaarVolgendeSpeler();
+
+		this.setChanged();
 		notifyObservers(HUIDIGESPELERVERANDERD);
 	}
 
@@ -78,12 +85,11 @@ public class Spel extends Observable implements Serializable {
 	}
 
 	public boolean isHuidigeSpelerAI() {
-		try {
-			return spelerVerwerker.isHuidigeSpelerAI();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return false;
+		return spelerVerwerker.isHuidigeSpelerAI();
+	}
+
+	public SpelBeurtResultaat geefResultaatAI() {
+		return laatsteAIZet;
 	}
 
 	// SPELER

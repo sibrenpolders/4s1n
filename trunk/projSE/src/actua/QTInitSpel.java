@@ -93,9 +93,9 @@ public class QTInitSpel extends GInitSpel {
 			if (soort.get(i).currentText().compareTo("Mens") == 0) {
 				niveau = -1;
 			} else if (soort.get(i).currentText().compareTo("Easy AI") == 0) {
-				niveau = 0;
+				niveau = AI.EASY;
 			} else if (soort.get(i).currentText().compareTo("Hard AI") == 0) {
-				niveau = 1;
+				niveau = AI.HARD;
 			}
 
 			spel.voegSpelerToe((short) niveau, naam.get(i).text(),

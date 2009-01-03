@@ -245,6 +245,39 @@ public class QTTegel extends GTegel {
 		return tegelCoord;
 	}
 
+	// return == Vector2D(col, row)
+	public Vector2D getRowCol(short zone) {
+		switch (zone) {
+		case 0:
+			return new Vector2D(0, 1);
+		case 1:
+			return new Vector2D(0, 0);
+		case 2:
+			return new Vector2D(1, 0);
+		case 3:
+			return new Vector2D(2, 0);
+		case 4:
+			return new Vector2D(2, 1);
+		case 5:
+			return new Vector2D(2, 2);
+		case 6:
+			return new Vector2D(2, 3);
+		case 7:
+			return new Vector2D(2, 4);
+		case 8:
+			return new Vector2D(1, 4);
+		case 9:
+			return new Vector2D(0, 4);
+		case 10:
+			return new Vector2D(0, 3);
+		case 11:
+			return new Vector2D(0, 2);
+		case 12:
+			return new Vector2D(1, 2);
+		}
+		return null;
+	}
+
 	public boolean plaatsPionInSectie(int row, int col, char pionKleur) {
 		if (pion[row][col] != 0)
 			return false;
