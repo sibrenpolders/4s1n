@@ -1,5 +1,7 @@
 package actua;
 
+import java.util.ArrayList;
+
 import com.trolltech.qt.core.QByteArray;
 import com.trolltech.qt.core.QDataStream;
 import com.trolltech.qt.core.QIODevice;
@@ -7,7 +9,6 @@ import com.trolltech.qt.core.QRectF;
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.core.Qt.TransformationMode;
 import com.trolltech.qt.gui.QDragEnterEvent;
-import com.trolltech.qt.gui.QDragLeaveEvent;
 import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QGraphicsScene;
@@ -18,11 +19,13 @@ import com.trolltech.qt.gui.QMatrix;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QSpacerItem;
+import com.trolltech.qt.gui.QWidget;
 
 public class QTTegel extends GTegel {
 
 	public class tegelView extends QGraphicsView {
 		private QGridLayout gridLayout;
+		private ArrayList<QWidget> widgets;
 
 		public tegelView() {
 			setScene(new QGraphicsScene());
@@ -33,6 +36,7 @@ public class QTTegel extends GTegel {
 		}
 
 		private void init() {
+			widgets = new ArrayList<QWidget>();
 			setGeometry(0, 0, 90, 90);
 			setMaximumSize(90, 90);
 			setMinimumSize(90, 90);
@@ -44,8 +48,6 @@ public class QTTegel extends GTegel {
 		}
 
 		private void createEmpty() {
-			// this.setBackgroundBrush(new QBrush(pixmap));
-
 			for (int i = 0; i < 5; ++i) {
 				for (int j = 0; j < 3; ++j) {
 					gridLayout.addItem(new QSpacerItem(30, 18), i, j, 1, 1);
@@ -65,6 +67,34 @@ public class QTTegel extends GTegel {
 			this.setBackgroundBrush(null);
 			update();
 			isBackground = false;
+		}
+
+		public void updateTegel() {
+			for (int i = 0; i < widgets.size();) {
+				QWidget w = widgets.get(0);
+				gridLayout.removeWidget(w);
+				widgets.remove(w);
+				w.hide();
+				w.dispose();
+			}
+			widgets.clear();
+
+			for (int i = 0; i < 5; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					if (geefPionInSectie(i, j) != 0) {
+						QLabel label = new QLabel();
+						label.setMaximumSize(12, 12);
+						label.setMinimumSize(12, 12);
+						label.setPixmap(getPionPixmap(geefPionInSectie(i, j)));
+						gridLayout.addWidget(label, i, j, 1, 1);
+						widgets.add(label);
+					} else {
+						gridLayout.addItem(new QSpacerItem(30, 18), i, j, 1, 1);
+					}
+				}
+			}
+
+			this.update();
 		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
@@ -115,13 +145,16 @@ public class QTTegel extends GTegel {
 				Vector2D lompeCoord = new Vector2D(tegelCoord.getY(),
 						tegelCoord.getX());
 				if (spel.plaatsPion(lompeCoord, zone)) {
-					QLabel label = new QLabel();
-					label.setPixmap(new QPixmap(pionpixmap));
-					gridLayout.addWidget(label, row, col, 1, 1);
+					plaatsPionInSectie(row, col, spel.geefHuidigeSpeler());
+					updateTegel();
 				}
 			} else {
 				event.ignore();
 			}
+		}
+
+		private QPixmap getPionPixmap(char kleur) {
+			return new QPixmap("src/icons/" + kleur + ".png");
 		}
 
 		// TODO 3x3 -> 5x3
@@ -171,7 +204,7 @@ public class QTTegel extends GTegel {
 		super(spel);
 		isBackground = true;
 		this.tegelCoord = new Vector2D(tegelCoord);
-		pion = new char[3][3];
+		pion = new char[5][3];
 		pixmap = new QPixmap(90, 90);
 		pixmap.load("src/icons/background.xpm");
 		view = new tegelView();
@@ -181,7 +214,7 @@ public class QTTegel extends GTegel {
 		super(tegel, spel);
 		isBackground = false;
 		this.tegelCoord = new Vector2D(tegelCoord);
-		pion = new char[3][3];
+		pion = new char[5][3];
 		pixmap = new QPixmap(90, 90);
 		kiesAfbeelding();
 		view = new tegelView();
@@ -191,7 +224,7 @@ public class QTTegel extends GTegel {
 		super(tegel, spel);
 		isBackground = false;
 		pixmap = new QPixmap(90, 90);
-		pion = new char[3][3];
+		pion = new char[5][3];
 		kiesAfbeelding();
 		view = new tegelView();
 	}

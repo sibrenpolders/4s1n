@@ -483,12 +483,6 @@ public class QTSpeelveld extends GSpeelveld {
 		QPixmap pixmap = new QPixmap("src/icons/" + tegel[0] + ".png");
 		QTTegel qTegel = new QTTegel(tegel, spel, new Vector2D(plaatsingTegel
 				.getY(), plaatsingTegel.getX()));
-		qTegel.setPixmap(tegel);
-		short o = Short.parseShort(tegel[2]);
-		while (o > 0) {
-			qTegel.roteer(true);
-			--o;
-		}
 
 		if (pionPlaats >= 0) {
 			Vector2D plaats = qTegel.getRowCol(pionPlaats);
@@ -500,6 +494,7 @@ public class QTSpeelveld extends GSpeelveld {
 		preprocessSwitchAchtergrondTegelForTegel(qTegel);
 		gridLayout.addWidget(qTegel.getTegelView(), plaatsingTegel.getX() - camera.getHuidigeVector().getY(),
 				plaatsingTegel.getY() - camera.getHuidigeVector().getX(), 1, 1);
+		qTegel.getTegelView().updateTegel();
 		qTegel.getTegelView().show();
 
 		result.toggleProcessed();
