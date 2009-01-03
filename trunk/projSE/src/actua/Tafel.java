@@ -388,10 +388,10 @@ public class Tafel implements Serializable {
 //		int breedte = getBreedte();
 //		int hoogte = getHoogte();
 		Vector2D coordsStartTegel = getBeginPositie();
-		int rijMin = -coordsStartTegel.getX()-1;
-		int kolomMin = -coordsStartTegel.getY()-1;
-		int rijMax = getHoogte() - coordsStartTegel.getX();
-		int kolomMax = getBreedte() - coordsStartTegel.getY();
+		int rijMin = coordsStartTegel.getX()-1;
+		int kolomMin = coordsStartTegel.getY()-1;
+		int rijMax = getHoogte() + coordsStartTegel.getX();
+		int kolomMax = getBreedte() + coordsStartTegel.getY();
 
 //		for (int i = rijMin; i <= rijMax; ++i)
 //			for (int j = kolomMin; j <= kolomMax; ++j) {
