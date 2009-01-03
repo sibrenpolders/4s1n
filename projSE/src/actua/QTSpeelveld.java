@@ -17,10 +17,13 @@ import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QGraphicsScene;
 import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
+import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QKeySequence;
+import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QShortcut;
+import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.core.Qt;
 
@@ -133,23 +136,106 @@ public class QTSpeelveld extends GSpeelveld {
 	private int rows = DEFAULT_ROWS;
 	private int columns = DEFAULT_COLS;
 	private QWidget gridWidget;
-	private QGridLayout gridLayout;
+	private QGridLayout completeGridLayout;
+	private QGridLayout gridLayout; // layout voor de tegels
+	private QGridLayout rowNummerkes;
+	private QGridLayout colNummerkes;
+	private ArrayList<QLabel> colLabels;
+	private ArrayList<QLabel> rowLabels;
 	private ArrayList<Vector2D> mogelijkeZetten;
 
 	public QTSpeelveld(Spel spel, OptieVerwerker opties) {
 		super(spel);
-		gridWidget = new QWidget();
-		gridWidget.setMinimumSize(810, 630);
-		gridWidget.setMaximumSize(810, 630);
-		gridLayout = new QGridLayout(gridWidget);
-		gridLayout.setSpacing(0);
 
 		mogelijkeZetten = new ArrayList<Vector2D>();
 		gelegdeTegels = new ArrayList<QTTegel>();
 		achtergrondTegels = new ArrayList<VeldWidget>();
 
-		clearSpeelveld();
-		createEmptyTegels();
+		init();
+		veranderZicht();
+	}
+
+	private void init() {
+		gridWidget = new QWidget();
+		gridWidget.setMinimumSize(DEFAULT_COLS * 90 + 80,
+				DEFAULT_ROWS * 90 + 80);
+		gridWidget.setMaximumSize(DEFAULT_COLS * 90 + 80,
+				DEFAULT_ROWS * 90 + 80);
+		completeGridLayout = new QGridLayout(gridWidget);
+		completeGridLayout.setSpacing(0);
+		completeGridLayout.setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+
+		rowLabels = new ArrayList<QLabel>();
+		QWidget rN = new QWidget();
+		rN.setMinimumSize(15, DEFAULT_ROWS * 90);
+		rN.setMaximumSize(15, DEFAULT_ROWS * 90);
+		rowNummerkes = new QGridLayout(rN);
+		rowNummerkes.setSpacing(0);
+		rowNummerkes.setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+		completeGridLayout.addWidget(rN, 2, 1);
+		for (int i = 0; i < DEFAULT_ROWS; ++i) {
+			QLabel label = new QLabel(Integer.toString(i));
+			label.setMinimumSize(10, 90);
+			label.setMaximumSize(10, 90);
+			rowNummerkes.addWidget(label, i, 0);
+			rowLabels.add(label);
+		}
+
+		colLabels = new ArrayList<QLabel>();
+		QWidget cN = new QWidget();
+		cN.setMinimumSize(DEFAULT_COLS * 90, 15);
+		cN.setMaximumSize(DEFAULT_COLS * 90, 15);
+		colNummerkes = new QGridLayout(cN);
+		colNummerkes.setSpacing(0);
+		colNummerkes.setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+		completeGridLayout.addWidget(cN, 1, 2);
+		for (int i = 0; i < DEFAULT_COLS; ++i) {
+			QLabel label = new QLabel(Integer.toString(i));
+			label.setMinimumSize(90, 10);
+			label.setMaximumSize(90, 10);
+			colNummerkes.addWidget(label, 0, i);
+			colLabels.add(label);
+		}
+
+		QWidget tegels = new QWidget();
+		tegels.setMinimumSize(DEFAULT_COLS * 90, DEFAULT_ROWS * 90);
+		tegels.setMaximumSize(DEFAULT_COLS * 90, DEFAULT_ROWS * 90);
+		gridLayout = new QGridLayout(tegels);
+		gridLayout.setSpacing(0);
+		completeGridLayout.addWidget(tegels, 2, 2);
+
+		QPushButton buttonUp = new QPushButton("^", gridWidget);
+		buttonUp.setMinimumSize(DEFAULT_COLS * 90, 25);
+		buttonUp.setMaximumSize(DEFAULT_COLS * 90, 25);
+		buttonUp.clicked.connect(this, "cameraUp()");
+		completeGridLayout.addWidget(buttonUp, 0, 2);
+
+		QPushButton buttonDown = new QPushButton("v", gridWidget);
+		buttonDown.setMinimumSize(DEFAULT_COLS * 90, 25);
+		buttonDown.setMaximumSize(DEFAULT_COLS * 90, 25);
+		buttonDown.clicked.connect(this, "cameraDown()");
+		completeGridLayout.addWidget(buttonDown, 3, 2);
+
+		QPushButton buttonLeft = new QPushButton("<", gridWidget);
+		buttonLeft.setMinimumSize(25, DEFAULT_ROWS * 90);
+		buttonLeft.setMaximumSize(25, DEFAULT_ROWS * 90);
+		buttonLeft.clicked.connect(this, "cameraLeft()");
+		completeGridLayout.addWidget(buttonLeft, 2, 0);
+
+		QPushButton buttonRight = new QPushButton(">", gridWidget);
+		buttonRight.setMinimumSize(25, DEFAULT_ROWS * 90);
+		buttonRight.setMaximumSize(25, DEFAULT_ROWS * 90);
+		buttonRight.clicked.connect(this, "cameraRight()");
+		completeGridLayout.addWidget(buttonRight, 2, 3);
+
+		QShortcut shortcut = new QShortcut(new QKeySequence("Up"), gridWidget);
+		shortcut.activated.connect(this, "cameraUp()");
+		shortcut = new QShortcut(new QKeySequence("Down"), gridWidget);
+		shortcut.activated.connect(this, "cameraDown()");
+		shortcut = new QShortcut(new QKeySequence("Left"), gridWidget);
+		shortcut.activated.connect(this, "cameraLeft()");
+		shortcut = new QShortcut(new QKeySequence("Right"), gridWidget);
+		shortcut.activated.connect(this, "cameraRight()");
 	}
 
 	public QWidget getGridWidget() {
@@ -197,30 +283,38 @@ public class QTSpeelveld extends GSpeelveld {
 		camera.setMaxVector(new Vector3D(spel.getStapelSize(), spel
 				.getStapelSize(), 6));
 		camera.setHuidigeVector(new Vector3D(DEFAULT_ULCOL, DEFAULT_ULROW, 3)); // linkerboventegel
+	}
 
-		QPushButton buttonUp = new QPushButton("^", gridWidget);
-		buttonUp.setGeometry(gridWidget.width() / 2 - 18, 0, 35, 25);
-		buttonUp.clicked.connect(this, "cameraUp()");
-		QPushButton buttonDown = new QPushButton("v", gridWidget);
-		buttonDown.setGeometry(gridWidget.width() / 2 - 18,
-				gridWidget.height() - 26, 35, 25);
-		buttonDown.clicked.connect(this, "cameraDown()");
-		QPushButton buttonLeft = new QPushButton("<", gridWidget);
-		buttonLeft.setGeometry(0, gridWidget.height() / 2 - 13, 25, 35);
-		buttonLeft.clicked.connect(this, "cameraLeft()");
-		QPushButton buttonRight = new QPushButton(">", gridWidget);
-		buttonRight.setGeometry(gridWidget.width() - 26,
-				gridWidget.height() / 2 - 13, 25, 35);
-		buttonRight.clicked.connect(this, "cameraRight()");
+	public void clear() {
+		if (gridLayout != null
+				&& (achtergrondTegels.size() + gelegdeTegels.size() > 0)) {
+			List<QObject> list = gridLayout.children();
+			for (int i = 0; i < list.size();) {
+				list.remove(0);
+			}
 
-		QShortcut shortcut = new QShortcut(new QKeySequence("Up"), gridWidget);
-		shortcut.activated.connect(this, "cameraUp()");
-		shortcut = new QShortcut(new QKeySequence("Down"), gridWidget);
-		shortcut.activated.connect(this, "cameraDown()");
-		shortcut = new QShortcut(new QKeySequence("Left"), gridWidget);
-		shortcut.activated.connect(this, "cameraLeft()");
-		shortcut = new QShortcut(new QKeySequence("Right"), gridWidget);
-		shortcut.activated.connect(this, "cameraRight()");
+			for (int i = 0; i < gelegdeTegels.size(); ++i)
+				gelegdeTegels.get(i).getTegelView().hide();
+
+			for (int i = 0; i < achtergrondTegels.size(); ++i)
+				achtergrondTegels.get(i).hide();
+		}
+	}
+
+	private void createEmptyTegels() {
+		for (int i = 0; i < rows; i++) {
+			int row = i + camera.getHuidigeVector().getY();
+			for (int j = 0; j < columns; j++) {
+				int col = j + camera.getHuidigeVector().getX();
+				VeldWidget w = getAchtergrondTegel(row, col);
+				if (w == null) {
+					w = new VeldWidget(90, 90, new Vector2D(col, row));
+					achtergrondTegels.add(w);
+				}
+				gridLayout.addWidget(w, i, j, 1, 1);
+				w.show();
+			}
+		}
 	}
 
 	protected void initialiseerSpeelveld() {
@@ -290,18 +384,20 @@ public class QTSpeelveld extends GSpeelveld {
 				}
 			}
 		}
-	}
-
-	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
-		if (tegel != null) {
-			VeldWidget achtergrond = removeAchtergrondTegel(tegel.getRow(),
-					tegel.getCol());
-			if (null != achtergrond) {
-				gridLayout.removeWidget(achtergrond);
-				achtergrond.hide();
-			}
+		
+		for(int i = 0; i < colLabels.size(); ++i)
+		{
+			String s = new String(Integer.toString(camera.getHuidigeVector().getX() + i));
+			colLabels.get(i).setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+			colLabels.get(i).setText(s);
 		}
-
+		
+		for(int i = 0; i < rowLabels.size(); ++i)
+		{
+			String s = new String(Integer.toString(camera.getHuidigeVector().getY() + i));
+			rowLabels.get(i).setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+			rowLabels.get(i).setText(s);
+		}
 	}
 
 	private void kleurMogelijkhedenGroen() {
@@ -322,7 +418,7 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 	}
 
-	public void clearAllGroen() {
+	private void clearAllGroen() {
 		if (mogelijkeZetten != null) {
 			Vector2D tmp;
 			for (int i = 0; i < mogelijkeZetten.size(); ++i) {
@@ -332,10 +428,6 @@ public class QTSpeelveld extends GSpeelveld {
 			}
 			mogelijkeZetten.clear();
 		}
-	}
-
-	protected void updateSpeelveld() {
-		this.veranderZicht();
 	}
 
 	private boolean voegTegelToe(Vector2D coord, QPixmap pixmap) {
@@ -372,6 +464,24 @@ public class QTSpeelveld extends GSpeelveld {
 		return isTegelGeplaatst;
 	}
 
+	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
+		if (tegel != null) {
+			VeldWidget achtergrond = removeAchtergrondTegel(tegel.getRow(),
+					tegel.getCol());
+			if (null != achtergrond) {
+				gridLayout.removeWidget(achtergrond);
+				achtergrond.hide();
+			}
+		}
+	}
+
+	@Override
+	// TODO nutteloze functie???
+	protected void voegTegelToe(String[] tegel, Vector2D coord) {
+		// TODO Auto-generated method stub
+
+	}
+
 	public void update(Observable arg0, Object arg1) {
 		if (!arg1.equals(true)) {
 			return;
@@ -383,45 +493,7 @@ public class QTSpeelveld extends GSpeelveld {
 		this.gridWidget.show();
 	}
 
-	private void createEmptyTegels() {
-		for (int i = 0; i < rows; i++) {
-			int row = i + camera.getHuidigeVector().getY();
-			for (int j = 0; j < columns; j++) {
-				int col = j + camera.getHuidigeVector().getX();
-				VeldWidget w = getAchtergrondTegel(row, col);
-				if (w == null) {
-					w = new VeldWidget(90, 90, new Vector2D(col, row));
-					achtergrondTegels.add(w);
-				}
-				gridLayout.addWidget(w, i, j, 1, 1);
-				w.show();
-			}
-		}
-	}
-
-	public void clear() {
-		if (gridLayout != null
-				&& (achtergrondTegels.size() + gelegdeTegels.size() > 0)) {
-			List<QObject> list = gridWidget.children();
-			int start = list.size() - (rows * columns);
-			for (int i = start; i < list.size();) {
-				QObject o = list.get(start);
-				list.remove(start);
-				// niet disposen
-			}
-
-			for (int i = 0; i < gelegdeTegels.size(); ++i)
-				gelegdeTegels.get(i).getTegelView().hide();
-
-			for (int i = 0; i < achtergrondTegels.size(); ++i)
-				achtergrondTegels.get(i).hide();
-		}
-	}
-
-	@Override
-	// TODO nutteloze functie???
-	protected void voegTegelToe(String[] tegel, Vector2D coord) {
-		// TODO Auto-generated method stub
-
+	protected void updateSpeelveld() {
+		this.veranderZicht();
 	}
 }
