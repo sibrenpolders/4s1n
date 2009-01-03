@@ -34,6 +34,7 @@ public class QTInfo extends GInfo {
 	private QPushButton beurt;
 	private QSpacerItem spacer;
 	private Vector<QWidget> spelers;
+	private Vector<QGroupBox> spelerBoxen;
 	private static final int TEGEL_PRESENTATIE = 0;
 	private static final int ID_PRESENTATIE = 1;
 	private static final int BUTTON_HEIGHT = 20;
@@ -165,26 +166,27 @@ public class QTInfo extends GInfo {
 					boolean gedaan = false;
 					String[] tegel;
 					int stapelSize, teller = 0;
-					
+
 					tegel = spel.vraagNieuweTegel();
-					
-//					stapelSize = spel.getStapelSize();
-//					do{
-//						tegel = spel.vraagNieuweTegel();					
-//						teller++;
-//						if(teller > stapelSize){
-//							gedaan = true;
-//							break;
-//						}
-//					}while(!spel.isTegelPlaatsbaar(tegel));
-					
-					if (gedaan || tegel == null){
+
+					// stapelSize = spel.getStapelSize();
+					// do{
+					// tegel = spel.vraagNieuweTegel();
+					// teller++;
+					// if(teller > stapelSize){
+					// gedaan = true;
+					// break;
+					// }
+					// }while(!spel.isTegelPlaatsbaar(tegel));
+
+					if (gedaan || tegel == null) {
 						child.show();
 						child.setPixmap(new QPixmap("src/icons/test.gif"));
 						tegelGenomen = true;
-					}else {
+					} else {
 						child.show();
-						child.setPixmap(new QPixmap("src/icons/"+ tegel[TEGEL_PRESENTATIE] + ".png"));
+						child.setPixmap(new QPixmap("src/icons/"
+								+ tegel[TEGEL_PRESENTATIE] + ".png"));
 					}
 				} else {
 					String[] tegel = spel.vraagNieuweTegel();
@@ -241,6 +243,7 @@ public class QTInfo extends GInfo {
 
 		stapel = new Stapel(mSpel);
 		spelers = new Vector<QWidget>();
+		spelerBoxen = new Vector<QGroupBox>();
 		roteerR = new QPushButton("Draai Rechts");
 		roteerL = new QPushButton("Draai Links");
 		nieuweTegel = new QPushButton("Nieuwe Tegel");
@@ -268,6 +271,7 @@ public class QTInfo extends GInfo {
 				group.setLayout(layout);
 				setSize(group, breedte - 15, 90);
 				box.addWidget(group, rows, 0, 1, 2);
+				spelerBoxen.add(group);
 				++rows;
 			}
 		}
@@ -285,6 +289,13 @@ public class QTInfo extends GInfo {
 			spelers.remove(i);
 			item.dispose();
 			rows--;
+		}
+
+		for (int i = spelerBoxen.size() - 1; i >= 0; --i) {
+			QWidget item = spelerBoxen.elementAt(i);
+			box.removeWidget(item);
+			spelerBoxen.remove(i);
+			item.dispose();
 		}
 	}
 
