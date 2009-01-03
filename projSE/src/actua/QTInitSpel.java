@@ -45,11 +45,15 @@ public class QTInitSpel extends GInitSpel {
 
 		QPushButton begin = new QPushButton("Start", widget);
 		QPushButton annuleer = new QPushButton("Annuleer", widget);
-		QPushButton extraSpeler = new QPushButton("Nog een speler toevoegen",widget);
+		QPushButton extraSpeler = new QPushButton("Nog een speler toevoegen",
+				widget);
+		QPushButton laatsteSpelerVerwijderen = new QPushButton(
+				"Laatste speler verwijderen", widget);
 		QLabel aantal = new QLabel("Aantal tegels:");
 		tegels = new QSpinBox(widget);
 
 		layout.addWidget(extraSpeler, 0, 0);
+		layout.addWidget(laatsteSpelerVerwijderen, 0, 1);
 		layout.addWidget(begin, 0, 4);
 		layout.addWidget(annuleer, 0, 5);
 		layout.addWidget(aantal, 1, 0);
@@ -59,10 +63,12 @@ public class QTInitSpel extends GInitSpel {
 		annuleer.clicked.connect(this.venster, "close()");
 		begin.clicked.connect(this, "begin()");
 		extraSpeler.clicked.connect(this, "voegSpelerOptieVeldToe()");
+		laatsteSpelerVerwijderen.clicked.connect(this,
+				"verwijderLaatsteSpelerOptieVeld()");
 
 		voegSpelerOptieVeldToe(); // nbPlayersVisible is nu 1
 		voegSpelerOptieVeldToe();
-		
+
 		venster.setCentralWidget(widget);
 		venster.setWindowTitle("Begin een nieuw Spel");
 		venster.show();
@@ -182,6 +188,41 @@ public class QTInitSpel extends GInitSpel {
 			layout.addWidget(kleur.lastElement(), nbPlayersVisible + 1, 3);
 			layout.addWidget(labelSoort, nbPlayersVisible + 1, 4);
 			layout.addWidget(soort.lastElement(), nbPlayersVisible + 1, 5);
+		}
+	}
+
+	private void verwijderLaatsteSpelerOptieVeld() {
+		if (nbPlayersVisible == Spel.MINAANTALSPELERS) {
+			foutDialoog("Minimum aantal spelers is bereikt !");
+		} else {
+			QLineEdit line = naam.lastElement();
+			naam.remove(line);
+			QComboBox combo = kleur.lastElement();
+			kleur.remove(combo);
+			QComboBox combo2 = soort.lastElement();
+			soort.remove(combo2);
+
+			layout.removeWidget(line);
+			layout.removeWidget(combo);
+			layout.removeWidget(combo2);
+			line.dispose();
+			combo.dispose();
+			combo2.dispose();
+
+			QWidget one = layout.itemAtPosition(nbPlayersVisible + 1, 0)
+					.widget();
+			QWidget two = layout.itemAtPosition(nbPlayersVisible + 1, 2)
+					.widget();
+			QWidget three = layout.itemAtPosition(nbPlayersVisible + 1, 4)
+					.widget();
+			layout.removeWidget(one);
+			layout.removeWidget(two);
+			layout.removeWidget(three);
+			one.dispose();
+			two.dispose();
+			three.dispose();
+
+			nbPlayersVisible--;
 		}
 	}
 }
