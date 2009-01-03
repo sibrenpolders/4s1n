@@ -77,7 +77,7 @@ public class QTInfo extends GInfo {
 		public void roteerRechts() {
 			QLabel child = (QLabel) childAt(0, 0);
 
-			if (child != null) {
+			if (!spel.heeftHuidigeSpelerTegelGeplaatst() && child != null) {
 				String[] tegel = spel.vraagNieuweTegel();
 
 				if (tegel != null) {
@@ -92,7 +92,7 @@ public class QTInfo extends GInfo {
 		public void roteerLinks() {
 			QLabel child = (QLabel) childAt(0, 0);
 
-			if (child != null) {
+			if (!spel.heeftHuidigeSpelerTegelGeplaatst() && child != null) {
 				String[] tegel = spel.vraagNieuweTegel();
 				if (tegel != null) {
 					QTTegel qtTegel = new QTTegel(tegel, spel);
