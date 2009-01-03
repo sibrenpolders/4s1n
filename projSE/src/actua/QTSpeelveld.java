@@ -498,8 +498,8 @@ public class QTSpeelveld extends GSpeelveld {
 		gelegdeTegels.add(qTegel);
 
 		preprocessSwitchAchtergrondTegelForTegel(qTegel);
-		gridLayout.addWidget(qTegel.getTegelView(), plaatsingTegel.getY(),
-				plaatsingTegel.getX(), 1, 1);
+		gridLayout.addWidget(qTegel.getTegelView(), plaatsingTegel.getX() - camera.getHuidigeVector().getY(),
+				plaatsingTegel.getY() - camera.getHuidigeVector().getX(), 1, 1);
 		qTegel.getTegelView().show();
 
 		result.toggleProcessed();
@@ -529,8 +529,6 @@ public class QTSpeelveld extends GSpeelveld {
 	@Override
 	// TODO nutteloze functie???
 	protected void voegTegelToe(String[] tegel, Vector2D coord) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void update(Observable arg0, Object arg1) {
