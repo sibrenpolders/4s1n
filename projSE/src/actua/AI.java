@@ -53,21 +53,33 @@ public class AI extends Speler {
 			String[] t = tafelVerwerker.neemTegelVanStapel();
 			Vector2D plaats = null;
 			if ((plaats = berekenPlaatsTegel(t)) != null) {
+				tafelVerwerker.plaatsTegel(t, plaats);
 				gedaan = true;
 				short plaatsPion = -1;
 				if (this.ongeplaatstePionAanwezig())
+				{
 					plaatsPion = (short) berekenPlaatsPion(kleur, t, plaats);
+					if(plaatsPion != -1)
+					{
+						tafelVerwerker.plaatsPion(plaats, plaatsPion, kleur);
+						this.plaatsOngeplaatstePion();
+					}
+				}
 				result = new SpelBeurtResultaat(t, plaats, kleur, plaatsPion);
+			} else {
+				tafelVerwerker.legTerugEinde(t);
 			}
 		}
 
 		return result;
 	}
 
+	// relatieve coords (row, column) worden teruggegeven
 	private Vector2D berekenPlaatsTegel(String[] t) {
 		return strategy.berekenPlaatsTegel(t);
 	}
 
+	// relatieve coords (row, column) worden meegegeven
 	private int berekenPlaatsPion(char kleur, String[] t, Vector2D tegelCoord) {
 		return strategy.berekenPlaatsPion(kleur, t, tegelCoord);
 	}

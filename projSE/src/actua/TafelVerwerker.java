@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class TafelVerwerker implements Serializable {
 	private static final long serialVersionUID = -6431108242978335095L;
 	private static final int AANTAL_TEGELS = 72;
+	private int aantalTegels;
 	private ArrayDeque<String[]> stapel;
 	private Tafel tafel;
 	private String[] startTegel;
@@ -18,6 +19,7 @@ public class TafelVerwerker implements Serializable {
 	}
 
 	public TafelVerwerker(int aantalTegels) {
+		this.aantalTegels = aantalTegels;
 		restart(aantalTegels);
 	}
 
@@ -35,6 +37,10 @@ public class TafelVerwerker implements Serializable {
 
 	public String[] geefStartTegel() {
 		return startTegel;
+	}
+
+	public int geefAantalTegels() {
+		return aantalTegels;
 	}
 
 	// STAPEL
@@ -68,10 +74,6 @@ public class TafelVerwerker implements Serializable {
 	}
 
 	// TEGELVELD
-
-	public Vector2D getBeginPositie() {
-		return tafel.getBeginPositie();
-	}
 
 	public int getHoogte() {
 		return tafel.getHoogte();
@@ -113,16 +115,15 @@ public class TafelVerwerker implements Serializable {
 		return tafel.isTegelPlaatsingGeldig(t, coord);
 	}
 
-	public boolean isTegelPlaatsbaar(String[] t) 
-	{	
+	public boolean isTegelPlaatsbaar(String[] t) {
 		Tegel tegel = new Tegel(t[0], t[1], Short.parseShort(t[2]));
-		
-		for(int i = 0; i < 4; ++i){
+
+		for (int i = 0; i < 4; ++i) {
 			tegel.draaiTegel(true);
-			if(geefGeldigeMogelijkheden(tegel.getTegelString()).size() != 0)
+			if (geefGeldigeMogelijkheden(tegel.getTegelString()).size() != 0)
 				return true;
 		}
-		
+
 		return false;
 	}
 
@@ -167,11 +168,8 @@ public class TafelVerwerker implements Serializable {
 		tafel.verwijderPion(tegelCoord, pionCoord);
 	}
 
-	// functie die hetzelfde doet als ispionplaatsingmogelijk en wordt ook niet
-	// gebruikt?
-	public boolean plaatsingPionMogelijk(String[] t, Vector2D tegelCoord,
-			int pionCoord) {
-		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
+	public void undo() {
+		tafel.undo();
 	}
 
 	// FILE I/O

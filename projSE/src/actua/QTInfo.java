@@ -14,6 +14,7 @@ import com.trolltech.qt.gui.QDragMoveEvent;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QGroupBox;
 import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QPalette;
@@ -106,6 +107,30 @@ public class QTInfo extends GInfo {
 			child.clear();
 			child.setPixmap(new QPixmap("src/icons/" + tegel[TEGEL_PRESENTATIE]
 					+ ".png"));
+
+		}
+
+		public void nieuweTegelClick() {
+			String[] tegel = spel.vraagNieuweTegel();
+			if (spel.isTegelPlaatsbaar(tegel))
+				foutDialoog("De huidige tegel kan op de tafel geplaatst worden !");
+			else {
+				tegel = spel.neemTegelVanStapel();
+				spel.legTerugEinde(tegel);
+
+				QLabel child = (QLabel) childAt(0, 0);
+				tegel = spel.vraagNieuweTegel();
+				child.clear();
+				child.setPixmap(new QPixmap("src/icons/"
+						+ tegel[TEGEL_PRESENTATIE] + ".png"));
+			}
+		}
+
+		private void foutDialoog(String fout) {
+			QMessageBox box = new QMessageBox();
+			box.setWindowTitle("Bericht");
+			box.setText(fout);
+			box.show();
 		}
 
 		protected void dragEnterEvent(QDragEnterEvent event) {
@@ -169,16 +194,6 @@ public class QTInfo extends GInfo {
 
 					tegel = spel.vraagNieuweTegel();
 
-					// stapelSize = spel.getStapelSize();
-					// do{
-					// tegel = spel.vraagNieuweTegel();
-					// teller++;
-					// if(teller > stapelSize){
-					// gedaan = true;
-					// break;
-					// }
-					// }while(!spel.isTegelPlaatsbaar(tegel));
-
 					if (gedaan || tegel == null) {
 						child.show();
 						child.setPixmap(new QPixmap("src/icons/test.gif"));
@@ -214,7 +229,7 @@ public class QTInfo extends GInfo {
 	private void connect() {
 		roteerR.clicked.connect(stapel, "roteerRechts()");
 		roteerL.clicked.connect(stapel, "roteerLinks()");
-		nieuweTegel.clicked.connect(stapel, "nieuweTegel()");
+		nieuweTegel.clicked.connect(stapel, "nieuweTegelClick()");
 		beurt.clicked.connect(this, "volgendeSpeler()");
 	}
 
