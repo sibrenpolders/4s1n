@@ -48,6 +48,10 @@ public class SpelerVerwerker implements Serializable {
 		this.huidigeSpelerHeeftTegelGeplaatst = false;
 	}
 
+	public boolean isHuidigeSpelerAI() throws ClassNotFoundException {
+		return Class.forName("AI").isInstance(spelers.get(huidigeSpelerIndex));
+	}
+
 	// SPELERSGROEP
 
 	public int geefAantalSpelers() {

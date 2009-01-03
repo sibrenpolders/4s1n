@@ -148,8 +148,8 @@ public class Tafel implements Serializable {
 	// PIONPLAATSING
 
 	/**
-	 * Zal indien mogelijk pion plaatsen op de tegel met co�rdinaten tegelCoord.
-	 * pionCoord zal bepalen op welk deel de pion zal staan.
+	 * Zal indien mogelijk pion plaatsen op de tegel met co�rdinaten
+	 * tegelCoord. pionCoord zal bepalen op welk deel de pion zal staan.
 	 * 
 	 * @param tegelCoord
 	 *            co�rdinaten van de tegel waar een pion op geplaatst zal
@@ -164,18 +164,13 @@ public class Tafel implements Serializable {
 	 */
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, char pion) {
 		Tegel t = veld.get(tegelCoord);
-//		String[] stringRepresentatie = new String[3];
-//		stringRepresentatie[0] = t.getTegelPresentatie();
-//		stringRepresentatie[1] = t.getIdPresentatie();
-//		stringRepresentatie[2] = "" + t.getOrientatie();
-		
+
 		if (t != (Tegel) veld.getLaatstGeplaatsteTegel()) {
 			return false;
 		}
 
-		return t != null
-				&& isPionPlaatsingGeldig(t, tegelCoord,
-						pionCoord) && t.plaatsPion(pionCoord, pion);
+		return t != null && isPionPlaatsingGeldig(t, tegelCoord, pionCoord)
+				&& t.plaatsPion(pionCoord, pion);
 	}
 
 	public boolean isPionGeplaatst(Vector2D tegelCoord, int pionCoord) {
@@ -195,8 +190,8 @@ public class Tafel implements Serializable {
 
 	/**
 	 * Deze functie zal nagaan of een pion plaatsing kan gebeuren op tegel met
-	 * co�rdinaten tegelCoord op het landsdeel met coördinaten pionCoord. Deze
-	 * functie zal niet de pion echt gaan plaatsen op de tegel.
+	 * co�rdinaten tegelCoord op het landsdeel met coördinaten pionCoord.
+	 * Deze functie zal niet de pion echt gaan plaatsen op de tegel.
 	 * 
 	 * @param t
 	 *            De tegel waarop de pion geplaatst moet worden.
@@ -204,8 +199,8 @@ public class Tafel implements Serializable {
 	 *            De co�rdinaten van de tegel waarop de pion geplaatst moet
 	 *            worden.
 	 * @param pionCoord
-	 *            De co�rdinaten van het landsdeel waarop de pion geplaatst moet
-	 *            worden.
+	 *            De co�rdinaten van het landsdeel waarop de pion geplaatst
+	 *            moet worden.
 	 * @return True als de pion geplaatst kan worden, False anders.
 	 */
 	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
@@ -213,6 +208,7 @@ public class Tafel implements Serializable {
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
 		return isPionPlaatsingGeldig(pionCoord, tegel, tegelCoord, checked);
 	}
+
 	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
 			int pionCoord) {
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
@@ -236,54 +232,56 @@ public class Tafel implements Serializable {
 		Landsdeel matchLandsdeel = tegel.bepaalLandsdeel(pionCoord);
 
 		boolean pionPlaatsingGeldig = !matchLandsdeel.isPionGeplaatst();
-		
-		int buurPionCoord; // de pion coordinaat van de buur waarmee er vergeleken zal worden
+
+		int buurPionCoord; // de pion coordinaat van de buur waarmee er
+							// vergeleken zal worden
 		int buurNr;
 		Vector2D buurCoord;
-		
+
 		for (int i = 0; pionPlaatsingGeldig && i < Tegel.MAX_GROOTTE; ++i) {
 			if (tegel.bepaalLandsdeel(i) == matchLandsdeel) {
 				buurPionCoord = getBuurPionCoord(i);
 				buurNr = getBuurNr(i);
 				buurCoord = getBuurCoord(buurNr, veldCoord);
-				if (buurNr != -1) { // Tegel.MIDDEN moet niet verder gecontroleerd worden
-					pionPlaatsingGeldig = isPionPlaatsingGeldig(buurPionCoord, 
+				if (buurNr != -1) { // Tegel.MIDDEN moet niet verder
+									// gecontroleerd worden
+					pionPlaatsingGeldig = isPionPlaatsingGeldig(buurPionCoord,
 							buren[buurNr], buurCoord, checked);
-				} 
-				
-				if (tegel.isPionGeplaatst(i)){
+				}
+
+				if (tegel.isPionGeplaatst(i)) {
 					pionPlaatsingGeldig = false;
 				}
 			}
 		}
-		
+
 		return pionPlaatsingGeldig;
 	}
 
 	private Vector2D getBuurCoord(int buurNr, Vector2D veldCoord) {
 		Vector2D buurCoord = null;
-		
-		switch(buurNr) {
+
+		switch (buurNr) {
 		case NOORD: // NOORD BUUR
-			buurCoord = new Vector2D(veldCoord.getX()-1, veldCoord.getY());
+			buurCoord = new Vector2D(veldCoord.getX() - 1, veldCoord.getY());
 			break;
 		case OOST: // OOST BUUR
-			buurCoord = new Vector2D(veldCoord.getX(), veldCoord.getY()+1);
+			buurCoord = new Vector2D(veldCoord.getX(), veldCoord.getY() + 1);
 			break;
 		case ZUID: // ZUID BUUR
-			buurCoord = new Vector2D(veldCoord.getX()+1, veldCoord.getY());
+			buurCoord = new Vector2D(veldCoord.getX() + 1, veldCoord.getY());
 			break;
 		case WEST: // WEST BUUR
-			buurCoord = new Vector2D(veldCoord.getX(), veldCoord.getY()-1);
+			buurCoord = new Vector2D(veldCoord.getX(), veldCoord.getY() - 1);
 			break;
 		}
-		
+
 		return buurCoord;
 	}
 
 	private int getBuurNr(int i) {
 		int buurNr = -1;
-		
+
 		switch (i) {
 		case Tegel.NOORD_WEST:
 		case Tegel.NOORD:
@@ -306,13 +304,13 @@ public class Tafel implements Serializable {
 			buurNr = WEST;
 			break;
 		}
-		
+
 		return buurNr;
 	}
 
 	private int getBuurPionCoord(int i) {
 		int buurPionCoord = -1;
-		
+
 		switch (i) {
 		case Tegel.NOORD_WEST:
 			buurPionCoord = Tegel.ZUID_WEST;
@@ -361,8 +359,8 @@ public class Tafel implements Serializable {
 	 * @param laatstGeplaatsteTegel
 	 *            Referentie naar de vorige laatst geplaatste tegel.
 	 */
-	public void undo(Tegel laatstGeplaatsteTegel) {
-		veld.undo(laatstGeplaatsteTegel);
+	public void undo() {
+		veld.undo();
 	}
 
 	public void redo() {
@@ -386,7 +384,7 @@ public class Tafel implements Serializable {
 
 	public ArrayList<Vector2D> geefMogelijkeZetten(String[] t) {
 		ArrayList<Vector2D> mogelijkeZetten = new ArrayList<Vector2D>();
-		
+
 		int breedte = getBreedte();
 		int hoogte = getHoogte();
 		Vector2D coordsStartTegel = getBeginPositie();
@@ -397,10 +395,11 @@ public class Tafel implements Serializable {
 
 		for (int x = xMin; x <= xMax; ++x)
 			for (int y = yMin; y <= yMax; ++y) {
-				Vector2D temp = new Vector2D(x,y);
+				Vector2D temp = new Vector2D(x, y);
 				if (isTegelPlaatsingGeldig(t, temp)) {
-					mogelijkeZetten.add(new Vector2D(temp.getX() - coordsStartTegel.getX(), 
-							temp.getY() - coordsStartTegel.getY()));
+					mogelijkeZetten.add(new Vector2D(temp.getX()
+							- coordsStartTegel.getX(), temp.getY()
+							- coordsStartTegel.getY()));
 				}
 			}
 

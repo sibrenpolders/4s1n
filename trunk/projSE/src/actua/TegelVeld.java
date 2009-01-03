@@ -422,6 +422,12 @@ public class TegelVeld implements Serializable {
 
 		this.laatstGeplaatsteTegel = laatstGeplaatsteTegel;
 	}
+	
+	public void undo()
+	{
+		if(laatstGeplaatsteTegel != null)
+			undo(laatstGeplaatsteTegel);
+	}
 
 	// FILE I/O
 

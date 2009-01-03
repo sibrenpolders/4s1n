@@ -1,5 +1,7 @@
 package actua;
 
+import java.util.ArrayList;
+
 public class Easy implements Strategy {
 	private TafelVerwerker tafelVerwerker;
 
@@ -7,7 +9,7 @@ public class Easy implements Strategy {
 		this.tafelVerwerker = tv;
 	}
 
-	// eerste geldige plaats wordt gebruikt
+	// tegel moet al geplaatst zijn op tegelCoord
 	public int berekenPlaatsPion(char kleur, String[] t, Vector2D tegelCoord) {
 		for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
 			if (tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, i))
@@ -19,23 +21,21 @@ public class Easy implements Strategy {
 
 	// eerste geldige plaats wordt teruggegeven, ongeacht of men er een pion op
 	// kan plaatsen of niet
+	// relatieve coords (row, column) worden teruggegeven
 	public Vector2D berekenPlaatsTegel(String[] t) {
-		int breedte = tafelVerwerker.getBreedte();
-		int hoogte = tafelVerwerker.getHoogte();
-		Vector2D coordsStartTegel = tafelVerwerker.getBeginPositie();
-		int xMin = coordsStartTegel.getX() - 1;
-		int yMin = coordsStartTegel.getY() - 1;
-		int xMax = xMin + breedte + 2;
-		int yMax = yMin + hoogte + 2;
+		String tempOri = t[2];
+		Tegel tegel = new Tegel(t[0], t[1], Short.parseShort(t[2]));
 
-		for (int x = xMin; x <= xMax; ++x)
-			for (int y = yMin; y <= yMax; ++y) {
-				Vector2D temp = new Vector2D(x, y);
-				if (tafelVerwerker.isTegelPlaatsingGeldig(t, temp)) {
-					return temp;
-				}
-			}
-
+		for (int i = 0; i < 4; ++i) {
+			tegel.draaiTegel(true);
+			t[2] = Short.toString(tegel.getOrientatie());
+			ArrayList<Vector2D> list = tafelVerwerker.geefGeldigeMogelijkheden(tegel.getTegelString());
+			
+			if(list.size() > 0)
+				return list.get(0);
+		}
+		
+		t[2] = tempOri;
 		return null;
 	}
 }

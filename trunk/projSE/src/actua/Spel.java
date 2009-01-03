@@ -77,6 +77,15 @@ public class Spel extends Observable implements Serializable {
 		return spelerVerwerker.geefHuidigeSpeler();
 	}
 
+	public boolean isHuidigeSpelerAI() {
+		try {
+			return spelerVerwerker.isHuidigeSpelerAI();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	// SPELER
 
 	public String geefSpelerNaam(char kleur) {
@@ -126,9 +135,8 @@ public class Spel extends Observable implements Serializable {
 		}
 		return false;
 	}
-	
-	public boolean isTegelPlaatsbaar(String[] tegel)
-	{
+
+	public boolean isTegelPlaatsbaar(String[] tegel) {
 		return tafelVerwerker.isTegelPlaatsbaar(tegel);
 	}
 
