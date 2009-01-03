@@ -12,12 +12,13 @@ import com.trolltech.qt.gui.QPixmap;
 public class QTMenubalk extends GMenubalk {
 	private QMenuBar menubar;
 
-	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help,BestandsVerwerker bestand, QTInitSpel qtInitSpel) {
+	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help,
+			BestandsVerwerker bestand, QTInitSpel qtInitSpel) {
 		super(spel, qtInitSpel);
 		setGHelp(new QTHelp(help));
 		setGOptie(new QTOptie(opties));
 		setBestand(bestand);
-		
+
 		menubar = new QMenuBar();
 		menubar.setMaximumWidth(1024);
 		menubar.setMinimumWidth(1024);
@@ -36,32 +37,32 @@ public class QTMenubalk extends GMenubalk {
 
 	private void spel() {
 		QMenu spel = addMenuItem("Spel");
-		QAction nSpel = addActionItem(spel, "Nieuw Spel");
-		
+		QAction nSpel = addActionItem(spel, "Nieuw spel");
+
 		spel.addSeparator();
-		
+
 		QAction opslaan = addActionItem(spel, "Opslaan");
-		QAction opslaanAls = addActionItem(spel, "Opslaan Als");
-		
+		QAction opslaanAls = addActionItem(spel, "Opslaan als");
+
 		QAction laden = addActionItem(spel, "Laden");
-		
+
 		spel.addSeparator();
 		QAction afsluiten = addActionItem(spel, "Afsluiten");
-		
+
 		nSpel.triggered.connect(this.gInitSpel, "show()");
 		opslaan.triggered.connect(this, "opslaan()");
 		opslaanAls.triggered.connect(this, "opslaanAls()");
 		laden.triggered.connect(this, "laden()");
 		afsluiten.triggered.connect(QApplication.instance(), "quit()");
 	}
-	
+
 	private void speler() {
 		QMenu spel;
 		QAction nSpel, opslaan, laden;
 
-		spel = addMenuItem("Huidige Speler");
-		nSpel = addActionItem(spel, "Verwijderen");
-		opslaan = addActionItem(spel, "Naar AI omzetten");
+		spel = addMenuItem("Spelers");
+		nSpel = addActionItem(spel, "Huidige speler verwijderen");
+		opslaan = addActionItem(spel, "Huidige speler naar AI omzetten");
 	}
 
 	private void bewerken() {
@@ -71,7 +72,7 @@ public class QTMenubalk extends GMenubalk {
 		bewerken = addMenuItem("Bewerken");
 		undo = addActionItem(bewerken, "Ongedaan maken");
 		redo = addActionItem(bewerken, "Opnieuw uitvoeren");
-		
+
 		undo.triggered.connect(spel, "undo()");
 		redo.triggered.connect(spel, "redo()");
 	}
@@ -90,7 +91,7 @@ public class QTMenubalk extends GMenubalk {
 		QAction help, about;
 
 		helpMenu = addMenuItem("Help");
-		help = addActionItem(helpMenu, "Help en Ondersteuning");
+		help = addActionItem(helpMenu, "Help en ondersteuning");
 		about = addActionItem(helpMenu, "Info");
 		help.triggered.connect(this.gHelp, "show()");
 		about.triggered.connect(this, "infoVenster()");
@@ -98,8 +99,9 @@ public class QTMenubalk extends GMenubalk {
 
 	@SuppressWarnings("unused")
 	private void infoVenster() {
-		QMessageBox.about(menubar,"Over Applicatie","Deze <b>Applicatie</b> is mogelijk gemaakt door "
-								+ "Niels, Sam, Sam, Sibrand, Sibren en Bart Peeters ");
+		QMessageBox.about(menubar, "Over applicatie",
+				"Deze <b>Applicatie</b> is mogelijk gemaakt door "
+						+ "Niels, Sam, Sam, Sibrand, Sibren en Bart Peeters ");
 	}
 
 	private QMenu addMenuItem(String titel) {
@@ -107,8 +109,8 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	private QAction addActionItem(QMenu menu, String titel) {
-		return menu.addAction(new QIcon(new QPixmap("src/icons/" + titel + ".png")), 
-				titel);
+		return menu.addAction(new QIcon(new QPixmap("src/icons/" + titel
+				+ ".png")), titel);
 	}
 
 	public void hide() {
@@ -126,20 +128,21 @@ public class QTMenubalk extends GMenubalk {
 	public void setMenubar(QMenuBar menubar) {
 		this.menubar = menubar;
 	}
-	
+
 	private void opslaanAls() {
 		String naam = QFileDialog.getSaveFileName();
 		bestand.slaSpelToestandOp(naam, spel);
 	}
-	
+
 	private void opslaan() {
 		if (bestand.getNaam() != null) {
 			bestand.slaSpelToestandOp(spel);
 		} else {
 			opslaanAls();
 		}
-		
+
 	}
+
 	private void laden() {
 		String naam = QFileDialog.getOpenFileName();
 		bestand.startLaden(spel, naam);
