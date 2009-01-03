@@ -48,8 +48,15 @@ public class SpelerVerwerker implements Serializable {
 		this.huidigeSpelerHeeftTegelGeplaatst = false;
 	}
 
-	public boolean isHuidigeSpelerAI() throws ClassNotFoundException {
-		return Class.forName("AI").isInstance(spelers.get(huidigeSpelerIndex));
+	public boolean isHuidigeSpelerAI() {
+		return spelers.get(huidigeSpelerIndex) instanceof AI;
+	}
+
+	public SpelBeurtResultaat geefResultaatAI() {
+		if (isHuidigeSpelerAI())
+			return ((AI) spelers.get(huidigeSpelerIndex)).doeZet();
+		else
+			return null;
 	}
 
 	// SPELERSGROEP

@@ -61,6 +61,11 @@ public class QTInfo extends GInfo {
 					+ tegel[TEGEL_PRESENTATIE] + ".png"));
 		}
 
+		private void updatePixmap() {
+			String[] tegel = spel.vraagNieuweTegel();
+			tegelIcon.setPixmap(new QPixmap("src/icons/" + tegel[TEGEL_PRESENTATIE] + ".png"));
+		}
+
 		public boolean isTegelGenomen() {
 			return tegelGenomen;
 		}
@@ -339,8 +344,8 @@ public class QTInfo extends GInfo {
 	@SuppressWarnings("unused")
 	private void volgendeSpeler() {
 		mSpel.volgendeSpeler();
+		stapel.updatePixmap();
 		verwijderSpelers();
 		updateSpelers();
 	}
-
 }

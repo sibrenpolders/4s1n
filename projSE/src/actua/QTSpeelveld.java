@@ -20,6 +20,7 @@ import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QKeySequence;
 import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QShortcut;
@@ -163,7 +164,8 @@ public class QTSpeelveld extends GSpeelveld {
 				DEFAULT_ROWS * 90 + 80);
 		completeGridLayout = new QGridLayout(gridWidget);
 		completeGridLayout.setSpacing(0);
-		completeGridLayout.setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+		completeGridLayout.setAlignment(new Qt.Alignment(
+				Qt.AlignmentFlag.AlignCenter));
 
 		rowLabels = new ArrayList<QLabel>();
 		QWidget rN = new QWidget();
@@ -171,7 +173,8 @@ public class QTSpeelveld extends GSpeelveld {
 		rN.setMaximumSize(15, DEFAULT_ROWS * 90);
 		rowNummerkes = new QGridLayout(rN);
 		rowNummerkes.setSpacing(0);
-		rowNummerkes.setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+		rowNummerkes
+				.setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
 		completeGridLayout.addWidget(rN, 2, 1);
 		for (int i = 0; i < DEFAULT_ROWS; ++i) {
 			QLabel label = new QLabel(Integer.toString(i));
@@ -187,7 +190,8 @@ public class QTSpeelveld extends GSpeelveld {
 		cN.setMaximumSize(DEFAULT_COLS * 90, 15);
 		colNummerkes = new QGridLayout(cN);
 		colNummerkes.setSpacing(0);
-		colNummerkes.setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+		colNummerkes
+				.setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
 		completeGridLayout.addWidget(cN, 1, 2);
 		for (int i = 0; i < DEFAULT_COLS; ++i) {
 			QLabel label = new QLabel(Integer.toString(i));
@@ -384,20 +388,26 @@ public class QTSpeelveld extends GSpeelveld {
 				}
 			}
 		}
-		
-		for(int i = 0; i < colLabels.size(); ++i)
-		{
-			String s = new String(Integer.toString(camera.getHuidigeVector().getX() + i));
-			colLabels.get(i).setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+
+		for (int i = 0; i < colLabels.size(); ++i) {
+			String s = new String(Integer.toString(camera.getHuidigeVector()
+					.getX()
+					+ i));
+			colLabels.get(i).setAlignment(
+					new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
 			colLabels.get(i).setText(s);
 		}
-		
-		for(int i = 0; i < rowLabels.size(); ++i)
-		{
-			String s = new String(Integer.toString(camera.getHuidigeVector().getY() + i));
-			rowLabels.get(i).setAlignment(new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+
+		for (int i = 0; i < rowLabels.size(); ++i) {
+			String s = new String(Integer.toString(camera.getHuidigeVector()
+					.getY()
+					+ i));
+			rowLabels.get(i).setAlignment(
+					new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
 			rowLabels.get(i).setText(s);
 		}
+
+		gridWidget.update();
 	}
 
 	private void kleurMogelijkhedenGroen() {
@@ -463,6 +473,48 @@ public class QTSpeelveld extends GSpeelveld {
 		return isTegelGeplaatst;
 	}
 
+	private void voegTegelToeNaAIZet(SpelBeurtResultaat result) {
+
+		Vector2D plaatsingTegel = result.getPlaatsTegel();
+		String[] tegel = result.getTegel();
+		char pion = result.getPion();
+		short pionPlaats = result.getPlaatsPion();
+
+		QPixmap pixmap = new QPixmap("src/icons/" + tegel[0] + ".png");
+		QTTegel qTegel = new QTTegel(tegel, spel, new Vector2D(plaatsingTegel
+				.getY(), plaatsingTegel.getX()));
+		qTegel.setPixmap(tegel);
+		short o = Short.parseShort(tegel[2]);
+		while (o > 0) {
+			qTegel.roteer(true);
+			--o;
+		}
+
+		if (pionPlaats >= 0) {
+			Vector2D plaats = qTegel.getRowCol(pionPlaats);
+			qTegel.plaatsPionInSectie(plaats.getY(), plaats.getX(), pion);
+		}
+
+		gelegdeTegels.add(qTegel);
+
+		preprocessSwitchAchtergrondTegelForTegel(qTegel);
+		gridLayout.addWidget(qTegel.getTegelView(), plaatsingTegel.getY(),
+				plaatsingTegel.getX(), 1, 1);
+		qTegel.getTegelView().show();
+
+		result.toggleProcessed();
+
+		QMessageBox box = new QMessageBox();
+		box.setWindowTitle("Bericht");
+		String s = "Een tegel werd geplaatst in rij "
+				+ result.getPlaatsTegel().getX() + ", kolom "
+				+ result.getPlaatsTegel().getY() + ".";
+		if (result.getPlaatsPion() >= 0)
+			s += " \nEr werd ook een pion geplaatst op die tegel.";
+		box.setText(s);
+		box.show();
+	}
+
 	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
 		if (tegel != null) {
 			VeldWidget achtergrond = removeAchtergrondTegel(tegel.getRow(),
@@ -482,14 +534,16 @@ public class QTSpeelveld extends GSpeelveld {
 	}
 
 	public void update(Observable arg0, Object arg1) {
-		if (!arg1.equals(true)) {
-			return;
+		if (arg1.equals(true)) {
+			clearSpeelveld();
+			initialiseerSpeelveld();
+
+			this.gridWidget.show();
+		} else if (((String)arg1).compareTo(spel.HUIDIGESPELERVERANDERD) == 0) {
+			SpelBeurtResultaat result = spel.geefResultaatAI();
+			if (result != null && result.getProcessed() == false)
+				voegTegelToeNaAIZet(result);
 		}
-
-		clearSpeelveld();
-		initialiseerSpeelveld();
-
-		this.gridWidget.show();
 	}
 
 	protected void updateSpeelveld() {
