@@ -384,6 +384,7 @@ public class QTSpeelveld extends GSpeelveld {
 				if (tegel != null) {
 					preprocessSwitchAchtergrondTegelForTegel(tegel);
 					gridLayout.addWidget(tegel.getTegelView(), i, j, 1, 1);
+					tegel.getTegelView().updateTegel();
 					tegel.getTegelView().show();
 				}
 			}
@@ -480,9 +481,11 @@ public class QTSpeelveld extends GSpeelveld {
 		char pion = result.getPion();
 		short pionPlaats = result.getPlaatsPion();
 
+		int row = plaatsingTegel.getX();
+		int col = plaatsingTegel.getY();
+
 		QPixmap pixmap = new QPixmap("src/icons/" + tegel[0] + ".png");
-		QTTegel qTegel = new QTTegel(tegel, spel, new Vector2D(plaatsingTegel
-				.getY(), plaatsingTegel.getX()));
+		QTTegel qTegel = new QTTegel(tegel, spel, new Vector2D(col, row));
 
 		if (pionPlaats >= 0) {
 			Vector2D plaats = qTegel.getRowCol(pionPlaats);
@@ -492,8 +495,9 @@ public class QTSpeelveld extends GSpeelveld {
 		gelegdeTegels.add(qTegel);
 
 		preprocessSwitchAchtergrondTegelForTegel(qTegel);
-		gridLayout.addWidget(qTegel.getTegelView(), plaatsingTegel.getX() - camera.getHuidigeVector().getY(),
-				plaatsingTegel.getY() - camera.getHuidigeVector().getX(), 1, 1);
+		gridLayout.addWidget(qTegel.getTegelView(), row
+				- camera.getHuidigeVector().getY(), col
+				- camera.getHuidigeVector().getX(), 1, 1);
 		qTegel.getTegelView().updateTegel();
 		qTegel.getTegelView().show();
 
@@ -501,9 +505,8 @@ public class QTSpeelveld extends GSpeelveld {
 
 		QMessageBox box = new QMessageBox();
 		box.setWindowTitle("Bericht");
-		String s = "Een tegel werd geplaatst in rij "
-				+ result.getPlaatsTegel().getX() + ", kolom "
-				+ result.getPlaatsTegel().getY() + ".";
+		String s = "Een tegel (oriëntatie: " + tegel[2]
+				+ ") werd geplaatst in rij " + row + ", kolom " + col + ".";
 		if (result.getPlaatsPion() >= 0)
 			s += " \nEr werd ook een pion geplaatst op die tegel.";
 		box.setText(s);
@@ -532,7 +535,7 @@ public class QTSpeelveld extends GSpeelveld {
 			initialiseerSpeelveld();
 
 			this.gridWidget.show();
-		} else if (((String)arg1).compareTo(spel.HUIDIGESPELERVERANDERD) == 0) {
+		} else if (((String) arg1).compareTo(spel.HUIDIGESPELERVERANDERD) == 0) {
 			SpelBeurtResultaat result = spel.geefResultaatAI();
 			if (result != null && result.getProcessed() == false)
 				voegTegelToeNaAIZet(result);
