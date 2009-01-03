@@ -419,8 +419,8 @@ public class QTSpeelveld extends GSpeelveld {
 		int row, col;
 		for (int i = 0; i < _mogelijkeZetten.size(); ++i) {
 			tmp = _mogelijkeZetten.get(i);
-			row = tmp.getX() - spel.getStartTegelPos().getX();
-			col = tmp.getY() - spel.getStartTegelPos().getY();
+			row = tmp.getX();// + spel.getStartTegelPos().getX();//-camera.getHuidigeVector().getX();
+			col = tmp.getY();// + spel.getStartTegelPos().getY();//-camera.getHuidigeVector().getY();
 
 			if (getAchtergrondTegel(row, col) != null)
 				getAchtergrondTegel(row, col).setGroen();
