@@ -27,12 +27,20 @@ public class Easy implements Strategy {
 		Tegel tegel = new Tegel(t[0], t[1], Short.parseShort(t[2]));
 
 		for (int i = 0; i < 4; ++i) {
-			tegel.draaiTegel(true);
 			t[2] = Short.toString(tegel.getOrientatie());
 			ArrayList<Vector2D> list = tafelVerwerker.geefGeldigeMogelijkheden(tegel.getTegelString());
-			
+			System.err.println("******************");
+			System.err.println("Orientatie: " + i);
+			for (int j = 0; j < list.size(); ++j) {
+				System.err.println(list.get(j));
+			}
+			System.err.println("******************");
 			if(list.size() > 0)
 				return list.get(0);
+			
+			// NU PAS DRAAIEN EERST: testen met orientatatie 0
+			// dan pas draaien
+			tegel.draaiTegel(true);
 		}
 		
 		t[2] = tempOri;

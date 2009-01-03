@@ -13,7 +13,7 @@ import java.io.Serializable;
  * |10/9| 8 |7 \6| 
  * |_____________|
  */
-public class Tegel<temp> implements Serializable {
+public class Tegel implements Serializable {
 	private static final long serialVersionUID = -6031518212157821335L;
 	// een tegel is verdeeld in een 3x3 matrix van landsdelen
 	public static final int MAX_GROOTTE = 13;

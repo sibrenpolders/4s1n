@@ -385,23 +385,30 @@ public class Tafel implements Serializable {
 	public ArrayList<Vector2D> geefMogelijkeZetten(String[] t) {
 		ArrayList<Vector2D> mogelijkeZetten = new ArrayList<Vector2D>();
 
-		int breedte = getBreedte();
-		int hoogte = getHoogte();
+//		int breedte = getBreedte();
+//		int hoogte = getHoogte();
 		Vector2D coordsStartTegel = getBeginPositie();
-		int xMin = coordsStartTegel.getX() - 1;
-		int yMin = coordsStartTegel.getY() - 1;
-		int xMax = xMin + hoogte + 2;
-		int yMax = yMin + breedte + 2;
+		int rijMin = -coordsStartTegel.getX()-1;
+		int kolomMin = -coordsStartTegel.getY()-1;
+		int rijMax = getHoogte() - coordsStartTegel.getX();
+		int kolomMax = getBreedte() - coordsStartTegel.getY();
 
-		for (int x = xMin; x <= xMax; ++x)
-			for (int y = yMin; y <= yMax; ++y) {
-				Vector2D temp = new Vector2D(x, y);
-				if (isTegelPlaatsingGeldig(t, temp)) {
-					mogelijkeZetten.add(new Vector2D(temp.getX()
-							- coordsStartTegel.getX(), temp.getY()
-							- coordsStartTegel.getY()));
+//		for (int i = rijMin; i <= rijMax; ++i)
+//			for (int j = kolomMin; j <= kolomMax; ++j) {
+//				Vector2D temp = new Vector2D(i, j);
+//				if (isTegelPlaatsingGeldig(t, temp)) {
+//					mogelijkeZetten.add(temp);
+//				}
+//			}
+		
+		for (int i = rijMin; i <= rijMax; ++i) {
+			for (int j = kolomMin; j <= kolomMax; ++j) {
+				Vector2D tmp = new Vector2D(i, j);
+				if (isTegelPlaatsingGeldig(t, tmp)) {
+					mogelijkeZetten.add(tmp);
 				}
 			}
+		}
 
 		return mogelijkeZetten;
 	}
