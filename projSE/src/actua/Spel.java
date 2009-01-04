@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Vector;
 
 public class Spel extends Observable implements Serializable {
 	private static final long serialVersionUID = 2689906234458876556L;
@@ -77,6 +78,19 @@ public class Spel extends Observable implements Serializable {
 		spelerVerwerker.voegSpelerToe(s, naam, kleur, i);
 		setChanged();
 		notifyObservers(SPELERTOEGEVOEGD);
+	}
+
+	public boolean zijnKleurenVoorNieuweSpelersGeldig(Vector<Character> kleur) {
+		return spelerVerwerker.zijnKleurenVoorNieuweSpelersGeldig(kleur);
+	}
+
+	public boolean zijnNamenVoorNieuweSpelersGeldig(Vector<String> naam) {
+		return spelerVerwerker.zijnNamenVoorNieuweSpelersGeldig(naam);
+	}
+
+	public boolean isAantalSpelersGeldig(Vector<String> naam) {
+		return naam.size() >= MINAANTALSPELERS
+				&& naam.size() <= MAXAANTALSPELERS;
 	}
 
 	public int geefAantalSpelers() {

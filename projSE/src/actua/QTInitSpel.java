@@ -74,16 +74,16 @@ public class QTInitSpel extends GInitSpel {
 	}
 
 	public void begin() {
-		// TODO QTInitSpel.begin(): moeten de checks niet in Spel gedaan worden?
-		// M.b.v. observermessages alerten als het spel niet kan starten om één
-		// of andere reden.
-		if (!checkAantal()) {
+		// TODO QTInitSpel.begin(): checks worden beter in Spel gedaan.
+		if (!spel.isAantalSpelersGeldig(getNamenIngevoerdeSpelers())) {
 			foutDialoog("Te weinig spelers !");
 			return;
-		} else if (!checkNaam()) {
+		} else if (!spel
+				.zijnNamenVoorNieuweSpelersGeldig(getNamenIngevoerdeSpelers())) {
 			foutDialoog("Twee of meerdere spelers hebben dezelfde naam !");
 			return;
-		} else if (!checkKleur()) {
+		} else if (!spel
+				.zijnKleurenVoorNieuweSpelersGeldig(getKleurenIngevoerdeSpelers())) {
 			foutDialoog("Twee of meerdere spelers hebben dezelfde kleur !");
 			return;
 		}
@@ -111,33 +111,25 @@ public class QTInitSpel extends GInitSpel {
 		venster.close();
 	}
 
-	private boolean checkAantal() {
-		return nbPlayersVisible >= Spel.MINAANTALSPELERS;
+	private Vector<Character> getKleurenIngevoerdeSpelers() {
+		Vector<Character> result = new Vector<Character>();
+
+		for (int i = 0; i < kleur.size(); ++i) {
+			result.add(new Character((char) (kleur.get(i).currentText().charAt(
+					0) + 'a' - 'A')));
+		}
+
+		return result;
 	}
 
-	private boolean checkNaam() {
-		String naamSpeler;
+	private Vector<String> getNamenIngevoerdeSpelers() {
+		Vector<String> result = new Vector<String>();
 
 		for (int i = 0; i < naam.size(); ++i) {
-			naamSpeler = naam.get(i).text();
-			for (int j = 0; j < naam.size(); ++j)
-				if (j != i && naamSpeler.compareTo(naam.get(j).text()) == 0)
-					return false;
+			result.add(new String(naam.get(i).text()));
 		}
-		return true;
-	}
 
-	private boolean checkKleur() {
-		String kleurSpeler;
-
-		for (int i = 0; i < soort.size(); ++i) {
-			kleurSpeler = kleur.get(i).currentText();
-			for (int j = 0; j < soort.size(); ++j)
-				if (j != i
-						&& kleurSpeler.compareTo(kleur.get(j).currentText()) == 0)
-					return false;
-		}
-		return true;
+		return result;
 	}
 
 	private void foutDialoog(String fout) {

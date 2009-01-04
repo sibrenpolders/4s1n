@@ -331,11 +331,8 @@ public class QTInfo extends GInfo {
 	}
 
 	public synchronized void update(Observable o, Object arg) {
-		if (!arg.equals(true)) {
-			return;
-		}
-
-		updateInfo();
+		if (arg.equals(true))
+			updateInfo();
 	}
 
 	@SuppressWarnings("unused")

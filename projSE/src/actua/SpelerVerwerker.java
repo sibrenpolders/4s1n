@@ -3,6 +3,7 @@ package actua;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class SpelerVerwerker implements Serializable {
 	private static final long serialVersionUID = 6790524642848337268L;
@@ -144,9 +145,42 @@ public class SpelerVerwerker implements Serializable {
 
 	// niveau = -1 voor Mens
 	public void voegSpelerToe(short niveau, String naam, char kleur, long score) {
-		if (huidigeSpelerIndex == -1)
-			huidigeSpelerIndex = 0;
-		spelers.add(SpelerFactory.maakSpeler(naam, kleur, score, niveau));
+		if (isNaamVoorNieuweSpelerGeldig(naam)
+				&& isKleurVoorNieuweSpelerGeldig(kleur)) {
+			if (huidigeSpelerIndex == -1)
+				huidigeSpelerIndex = 0;
+			spelers.add(SpelerFactory.maakSpeler(naam, kleur, score, niveau));
+		}
+	}
+
+	private boolean isNaamVoorNieuweSpelerGeldig(String naam) {
+		for (int i = 0; i < spelers.size(); ++i)
+			if (spelers.get(i).getNaam().compareTo(naam) == 0)
+				return false;
+		return true;
+	}
+
+	private boolean isKleurVoorNieuweSpelerGeldig(char kleur) {
+		for (int i = 0; i < spelers.size(); ++i)
+			if (spelers.get(i).getKleur() == kleur)
+				return false;
+		return true;
+	}
+
+	public boolean zijnKleurenVoorNieuweSpelersGeldig(Vector<Character> kleur) {
+		for (int i = 0; i < kleur.size(); ++i)
+			for (int j = i + 1; j < kleur.size(); ++j)
+				if (kleur.get(i).compareTo(kleur.get(j)) == 0)
+					return false;
+		return true;
+	}
+
+	public boolean zijnNamenVoorNieuweSpelersGeldig(Vector<String> naam) {
+		for (int i = 0; i < naam.size(); ++i)
+			for (int j = i + 1; j < naam.size(); ++j)
+				if (naam.get(i).compareTo(naam.get(j)) == 0)
+					return false;
+		return true;
 	}
 
 	// FILE I/O
