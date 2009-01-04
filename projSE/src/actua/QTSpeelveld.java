@@ -450,6 +450,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector2D lompeCoord = new Vector2D(coord.getY(), coord.getX());
 
 		if (spel.isTegelPlaatsingGeldig(tegel, lompeCoord)) {
+			gelegdeTegels.get(gelegdeTegels.size()-1).getTegelView().setForegroundBrush(null);
 			tegel = spel.neemTegelVanStapel();
 			spel.plaatsTegel(tegel, lompeCoord);
 			QTTegel qTegel = new QTTegel(tegel, spel, coord);
@@ -500,17 +501,18 @@ public class QTSpeelveld extends GSpeelveld {
 				- camera.getHuidigeVector().getX(), 1, 1);
 		qTegel.getTegelView().updateTegel();
 		qTegel.getTegelView().show();
+		qTegel.getTegelView().setForegroundBrush(new QBrush(new QColor(255,0,0,80)));
 
 		result.toggleProcessed();
 
-		QMessageBox box = new QMessageBox();
-		box.setWindowTitle("Bericht");
-		String s = "Een tegel (oriëntatie: " + tegel[2]
-				+ ") werd geplaatst in rij " + row + ", kolom " + col + ".";
-		if (result.getPlaatsPion() >= 0)
-			s += " \nEr werd ook een pion geplaatst op die tegel.";
-		box.setText(s);
-		box.show();
+//		QMessageBox box = new QMessageBox();
+//		box.setWindowTitle("Bericht");
+//		String s = "Een tegel (oriëntatie: " + tegel[2]
+//				+ ") werd geplaatst in rij " + row + ", kolom " + col + ".";
+//		if (result.getPlaatsPion() >= 0)
+//			s += " \nEr werd ook een pion geplaatst op die tegel.";
+//		box.setText(s);
+//		box.show();
 	}
 
 	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
