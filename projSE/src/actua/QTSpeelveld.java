@@ -450,7 +450,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector2D lompeCoord = new Vector2D(coord.getY(), coord.getX());
 
 		if (spel.isTegelPlaatsingGeldig(tegel, lompeCoord)) {
-			gelegdeTegels.get(gelegdeTegels.size()-1).getTegelView().setForegroundBrush(null);
+			clearRood();
 			tegel = spel.neemTegelVanStapel();
 			spel.plaatsTegel(tegel, lompeCoord);
 			QTTegel qTegel = new QTTegel(tegel, spel, coord);
@@ -473,6 +473,11 @@ public class QTSpeelveld extends GSpeelveld {
 		// we werken met referenties
 		tegel[2] = new String("0");
 		return isTegelGeplaatst;
+	}
+	
+	private void clearRood() {
+		for (int i=0;i<spel.geefResultaatAI().size();i++)
+			gelegdeTegels.get(gelegdeTegels.size()-1-i).getTegelView().setForegroundBrush(null);
 	}
 
 	private void voegTegelToeNaAIZet(SpelBeurtResultaat result) {
@@ -501,7 +506,7 @@ public class QTSpeelveld extends GSpeelveld {
 				- camera.getHuidigeVector().getX(), 1, 1);
 		qTegel.getTegelView().updateTegel();
 		qTegel.getTegelView().show();
-		qTegel.getTegelView().setForegroundBrush(new QBrush(new QColor(255,0,0,80)));
+		qTegel.getTegelView().setForegroundBrush(new QBrush(new QColor(255,0,0,100)));
 
 		result.toggleProcessed();
 
