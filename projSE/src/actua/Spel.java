@@ -13,7 +13,7 @@ public class Spel extends Observable implements Serializable {
 	private StatusBijhouder statusBijhouder;
 	private boolean pionGeplaatst = false;
 	private Vector2D tegelGeplaatst;
-	private SpelBeurtResultaat laatsteAIZet;
+	private ArrayList<SpelBeurtResultaat> laatsteAIZet;
 
 	public static final char ROOD = 'r';
 	public static final char BLAUW = 'b';
@@ -39,12 +39,13 @@ public class Spel extends Observable implements Serializable {
 		tafelVerwerker = new TafelVerwerker();
 		spelerVerwerker = new SpelerVerwerker();
 		statusBijhouder = new StatusBijhouder();
+		laatsteAIZet = new ArrayList<SpelBeurtResultaat>();
 	}
 
 	public void restart() {
 		pionGeplaatst = false;
 		tegelGeplaatst = null;
-		laatsteAIZet = null;
+		laatsteAIZet.clear();
 		spelerVerwerker.verwijderSpelers();
 		tafelVerwerker.restart();
 		statusBijhouder = new StatusBijhouder();
@@ -58,7 +59,7 @@ public class Spel extends Observable implements Serializable {
 		pionGeplaatst = false;
 		tegelGeplaatst = null;
 		spelerVerwerker.gaNaarVolgendeSpeler();
-		laatsteAIZet = spelerVerwerker.geefResultaatAI();
+		addAIResultaat();
 		
 		this.setChanged();
 		notifyObservers(HUIDIGESPELERVERANDERD);
@@ -66,7 +67,15 @@ public class Spel extends Observable implements Serializable {
 		if (isHuidigeSpelerAI())
 			this.volgendeSpeler();
 	}
+	
+	private void addAIResultaat() {
+		laatsteAIZet.add(spelerVerwerker.geefResultaatAI());
+	}
 
+	public void clearAIResultaten() {
+		laatsteAIZet.clear();
+	}
+	
 	public void voegSpelerToe(short s, String naam, char kleur, int i) {
 		spelerVerwerker.voegSpelerToe(s, naam, kleur, i, tafelVerwerker);
 		setChanged();
@@ -89,7 +98,7 @@ public class Spel extends Observable implements Serializable {
 		return spelerVerwerker.isHuidigeSpelerAI();
 	}
 
-	public SpelBeurtResultaat geefResultaatAI() {
+	public ArrayList<SpelBeurtResultaat> geefResultaatAI() {
 		return laatsteAIZet;
 	}
 
