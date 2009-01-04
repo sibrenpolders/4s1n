@@ -164,6 +164,10 @@ public class TafelVerwerker implements Serializable {
 		tafel.verwijderPion(tegelCoord, pionCoord);
 	}
 
+	public boolean[] getUniekeLandsdeelPosities(Vector2D tegelCoord) {
+		return tafel.getUniekeLandsdeelPosities(tegelCoord);
+	}
+
 	public void undo() {
 		tafel.undo();
 	}

@@ -217,6 +217,10 @@ public class Spel extends Observable implements Serializable {
 		tafelVerwerker.verwijderPion(tegelCoord, pionCoord);
 	}
 
+	public boolean[] getUniekeLandsdeelPosities(Vector2D tegelCoord) {
+		return tafelVerwerker.getUniekeLandsdeelPosities(tegelCoord);
+	}
+
 	// UNDO
 
 	public boolean undo() {
