@@ -111,7 +111,7 @@ public class Tegel implements Serializable {
 			if (landsdelen[i] == null) {
 				landsdelen[i] = new Landsdeel(tegelPresentatie.charAt(i));
 
-				for (int j = i; j < MAX_GROOTTE; ++j) {
+				for (int j = i + 1; j < MAX_GROOTTE; ++j) {
 					if (idPresentatie.charAt(i) == idPresentatie.charAt(j)) {
 						landsdelen[j] = landsdelen[i];
 					}
@@ -216,7 +216,7 @@ public class Tegel implements Serializable {
 				|| bepaalLandsdeel(pos).isPionGeplaatst()) {
 			return false;
 		} else {
-			bepaalLandsdeel(pos).setPion(kleur);
+			landsdelen[pos].setPion(kleur);
 			return true;
 		}
 	}
@@ -226,7 +226,7 @@ public class Tegel implements Serializable {
 			return false;
 		}
 
-		return bepaalLandsdeel(pos).isPionGeplaatst();
+		return landsdelen[pos].isPionGeplaatst();
 	}
 
 	public char geefPionKleur(int pos) {
@@ -234,7 +234,7 @@ public class Tegel implements Serializable {
 			return 0;
 		}
 
-		return bepaalLandsdeel(pos).getPion();
+		return landsdelen[pos].getPion();
 	}
 
 	public void verwijderPion(int pos) {
@@ -242,7 +242,7 @@ public class Tegel implements Serializable {
 				|| !bepaalLandsdeel(pos).isPionGeplaatst()) {
 			;
 		} else {
-			bepaalLandsdeel(pos).verwijderPion();
+			landsdelen[pos].verwijderPion();
 		}
 	}
 	
@@ -253,7 +253,7 @@ public class Tegel implements Serializable {
 		{
 			boolean uniek = true;
 			for(int j = 0; j < i; ++j)
-				if(result[j] && landsdelen[i].equals(landsdelen[j]))
+				if(landsdelen[i] == landsdelen[j])
 					uniek = false;
 			
 			result[i] = uniek;
