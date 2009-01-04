@@ -13,5 +13,4 @@ public abstract class GSpelerInfo implements Observer {
 	}
 
 	public abstract void updateSpeler();
-
 }
