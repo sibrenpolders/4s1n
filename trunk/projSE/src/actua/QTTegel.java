@@ -207,9 +207,7 @@ public class QTTegel extends GTegel {
 		pixmap = new QPixmap(90, 90);
 		kiesAfbeelding();
 		view = new tegelView();
-		short ori = Short.parseShort(tegel[2]);
-		for (short i = 0; i < ori; ++i)
-			this.roteer(false);
+		roteerUnrotatedImage();
 	}
 
 	public QTTegel(String[] tegel, Spel spel) {
@@ -226,6 +224,13 @@ public class QTTegel extends GTegel {
 	private void kiesAfbeelding() {
 		pixmap.load("src/icons/" + tegel[TEGEL_PRESENTATIE] + ".png");
 		pixmap = pixmap.scaled(90, 90);
+	}
+
+	private void roteerUnrotatedImage() {
+		QMatrix matrix = new QMatrix();
+		matrix = matrix.rotate(90.0 * (double) orientatie);
+		setPixmap(new QPixmap(pixmap.transformed(matrix,
+				TransformationMode.FastTransformation)));
 	}
 
 	public QPixmap getPixmap() {
