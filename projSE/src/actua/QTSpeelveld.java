@@ -324,7 +324,8 @@ public class QTSpeelveld extends GSpeelveld {
 	protected void initialiseerSpeelveld() {
 		QTTegel tegel = this.getTegel(0, 0);
 		if (tegel == null) {
-			tegel = new QTTegel(spel, new Vector2D(0, 0));
+			String[] stegel = spel.geefStartTegel();
+			tegel = new QTTegel(stegel, spel, new Vector2D(0, 0));
 			gelegdeTegels.add(tegel);
 		}
 
@@ -419,8 +420,10 @@ public class QTSpeelveld extends GSpeelveld {
 		int row, col;
 		for (int i = 0; i < _mogelijkeZetten.size(); ++i) {
 			tmp = _mogelijkeZetten.get(i);
-			row = tmp.getX();// + spel.getStartTegelPos().getX();//-camera.getHuidigeVector().getX();
-			col = tmp.getY();// + spel.getStartTegelPos().getY();//-camera.getHuidigeVector().getY();
+			row = tmp.getX();// +
+			// spel.getStartTegelPos().getX();//-camera.getHuidigeVector().getX();
+			col = tmp.getY();// +
+			// spel.getStartTegelPos().getY();//-camera.getHuidigeVector().getY();
 
 			if (getAchtergrondTegel(row, col) != null)
 				getAchtergrondTegel(row, col).setGroen();
@@ -474,10 +477,11 @@ public class QTSpeelveld extends GSpeelveld {
 		tegel[2] = new String("0");
 		return isTegelGeplaatst;
 	}
-	
+
 	private void clearRood() {
-		for (int i=0;i<spel.geefResultaatAI().size();i++)
-			gelegdeTegels.get(gelegdeTegels.size()-1-i).getTegelView().setForegroundBrush(null);
+		for (int i = 0; i < spel.geefResultaatAI().size(); i++)
+			gelegdeTegels.get(gelegdeTegels.size() - 1 - i).getTegelView()
+					.setForegroundBrush(null);
 	}
 
 	private void voegTegelToeNaAIZet(SpelBeurtResultaat result) {
@@ -490,7 +494,6 @@ public class QTSpeelveld extends GSpeelveld {
 		int row = plaatsingTegel.getX();
 		int col = plaatsingTegel.getY();
 
-		QPixmap pixmap = new QPixmap("src/icons/" + tegel[0] + ".png");
 		QTTegel qTegel = new QTTegel(tegel, spel, new Vector2D(col, row));
 
 		if (pionPlaats >= 0) {
@@ -506,18 +509,19 @@ public class QTSpeelveld extends GSpeelveld {
 				- camera.getHuidigeVector().getX(), 1, 1);
 		qTegel.getTegelView().updateTegel();
 		qTegel.getTegelView().show();
-		qTegel.getTegelView().setForegroundBrush(new QBrush(new QColor(255,0,0,100)));
+		qTegel.getTegelView().setForegroundBrush(
+				new QBrush(new QColor(255, 0, 0, 100)));
 
 		result.toggleProcessed();
 
-//		QMessageBox box = new QMessageBox();
-//		box.setWindowTitle("Bericht");
-//		String s = "Een tegel (oriëntatie: " + tegel[2]
-//				+ ") werd geplaatst in rij " + row + ", kolom " + col + ".";
-//		if (result.getPlaatsPion() >= 0)
-//			s += " \nEr werd ook een pion geplaatst op die tegel.";
-//		box.setText(s);
-//		box.show();
+		// QMessageBox box = new QMessageBox();
+		// box.setWindowTitle("Bericht");
+		// String s = "Een tegel (oriëntatie: " + tegel[2]
+		// + ") werd geplaatst in rij " + row + ", kolom " + col + ".";
+		// if (result.getPlaatsPion() >= 0)
+		// s += " \nEr werd ook een pion geplaatst op die tegel.";
+		// box.setText(s);
+		// box.show();
 	}
 
 	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
@@ -544,8 +548,9 @@ public class QTSpeelveld extends GSpeelveld {
 			this.gridWidget.show();
 		} else if (((String) arg1).compareTo(spel.HUIDIGESPELERVERANDERD) == 0) {
 			ArrayList<SpelBeurtResultaat> result = spel.geefResultaatAI();
-			for (int i=0;i<result.size();i++)
-				if (result.get(i) != null && result.get(i).getProcessed() == false)
+			for (int i = 0; i < result.size(); i++)
+				if (result.get(i) != null
+						&& result.get(i).getProcessed() == false)
 					voegTegelToeNaAIZet(result.get(i));
 		}
 	}
