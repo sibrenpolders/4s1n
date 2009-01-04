@@ -542,7 +542,7 @@ public class QTSpeelveld extends GSpeelveld {
 			initialiseerSpeelveld();
 
 			this.gridWidget.show();
-		} else if (((String) arg1).compareTo(spel.HUIDIGESPELERVERANDERD) == 0) {
+		} else if (((String) arg1).compareTo(Spel.HUIDIGESPELERVERANDERD) == 0) {
 			ArrayList<SpelBeurtResultaat> result = spel.geefResultaatAI();
 			for (int i = 0; i < result.size(); i++)
 				if (result.get(i) != null
