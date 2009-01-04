@@ -134,16 +134,21 @@ public abstract class GTegel {
 	}
 
 	protected void updatePionnen() {
+		Vector2D lompeCoord = new Vector2D(tegelCoord.getY(), tegelCoord.getX());
 		for (int i = 0; i < NB_ROWS; ++i)
-			for (int j = 0; j < NB_COLS; ++j) {
+			for (int j = 0; j < NB_COLS; ++j)
 				verwijderPionInSectie(i, j);
-				int zone = getLandsdeelZoneVoorRowCol(i, j);
-				Vector2D lompeCoord = new Vector2D(tegelCoord.getY(),
-						tegelCoord.getX());
-				if (spel.isPionGeplaatst(lompeCoord, zone))
-					plaatsPionInSectie(i, j, spel.geefPionKleur(lompeCoord,
-							zone));
+
+		boolean[] zones = spel.getUniekeLandsdeelPosities(lompeCoord);
+		for (int i = 0; i < zones.length; ++i) {
+			if (zones[i]) {
+
+				Vector2D rasterCoord = getColRowVoorLandsdeelZone((short) i);
+				if (spel.isPionGeplaatst(lompeCoord, i))
+					plaatsPionInSectie(rasterCoord.getY(), rasterCoord.getX(),
+							spel.geefPionKleur(lompeCoord, i));
 			}
+		}
 	}
 
 	public abstract void roteer(boolean richting);

@@ -205,6 +205,11 @@ public class Tafel implements Serializable {
 		t.verwijderPion(pionCoord);
 	}
 
+	public boolean[] getUniekeLandsdeelPosities(Vector2D tegelCoord) {
+		Tegel t = bepaalTegel(tegelCoord);
+		return t.getUniekeLandsdeelPosities();
+	}
+
 	/**
 	 * Deze functie zal nagaan of een pion plaatsing kan gebeuren op tegel met
 	 * coördinaten tegelCoord op het landsdeel met coördinaten pionCoord. Deze
