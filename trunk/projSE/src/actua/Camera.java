@@ -1,7 +1,6 @@
 package actua;
 
 import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 public class Camera implements Serializable {
@@ -14,14 +13,9 @@ public class Camera implements Serializable {
 		huidigeVector = new Vector3D();
 		maxVector = new Vector3D();
 		minVector = new Vector3D();
-
 	}
 
-	public Camera(Vector3D minVector, Vector3D maxVector) {
-		this.minVector = minVector;
-		this.maxVector = maxVector;
-		huidigeVector = new Vector3D();
-	}
+	// GETTERS en SETTERS
 
 	public Vector3D getMinVector() {
 		return minVector;
@@ -47,7 +41,9 @@ public class Camera implements Serializable {
 		this.maxVector = maxVector;
 	}
 
-	public boolean bewegingGeldig(Vector3D bewegingsVector) {
+	// CAMERA BEWEGEN
+
+	public boolean isBewegingGeldig(Vector3D bewegingsVector) {
 		int xm = minVector.getX(), ym = minVector.getY(), zm = minVector.getZ();
 		int xM = maxVector.getX(), yM = maxVector.getY(), zM = maxVector.getZ();
 		int x = bewegingsVector.getX(), y = bewegingsVector.getY(), z = bewegingsVector
@@ -58,7 +54,7 @@ public class Camera implements Serializable {
 	}
 
 	public boolean veranderStandpunt(Vector3D bewegingsVector) {
-		if (bewegingGeldig(bewegingsVector)) {
+		if (isBewegingGeldig(bewegingsVector)) {
 			huidigeVector = bewegingsVector;
 			return true;
 		}
@@ -84,9 +80,5 @@ public class Camera implements Serializable {
 		minVector = (Vector3D) in.readObject();
 		huidigeVector = (Vector3D) in.readObject();
 		maxVector = (Vector3D) in.readObject();
-	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-
 	}
 }

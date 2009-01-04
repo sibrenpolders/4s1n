@@ -1,5 +1,5 @@
 package actua;
 
-public interface GWindow {
-	public void show();
+public abstract class GWindow {
+	public abstract void show();
 }

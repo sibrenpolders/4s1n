@@ -36,8 +36,6 @@ public class QTInfo extends GInfo {
 	private QSpacerItem spacer;
 	private Vector<QWidget> spelers;
 	private Vector<QGroupBox> spelerBoxen;
-	private static final int TEGEL_PRESENTATIE = 0;
-	private static final int ID_PRESENTATIE = 1;
 	private static final int BUTTON_HEIGHT = 20;
 	private static final int HOOGTE = 600;
 	private static final int BREEDTE = 180;
@@ -45,25 +43,24 @@ public class QTInfo extends GInfo {
 	private int breedte;
 
 	private class Stapel extends QWidget {
-		private Spel spel;
 		private QLabel tegelIcon;
 		private boolean tegelGenomen;
 
-		public Stapel(Spel spel) {
+		public Stapel() {
 			super();
-			this.spel = spel;
 
 			tegelIcon = new QLabel(this);
 			setSize(tegelIcon, 90, 90);
 
-			String[] tegel = spel.vraagNieuweTegel();
+			String[] tegel = mSpel.vraagNieuweTegel();
 			tegelIcon.setPixmap(new QPixmap("src/icons/"
-					+ tegel[TEGEL_PRESENTATIE] + ".png"));
+					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 		}
 
 		private void updatePixmap() {
-			String[] tegel = spel.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/" + tegel[TEGEL_PRESENTATIE] + ".png"));
+			String[] tegel = mSpel.vraagNieuweTegel();
+			tegelIcon.setPixmap(new QPixmap("src/icons/"
+					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 		}
 
 		public boolean isTegelGenomen() {
@@ -77,11 +74,11 @@ public class QTInfo extends GInfo {
 		public void roteerRechts() {
 			QLabel child = (QLabel) childAt(0, 0);
 
-			if (!spel.heeftHuidigeSpelerTegelGeplaatst() && child != null) {
-				String[] tegel = spel.vraagNieuweTegel();
+			if (!mSpel.heeftHuidigeSpelerTegelGeplaatst() && child != null) {
+				String[] tegel = mSpel.vraagNieuweTegel();
 
 				if (tegel != null) {
-					QTTegel qtTegel = new QTTegel(tegel, spel);
+					QTTegel qtTegel = new QTTegel(tegel, mSpel);
 					qtTegel.roteer(true);
 					child.clear();
 					child.setPixmap(new QPixmap(qtTegel.getPixmap()));
@@ -92,10 +89,10 @@ public class QTInfo extends GInfo {
 		public void roteerLinks() {
 			QLabel child = (QLabel) childAt(0, 0);
 
-			if (!spel.heeftHuidigeSpelerTegelGeplaatst() && child != null) {
-				String[] tegel = spel.vraagNieuweTegel();
+			if (!mSpel.heeftHuidigeSpelerTegelGeplaatst() && child != null) {
+				String[] tegel = mSpel.vraagNieuweTegel();
 				if (tegel != null) {
-					QTTegel qtTegel = new QTTegel(tegel, spel);
+					QTTegel qtTegel = new QTTegel(tegel, mSpel);
 					qtTegel.roteer(false);
 					child.clear();
 					child.setPixmap(new QPixmap(qtTegel.getPixmap()));
@@ -103,31 +100,31 @@ public class QTInfo extends GInfo {
 			}
 		}
 
-		public void nieuweTegel() {
-			String[] tegel = spel.neemTegelVanStapel();
-			spel.legTerugEinde(tegel);
+		public void toonNieuweTegel() {
+			String[] tegel = mSpel.neemTegelVanStapel();
+			mSpel.legTegelTerugEindeStapel(tegel);
 
 			QLabel child = (QLabel) childAt(0, 0);
-			tegel = spel.vraagNieuweTegel();
+			tegel = mSpel.vraagNieuweTegel();
 			child.clear();
-			child.setPixmap(new QPixmap("src/icons/" + tegel[TEGEL_PRESENTATIE]
-					+ ".png"));
+			child.setPixmap(new QPixmap("src/icons/"
+					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 
 		}
 
-		public void nieuweTegelClick() {
-			String[] tegel = spel.vraagNieuweTegel();
-			if (spel.isTegelPlaatsbaar(tegel))
+		public void toonNieuweTegelClick() {
+			String[] tegel = mSpel.vraagNieuweTegel();
+			if (mSpel.isTegelPlaatsbaar(tegel))
 				foutDialoog("De huidige tegel kan op de tafel geplaatst worden !");
 			else {
-				tegel = spel.neemTegelVanStapel();
-				spel.legTerugEinde(tegel);
+				tegel = mSpel.neemTegelVanStapel();
+				mSpel.legTegelTerugEindeStapel(tegel);
 
 				QLabel child = (QLabel) childAt(0, 0);
-				tegel = spel.vraagNieuweTegel();
+				tegel = mSpel.vraagNieuweTegel();
 				child.clear();
 				child.setPixmap(new QPixmap("src/icons/"
-						+ tegel[TEGEL_PRESENTATIE] + ".png"));
+						+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 			}
 		}
 
@@ -161,7 +158,7 @@ public class QTInfo extends GInfo {
 		}
 
 		protected void mousePressEvent(QMouseEvent event) {
-			if (!spel.heeftHuidigeSpelerTegelGeplaatst()) {
+			if (!mSpel.heeftHuidigeSpelerTegelGeplaatst()) {
 				QLabel child = (QLabel) childAt(0, 0);
 				if (child == null)
 					return;
@@ -195,9 +192,8 @@ public class QTInfo extends GInfo {
 						Qt.DropAction.MoveAction, Qt.DropAction.CopyAction)) == Qt.DropAction.MoveAction) {
 					boolean gedaan = false;
 					String[] tegel;
-					int stapelSize, teller = 0;
 
-					tegel = spel.vraagNieuweTegel();
+					tegel = mSpel.vraagNieuweTegel();
 
 					if (gedaan || tegel == null) {
 						child.show();
@@ -206,14 +202,15 @@ public class QTInfo extends GInfo {
 					} else {
 						child.show();
 						child.setPixmap(new QPixmap("src/icons/"
-								+ tegel[TEGEL_PRESENTATIE] + ".png"));
+								+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 					}
 				} else {
-					String[] tegel = spel.vraagNieuweTegel();
-					tegel[2] = new String("0"); // orientatie resetten
+					String[] tegel = mSpel.vraagNieuweTegel();
+					tegel[Spel.ORIENTATIE] = new String("0"); // orientatie
+					// resetten
 					child.show();
 					child.setPixmap(new QPixmap("src/icons/"
-							+ tegel[TEGEL_PRESENTATIE] + ".png"));
+							+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 				}
 			}
 		}
@@ -224,21 +221,30 @@ public class QTInfo extends GInfo {
 		hoogte = HOOGTE;
 		breedte = BREEDTE;
 
-		create();
+		createWidgets();
 		resize();
-		add();
+		addWidgets();
 		qtInfo.hide();
 		connect();
+	}
+
+	public QWidget getQtInfo() {
+		return qtInfo;
+	}
+
+	private void setSize(QWidget widget, int w, int h) {
+		widget.setMaximumSize(w, h);
+		widget.setMinimumSize(w, h);
 	}
 
 	private void connect() {
 		roteerR.clicked.connect(stapel, "roteerRechts()");
 		roteerL.clicked.connect(stapel, "roteerLinks()");
-		nieuweTegel.clicked.connect(stapel, "nieuweTegelClick()");
-		beurt.clicked.connect(this, "volgendeSpeler()");
+		nieuweTegel.clicked.connect(stapel, "toonNieuweTegelClick()");
+		beurt.clicked.connect(this, "updateVoorVolgendeSpeler()");
 	}
 
-	private void add() {
+	private void addWidgets() {
 		box.addWidget(stapel, 0, 0, 1, 2);
 		box.addWidget(roteerL, 1, 0, 1, 1);
 		box.addWidget(roteerR, 1, 1, 1, 1);
@@ -256,12 +262,12 @@ public class QTInfo extends GInfo {
 		setSize(qtInfo, breedte, hoogte);
 	}
 
-	private void create() {
+	private void createWidgets() {
 		qtInfo = new QWidget();
 		box = new QGridLayout();
 		qtInfo.setLayout(box);
 
-		stapel = new Stapel(mSpel);
+		stapel = new Stapel();
 		spelers = new Vector<QWidget>();
 		spelerBoxen = new Vector<QGroupBox>();
 		roteerR = new QPushButton("Draai Rechts");
@@ -271,7 +277,12 @@ public class QTInfo extends GInfo {
 	}
 
 	public void updateInfo() {
+		verwijderSpelers();
+		updateSpelers();
+		stapel.toonNieuweTegel();
 
+		qtInfo.setPalette(new QPalette());
+		qtInfo.show();
 	}
 
 	public synchronized void updateSpelers() {
@@ -301,7 +312,7 @@ public class QTInfo extends GInfo {
 		box.addItem(spacer, rows, 0, 1, 2);
 	}
 
-	public synchronized void verwijderSpelers() {
+	private synchronized void verwijderSpelers() {
 		box.removeItem(spacer);
 		for (int i = spelers.size() - 1; i >= 0; --i) {
 			QWidget item = spelers.elementAt(i);
@@ -319,31 +330,16 @@ public class QTInfo extends GInfo {
 		}
 	}
 
-	public QWidget getQtInfo() {
-		return qtInfo;
-	}
-
 	public synchronized void update(Observable o, Object arg) {
 		if (!arg.equals(true)) {
 			return;
 		}
 
-		verwijderSpelers();
-		updateSpelers();
-		stapel.nieuweTegel();
-
-		qtInfo.setPalette(new QPalette());
-		qtInfo.show();
-	}
-
-	private void setSize(QWidget widget, int w, int h) {
-		widget.setMaximumSize(w, h);
-		widget.setMinimumSize(w, h);
+		updateInfo();
 	}
 
 	@SuppressWarnings("unused")
-	private void volgendeSpeler() {
-		mSpel.clearAIResultaten();
+	private void updateVoorVolgendeSpeler() {
 		mSpel.volgendeSpeler();
 		stapel.updatePixmap();
 		verwijderSpelers();

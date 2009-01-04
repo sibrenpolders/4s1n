@@ -7,9 +7,9 @@ public abstract class GInfo implements Observer {
 	protected OptieVerwerker mOptie;
 
 	public GInfo(Spel spel, OptieVerwerker opties) {
-		mSpel = spel;
-		mOptie = opties;
-		mSpel.addObserver(this);
+		this.mSpel = spel;
+		this.mOptie = opties;
+		this.mSpel.addObserver(this);
 	}
 
 	public abstract void updateSpelers();

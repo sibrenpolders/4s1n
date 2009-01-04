@@ -118,11 +118,11 @@ public class JunitTafelTest extends TestCase {
 				
 		Vector2D coord = coords.get(0);
 		tafel.plaatsTegel(tegels.get(0), coord);
-		assertTrue(tafel.isLaatste(coord.getX(), coord.getY()));
+		assertTrue(tafel.isLaatstGeplaatsteTegel(coord.getX(), coord.getY()));
 		
 		coord = coords.get(1);
 		tafel.plaatsTegel(tegels.get(1), coord);
-		assertTrue(tafel.isLaatste(coord.getX(), coord.getY()));
+		assertTrue(tafel.isLaatstGeplaatsteTegel(coord.getX(), coord.getY()));
 	}
 
 	public void testBepaalTegel() {

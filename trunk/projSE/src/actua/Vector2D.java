@@ -1,21 +1,19 @@
 package actua;
 
 import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 
-public class Vector2D implements Serializable{
+public class Vector2D implements Serializable {
 	private static final long serialVersionUID = 8609844615654347035L;
 	protected int y;
 	protected int x;
-	
+
 	/**
-	 * @param  
+	 * @param
 	 * @post getX() == 0 && getY() == 0
 	 */
 	public Vector2D() {
-		setX(0);
-		setY(0);
+		this(0, 0);
 	}
 
 	/**
@@ -27,10 +25,11 @@ public class Vector2D implements Serializable{
 	}
 
 	public Vector2D(Vector2D andereVector) {
-		this.x = andereVector.x;
-		this.y = andereVector.y;
+		this(andereVector.x, andereVector.y);
 	}
-	
+
+	// GETTERS en SETTERS
+
 	/**
 	 * @post getX() == x
 	 */
@@ -61,18 +60,17 @@ public class Vector2D implements Serializable{
 	public String toString() {
 		return new String("(" + x + ", " + y + ")");
 	}
-	
-	 private void writeObject(java.io.ObjectOutputStream out)throws IOException {
-		 out.writeInt(x);
-		 out.writeInt(y);
-	 }
-	 
-	 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-		 x = in.readInt();
-		 y = in.readInt();
-	 }
-	 
-	 private void readObjectNoData() throws ObjectStreamException {
-		 
-	 }
+
+	// FILE I/O
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.writeInt(x);
+		out.writeInt(y);
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		x = in.readInt();
+		y = in.readInt();
+	}
 }

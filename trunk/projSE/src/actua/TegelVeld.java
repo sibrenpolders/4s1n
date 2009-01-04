@@ -1,11 +1,13 @@
 package actua;
 
 import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TegelVeld implements Serializable {
+	public static final int TEGEL_PRESENTATIE = Tegel.TEGEL_PRESENTATIE;
+	public static final int ID_PRESENTATIE = Tegel.ID_PRESENTATIE;
+	public static final int ORIENTATIE = Tegel.ORIENTATIE;
 	private static final int NOORD = 0;
 	private static final int OOST = 1;
 	private static final int ZUID = 2;
@@ -13,9 +15,6 @@ public class TegelVeld implements Serializable {
 	private static final long serialVersionUID = 6148474637558416899L;
 	private Tegel laatstGeplaatsteTegel;
 	private ArrayList<ArrayList<Tegel>> veld;
-	private static final int TEGEL_PRESENTATIE = 0;
-	private static final int ID_PRESENTATIE = 1;
-	private static final int ORIENTATIE = 2;
 	private Vector2D startTegel;
 
 	public TegelVeld() {
@@ -48,7 +47,7 @@ public class TegelVeld implements Serializable {
 	 * @return True als dit de coördinaten zijn van de laatstgeplaatste tegel,
 	 *         False anders.
 	 */
-	public boolean isLaatste(int rij, int kolom) {
+	public boolean isLaatstGeplaatsteTegel(int rij, int kolom) {
 		return get(new Vector2D(rij, kolom)) == laatstGeplaatsteTegel;
 	}
 
@@ -64,7 +63,7 @@ public class TegelVeld implements Serializable {
 		this.startTegel = new Vector2D(0, 0);
 	}
 
-	public int size() {
+	public int getSize() {
 		return veld.size();
 	}
 
@@ -187,11 +186,10 @@ public class TegelVeld implements Serializable {
 	 * @return True indien de tegelplaatsing mogelijk is, False anders.
 	 */
 	public boolean isTegelPlaatsingGeldig(Tegel tegel, Vector2D coord) {
-//		int rij = startTegel.getX() + coord.getX();
-//		int kolom = startTegel.getY() + coord.getY();
-		
+
 		Vector2D veldCoord = zetOmInVeldCoord(coord);
-		return tegelKanGeplaatstWorden(tegel, veldCoord.getX(), veldCoord.getY());
+		return tegelKanGeplaatstWorden(tegel, veldCoord.getX(), veldCoord
+				.getY());
 	}
 
 	/**
@@ -209,11 +207,6 @@ public class TegelVeld implements Serializable {
 				&& geldigeBuren((Tegel) tegel, rij, kolom);
 	}
 
-	/**
-	 * @param rij
-	 * @param kolom
-	 * @return
-	 */
 	private boolean isGeplaatst(int rij, int kolom) {
 		ArrayList<Tegel> rijV = null;
 
@@ -222,7 +215,7 @@ public class TegelVeld implements Serializable {
 			rijV = veld.get(rij);
 		}
 
-		// ga na of er al een Tegel op positie (rij, kolom) staat/
+		// ga na of er al een Tegel op positie (rij, kolom) staat
 		if (rijV != null && kolom >= 0 && kolom < rijV.size()) {
 			if (rijV.get(kolom) != null) {
 				return true;
@@ -318,9 +311,9 @@ public class TegelVeld implements Serializable {
 
 	private boolean geldigeBuren(Tegel tegel, int rij, int kolom) {
 		boolean burenGeldig = true;
-		boolean buurGevonden = false; // als er geen buur gevonden wordt dan
-		// is
-		// de zet ook ongeldig
+		// als er geen buur gevonden wordt dan is de zet ook ongeldig
+		boolean buurGevonden = false;
+
 		Tegel t;
 		Vector2D positie = new Vector2D();
 
@@ -389,6 +382,8 @@ public class TegelVeld implements Serializable {
 						.bepaalLandsdeel(landsdeelCBuur).getType();
 	}
 
+	// UNDO
+
 	/**
 	 * Deze functie zal het veld 1 zet terugdoen. Hiervoor heeft hij een
 	 * referentie nodig naar de vorige laatst geplaatste tegel.
@@ -402,8 +397,8 @@ public class TegelVeld implements Serializable {
 
 		for (int i = 0; !gevonden && i < veld.size(); ++i) {
 			ArrayList<Tegel> kolomVector = veld.get(i);
-			for (int j = 0; !gevonden && j < kolomVector.size(); ++i) {
-				if (kolomVector.get(j) == this.laatstGeplaatsteTegel) {
+			for (int j = 0; !gevonden && j < kolomVector.size(); ++j) {
+				if (kolomVector.get(j).equals(laatstGeplaatsteTegel)) {
 					kolomVector.remove(j);
 					coordVerwijderdeTegel = new Vector2D(i, j);
 				}
@@ -423,10 +418,9 @@ public class TegelVeld implements Serializable {
 
 		this.laatstGeplaatsteTegel = laatstGeplaatsteTegel;
 	}
-	
-	public void undo()
-	{
-		if(laatstGeplaatsteTegel != null)
+
+	public void undo() {
+		if (laatstGeplaatsteTegel != null)
 			undo(laatstGeplaatsteTegel);
 	}
 
@@ -451,6 +445,7 @@ public class TegelVeld implements Serializable {
 		out.writeObject(veld);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		Vector2D coordLaatstGeplaatsteTegel = (Vector2D) in.readObject();
@@ -464,9 +459,5 @@ public class TegelVeld implements Serializable {
 				&& y >= 0 && y < veld.get(x).size()) {
 			laatstGeplaatsteTegel = veld.get(x).get(y);
 		}
-	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-		// TODO invullen??
 	}
 }

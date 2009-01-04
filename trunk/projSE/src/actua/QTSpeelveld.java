@@ -337,7 +337,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
 						.getZ());
-		if (camera.bewegingGeldig(nieuwePositie))
+		if (camera.isBewegingGeldig(nieuwePositie))
 			camera.veranderStandpunt(nieuwePositie);
 
 		veranderZicht();
@@ -347,7 +347,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
 				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
 						.getZ());
-		if (camera.bewegingGeldig(nieuwePositie))
+		if (camera.isBewegingGeldig(nieuwePositie))
 			camera.veranderStandpunt(nieuwePositie);
 
 		veranderZicht();
@@ -357,7 +357,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector3D nieuwePositie = new Vector3D(
 				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
-		if (camera.bewegingGeldig(nieuwePositie))
+		if (camera.isBewegingGeldig(nieuwePositie))
 			camera.veranderStandpunt(nieuwePositie);
 
 		veranderZicht();
@@ -367,7 +367,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector3D nieuwePositie = new Vector3D(
 				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
-		if (camera.bewegingGeldig(nieuwePositie))
+		if (camera.isBewegingGeldig(nieuwePositie))
 			camera.veranderStandpunt(nieuwePositie);
 
 		veranderZicht();
@@ -413,7 +413,8 @@ public class QTSpeelveld extends GSpeelveld {
 	}
 
 	private void kleurMogelijkhedenGroen() {
-		ArrayList<Vector2D> _mogelijkeZetten = spel.geefMogelijkeZetten();
+		ArrayList<Vector2D> _mogelijkeZetten = spel
+				.geefMogelijkeZettenVoorTegel();
 		mogelijkeZetten.clear();
 
 		Vector2D tmp;
@@ -469,7 +470,6 @@ public class QTSpeelveld extends GSpeelveld {
 			qTegel.getTegelView().show();
 
 			isTegelGeplaatst = true;
-			spel.huidigeSpelerPlaatstTegel(true);
 		}
 
 		// altijd resetten naar 0 hier
@@ -518,8 +518,6 @@ public class QTSpeelveld extends GSpeelveld {
 
 		qTegel.getTegelView().setForegroundBrush(
 				new QBrush(new QColor(255, 0, 0, 100)));
-
-		result.toggleProcessed();
 	}
 
 	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
@@ -548,8 +546,10 @@ public class QTSpeelveld extends GSpeelveld {
 			ArrayList<SpelBeurtResultaat> result = spel.geefResultaatAI();
 			for (int i = 0; i < result.size(); i++)
 				if (result.get(i) != null
-						&& result.get(i).getProcessed() == false)
+						&& result.get(i).getProcessed() == false) {
 					voegTegelToeNaAIZet(result.get(i));
+					result.get(i).toggleProcessed();
+				}
 		}
 	}
 

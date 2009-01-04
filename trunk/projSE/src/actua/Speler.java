@@ -1,19 +1,12 @@
 package actua;
 
 import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import actua.Pion;
 
 public class Speler implements Serializable {
-	public static final char INACTIVE_COLOR = 'x';
-	public static final char SPELER_ROOD = 'r';
-	public static final char SPELER_BLAUW = 'b';
-	public static final char SPELER_WIT = 'w';
-	public static final char SPELER_GEEL = 'g';
-	public static final char SPELER_ORANJE = 'o';
-
+	private static final char INACTIVE_COLOR = 'x';
 	private static final long serialVersionUID = -5478932661892837977L;
 	protected static short DEFAULT_AANTALPIONNEN = 7;
 	protected String naam;
@@ -32,10 +25,6 @@ public class Speler implements Serializable {
 
 	public Speler(String naam, char kleur) {
 		this(naam, kleur, 0);
-	}
-
-	public Speler() {
-		this("unnamed", INACTIVE_COLOR);
 	}
 
 	// GETTERS en SETTERS
@@ -128,15 +117,12 @@ public class Speler implements Serializable {
 		out.writeObject(pionnen);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		naam = (String) in.readObject();
 		score = in.readLong();
 		kleur = in.readChar();
 		pionnen = (ArrayList<Pion>) in.readObject();
-	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-
 	}
 }

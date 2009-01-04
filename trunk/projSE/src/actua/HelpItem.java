@@ -8,11 +8,11 @@ public class HelpItem {
 	private String id;
 
 	public HelpItem() {
-		tags = new Vector<String>();
+		this.tags = new Vector<String>();
 	}
 
 	public void addTag(String tag) {
-		tags.add(tag);
+		this.tags.add(tag);
 	}
 
 	public String[] getTags() {

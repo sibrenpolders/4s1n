@@ -14,10 +14,8 @@ public class QTMenubalk extends GMenubalk {
 
 	public QTMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help,
 			BestandsVerwerker bestand, QTInitSpel qtInitSpel) {
-		super(spel, qtInitSpel);
-		setGHelp(new QTHelp(help));
-		setGOptie(new QTOptie(opties));
-		setBestand(bestand);
+		super(spel, opties, help, bestand, qtInitSpel, new QTHelp(help),
+				new QTOptie(opties));
 
 		menubar = new QMenuBar();
 		menubar.setMaximumWidth(1024);
@@ -25,17 +23,34 @@ public class QTMenubalk extends GMenubalk {
 		addItems();
 	}
 
+	public QMenuBar getMenubar() {
+		return menubar;
+	}
+
+	public void setMenubar(QMenuBar menubar) {
+		this.menubar = menubar;
+	}
+
+	private QMenu addMenuItem(String titel) {
+		return menubar.addMenu("&" + titel);
+	}
+
+	private QAction addActionItem(QMenu menu, String titel) {
+		return menu.addAction(new QIcon(new QPixmap("src/icons/" + titel
+				+ ".png")), titel);
+	}
+
 	private void addItems() {
 		if (menubar == null)
 			throw new NullPointerException();
-		spel();
-		speler();
-		bewerken();
-		opties();
-		help();
+		createSpelMenu();
+		createSpelerMenu();
+		createBewerkenMenu();
+		createOptiesMenu();
+		createHelpMenu();
 	}
 
-	private void spel() {
+	private void createSpelMenu() {
 		QMenu spel = addMenuItem("Spel");
 		QAction nSpel = addActionItem(spel, "Nieuw spel");
 
@@ -56,16 +71,13 @@ public class QTMenubalk extends GMenubalk {
 		afsluiten.triggered.connect(QApplication.instance(), "quit()");
 	}
 
-	private void speler() {
-		QMenu spel;
-		QAction nSpel, opslaan, laden;
-
-		spel = addMenuItem("Spelers");
-		nSpel = addActionItem(spel, "Huidige speler verwijderen");
-		opslaan = addActionItem(spel, "Huidige speler naar AI omzetten");
+	private void createSpelerMenu() {
+		QMenu spel = addMenuItem("Spelers");
+		addActionItem(spel, "Huidige speler verwijderen");
+		addActionItem(spel, "Huidige speler naar AI omzetten");
 	}
 
-	private void bewerken() {
+	private void createBewerkenMenu() {
 		QMenu bewerken;
 		QAction undo, redo;
 
@@ -77,7 +89,7 @@ public class QTMenubalk extends GMenubalk {
 		redo.triggered.connect(spel, "redo()");
 	}
 
-	private void opties() {
+	private void createOptiesMenu() {
 		QMenu opties;
 		QAction optie;
 
@@ -86,7 +98,7 @@ public class QTMenubalk extends GMenubalk {
 		optie.triggered.connect(this.gOptie, "show()");
 	}
 
-	private void help() {
+	private void createHelpMenu() {
 		QMenu helpMenu;
 		QAction help, about;
 
@@ -97,22 +109,6 @@ public class QTMenubalk extends GMenubalk {
 		about.triggered.connect(this, "infoVenster()");
 	}
 
-	@SuppressWarnings("unused")
-	private void infoVenster() {
-		QMessageBox.about(menubar, "Over applicatie",
-				"Deze <b>Applicatie</b> is mogelijk gemaakt door "
-						+ "Niels, Sam, Sam, Sibrand, Sibren en Bart Peeters ");
-	}
-
-	private QMenu addMenuItem(String titel) {
-		return menubar.addMenu("&" + titel);
-	}
-
-	private QAction addActionItem(QMenu menu, String titel) {
-		return menu.addAction(new QIcon(new QPixmap("src/icons/" + titel
-				+ ".png")), titel);
-	}
-
 	public void hide() {
 		menubar.hide();
 	}
@@ -121,19 +117,14 @@ public class QTMenubalk extends GMenubalk {
 		menubar.show();
 	}
 
-	public QMenuBar getMenubar() {
-		return menubar;
+	@SuppressWarnings("unused")
+	private void infoVenster() {
+		QMessageBox.about(menubar, "Over applicatie",
+				"<b>Actua Tungrorum</b> is mogelijk gemaakt door "
+						+ "Sam, Sam, Sibrand en Sibren");
 	}
 
-	public void setMenubar(QMenuBar menubar) {
-		this.menubar = menubar;
-	}
-
-	private void opslaanAls() {
-		String naam = QFileDialog.getSaveFileName();
-		bestand.slaSpelToestandOp(naam, spel);
-	}
-
+	@SuppressWarnings("unused")
 	private void opslaan() {
 		if (bestand.getNaam() != null) {
 			bestand.slaSpelToestandOp(spel);
@@ -143,6 +134,13 @@ public class QTMenubalk extends GMenubalk {
 
 	}
 
+	@SuppressWarnings("unused")
+	private void opslaanAls() {
+		String naam = QFileDialog.getSaveFileName();
+		bestand.slaSpelToestandOp(naam, spel);
+	}
+
+	@SuppressWarnings("unused")
 	private void laden() {
 		String naam = QFileDialog.getOpenFileName();
 		bestand.startLaden(spel, naam);

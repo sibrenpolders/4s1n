@@ -1,7 +1,6 @@
 package actua;
 
 import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /*
@@ -15,7 +14,6 @@ import java.io.Serializable;
  */
 public class Tegel implements Serializable {
 	private static final long serialVersionUID = -6031518212157821335L;
-	// een tegel is verdeeld in een 3x3 matrix van landsdelen
 	public static final int MAX_GROOTTE = 13;
 	private static final short MAX_DRAAIING = 4;
 	// Deze constanten geven andere klassen de mogelijkheid om zijkanten van de
@@ -33,8 +31,9 @@ public class Tegel implements Serializable {
 	public static final int WEST = 11;
 	public static final int WEST_NOORD = 0;
 	public static final int MIDDEN = 12;
-
-	private static final char WEG = 'g';
+	public static final int TEGEL_PRESENTATIE = 0;
+	public static final int ID_PRESENTATIE = 1;
+	public static final int ORIENTATIE = 2;
 
 	private short orientatie;
 	private Landsdeel[] landsdelen;
@@ -45,10 +44,6 @@ public class Tegel implements Serializable {
 		orientatie = 0;
 	}
 
-	public Tegel(String tegelPresentatie, String idPresentatie) {
-		this(tegelPresentatie, idPresentatie, (short) 0);
-	}
-
 	public Tegel(String tegelPresentatie, String idPresentatie, short orientatie) {
 		this.tegelPresentatie = new String(tegelPresentatie);
 		setLandsdelen(new String(idPresentatie));
@@ -56,8 +51,7 @@ public class Tegel implements Serializable {
 		this.orientatie = orientatie;
 	}
 
-	public Tegel(String tegelPresentatie, String idPresentatie,
-			String orientatie) {
+	public Tegel(String tegelPresentatie, String idPresentatie,	String orientatie) {
 		this(tegelPresentatie, idPresentatie, Short.parseShort(orientatie));
 	}
 
@@ -70,17 +64,6 @@ public class Tegel implements Serializable {
 	public String getTegelPresentatie() {
 		return tegelPresentatie;
 	}
-	
-	public String[] getTegelString()
-	{
-		String[] tmp = new String[3];
-		
-		tmp[0] = new String(tegelPresentatie);
-		tmp[1] = new String(idPresentatie);
-		tmp[2] = new String("" + orientatie);
-		
-		return tmp;
-	}
 
 	public short getOrientatie() {
 		return orientatie;
@@ -89,10 +72,22 @@ public class Tegel implements Serializable {
 	public void setOrientatie(short orientatie) {
 		this.orientatie = orientatie;
 	}
+	
+	public String[] getTegelString()
+	{
+		String[] tmp = new String[3];
+		
+		tmp[TEGEL_PRESENTATIE] = new String(tegelPresentatie);
+		tmp[ID_PRESENTATIE] = new String(idPresentatie);
+		tmp[ORIENTATIE] = new String("" + orientatie);
+		
+		return tmp;
+	}
 
 	/**
 	 * @param richting
-	 *            True wijzerzin draaien. False tegenwijzerzin draaien.
+	 * 		True: wijzerzin draaien. 
+	 * 		False: tegenwijzerzin draaien.
 	 */
 	public void draaiTegel(boolean richting) {
 		if (richting) {
@@ -126,14 +121,41 @@ public class Tegel implements Serializable {
 		}
 	}
 
-	public Landsdeel bepaalLandsdeel(int pos) {
-		// er zijn foute coÃ¶rdinaten zijn doorgegeven.
-		if (!coordinatenOk(pos)) {
-			System.err.println("Foute landsdeel coÃ¶rdinaten");
+	public Landsdeel bepaalLandsdeel(int zone) {
+		// er zijn foute coördinaten doorgegeven.
+		if (!zoneCoordinatenOk(zone)) {
+			System.err.println("Foute landsdeelcoördinaten");
 			return null;
 		}
 
-		return landsdelen[getPos(pos)];
+		return landsdelen[getZoneAfterRotation(zone)];
+	}
+	
+	private int getZoneAfterRotation(int zone) {
+		if (zone == MIDDEN || orientatie == 0) {
+			return zone;
+		}
+	
+		int beginPos = 1;
+	
+		if (orientatie == 1) {
+			beginPos = 9;
+		} else if (orientatie == 2) {
+			beginPos = 6;
+		} else if (orientatie == 3) {
+			beginPos = 3;
+		}
+	
+		return (beginPos + zone) % 12;
+	}
+	
+	private boolean zoneCoordinatenOk(int pos) {
+		// de foute coördinaten zijn doorgegeven.
+		if (pos < 0 || pos >= MAX_GROOTTE) {
+			return false;
+		}
+	
+		return true;
 	}
 	
 	public void updateLandsdeel(int zijde, Tegel nieuweTegel) {
@@ -188,40 +210,13 @@ public class Tegel implements Serializable {
 		}
 	}
 
-	private int getPos(int pos) {
-		if (pos == MIDDEN || orientatie == 0) {
-			return pos;
-		}
-	
-		int beginPos = 1;
-	
-		if (orientatie == 1) {
-			beginPos = 9;
-		} else if (orientatie == 2) {
-			beginPos = 6;
-		} else if (orientatie == 3) {
-			beginPos = 3;
-		}
-	
-		return (beginPos + pos) % 12;
-	}
-
-	private boolean coordinatenOk(int pos) {
-		// de foute coÃ¶rdinaten zijn doorgegeven.
-		if (pos < 0 || pos >= MAX_GROOTTE) {
-			return false;
-		}
-	
-		return true;
-	}
-
 	// PIONNEN
 	
 	public boolean plaatsPion(int pos, char kleur) {
 		if(pos < 0 || pos >= MAX_GROOTTE || landsdelen[pos].isKruispunt() || landsdelen[pos].isPionGeplaatst() ) {
 			return false;
 		} else {
-			landsdelen[pos].plaatsPion(kleur);
+			landsdelen[pos].setPion(kleur);
 			return true;
 		}
 	}
@@ -239,18 +234,18 @@ public class Tegel implements Serializable {
 			return 0;
 		}
 		
-		return landsdelen[pos].neemPionnenTerug();
+		return landsdelen[pos].getPion();
 	}
 	
 	public void verwijderPion(int pos) {
 		if (pos < 0 || pos >= MAX_GROOTTE || !landsdelen[pos].isPionGeplaatst()) {
 			;
 		} else {
-			landsdelen[pos].plaatsPion((char)0);
+			landsdelen[pos].setPion((char)0);
 		}
 	}
 
-	// TODO invullen!!!!
+	// TODO Tegel.clone(): OK ?
 	public Tegel clone() {
 		Tegel t = new Tegel();
 		t.orientatie = orientatie;
@@ -287,11 +282,7 @@ public class Tegel implements Serializable {
 		out.writeShort(orientatie);
 		out.writeObject(idPresentatie);
 		out.writeObject(tegelPresentatie);
-		// TODO pion plaatsing erin zetten (morgen)
-	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-	
+		// TODO Tegel.writeObject: pion plaatsing opslaan
 	}
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException,

@@ -6,16 +6,10 @@ public class Help {
 	private Vector<HelpItem> items;
 	private HelpParser parser;
 
-	public Help() {
-		items = new Vector<HelpItem>();
-		parser = new HelpParser();
-		parser.parseHelpDocument(items);
-	}
-
 	public Help(String bestand) {
-		items = new Vector<HelpItem>();
-		parser = new HelpParser(bestand);
-		parser.parseHelpDocument(items);
+		this.items = new Vector<HelpItem>();
+		this.parser = new HelpParser(bestand);
+		this.parser.parseHelpDocument(items);
 	}
 
 	/**

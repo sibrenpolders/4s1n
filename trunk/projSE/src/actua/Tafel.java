@@ -1,11 +1,13 @@
 package actua;
 
 import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Tafel implements Serializable {
+	public static final int TEGEL_PRESENTATIE = TegelVeld.TEGEL_PRESENTATIE;
+	public static final int ID_PRESENTATIE = TegelVeld.ID_PRESENTATIE;
+	public static final int ORIENTATIE = TegelVeld.ORIENTATIE;
 	private static final long serialVersionUID = -1767380269715221020L;
 	private static final int NOORD = 0;
 	private static final int OOST = 1;
@@ -13,10 +15,6 @@ public class Tafel implements Serializable {
 	private static final int WEST = 3;
 
 	private TegelVeld veld;
-
-	private static final int TEGEL_PRESENTATIE = 0;
-	private static final int ID_PRESENTATIE = 1;
-	private static final int ORIENTATIE = 2;
 
 	public Tafel() {
 		clear();
@@ -30,7 +28,7 @@ public class Tafel implements Serializable {
 	// GETTERS en SETTERS
 
 	/**
-	 * Geeft de positie van de start tegel terug /
+	 * Geeft de positie van de start tegel terug
 	 * 
 	 * @return
 	 */
@@ -42,36 +40,32 @@ public class Tafel implements Serializable {
 		plaatsTegel(tegel, new Vector2D(0, 0));
 	}
 
-	public Vector2D getBeginPositie() {
+	private Vector2D getBeginPositie() {
 		Vector2D startTegel = veld.getStartTegel();
 		return new Vector2D(-startTegel.getX(), -startTegel.getY());
 	}
 
 	public int getHoogte() {
-		return veld.size();
+		return veld.getSize();
 	}
 
 	public int getBreedte() {
 		return veld.getBreedte();
 	}
 
-	public Tegel getLaatstGeplaatsteTegel() {
-		return veld.getLaatstGeplaatsteTegel();
-	}
-
 	/**
-	 * Deze functie zal nagaan of de tegel met coÃ¶rdinaten (rij, kolom) de
+	 * Deze functie zal nagaan of de tegel met coördinaten (rij, kolom) de
 	 * laatst geplaatste tegel is.
 	 * 
 	 * @param rij
 	 *            Het rijnummer van de tegel.
 	 * @param kolom
 	 *            Het kolomnummer van de tegel.
-	 * @return True als dit de coÃ¶rdinaten zijn van de laatstgeplaatste tegel,
+	 * @return True als dit de coördinaten zijn van de laatstgeplaatste tegel,
 	 *         False anders.
 	 */
-	public boolean isLaatste(int rij, int kolom) {
-		return veld.isLaatste(rij, kolom);
+	public boolean isLaatstGeplaatsteTegel(int rij, int kolom) {
+		return veld.isLaatstGeplaatsteTegel(rij, kolom);
 	}
 
 	public String[] getTegelPresentatie(Vector2D coord) {
@@ -91,22 +85,42 @@ public class Tafel implements Serializable {
 		return null;
 	}
 
-	// TODO Functie is er enkel voor de unit test __NIET__ gebruiken voor andere
-	// doeleinde. Hogere lagen moeten de tegel niet kunnen bepalen???
+	@SuppressWarnings( { "unused" })
 	public Tegel bepaalTegel(Vector2D coord) {
 		return (Tegel) veld.get(coord);
 	}
 
 	// TEGELPLAATSING
 
+	public ArrayList<Vector2D> geefMogelijkeZetten(String[] t) {
+		ArrayList<Vector2D> mogelijkeZetten = new ArrayList<Vector2D>();
+
+		Vector2D coordsStartTegel = getBeginPositie();
+		int rijMin = coordsStartTegel.getX() - 1;
+		int kolomMin = coordsStartTegel.getY() - 1;
+		int rijMax = getHoogte() + coordsStartTegel.getX();
+		int kolomMax = getBreedte() + coordsStartTegel.getY();
+
+		for (int i = rijMin; i <= rijMax; ++i) {
+			for (int j = kolomMin; j <= kolomMax; ++j) {
+				Vector2D tmp = new Vector2D(i, j);
+				if (isTegelPlaatsingGeldig(t, tmp)) {
+					mogelijkeZetten.add(tmp);
+				}
+			}
+		}
+
+		return mogelijkeZetten;
+	}
+
 	/**
-	 * Zal een tegel op het speelveld plaatsen op de coÃ¶rdinaten gegeven door
+	 * Zal een tegel op het speelveld plaatsen op de coördinaten gegeven door
 	 * coord.
 	 * 
 	 * @param t
 	 *            De tegel die op de tafel gelegd moet worden.
 	 * @param coord
-	 *            De coÃ¶rdinaten van de tegel.
+	 *            De coördinaten van de tegel.
 	 * @return Geeft true als de tegel geplaatst is. False als de tegel niet
 	 *         geplaatst kan worden
 	 */
@@ -126,7 +140,7 @@ public class Tafel implements Serializable {
 	 * @param tegel
 	 *            De tegel die geplaatst moet worden.
 	 * @param coord
-	 *            De coÃ¶rdinaten waar de tegel geplaatst moet worden.
+	 *            De coördinaten waar de tegel geplaatst moet worden.
 	 * @return True indien de tegelplaatsing mogelijk is, False anders.
 	 */
 	public boolean isTegelPlaatsingGeldig(String[] t, Vector2D coord) {
@@ -190,27 +204,26 @@ public class Tafel implements Serializable {
 
 	/**
 	 * Deze functie zal nagaan of een pion plaatsing kan gebeuren op tegel met
-	 * coï¿½rdinaten tegelCoord op het landsdeel met coÃ¶rdinaten pionCoord.
-	 * Deze functie zal niet de pion echt gaan plaatsen op de tegel.
+	 * coördinaten tegelCoord op het landsdeel met coördinaten pionCoord. Deze
+	 * functie zal niet de pion echt gaan plaatsen op de tegel.
 	 * 
 	 * @param t
 	 *            De tegel waarop de pion geplaatst moet worden.
 	 * @param tegelCoord
-	 *            De coï¿½rdinaten van de tegel waarop de pion geplaatst moet
+	 *            De coördinaten van de tegel waarop de pion geplaatst moet
 	 *            worden.
 	 * @param pionCoord
-	 *            De coï¿½rdinaten van het landsdeel waarop de pion geplaatst
-	 *            moet worden.
+	 *            De coördinaten van het landsdeel waarop de pion geplaatst moet
+	 *            worden.
 	 * @return True als de pion geplaatst kan worden, False anders.
 	 */
-	public boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
+	private boolean isPionPlaatsingGeldig(Tegel tegel, Vector2D tegelCoord,
 			int pionCoord) {
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
 		return isPionPlaatsingGeldig(pionCoord, tegel, tegelCoord, checked);
 	}
 
-	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
-			int pionCoord) {
+	public boolean isPionPlaatsingGeldig(Vector2D tegelCoord, int pionCoord) {
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
 		Tegel tegel = (Tegel) veld.get(tegelCoord);
 		return isPionPlaatsingGeldig(pionCoord, tegel, tegelCoord, checked);
@@ -233,8 +246,8 @@ public class Tafel implements Serializable {
 
 		boolean pionPlaatsingGeldig = !matchLandsdeel.isPionGeplaatst();
 
-		int buurPionCoord; // de pion coordinaat van de buur waarmee er
-							// vergeleken zal worden
+		// de pion coordinaat van de buur waarmee er vergeleken zal worden
+		int buurPionCoord;
 		int buurNr;
 		Vector2D buurCoord;
 
@@ -243,8 +256,8 @@ public class Tafel implements Serializable {
 				buurPionCoord = getBuurPionCoord(i);
 				buurNr = getBuurNr(i);
 				buurCoord = getBuurCoord(buurNr, veldCoord);
-				if (buurNr != -1) { // Tegel.MIDDEN moet niet verder
-									// gecontroleerd worden
+				if (buurNr != -1) {
+					// Tegel.MIDDEN moet niet verder gecontroleerd worden
 					pionPlaatsingGeldig = isPionPlaatsingGeldig(buurPionCoord,
 							buren[buurNr], buurCoord, checked);
 				}
@@ -376,40 +389,5 @@ public class Tafel implements Serializable {
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		veld = (TegelVeld) in.readObject();
-	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-		// TODO invullen??
-	}
-
-	public ArrayList<Vector2D> geefMogelijkeZetten(String[] t) {
-		ArrayList<Vector2D> mogelijkeZetten = new ArrayList<Vector2D>();
-
-//		int breedte = getBreedte();
-//		int hoogte = getHoogte();
-		Vector2D coordsStartTegel = getBeginPositie();
-		int rijMin = coordsStartTegel.getX()-1;
-		int kolomMin = coordsStartTegel.getY()-1;
-		int rijMax = getHoogte() + coordsStartTegel.getX();
-		int kolomMax = getBreedte() + coordsStartTegel.getY();
-
-//		for (int i = rijMin; i <= rijMax; ++i)
-//			for (int j = kolomMin; j <= kolomMax; ++j) {
-//				Vector2D temp = new Vector2D(i, j);
-//				if (isTegelPlaatsingGeldig(t, temp)) {
-//					mogelijkeZetten.add(temp);
-//				}
-//			}
-		
-		for (int i = rijMin; i <= rijMax; ++i) {
-			for (int j = kolomMin; j <= kolomMax; ++j) {
-				Vector2D tmp = new Vector2D(i, j);
-				if (isTegelPlaatsingGeldig(t, tmp)) {
-					mogelijkeZetten.add(tmp);
-				}
-			}
-		}
-
-		return mogelijkeZetten;
 	}
 }

@@ -1,28 +1,20 @@
 package actua;
 
 public class AI extends Speler {
+	private static final long serialVersionUID = 5271140789401358626L;
 	public final static short EASY = 1;
 	public final static short HARD = 2;
 	private short niveau;
 	private Strategy strategy;
-	private TafelVerwerker tafelVerwerker;
 
-	public AI(String naam, char kleur, short niveau, TafelVerwerker tv,
-			long score) {
+	public AI(String naam, char kleur, short niveau, long score) {
 		super(naam, kleur, score);
-		this.tafelVerwerker = tv;
 		setNiveau(niveau);
 	}
 
-	public AI(Speler speler, short niveau, TafelVerwerker tv) {
-		this(speler.getNaam(), speler.getKleur(), niveau, tv, speler.getScore());
+	public AI(Speler speler, short niveau) {
+		this(speler.getNaam(), speler.getKleur(), niveau, speler.getScore());
 		this.pionnen = speler.getPionnen();
-	}
-
-	public AI() {
-		super();
-		this.tafelVerwerker = null;
-		setNiveau((short) 0);
 	}
 
 	public short getNiveau() {
@@ -32,11 +24,11 @@ public class AI extends Speler {
 	public void setNiveau(short niveau) {
 		switch (niveau) {
 		case EASY:
-			strategy = new Easy(tafelVerwerker);
+			strategy = new Easy();
 			this.niveau = niveau;
 			break;
 		case HARD:
-			strategy = new Hard(tafelVerwerker);
+			strategy = new Hard();
 			this.niveau = niveau;
 			break;
 		default:
@@ -45,22 +37,21 @@ public class AI extends Speler {
 		}
 	}
 
-	public SpelBeurtResultaat doeZet() {
+	public SpelBeurtResultaat doeZet(TafelVerwerker tafelVerwerker) {
 		boolean gedaan = false;
 		SpelBeurtResultaat result = null;
 
 		while (!gedaan) {
 			String[] t = tafelVerwerker.neemTegelVanStapel();
 			Vector2D plaats = null;
-			if ((plaats = berekenPlaatsTegel(t)) != null) {
+			if ((plaats = strategy.berekenPlaatsTegel(t, tafelVerwerker)) != null) {
 				tafelVerwerker.plaatsTegel(t, plaats);
 				gedaan = true;
 				short plaatsPion = -1;
-				if (this.ongeplaatstePionAanwezig())
-				{
-					plaatsPion = (short) berekenPlaatsPion(kleur, t, plaats);
-					if(plaatsPion != -1)
-					{
+				if (this.ongeplaatstePionAanwezig()) {
+					plaatsPion = (short) strategy.berekenPlaatsPion(plaats,
+							tafelVerwerker);
+					if (plaatsPion != -1) {
 						tafelVerwerker.plaatsPion(plaats, plaatsPion, kleur);
 						this.plaatsOngeplaatstePion();
 					}
@@ -72,15 +63,5 @@ public class AI extends Speler {
 		}
 
 		return result;
-	}
-
-	// relatieve coords (row, column) worden teruggegeven
-	private Vector2D berekenPlaatsTegel(String[] t) {
-		return strategy.berekenPlaatsTegel(t);
-	}
-
-	// relatieve coords (row, column) worden meegegeven
-	private int berekenPlaatsPion(char kleur, String[] t, Vector2D tegelCoord) {
-		return strategy.berekenPlaatsPion(kleur, t, tegelCoord);
 	}
 }

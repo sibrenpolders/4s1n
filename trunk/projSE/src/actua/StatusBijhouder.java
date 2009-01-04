@@ -2,37 +2,37 @@ package actua;
 
 import java.util.ArrayDeque;
 
-// niemand mag hier aankomen behalve als de undo en redo willen fixen
+// niemand mag hier aankomen behalve als je de undo en redo wilt fixen
 
 public class StatusBijhouder {
 	private static int MAX_SIZE = 100;
-	
+
 	private ArrayDeque<Memento> redo;
 	private ArrayDeque<Memento> undo;
-	
+
 	public StatusBijhouder() {
 		undo = new ArrayDeque<Memento>();
-		redo = new ArrayDeque<Memento>();		
+		redo = new ArrayDeque<Memento>();
 	}
 
-	public void push_undo (Memento status) {
+	public void push_undo(Memento status) {
 		push(undo, status);
 	}
 
-	public Memento pop_undo(){
+	public Memento pop_undo() {
 		Memento ret = pop(undo);
-		if( ret != null )
+		if (ret != null)
 			push_redo(ret);
 		return ret;
 	}
-	
-	public void push_redo (Memento status) {
+
+	public void push_redo(Memento status) {
 		push(redo, status);
 	}
-	
-	public Memento pop_redo () {
+
+	public Memento pop_redo() {
 		Memento ret = pop(redo);
-		if( ret != null )
+		if (ret != null)
 			push_undo(ret);
 		return ret;
 	}
@@ -41,28 +41,30 @@ public class StatusBijhouder {
 		if (0 == stack.size()) {
 			return null;
 		}
-		
+
+		// stack nabootsen, als er een Object wordt
+		// teruggeven is dit meteen ook verwijderd
 		Memento ret = stack.getFirst();
-		stack.removeFirst(); // stack nabootsen, als er een Object wordt teruggeven is dit meteen ook verwijderd
+		stack.removeFirst();
 		return ret;
 	}
-	
+
 	private void push(ArrayDeque<Memento> stack, Memento status) {
-		if (MAX_SIZE == stack.size()) { // is de maximale stack grootte overschreden?
+		// is de maximale stackgrootte overschreden?
+		if (MAX_SIZE == stack.size()) {
 			stack.removeLast();
 		}
-		
+
 		stack.addFirst(status);
 	}
 
-	// deze functies worden enkel in de unit tests gebruikt
+	@SuppressWarnings( { "unused" })
 	public int getUndoSize() {
 		return undo.size();
 	}
-	
-	// deze functies worden enkel in de unit tests gebruikt
+
+	@SuppressWarnings( { "unused" })
 	public int getRedoSize() {
-		return redo.size();		
+		return redo.size();
 	}
 }
-

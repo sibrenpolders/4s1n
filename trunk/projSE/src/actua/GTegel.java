@@ -2,8 +2,8 @@ package actua;
 
 public abstract class GTegel {
 	protected String[] tegel;
-	int orientatie;
-	Spel spel;
+	protected int orientatie;
+	protected Spel spel;
 
 	public GTegel() {
 		orientatie = 0;
@@ -14,17 +14,15 @@ public abstract class GTegel {
 		this.spel = spel;
 	}
 
-	public GTegel(String[] tegel2, Spel spel) {
+	public GTegel(String[] tegel_, Spel spel) {
 		this.spel = spel;
-		this.tegel = tegel2;
-		if (tegel2.length == 3) {
-			orientatie = Integer.parseInt(tegel2[2]);
+		this.tegel = tegel_;
+		if (tegel_.length == 3) {
+			orientatie = Integer.parseInt(tegel_[2]);
 		} else {
 			orientatie = 0;
 		}
 	}
-
-	public abstract void roteer(boolean richting);
 
 	protected String[] getTegel() {
 		return tegel;
@@ -37,4 +35,6 @@ public abstract class GTegel {
 	public int getOrientatie() {
 		return orientatie;
 	}
+
+	public abstract void roteer(boolean richting);
 }

@@ -17,8 +17,10 @@ public class Bestand {
 	}
 
 	public Bestand() {
-
+		this(null, null);
 	}
+
+	// GETTERS en SETTERS
 
 	public Spel getSpel() {
 		return spel;
@@ -27,6 +29,8 @@ public class Bestand {
 	public String getNaam() {
 		return naam;
 	}
+
+	// LEZEN
 
 	public void leesVanBestand(Spel spel) {
 		leesVanBestand(spel, naam);
@@ -52,6 +56,8 @@ public class Bestand {
 			e.printStackTrace();
 		}
 	}
+
+	// SCHRIJVEN
 
 	public void schrijfNaarBestand(Spel spel) {
 		schrijfNaarBestand(spel, naam);

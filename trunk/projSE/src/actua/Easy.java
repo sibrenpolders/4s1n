@@ -3,46 +3,35 @@ package actua;
 import java.util.ArrayList;
 
 public class Easy implements Strategy {
-	private TafelVerwerker tafelVerwerker;
 
-	public Easy(TafelVerwerker tv) {
-		this.tafelVerwerker = tv;
+	public Easy() {
 	}
 
-	// tegel moet al geplaatst zijn op tegelCoord
-	public int berekenPlaatsPion(char kleur, String[] t, Vector2D tegelCoord) {
+	public int berekenPlaatsPion(Vector2D tegelCoord,
+			TafelVerwerker tafelVerwerker) {
 		for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
-			if (tafelVerwerker.isPionPlaatsingGeldig(t, tegelCoord, i))
+			if (tafelVerwerker.isPionPlaatsingGeldig(tegelCoord, i))
 				return i;
 		}
 
-		return -1;
+		return -1; // geen geldige plaatsing gevonden
 	}
 
 	// eerste geldige plaats wordt teruggegeven, ongeacht of men er een pion op
 	// kan plaatsen of niet
-	// relatieve coords (row, column) worden teruggegeven
-	public Vector2D berekenPlaatsTegel(String[] t) {
+	public Vector2D berekenPlaatsTegel(String[] t, TafelVerwerker tafelVerwerker) {
 		String tempOri = t[2];
 		Tegel tegel = new Tegel(t[0], t[1], Short.parseShort(t[2]));
 
 		for (int i = 0; i < 4; ++i) {
 			t[2] = Short.toString(tegel.getOrientatie());
-			ArrayList<Vector2D> list = tafelVerwerker.geefGeldigeMogelijkheden(tegel.getTegelString());
-			System.err.println("******************");
-			System.err.println("Orientatie: " + i);
-			for (int j = 0; j < list.size(); ++j) {
-				System.err.println(list.get(j));
-			}
-			System.err.println("******************");
-			if(list.size() > 0)
+			ArrayList<Vector2D> list = tafelVerwerker.geefMogelijkeZettenVoorGegevenTegel(tegel.getTegelString());
+			if (list.size() > 0)
 				return list.get(0);
-			
-			// NU PAS DRAAIEN EERST: testen met orientatatie 0
-			// dan pas draaien
+
 			tegel.draaiTegel(true);
 		}
-		
+
 		t[2] = tempOri;
 		return null;
 	}

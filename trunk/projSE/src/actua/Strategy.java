@@ -2,9 +2,13 @@ package actua;
 
 public interface Strategy {
 
-	public abstract Vector2D berekenPlaatsTegel(String[] t);
+	// @param
+	// stringvoorstelling van een tegel
+	public abstract Vector2D berekenPlaatsTegel(String[] t, TafelVerwerker tafelVerwerker);
 
-	public abstract int berekenPlaatsPion(char kleur, String[] t,
-			Vector2D tegelCoord);
-
+	// @pre
+	// een tegel moet geplaatst zijn op tegelCoord
+	// @return
+	// relatieve coords t.o.v. de starttegel (row, column) worden teruggegeven
+	public abstract int berekenPlaatsPion(Vector2D tegelCoord, TafelVerwerker tafelVerwerker);
 }

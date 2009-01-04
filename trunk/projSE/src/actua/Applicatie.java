@@ -1,16 +1,6 @@
 package actua;
 
 public class Applicatie {
-	public Applicatie(GFactory f) {
-		if (f == null) {
-			System.err.println("No graphical toolkit found.");
-			System.exit(1);
-		}
-
-		GWindow window = f.getWindow(new Spel(), new OptieVerwerker("src/xml/opties.txt"),
-				new HelpVerwerker(),new BestandsVerwerker());
-		window.show();
-	}
 
 	public static void main(String[] args) {
 		String guiType = null;
@@ -20,6 +10,18 @@ public class Applicatie {
 		}
 
 		new Applicatie(createGUIFactory(guiType));
+	}
+
+	public Applicatie(GFactory f) {
+		if (f == null) {
+			System.err.println("No graphical toolkit found.");
+			System.exit(1);
+		}
+
+		GWindow window = f.getWindow(new Spel(), new OptieVerwerker(
+				"src/xml/opties.txt"), new HelpVerwerker(),
+				new BestandsVerwerker());
+		window.show();
 	}
 
 	private static GFactory createGUIFactory(String guiType) {
