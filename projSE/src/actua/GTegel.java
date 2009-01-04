@@ -140,14 +140,10 @@ public abstract class GTegel {
 				verwijderPionInSectie(i, j);
 
 		boolean[] zones = spel.getUniekeLandsdeelPosities(lompeCoord);
-		System.out.println("_________");
 		for (int i = 0; i < zones.length; ++i) {
 			if (zones[i]) {
-				System.out.println(i + " is uniek.");
 				Vector2D rasterCoord = getColRowVoorLandsdeelZone((short) i);
-				if (spel.isPionGeplaatst(lompeCoord, i))
-				{
-					System.out.println(i + " is gevuld met een pion.");
+				if (spel.isPionGeplaatst(lompeCoord, i)) {
 					plaatsPionInSectie(rasterCoord.getY(), rasterCoord.getX(),
 							spel.geefPionKleur(lompeCoord, i));
 				}

@@ -2,7 +2,6 @@
 package actua;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class PuntenVerwerker {
 	private static final int WEG_PUNTEN = 1;
@@ -59,7 +58,8 @@ public class PuntenVerwerker {
 			pionnen.addAll(buurKloosterVolledig(coord, veld));
 			for (int i = 0; i < Tegel.MAX_GROOTTE; ++i) {
 				if (!checked[i]) {
-					pionnen.addAll(updateScore(coord, veld, geplaatsteTegel, i));
+					pionnen
+							.addAll(updateScore(coord, veld, geplaatsteTegel, i));
 					updateChecked(checked, geplaatsteTegel, i);
 				}
 			}
@@ -68,27 +68,25 @@ public class PuntenVerwerker {
 		return pionnen;
 	}
 
-	// De pas geplaatste tegel kan ook een naburig klooster vervolledigd hebben. 
+	// De pas geplaatste tegel kan ook een naburig klooster vervolledigd hebben.
 	// Ga dus na of er een buurklooster is dat nu 4 buren heeft.
-	private ArrayList<Character> buurKloosterVolledig(
-			Vector2D coord, TegelVeld veld) {
-            Tegel[] buren = veld.getBuren(coord);
-            ArrayList<Character> pionnen = new ArrayList<Character>();
-            Vector2D[] burenCoord = new Vector2D[4];
-            burenCoord[0] = new Vector2D(coord.getX()-1, coord.getY());
-            burenCoord[1] = new Vector2D(coord.getX(), coord.getY()+1);
-            burenCoord[2] = new Vector2D(coord.getX()+1, coord.getY());
-            burenCoord[3] = new Vector2D(coord.getX(), coord.getY()-1);
-            
-            for (int i = 0; i < buren.length; ++i) {
-            	if (null != buren[i]) {
-            		pionnen.addAll(updateScoreKlooster(veld, 
-            				burenCoord[i],
-            				Tegel.MIDDEN, 
-            				buren[i].bepaalLandsdeel(Tegel.MIDDEN)));
-            	}
-            }
-            
+	private ArrayList<Character> buurKloosterVolledig(Vector2D coord,
+			TegelVeld veld) {
+		Tegel[] buren = veld.getBuren(coord);
+		ArrayList<Character> pionnen = new ArrayList<Character>();
+		Vector2D[] burenCoord = new Vector2D[4];
+		burenCoord[0] = new Vector2D(coord.getX() - 1, coord.getY());
+		burenCoord[1] = new Vector2D(coord.getX(), coord.getY() + 1);
+		burenCoord[2] = new Vector2D(coord.getX() + 1, coord.getY());
+		burenCoord[3] = new Vector2D(coord.getX(), coord.getY() - 1);
+
+		for (int i = 0; i < buren.length; ++i) {
+			if (null != buren[i]) {
+				pionnen.addAll(updateScoreKlooster(veld, burenCoord[i],
+						Tegel.MIDDEN, buren[i].bepaalLandsdeel(Tegel.MIDDEN)));
+			}
+		}
+
 		return pionnen;
 	}
 
@@ -216,28 +214,32 @@ public class PuntenVerwerker {
 
 		switch (wegPos) {
 		case Tegel.NOORD:
-			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x - 1, y)))) {
+			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x - 1,
+					y)))) {
 				++aantalTegels;
 				eindeGevonden = updateScoreWeg(veld, coord, Tegel.ZUID, t
 						.bepaalLandsdeel(Tegel.ZUID), pionnen);
 			}
 			break;
 		case Tegel.OOST:
-			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x, y + 1)))) {
+			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x,
+					y + 1)))) {
 				++aantalTegels;
 				eindeGevonden = updateScoreWeg(veld, coord, Tegel.WEST, t
 						.bepaalLandsdeel(Tegel.WEST), pionnen);
 			}
 			break;
 		case Tegel.ZUID:
-			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x + 1, y)))) {
+			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x + 1,
+					y)))) {
 				++aantalTegels;
 				eindeGevonden = updateScoreWeg(veld, coord, Tegel.NOORD, t
 						.bepaalLandsdeel(Tegel.NOORD), pionnen);
 			}
 			break;
 		case Tegel.WEST:
-			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x, y - 1)))) {
+			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x,
+					y - 1)))) {
 				++aantalTegels;
 				eindeGevonden = updateScoreWeg(veld, coord, Tegel.OOST, t
 						.bepaalLandsdeel(Tegel.WEST), pionnen);
