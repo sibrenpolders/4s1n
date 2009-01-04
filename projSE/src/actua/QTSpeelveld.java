@@ -17,20 +17,16 @@ import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QGraphicsScene;
 import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
-import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QKeySequence;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QShortcut;
-import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.core.Qt;
 
 public class QTSpeelveld extends GSpeelveld {
-	private static final QPixmap pixmap = new QPixmap(
-			"src/icons/background.xpm");
+	private final QPixmap achtergrondPixmap = new QPixmap(this.achtergrond);
 
 	private class VeldWidget extends QGraphicsView {
 		private Vector2D coord;
@@ -43,8 +39,14 @@ public class QTSpeelveld extends GSpeelveld {
 			init();
 		}
 
-		public void init() {
-			setBackgroundBrush(new QBrush(pixmap));
+		private void _resize(int width, int height) {
+			setGeometry(0, 0, width, height);
+			setMaximumSize(new QSize(width, height));
+			setMinimumSize(new QSize(width, height));
+		}
+
+		private void init() {
+			setBackgroundBrush(new QBrush(achtergrondPixmap));
 			setUpdatesEnabled(true);
 		}
 
@@ -120,22 +122,16 @@ public class QTSpeelveld extends GSpeelveld {
 				event.ignore();
 			}
 		}
-
-		private void _resize(int width, int height) {
-			setGeometry(0, 0, width, height);
-			setMaximumSize(new QSize(width, height));
-			setMinimumSize(new QSize(width, height));
-		}
 	}
 
-	private ArrayList<QTTegel> gelegdeTegels;
-	private ArrayList<VeldWidget> achtergrondTegels;
 	private static int DEFAULT_ROWS = 7;
 	private static int DEFAULT_COLS = 9;
 	private static int DEFAULT_ULROW = -3;
 	private static int DEFAULT_ULCOL = -4;
 	private int rows = DEFAULT_ROWS;
 	private int columns = DEFAULT_COLS;
+	private ArrayList<QTTegel> gelegdeTegels;
+	private ArrayList<VeldWidget> achtergrondTegels;
 	private QWidget gridWidget;
 	private QGridLayout completeGridLayout;
 	private QGridLayout gridLayout; // layout voor de tegels
@@ -242,11 +238,13 @@ public class QTSpeelveld extends GSpeelveld {
 		shortcut.activated.connect(this, "cameraRight()");
 	}
 
+	// GETTERS
+
 	public QWidget getGridWidget() {
 		return gridWidget;
 	}
 
-	private QTTegel getTegel(int row, int col) {
+	private QTTegel getQTTegel(int row, int col) {
 		for (int i = 0; i < gelegdeTegels.size(); ++i) {
 			QTTegel result = (QTTegel) ((gelegdeTegels.get(i)));
 			if (result.getCol() == col && result.getRow() == row)
@@ -274,6 +272,8 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 		return null;
 	}
+
+	// LAYOUT- EN WIDGETCONSTRUCTIE
 
 	protected void clearSpeelveld() {
 		achtergrondTegels.clear();
@@ -322,7 +322,7 @@ public class QTSpeelveld extends GSpeelveld {
 	}
 
 	protected void initialiseerSpeelveld() {
-		QTTegel tegel = this.getTegel(0, 0);
+		QTTegel tegel = this.getQTTegel(0, 0);
 		if (tegel == null) {
 			String[] stegel = spel.geefStartTegel();
 			tegel = new QTTegel(stegel, spel, new Vector2D(0, 0));
@@ -333,84 +333,7 @@ public class QTSpeelveld extends GSpeelveld {
 		veranderZicht();
 	}
 
-	private void cameraUp() {
-		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
-				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
-						.getZ());
-		if (camera.isBewegingGeldig(nieuwePositie))
-			camera.veranderStandpunt(nieuwePositie);
-
-		veranderZicht();
-	}
-
-	private void cameraDown() {
-		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
-				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
-						.getZ());
-		if (camera.isBewegingGeldig(nieuwePositie))
-			camera.veranderStandpunt(nieuwePositie);
-
-		veranderZicht();
-	}
-
-	private void cameraLeft() {
-		Vector3D nieuwePositie = new Vector3D(
-				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
-						.getY(), camera.getHuidigeVector().getZ());
-		if (camera.isBewegingGeldig(nieuwePositie))
-			camera.veranderStandpunt(nieuwePositie);
-
-		veranderZicht();
-	}
-
-	private void cameraRight() {
-		Vector3D nieuwePositie = new Vector3D(
-				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
-						.getY(), camera.getHuidigeVector().getZ());
-		if (camera.isBewegingGeldig(nieuwePositie))
-			camera.veranderStandpunt(nieuwePositie);
-
-		veranderZicht();
-	}
-
-	private void veranderZicht() {
-		clear();
-		createEmptyTegels();
-
-		for (int i = 0; i < rows; ++i) {
-			int row = i + camera.getHuidigeVector().getY();
-			for (int j = 0; j < columns; ++j) {
-				int col = j + camera.getHuidigeVector().getX();
-				QTTegel tegel = getTegel(row, col);
-				if (tegel != null) {
-					preprocessSwitchAchtergrondTegelForTegel(tegel);
-					gridLayout.addWidget(tegel.getTegelView(), i, j, 1, 1);
-					tegel.update();
-					tegel.getTegelView().show();
-				}
-			}
-		}
-
-		for (int i = 0; i < colLabels.size(); ++i) {
-			String s = new String(Integer.toString(camera.getHuidigeVector()
-					.getX()
-					+ i));
-			colLabels.get(i).setAlignment(
-					new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
-			colLabels.get(i).setText(s);
-		}
-
-		for (int i = 0; i < rowLabels.size(); ++i) {
-			String s = new String(Integer.toString(camera.getHuidigeVector()
-					.getY()
-					+ i));
-			rowLabels.get(i).setAlignment(
-					new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
-			rowLabels.get(i).setText(s);
-		}
-
-		gridWidget.update();
-	}
+	// HINTING
 
 	private void kleurMogelijkhedenGroen() {
 		ArrayList<Vector2D> _mogelijkeZetten = spel
@@ -421,11 +344,8 @@ public class QTSpeelveld extends GSpeelveld {
 		int row, col;
 		for (int i = 0; i < _mogelijkeZetten.size(); ++i) {
 			tmp = _mogelijkeZetten.get(i);
-			row = tmp.getX();// +
-			// spel.getStartTegelPos().getX();//-camera.getHuidigeVector().getX();
-			col = tmp.getY();// +
-			// spel.getStartTegelPos().getY();//-camera.getHuidigeVector().getY();
-
+			row = tmp.getX();
+			col = tmp.getY();
 			if (getAchtergrondTegel(row, col) != null)
 				getAchtergrondTegel(row, col).setGroen();
 			mogelijkeZetten.add(new Vector2D(col, row));
@@ -444,13 +364,12 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 	}
 
+	// QTTEGEL TOEVOEGEN
+
 	private boolean voegTegelToe(Vector2D coord, QPixmap pixmap) {
 		String[] tegel = spel.vraagNieuweTegel();
 		boolean isTegelGeplaatst = false;
 
-		// TODO X == horizontale as == kolomnummer !!!
-		// Y == verticale as == rijnummer !!!
-		// Ik heb het hier aangepast, maar Tafel en TegelVeld heb ik zo gelaten.
 		Vector2D lompeCoord = new Vector2D(coord.getY(), coord.getX());
 
 		if (spel.isTegelPlaatsingGeldig(tegel, lompeCoord)) {
@@ -478,12 +397,7 @@ public class QTSpeelveld extends GSpeelveld {
 		return isTegelGeplaatst;
 	}
 
-	private void clearForegroundGelegdeTegels() {
-		for (int i = 0; i < gelegdeTegels.size(); ++i)
-			gelegdeTegels.get(i).getTegelView().setForegroundBrush(null);
-	}
-
-	private void voegTegelToeNaAIZet(SpelBeurtResultaat result) {
+	protected void voegTegelToeNaAIZet(SpelBeurtResultaat result) {
 		Vector2D plaatsingTegel = result.getPlaatsTegel();
 		String[] tegel = result.getTegel();
 		char pion = result.getPion();
@@ -519,6 +433,17 @@ public class QTSpeelveld extends GSpeelveld {
 				new QBrush(getForegroundBrushSpelerKleur(result.getPion())));
 	}
 
+	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
+		if (tegel != null) {
+			VeldWidget achtergrond = removeAchtergrondTegel(tegel.getRow(),
+					tegel.getCol());
+			if (null != achtergrond) {
+				gridLayout.removeWidget(achtergrond);
+				achtergrond.hide();
+			}
+		}
+	}
+
 	private QColor getForegroundBrushSpelerKleur(char kleur) {
 		switch (kleur) {
 		case Spel.ROOD:
@@ -536,20 +461,98 @@ public class QTSpeelveld extends GSpeelveld {
 		}
 	}
 
-	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
-		if (tegel != null) {
-			VeldWidget achtergrond = removeAchtergrondTegel(tegel.getRow(),
-					tegel.getCol());
-			if (null != achtergrond) {
-				gridLayout.removeWidget(achtergrond);
-				achtergrond.hide();
-			}
-		}
+	private void clearForegroundGelegdeTegels() {
+		for (int i = 0; i < gelegdeTegels.size(); ++i)
+			gelegdeTegels.get(i).getTegelView().setForegroundBrush(null);
 	}
 
-	@Override
-	// TODO nutteloze functie???
-	protected void voegTegelToe(String[] tegel, Vector2D coord) {
+	// CAMERA-functies
+
+	@SuppressWarnings("unused")
+	private void cameraUp() {
+		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
+				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
+						.getZ());
+		if (camera.isBewegingGeldig(nieuwePositie))
+			camera.veranderStandpunt(nieuwePositie);
+
+		veranderZicht();
+	}
+
+	@SuppressWarnings("unused")
+	private void cameraDown() {
+		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
+				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
+						.getZ());
+		if (camera.isBewegingGeldig(nieuwePositie))
+			camera.veranderStandpunt(nieuwePositie);
+
+		veranderZicht();
+	}
+
+	@SuppressWarnings("unused")
+	private void cameraLeft() {
+		Vector3D nieuwePositie = new Vector3D(
+				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
+						.getY(), camera.getHuidigeVector().getZ());
+		if (camera.isBewegingGeldig(nieuwePositie))
+			camera.veranderStandpunt(nieuwePositie);
+
+		veranderZicht();
+	}
+
+	@SuppressWarnings("unused")
+	private void cameraRight() {
+		Vector3D nieuwePositie = new Vector3D(
+				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
+						.getY(), camera.getHuidigeVector().getZ());
+		if (camera.isBewegingGeldig(nieuwePositie))
+			camera.veranderStandpunt(nieuwePositie);
+
+		veranderZicht();
+	}
+
+	protected void veranderZicht() {
+		clear();
+		createEmptyTegels();
+
+		for (int i = 0; i < rows; ++i) {
+			int row = i + camera.getHuidigeVector().getY();
+			for (int j = 0; j < columns; ++j) {
+				int col = j + camera.getHuidigeVector().getX();
+				QTTegel tegel = getQTTegel(row, col);
+				if (tegel != null) {
+					preprocessSwitchAchtergrondTegelForTegel(tegel);
+					gridLayout.addWidget(tegel.getTegelView(), i, j, 1, 1);
+					tegel.update();
+					tegel.getTegelView().show();
+				}
+			}
+		}
+
+		for (int i = 0; i < colLabels.size(); ++i) {
+			String s = new String(Integer.toString(camera.getHuidigeVector()
+					.getX()
+					+ i));
+			colLabels.get(i).setAlignment(
+					new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+			colLabels.get(i).setText(s);
+		}
+
+		for (int i = 0; i < rowLabels.size(); ++i) {
+			String s = new String(Integer.toString(camera.getHuidigeVector()
+					.getY()
+					+ i));
+			rowLabels.get(i).setAlignment(
+					new Qt.Alignment(Qt.AlignmentFlag.AlignCenter));
+			rowLabels.get(i).setText(s);
+		}
+
+		gridWidget.update();
+	}
+
+	protected void updateSpeelveld() {
+		this.veranderZicht();
 	}
 
 	public void update(Observable arg0, Object arg1) {
@@ -568,9 +571,5 @@ public class QTSpeelveld extends GSpeelveld {
 					result.get(i).toggleProcessed();
 				}
 		}
-	}
-
-	protected void updateSpeelveld() {
-		this.veranderZicht();
 	}
 }
