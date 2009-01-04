@@ -59,11 +59,12 @@ public class Spel extends Observable implements Serializable {
 		tegelGeplaatst = null;
 		spelerVerwerker.gaNaarVolgendeSpeler();
 		laatsteAIZet = spelerVerwerker.geefResultaatAI();
-		if (isHuidigeSpelerAI())
-			spelerVerwerker.gaNaarVolgendeSpeler();
-
+		
 		this.setChanged();
 		notifyObservers(HUIDIGESPELERVERANDERD);
+		
+		if (isHuidigeSpelerAI())
+			this.volgendeSpeler();
 	}
 
 	public void voegSpelerToe(short s, String naam, char kleur, int i) {
