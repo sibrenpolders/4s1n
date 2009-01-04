@@ -1,9 +1,7 @@
 package actua;
 
 import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.util.ArrayDeque;
 
 public class Pion implements Serializable {
 	private static final long serialVersionUID = -8119438347413483304L;
@@ -38,18 +36,17 @@ public class Pion implements Serializable {
 	public boolean getGeplaatst() {
 		return geplaatst;
 	}
-	
+
+	// FILE I/O
+
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		out.writeBoolean(geplaatst);
 		out.writeChar(kleur);
 	}
 
-	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
 		geplaatst = in.readBoolean();
 		kleur = in.readChar();
-	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-
 	}
 }

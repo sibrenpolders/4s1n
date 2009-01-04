@@ -12,30 +12,13 @@ public abstract class GHelp {
 
 	protected abstract String vraagZoekterm();
 
-	protected abstract void geefInfoWeer(String[][] zoektermen);
-
 	protected abstract String vraagId();
+
+	protected abstract void geefInfoWeer(String[][] zoektermen);
 
 	protected abstract void geefDetailWeer(String info);
 
-	public abstract void show();
-
-	public abstract void hide();
-
-	protected void update() {
-		String zoekterm = vraagZoekterm();
-		if (zoekterm == null)
-			throw new NullPointerException();
-
-		if (zoekterm.compareTo("") == 0)
-			;
-		else {
-			String[][] output = helpVerwerker.geefBeknopteMatchingResultaten(zoekterm, LIMIET);
-			geefInfoWeer(output);
-		}
-	}
-
-	protected void detailId() {
+	protected void updateDetailResult() {
 		String id = vraagId();
 
 		if (id == null)
@@ -48,4 +31,22 @@ public abstract class GHelp {
 			geefDetailWeer(info);
 		}
 	}
+
+	protected void updateResults() {
+		String zoekterm = vraagZoekterm();
+		if (zoekterm == null)
+			throw new NullPointerException();
+
+		if (zoekterm.compareTo("") == 0)
+			;
+		else {
+			String[][] output = helpVerwerker.geefBeknopteMatchingResultaten(
+					zoekterm, LIMIET);
+			geefInfoWeer(output);
+		}
+	}
+
+	public abstract void show();
+
+	public abstract void hide();
 }

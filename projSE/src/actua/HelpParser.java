@@ -10,12 +10,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class HelpParser {
-	private static String HELP_BESTAND = "help.xml";
 	private String helpBestand;
-
-	public HelpParser() {
-		this(HELP_BESTAND);
-	}
 
 	public HelpParser(String bestand) {
 		helpBestand = bestand;

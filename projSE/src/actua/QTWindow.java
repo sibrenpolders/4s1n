@@ -5,7 +5,7 @@ import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QWidget;
 
-public class QTWindow implements GWindow {
+public class QTWindow extends GWindow {
 	private QMainWindow mainWindow;
 
 	public QTWindow(Spel spel, OptieVerwerker opties, HelpVerwerker help,

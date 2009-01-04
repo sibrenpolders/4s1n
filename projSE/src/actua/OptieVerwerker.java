@@ -18,7 +18,7 @@ public class OptieVerwerker {
 	}
 
 	public OptieVerwerker(String bestand) {
-		opties = new Vector<Optie>();
+		this.opties = new Vector<Optie>();
 		if (bestand != null)
 			optieBestand = bestand;
 		else

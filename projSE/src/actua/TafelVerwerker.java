@@ -1,12 +1,15 @@
 package actua;
 
 import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class TafelVerwerker implements Serializable {
+	public static final int TEGEL_PRESENTATIE = Tafel.TEGEL_PRESENTATIE;
+	public static final int ID_PRESENTATIE = Tafel.ID_PRESENTATIE;
+	public static final int ORIENTATIE = Tafel.ORIENTATIE;
+
 	private static final long serialVersionUID = -6431108242978335095L;
 	private static final int AANTAL_TEGELS = 72;
 	private int aantalTegels;
@@ -87,14 +90,6 @@ public class TafelVerwerker implements Serializable {
 		return stapel.size();
 	}
 
-	public Tegel getLaatstGeplaatsteTegel() {
-		return tafel.getLaatstGeplaatsteTegel();
-	}
-
-	public Vector2D getStartTegelPositie() {
-		return tafel.getStartTegel();
-	}
-
 	// TEGELPLAATSING
 
 	/**
@@ -120,27 +115,28 @@ public class TafelVerwerker implements Serializable {
 
 		for (int i = 0; i < 4; ++i) {
 			tegel.draaiTegel(true);
-			if (geefGeldigeMogelijkheden(tegel.getTegelString()).size() != 0)
+			if (geefMogelijkeZettenVoorGegevenTegel(tegel.getTegelString())
+					.size() != 0)
 				return true;
 		}
 
 		return false;
 	}
 
-	public ArrayList<Vector2D> geefGeldigeMogelijkheden(String[] tegel) {
+	public ArrayList<Vector2D> geefMogelijkeZettenVoorGegevenTegel(
+			String[] tegel) {
 		return tafel.geefMogelijkeZetten(tegel);
 	}
 
-	public ArrayList<Vector2D> geefMogelijkeZetten() {
+	public ArrayList<Vector2D> geefMogelijkeZettenVoorHuidigeTegel() {
 		String[] tegel = vraagNieuweTegel();
 		return tafel.geefMogelijkeZetten(tegel);
 	}
 
 	// PIONPLAATSING
 
-	public boolean isPionPlaatsingGeldig(String[] t, Vector2D tegelCoord,
-			int pionCoord) {
-		return tafel.isPionPlaatsingGeldig(t, tegelCoord, pionCoord);
+	public boolean isPionPlaatsingGeldig(Vector2D tegelCoord, int pionCoord) {
+		return tafel.isPionPlaatsingGeldig(tegelCoord, pionCoord);
 	}
 
 	/**
@@ -179,14 +175,10 @@ public class TafelVerwerker implements Serializable {
 		out.writeObject(tafel);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		stapel = (ArrayDeque<String[]>) in.readObject();
 		tafel = (Tafel) in.readObject();
 	}
-
-	private void readObjectNoData() throws ObjectStreamException {
-
-	}
-
 }

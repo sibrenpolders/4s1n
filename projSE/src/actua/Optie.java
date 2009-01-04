@@ -57,8 +57,8 @@ public class Optie {
 	}
 
 	public Optie(String naam, TYPE type) {
-		isSet = false;
-		waarde = null;
+		this.isSet = false;
+		this.waarde = null;
 		this.type = type;
 		setNaam(naam);
 	}

@@ -21,10 +21,10 @@ public class QTHelp extends GHelp {
 		IDveld = new QLineEdit("ID", help);
 
 		help.setWindowTitle("Help");
-		venster();
+		init();
 	}
 
-	private void venster() {
+	private void init() {
 		QWidget venster = new QWidget();
 		QGridLayout layout = new QGridLayout(venster);
 		QPushButton zoek = new QPushButton("Zoek");
@@ -37,14 +37,27 @@ public class QTHelp extends GHelp {
 		layout.addWidget(veld, 1, 0, 5, 4);
 		layout.addWidget(detailveld, 4, 0, 5, 4);
 
-		zoek.clicked.connect(this, "update()");
-		detail.clicked.connect(this, "detailId()");
+		zoek.clicked.connect(this, "updateResults()");
+		detail.clicked.connect(this, "updateDetailResult()");
 
 		venster.setLayout(layout);
 		help.setCentralWidget(venster);
 	}
 
-	@Override
+	protected String vraagZoekterm() {
+		String zoekterm = zoekveld.text();
+
+		return zoekterm;
+	}
+
+	protected String vraagId() {
+		String zoekterm = IDveld.text();
+
+		detailveld.clear();
+
+		return zoekterm;
+	}
+
 	protected void geefInfoWeer(String[][] zoektermen) {
 		veld.clear();
 
@@ -55,35 +68,17 @@ public class QTHelp extends GHelp {
 		}
 	}
 
-	@Override
+	protected void geefDetailWeer(String info) {
+		detailveld.append(info);
+	}
+
 	public void hide() {
 		help.hide();
 	}
 
-	@Override
 	public void show() {
 		help.show();
 
 	}
 
-	@Override
-	protected String vraagZoekterm() {
-		String zoekterm = zoekveld.text();
-
-		return zoekterm;
-	}
-
-	@Override
-	protected void geefDetailWeer(String info) {
-		detailveld.append(info);
-	}
-
-	@Override
-	protected String vraagId() {
-		String zoekterm = IDveld.text();
-
-		detailveld.clear();
-
-		return zoekterm;
-	}
 }

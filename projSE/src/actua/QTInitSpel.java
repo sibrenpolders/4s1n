@@ -23,7 +23,6 @@ public class QTInitSpel extends GInitSpel {
 	private QWidget widget;
 	private QSpinBox tegels;
 	private short nbPlayersVisible = 0;
-	private short LAYOUTWIDTH = 6;
 
 	public QTInitSpel(Spel spel) {
 		super(spel);
@@ -75,6 +74,9 @@ public class QTInitSpel extends GInitSpel {
 	}
 
 	public void begin() {
+		// TODO QTInitSpel.begin(): moeten de checks niet in Spel gedaan worden?
+		// M.b.v. observermessages alerten als het spel niet kan starten om één
+		// of andere reden.
 		if (!checkAantal()) {
 			foutDialoog("Te weinig spelers !");
 			return;
@@ -191,6 +193,7 @@ public class QTInitSpel extends GInitSpel {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void verwijderLaatsteSpelerOptieVeld() {
 		if (nbPlayersVisible == Spel.MINAANTALSPELERS) {
 			foutDialoog("Minimum aantal spelers is bereikt !");

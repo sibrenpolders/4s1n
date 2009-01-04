@@ -26,7 +26,7 @@ public class JunitAISpelerTest extends TestCase {
 		p = ai.neemPion(tafel);
 
 		if (p != null) {
-			geplaatst = ai.plaatsPion(p);
+			geplaatst = ai.setPion(p);
 			assertTrue(geplaatst);
 		}
 	}

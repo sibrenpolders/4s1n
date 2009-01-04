@@ -21,10 +21,10 @@ public class JunitCameraTest extends TestCase {
 
 	public void testBewegingGeldig() {
 		Vector3D v3 = new Vector3D(5, 6, 7);
-		assertTrue(camera.bewegingGeldig(v3));
+		assertTrue(camera.isBewegingGeldig(v3));
 		
 		v3 = new Vector3D(2555, 6666, 77777);
-		assertFalse(camera.bewegingGeldig(v3));
+		assertFalse(camera.isBewegingGeldig(v3));
 	}
 
 	public void testVeranderStandpunt() {

@@ -1,30 +1,27 @@
 package actua;
 
 public abstract class GMenubalk {
+	protected Spel spel;
+	protected BestandsVerwerker bestand;
+	protected OptieVerwerker opties;
+	protected HelpVerwerker help;
 	protected GHelp gHelp;
 	protected GOptie gOptie;
-	protected BestandsVerwerker bestand;
 	protected GInitSpel gInitSpel;
-	protected GWindow gParent;
-	protected Spel spel;
 
-	public GMenubalk(Spel spel) {
-		gHelp = null;
-		gOptie = null;
-		gInitSpel = null;
-		this.spel=spel;
-	}
-	
-	public GMenubalk(Spel spel, GInitSpel gInitSpel) {
-		gHelp = null;
-		gOptie = null;
-		this.gInitSpel = gInitSpel;
-		this.spel=spel;
+	public GMenubalk(Spel spel, OptieVerwerker opties, HelpVerwerker help,
+			BestandsVerwerker bestand, GInitSpel ginitSpel, GHelp ghelp,
+			GOptie goptie) {
+		gHelp = ghelp;
+		gOptie = goptie;
+		gInitSpel = ginitSpel;
+		this.spel = spel;
+		this.opties = opties;
+		this.help = help;
+		this.bestand = bestand;
 	}
 
-	public abstract void show();
-
-	public abstract void hide();
+	// GETTERS en SETTERS
 
 	protected GHelp getGHelp() {
 		return gHelp;
@@ -49,8 +46,12 @@ public abstract class GMenubalk {
 	protected void setGInitSpel(GInitSpel initSpel) {
 		gInitSpel = initSpel;
 	}
-	
+
 	protected void setBestand(BestandsVerwerker bestand) {
 		this.bestand = bestand;
 	}
+
+	public abstract void show();
+
+	public abstract void hide();
 }

@@ -28,10 +28,12 @@ public class QTOptie extends GOptie {
 
 		opties = new QMainWindow();
 		opties.setWindowTitle("Opties");
-		venster();
+		createVenster();
 	}
 
-	private void venster() {
+	// OPBOUW van de WIDGET
+
+	private void createVenster() {
 		int nbOpties = optieVerwerker.getNbOpties();
 
 		venster = new QWidget();
@@ -107,13 +109,7 @@ public class QTOptie extends GOptie {
 			addToVectors(edit, null, null);
 	}
 
-	public void hide() {
-		opties.hide();
-	}
-
-	public void show() {
-		opties.show();
-	}
+	// SAVE en CANCEL
 
 	protected void cancel() {
 		int nbOpties = optieVerwerker.getNbOpties();
@@ -176,5 +172,13 @@ public class QTOptie extends GOptie {
 			optieVerwerker.veranderOptie(new String[] {
 					optieVerwerker.getNaam(i), value });
 		}
+	}
+
+	public void hide() {
+		opties.hide();
+	}
+
+	public void show() {
+		opties.show();
 	}
 }

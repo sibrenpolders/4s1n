@@ -41,7 +41,7 @@ public class QTSpelerInfo extends GSpelerInfo {
 		QHBoxLayout hBox = new QHBoxLayout();
 		boolean flag = spel.geefHuidigeSpeler() == this.kleur;
 
-		for (int i = 0; i < spel.geefAantalOngeplaatstePionnen(kleur); ++i) {
+		for (int i = 0; i < spel.geefAantalOngeplaatstePionnenVanSpeler(kleur); ++i) {
 			hBox.addWidget(new QTPion(kleur, flag));
 		}
 

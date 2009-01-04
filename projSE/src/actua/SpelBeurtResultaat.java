@@ -7,11 +7,12 @@ public class SpelBeurtResultaat {
 	private String[] tegel;
 	private boolean processed;
 
-	public SpelBeurtResultaat(String[] t, Vector2D pT, char p, short pP) {
+	public SpelBeurtResultaat(String[] t, Vector2D plaatsTegel, char pion_,
+			short plaatsPion) {
 		tegel = t;
-		plaatsingPion = pP;
-		pion = p;
-		plaatsingTegel = pT;
+		plaatsingPion = plaatsPion;
+		pion = pion_;
+		plaatsingTegel = plaatsTegel;
 		processed = false;
 	}
 
