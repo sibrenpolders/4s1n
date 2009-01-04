@@ -517,7 +517,24 @@ public class QTSpeelveld extends GSpeelveld {
 			qTegel.getTegelView().hide();
 
 		qTegel.getTegelView().setForegroundBrush(
-				new QBrush(new QColor(255, 0, 0, 100)));
+				new QBrush(getForegroundBrushSpelerKleur(result.getPion())));
+	}
+
+	private QColor getForegroundBrushSpelerKleur(char kleur) {
+		switch (kleur) {
+		case Spel.ROOD:
+			return new QColor(255, 0, 0, 100);
+		case Spel.BLAUW:
+			return new QColor(0, 0, 255, 100);
+		case Spel.GEEL:
+			return new QColor(255, 255, 0, 100);
+		case Spel.WIT:
+			return new QColor(255, 255, 255, 100);
+		case Spel.ORANJE:
+			return new QColor(255, 160, 0, 100);
+		default:
+			return new QColor(236, 233, 216, 100);
+		}
 	}
 
 	private void preprocessSwitchAchtergrondTegelForTegel(QTTegel tegel) {
