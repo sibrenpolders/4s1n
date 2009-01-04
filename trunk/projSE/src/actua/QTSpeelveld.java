@@ -536,9 +536,10 @@ public class QTSpeelveld extends GSpeelveld {
 
 			this.gridWidget.show();
 		} else if (((String) arg1).compareTo(spel.HUIDIGESPELERVERANDERD) == 0) {
-			SpelBeurtResultaat result = spel.geefResultaatAI();
-			if (result != null && result.getProcessed() == false)
-				voegTegelToeNaAIZet(result);
+			ArrayList<SpelBeurtResultaat> result = spel.geefResultaatAI();
+			for (int i=0;i<result.size();i++)
+				if (result.get(i) != null && result.get(i).getProcessed() == false)
+					voegTegelToeNaAIZet(result.get(i));
 		}
 	}
 

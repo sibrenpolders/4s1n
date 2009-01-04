@@ -343,6 +343,7 @@ public class QTInfo extends GInfo {
 
 	@SuppressWarnings("unused")
 	private void volgendeSpeler() {
+		mSpel.clearAIResultaten();
 		mSpel.volgendeSpeler();
 		stapel.updatePixmap();
 		verwijderSpelers();
