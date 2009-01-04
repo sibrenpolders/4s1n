@@ -1,0 +1,8 @@
+- neemPionTerug is nog ni helemaal koosjer, want die coordinaten moeten ergens vandaan komen
+- de andere kloppen denk ik, ik heb ook de contracten nagekeken en volgens mij
+zijn alle veranderingen die in de contracen voorkomen duidelijk in de diagrammen
+
+ik weet wel niet wanneer ik er speler nu moet inzetten of niet, want die initieert de actie,
+maar ja het is niet de klasse die het doet. In volgendeSpelbeurt staat speler er wel nog in,
+maar ik die kan er ook uit. Of speler wordt in elk diagram toegevoegd
+Ik stel voor om speler er niet in te zetten.
