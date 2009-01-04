@@ -199,17 +199,6 @@ public class QTTegel extends GTegel {
 	private boolean isBackground;
 	public tegelView view;
 
-	// TODO nutteloze constructor?
-	public QTTegel(Spel spel, Vector2D tegelCoord) {
-		super(spel);
-		isBackground = true;
-		this.tegelCoord = new Vector2D(tegelCoord);
-		pion = new char[5][3];
-		pixmap = new QPixmap(90, 90);
-		pixmap.load("src/icons/background.xpm");
-		view = new tegelView();
-	}
-
 	public QTTegel(String[] tegel, Spel spel, Vector2D tegelCoord) {
 		super(tegel, spel);
 		isBackground = false;
@@ -218,15 +207,13 @@ public class QTTegel extends GTegel {
 		pixmap = new QPixmap(90, 90);
 		kiesAfbeelding();
 		view = new tegelView();
+		short ori = Short.parseShort(tegel[2]);
+		for (short i = 0; i < ori; ++i)
+			this.roteer(false);
 	}
 
 	public QTTegel(String[] tegel, Spel spel) {
-		super(tegel, spel);
-		isBackground = false;
-		pixmap = new QPixmap(90, 90);
-		pion = new char[5][3];
-		kiesAfbeelding();
-		view = new tegelView();
+		this(tegel, spel, new Vector2D(0, 0));
 	}
 
 	public String[] getTegel() {
