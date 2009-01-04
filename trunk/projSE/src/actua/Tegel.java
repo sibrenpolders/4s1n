@@ -248,14 +248,12 @@ public class Tegel implements Serializable {
 	
 	public boolean[] getUniekeLandsdeelPosities(){
 		boolean[] result = new boolean[MAX_GROOTTE];
-		for(int i = 0; i < MAX_GROOTTE; ++i)
-			result[i] = false;
 		
 		for(int i = 0; i < MAX_GROOTTE; ++i)
 		{
 			boolean uniek = true;
 			for(int j = 0; j < i; ++j)
-				if(landsdelen[i].equals(landsdelen[j]))
+				if(result[j] && landsdelen[i].equals(landsdelen[j]))
 					uniek = false;
 			
 			result[i] = uniek;
