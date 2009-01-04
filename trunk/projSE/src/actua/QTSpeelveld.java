@@ -385,7 +385,7 @@ public class QTSpeelveld extends GSpeelveld {
 				if (tegel != null) {
 					preprocessSwitchAchtergrondTegelForTegel(tegel);
 					gridLayout.addWidget(tegel.getTegelView(), i, j, 1, 1);
-					tegel.getTegelView().updateTegel();
+					tegel.update();
 					tegel.getTegelView().show();
 				}
 			}
@@ -454,7 +454,7 @@ public class QTSpeelveld extends GSpeelveld {
 		Vector2D lompeCoord = new Vector2D(coord.getY(), coord.getX());
 
 		if (spel.isTegelPlaatsingGeldig(tegel, lompeCoord)) {
-			clearRood();
+			clearForegroundGelegdeTegels();
 			tegel = spel.neemTegelVanStapel();
 			spel.plaatsTegel(tegel, lompeCoord);
 			QTTegel qTegel = new QTTegel(tegel, spel, coord);
@@ -478,10 +478,9 @@ public class QTSpeelveld extends GSpeelveld {
 		return isTegelGeplaatst;
 	}
 
-	private void clearRood() {
-		for (int i = 0; i < spel.geefResultaatAI().size(); i++)
-			gelegdeTegels.get(gelegdeTegels.size() - 1 - i).getTegelView()
-					.setForegroundBrush(null);
+	private void clearForegroundGelegdeTegels() {
+		for (int i = 0; i < gelegdeTegels.size(); ++i)
+			gelegdeTegels.get(i).getTegelView().setForegroundBrush(null);
 	}
 
 	private void voegTegelToeNaAIZet(SpelBeurtResultaat result) {
@@ -496,7 +495,7 @@ public class QTSpeelveld extends GSpeelveld {
 		QTTegel qTegel = new QTTegel(tegel, spel, new Vector2D(col, row));
 
 		if (pionPlaats >= 0) {
-			Vector2D plaats = qTegel.getRowCol(pionPlaats);
+			Vector2D plaats = qTegel.getColRowVoorLandsdeelZone(pionPlaats);
 			qTegel.plaatsPionInSectie(plaats.getY(), plaats.getX(), pion);
 		}
 
@@ -506,7 +505,7 @@ public class QTSpeelveld extends GSpeelveld {
 		gridLayout.addWidget(qTegel.getTegelView(), row
 				- camera.getHuidigeVector().getY(), col
 				- camera.getHuidigeVector().getX(), 1, 1);
-		qTegel.getTegelView().updateTegel();
+		qTegel.update();
 
 		if (row - camera.getHuidigeVector().getY() >= 0
 				&& row - camera.getHuidigeVector().getY() < rows
@@ -561,6 +560,7 @@ public class QTSpeelveld extends GSpeelveld {
 			this.gridWidget.show();
 		} else if (((String) arg1).compareTo(Spel.HUIDIGESPELERVERANDERD) == 0) {
 			ArrayList<SpelBeurtResultaat> result = spel.geefResultaatAI();
+			clearForegroundGelegdeTegels();
 			for (int i = 0; i < result.size(); i++)
 				if (result.get(i) != null
 						&& result.get(i).getProcessed() == false) {

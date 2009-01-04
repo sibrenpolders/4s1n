@@ -51,7 +51,7 @@ public class PuntenVerwerker {
 		aantalTegels = 0;
 		ArrayList<Character> pionnen = new ArrayList<Character>();
 
-		Tegel geplaatsteTegel = veld.get(coord);
+		Tegel geplaatsteTegel = veld.getTegelAtRelativeCoords(coord);
 		if (geplaatsteTegel != null) {
 			boolean checked[] = new boolean[Tegel.MAX_GROOTTE];
 
@@ -108,7 +108,7 @@ public class PuntenVerwerker {
 
 		// hier gaat de weg over van deze tegel naar zijn buur
 		int uitgaandePos = -1;
-		Tegel t = veld.get(coord);
+		Tegel t = veld.getTegelAtRelativeCoords(coord);
 
 		// is het midden ook een weg ?
 		if (t.bepaalLandsdeel(Tegel.MIDDEN) == ld) {
@@ -191,28 +191,28 @@ public class PuntenVerwerker {
 
 		switch (wegPos) {
 		case Tegel.NOORD:
-			if (null != (t = veld.get(new Vector2D(x - 1, y)))) {
+			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x - 1, y)))) {
 				++aantalTegels;
 				eindeGevonden = updateScoreWeg(veld, coord, Tegel.ZUID, t
 						.bepaalLandsdeel(Tegel.ZUID), pionnen);
 			}
 			break;
 		case Tegel.OOST:
-			if (null != (t = veld.get(new Vector2D(x, y + 1)))) {
+			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x, y + 1)))) {
 				++aantalTegels;
 				eindeGevonden = updateScoreWeg(veld, coord, Tegel.WEST, t
 						.bepaalLandsdeel(Tegel.WEST), pionnen);
 			}
 			break;
 		case Tegel.ZUID:
-			if (null != (t = veld.get(new Vector2D(x + 1, y)))) {
+			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x + 1, y)))) {
 				++aantalTegels;
 				eindeGevonden = updateScoreWeg(veld, coord, Tegel.NOORD, t
 						.bepaalLandsdeel(Tegel.NOORD), pionnen);
 			}
 			break;
 		case Tegel.WEST:
-			if (null != (t = veld.get(new Vector2D(x, y - 1)))) {
+			if (null != (t = veld.getTegelAtRelativeCoords(new Vector2D(x, y - 1)))) {
 				++aantalTegels;
 				eindeGevonden = updateScoreWeg(veld, coord, Tegel.OOST, t
 						.bepaalLandsdeel(Tegel.WEST), pionnen);
@@ -255,7 +255,7 @@ public class PuntenVerwerker {
 
 		++aantalTegels;
 
-		Tegel t = veld.get(coord);
+		Tegel t = veld.getTegelAtRelativeCoords(coord);
 		checked.add(t);
 		int x = coord.getX();
 		int y = coord.getY();
@@ -293,7 +293,7 @@ public class PuntenVerwerker {
 	private boolean updateScoreStad(TegelVeld veld, Vector2D coordBuur,
 			Landsdeel ld, int windrichting, ArrayList<Character> pionnen,
 			ArrayList<Tegel> checked) {
-		Tegel tegel = veld.get(coordBuur);
+		Tegel tegel = veld.getTegelAtRelativeCoords(coordBuur);
 		if (tegel == null) {
 			return false;
 		}
@@ -355,22 +355,22 @@ public class PuntenVerwerker {
 		int y = coord.getY();
 
 		// NOORD buur
-		if (null != veld.get(new Vector2D(x - 1, y))) {
+		if (null != veld.getTegelAtRelativeCoords(new Vector2D(x - 1, y))) {
 			++aantalBuren;
 		}
 
 		// OOST buur
-		if (null != veld.get(new Vector2D(x, y + 1))) {
+		if (null != veld.getTegelAtRelativeCoords(new Vector2D(x, y + 1))) {
 			++aantalBuren;
 		}
 
 		// ZUID buur
-		if (null != veld.get(new Vector2D(x + 1, y))) {
+		if (null != veld.getTegelAtRelativeCoords(new Vector2D(x + 1, y))) {
 			++aantalBuren;
 		}
 
 		// WEST buur
-		if (null != veld.get(new Vector2D(x, y - 1))) {
+		if (null != veld.getTegelAtRelativeCoords(new Vector2D(x, y - 1))) {
 			++aantalBuren;
 		}
 

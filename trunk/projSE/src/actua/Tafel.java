@@ -73,7 +73,7 @@ public class Tafel implements Serializable {
 			return null;
 		}
 
-		Tegel tegel = (Tegel) veld.get(coord);
+		Tegel tegel = (Tegel) veld.getTegelAtRelativeCoords(coord);
 
 		if (tegel != null) {
 			String[] retString = new String[2];
@@ -87,7 +87,7 @@ public class Tafel implements Serializable {
 
 	@SuppressWarnings( { "unused" })
 	public Tegel bepaalTegel(Vector2D coord) {
-		return (Tegel) veld.get(coord);
+		return (Tegel) veld.getTegelAtRelativeCoords(coord);
 	}
 
 	// TEGELPLAATSING
@@ -177,7 +177,7 @@ public class Tafel implements Serializable {
 	 *         worden.
 	 */
 	public boolean plaatsPion(Vector2D tegelCoord, int pionCoord, char pion) {
-		Tegel t = veld.get(tegelCoord);
+		Tegel t = veld.getTegelAtRelativeCoords(tegelCoord);
 
 		if (t != (Tegel) veld.getLaatstGeplaatsteTegel()) {
 			return false;
@@ -189,7 +189,10 @@ public class Tafel implements Serializable {
 
 	public boolean isPionGeplaatst(Vector2D tegelCoord, int pionCoord) {
 		Tegel t = bepaalTegel(tegelCoord);
-		return t.isPionGeplaatst(pionCoord);
+		if (t != null)
+			return t.isPionGeplaatst(pionCoord);
+		else
+			return false;
 	}
 
 	public char geefPionKleur(Vector2D tegelCoord, int pionCoord) {
@@ -225,7 +228,7 @@ public class Tafel implements Serializable {
 
 	public boolean isPionPlaatsingGeldig(Vector2D tegelCoord, int pionCoord) {
 		ArrayList<Tegel> checked = new ArrayList<Tegel>();
-		Tegel tegel = (Tegel) veld.get(tegelCoord);
+		Tegel tegel = (Tegel) veld.getTegelAtRelativeCoords(tegelCoord);
 		return isPionPlaatsingGeldig(pionCoord, tegel, tegelCoord, checked);
 	}
 

@@ -57,18 +57,18 @@ public class QTInfo extends GInfo {
 					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 		}
 
-		private void updatePixmap() {
-			String[] tegel = mSpel.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/"
-					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
-		}
-
 		public boolean isTegelGenomen() {
 			return tegelGenomen;
 		}
 
 		public void setTegelGenomen(boolean tegelGenomen) {
 			this.tegelGenomen = tegelGenomen;
+		}
+
+		private void updatePixmap() {
+			String[] tegel = mSpel.vraagNieuweTegel();
+			tegelIcon.setPixmap(new QPixmap("src/icons/"
+					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 		}
 
 		public void roteerRechts() {
@@ -206,8 +206,8 @@ public class QTInfo extends GInfo {
 					}
 				} else {
 					String[] tegel = mSpel.vraagNieuweTegel();
-					tegel[Spel.ORIENTATIE] = new String("0"); // orientatie
-					// resetten
+					// orientatie resetten
+					tegel[Spel.ORIENTATIE] = new String("0");
 					child.show();
 					child.setPixmap(new QPixmap("src/icons/"
 							+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
@@ -232,36 +232,6 @@ public class QTInfo extends GInfo {
 		return qtInfo;
 	}
 
-	private void setSize(QWidget widget, int w, int h) {
-		widget.setMaximumSize(w, h);
-		widget.setMinimumSize(w, h);
-	}
-
-	private void connect() {
-		roteerR.clicked.connect(stapel, "roteerRechts()");
-		roteerL.clicked.connect(stapel, "roteerLinks()");
-		nieuweTegel.clicked.connect(stapel, "toonNieuweTegelClick()");
-		beurt.clicked.connect(this, "updateVoorVolgendeSpeler()");
-	}
-
-	private void addWidgets() {
-		box.addWidget(stapel, 0, 0, 1, 2);
-		box.addWidget(roteerL, 1, 0, 1, 1);
-		box.addWidget(roteerR, 1, 1, 1, 1);
-		box.addWidget(nieuweTegel, 2, 0, 1, 2);
-		box.addWidget(beurt, 3, 0, 1, 2);
-
-		rows = 4;
-	}
-
-	private void resize() {
-		setSize(stapel, 90, 90);
-		setSize(roteerR, 80, BUTTON_HEIGHT);
-		setSize(roteerL, 80, BUTTON_HEIGHT);
-
-		setSize(qtInfo, breedte, hoogte);
-	}
-
 	private void createWidgets() {
 		qtInfo = new QWidget();
 		box = new QGridLayout();
@@ -276,7 +246,37 @@ public class QTInfo extends GInfo {
 		beurt = new QPushButton("Volgende Speler");
 	}
 
-	public void updateInfo() {
+	private void resize() {
+		setSize(stapel, 90, 90);
+		setSize(roteerR, 80, BUTTON_HEIGHT);
+		setSize(roteerL, 80, BUTTON_HEIGHT);
+
+		setSize(qtInfo, breedte, hoogte);
+	}
+
+	private void setSize(QWidget widget, int w, int h) {
+		widget.setMaximumSize(w, h);
+		widget.setMinimumSize(w, h);
+	}
+
+	private void addWidgets() {
+		box.addWidget(stapel, 0, 0, 1, 2);
+		box.addWidget(roteerL, 1, 0, 1, 1);
+		box.addWidget(roteerR, 1, 1, 1, 1);
+		box.addWidget(nieuweTegel, 2, 0, 1, 2);
+		box.addWidget(beurt, 3, 0, 1, 2);
+
+		rows = 4;
+	}
+
+	private void connect() {
+		roteerR.clicked.connect(stapel, "roteerRechts()");
+		roteerL.clicked.connect(stapel, "roteerLinks()");
+		nieuweTegel.clicked.connect(stapel, "toonNieuweTegelClick()");
+		beurt.clicked.connect(this, "updateVoorVolgendeSpeler()");
+	}
+
+	public synchronized void updateInfo() {
 		verwijderSpelers();
 		updateSpelers();
 		stapel.toonNieuweTegel();
