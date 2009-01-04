@@ -400,18 +400,11 @@ public class QTSpeelveld extends GSpeelveld {
 	protected void voegTegelToeNaAIZet(SpelBeurtResultaat result) {
 		Vector2D plaatsingTegel = result.getPlaatsTegel();
 		String[] tegel = result.getTegel();
-		char pion = result.getPion();
-		short pionPlaats = result.getPlaatsPion();
 
 		int row = plaatsingTegel.getX();
 		int col = plaatsingTegel.getY();
 
 		QTTegel qTegel = new QTTegel(tegel, spel, new Vector2D(col, row));
-
-		if (pionPlaats >= 0) {
-			Vector2D plaats = qTegel.getColRowVoorLandsdeelZone(pionPlaats);
-			qTegel.plaatsPionInSectie(plaats.getY(), plaats.getX(), pion);
-		}
 
 		gelegdeTegels.add(qTegel);
 
