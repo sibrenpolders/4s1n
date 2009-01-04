@@ -111,8 +111,7 @@ public class QTPion extends QLabel {
 			QPixmap tempPixmap = new QPixmap(pixmap);
 			QPainter painter = new QPainter();
 			painter.begin(tempPixmap);
-			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,
-					127, 127)));
+			painter.fillRect(pixmap.rect(), new QBrush(new QColor(127, 127,	127, 127)));
 			painter.end();
 
 			setPixmap(tempPixmap);

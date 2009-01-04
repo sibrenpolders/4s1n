@@ -222,11 +222,11 @@ public class Tegel implements Serializable {
 	}
 
 	public boolean isPionGeplaatst(int pos) {
-		if(pos < 0 || pos >= MAX_GROOTTE || landsdelen[pos].isPionGeplaatst()) {
-			return true;
+		if(pos < 0 || pos >= MAX_GROOTTE) {
+			return false;
 		}
 
-		return false;
+		return landsdelen[pos].isPionGeplaatst();
 	}
 	
 	public char geefPionKleur(int pos) {
@@ -241,7 +241,7 @@ public class Tegel implements Serializable {
 		if (pos < 0 || pos >= MAX_GROOTTE || !landsdelen[pos].isPionGeplaatst()) {
 			;
 		} else {
-			landsdelen[pos].setPion((char)0);
+			landsdelen[pos].verwijderPion();
 		}
 	}
 

@@ -48,7 +48,7 @@ public class TegelVeld implements Serializable {
 	 *         False anders.
 	 */
 	public boolean isLaatstGeplaatsteTegel(int rij, int kolom) {
-		return get(new Vector2D(rij, kolom)) == laatstGeplaatsteTegel;
+		return getTegelAtRelativeCoords(new Vector2D(rij, kolom)) == laatstGeplaatsteTegel;
 	}
 
 	public Vector2D getStartTegel() {
@@ -98,7 +98,7 @@ public class TegelVeld implements Serializable {
 		return new Vector2D(x, y);
 	}
 
-	public Tegel get(Vector2D coord) {
+	public Tegel getTegelAtRelativeCoords(Vector2D coord) {
 		Vector2D veldCoord = zetOmInVeldCoord(coord);
 		return tegelAt(veldCoord);
 	}

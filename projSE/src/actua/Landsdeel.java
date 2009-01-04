@@ -31,6 +31,10 @@ public class Landsdeel {
 		this.pion = pion;
 	}
 
+	public void verwijderPion() {
+		this.pion = 0;
+	}
+
 	public boolean isPionGeplaatst() {
 		return pion != 0;
 	}
@@ -43,5 +47,4 @@ public class Landsdeel {
 		Landsdeel ld = new Landsdeel(type);
 		return ld;
 	}
-
 }

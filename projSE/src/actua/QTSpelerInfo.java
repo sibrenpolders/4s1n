@@ -1,22 +1,13 @@
 package actua;
 
 import java.util.Observable;
-
 import com.trolltech.qt.core.QSize;
-import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QFont;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QLayoutItemInterface;
-import com.trolltech.qt.gui.QPainter;
-import com.trolltech.qt.gui.QPalette;
 import com.trolltech.qt.gui.QPixmap;
-import com.trolltech.qt.gui.QPushButton;
-import com.trolltech.qt.gui.QStyle;
-import com.trolltech.qt.gui.QStyleOptionFocusRect;
-import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
 public class QTSpelerInfo extends GSpelerInfo {
@@ -37,23 +28,8 @@ public class QTSpelerInfo extends GSpelerInfo {
 		addPionnen();
 	}
 
-	private void addPionnen() {
-		QHBoxLayout hBox = new QHBoxLayout();
-		boolean flag = spel.geefHuidigeSpeler() == this.kleur;
-
-		for (int i = 0; i < spel.geefAantalOngeplaatstePionnenVanSpeler(kleur); ++i) {
-			hBox.addWidget(new QTPion(kleur, flag));
-		}
-
-		layout.addLayout(hBox, 2, 0, 1, 2);
-	}
-
-	private void setFont() {
-		QFont qFont = new QFont("Arial", 10, QFont.Weight.Normal.value());
-		naam.setFont(qFont);
-		punten.setFont(qFont);
-		color.setPixmap(spelerKleur());
-		score.setFont(qFont);
+	public QWidget getSpelerInfoveld() {
+		return spelerInfoveld;
 	}
 
 	private void create(QWidget parent) {
@@ -67,12 +43,26 @@ public class QTSpelerInfo extends GSpelerInfo {
 		layout.setVerticalSpacing(3);
 	}
 
+	private void setSize(QWidget widget, int w, int h) {
+		QSize size = new QSize(w, h);
+		widget.setMaximumSize(size);
+		widget.setMinimumSize(size);
+	}
+
 	private void resize() {
 		setSize(naam, 150, TEXT_HOOGTE);
 		setSize(punten, 10, TEXT_HOOGTE);
 		setSize(color, 40, TEXT_HOOGTE);
 		setSize(score, 40, TEXT_HOOGTE);
 		setSize(spelerInfoveld, 150, 75);
+	}
+
+	private void setFont() {
+		QFont qFont = new QFont("Arial", 10, QFont.Weight.Normal.value());
+		naam.setFont(qFont);
+		punten.setFont(qFont);
+		color.setPixmap(getPixmapSpelerKleur());
+		score.setFont(qFont);
 	}
 
 	private void add() {
@@ -85,21 +75,17 @@ public class QTSpelerInfo extends GSpelerInfo {
 		updateSpeler();
 	}
 
-	public QWidget getSpelerInfoveld() {
-		return spelerInfoveld;
+	private void addPionnen() {
+		QHBoxLayout hBox = new QHBoxLayout();
+		boolean flag = spel.geefHuidigeSpeler() == this.kleur;
+
+		for (int i = 0; i < spel.geefAantalOngeplaatstePionnenVanSpeler(kleur); ++i)
+			hBox.addWidget(new QTPion(kleur, flag));
+
+		layout.addLayout(hBox, 2, 0, 1, 2);
 	}
 
-	public void updateSpeler() {
-		String naam_ = spel.geefSpelerNaam(kleur);
-		long score_ = spel.geefSpelerScore(kleur);
-		naam.setText(naam_);
-		punten.setNum(score_);
-		if (kleur == spel.geefHuidigeSpeler())
-			naam.setText(naam_.toUpperCase());
-		addPionnen();
-	}
-
-	private QPixmap spelerKleur() {
+	private QPixmap getPixmapSpelerKleur() {
 		QPixmap pixmap = new QPixmap(40, 10);
 
 		switch (kleur) {
@@ -126,19 +112,19 @@ public class QTSpelerInfo extends GSpelerInfo {
 		return pixmap;
 	}
 
-	public void update(Observable o, Object arg) {
-		if (!o.hasChanged()) {
-			return;
-		}
-
-		if (o.equals(spel) && arg.equals(Spel.SPELERVERANDERD)) {
-			updateSpeler();
-		}
+	public void updateSpeler() {
+		String naam_ = spel.geefSpelerNaam(kleur);
+		long score_ = spel.geefSpelerScore(kleur);
+		naam.setText(naam_);
+		punten.setNum(score_);
+		if (kleur == spel.geefHuidigeSpeler())
+			naam.setText(naam_.toUpperCase());
+		addPionnen();
 	}
 
-	private void setSize(QWidget widget, int w, int h) {
-		QSize size = new QSize(w, h);
-		widget.setMaximumSize(size);
-		widget.setMinimumSize(size);
+	public void update(Observable o, Object arg) {
+		if (arg.equals(Spel.SPELERVERANDERD)) {
+			updateSpeler();
+		}
 	}
 }

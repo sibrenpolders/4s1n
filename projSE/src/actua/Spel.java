@@ -205,6 +205,20 @@ public class Spel extends Observable implements Serializable {
 		return tafelVerwerker.isPionPlaatsingGeldig(tegelCoord, pionCoord);
 	}
 
+	public boolean isPionGeplaatst(Vector2D tegelCoord, int pionCoord) {
+		return tafelVerwerker.isPionGeplaatst(tegelCoord, pionCoord);
+	}
+
+	public char geefPionKleur(Vector2D tegelCoord, int pionCoord) {
+		return tafelVerwerker.geefPionKleur(tegelCoord, pionCoord);
+	}
+
+	public void verwijderPion(Vector2D tegelCoord, int pionCoord) {
+		tafelVerwerker.verwijderPion(tegelCoord, pionCoord);
+	}
+
+	// UNDO
+
 	public boolean undo() {
 		if (statusBijhouder.pop_undo() == null) {
 			return false;
