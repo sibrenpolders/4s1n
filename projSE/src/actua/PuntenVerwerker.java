@@ -126,7 +126,7 @@ public class PuntenVerwerker {
 		aantalTegels = 1;
 
 		if (ld.isPionGeplaatst()) {
-			pionnen.add(new Character(ld.getPion()));
+			pionnen.add(new Character(ld.verwijderPion()));
 		}
 
 		// hier gaat de weg over van deze tegel naar zijn buur
@@ -277,7 +277,7 @@ public class PuntenVerwerker {
 	private boolean updateScoreStad(TegelVeld veld, Vector2D coord,
 			Landsdeel ld, ArrayList<Character> pionnen, ArrayList<Tegel> checked) {
 		if (ld.isPionGeplaatst()) {
-			pionnen.add(ld.getPion());
+			pionnen.add(ld.verwijderPion());
 		}
 
 		++aantalTegels;
@@ -352,7 +352,8 @@ public class PuntenVerwerker {
 			Vector2D coord, int i, Landsdeel ld) {
 		ArrayList<Character> pionnen = new ArrayList<Character>();
 		if (telBuren(veld, coord) == 4) {
-			char pion = ld.getPion();
+			char pion = ld.verwijderPion();
+
 			pionnen.add(new Character(pion));
 			switch (pion) {
 			case Spel.BLAUW:

@@ -166,10 +166,10 @@ public class Tafel implements Serializable {
 	 * tegelCoord. pionCoord zal bepalen op welk deel de pion zal staan.
 	 * 
 	 * @param tegelCoord
-	 *            co�rdinaten van de tegel waar een pion op geplaatst zal
+	 *            coordinaten van de tegel waar een pion op geplaatst zal
 	 *            worden.
 	 * @param pionCoord
-	 *            co�rdinaten van het landsdeel op de tegel waar de pion zal
+	 *            coordinaten van het landsdeel op de tegel waar de pion zal
 	 *            geplaatst worden.
 	 * @param pion
 	 *            de pion die zal geplaatst worden.
@@ -371,6 +371,14 @@ public class Tafel implements Serializable {
 			break;
 		}
 		return buurPionCoord;
+	}
+
+	public ArrayList<Character> updateScore(Vector2D coord,
+			PuntenVerwerker puntenVerwerker) {
+		if (puntenVerwerker != null && veld != null)
+			return puntenVerwerker.updateScore(coord, veld);
+		else
+			return null;
 	}
 
 	/**

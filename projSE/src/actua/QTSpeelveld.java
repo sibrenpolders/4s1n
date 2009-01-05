@@ -19,6 +19,7 @@ import com.trolltech.qt.gui.QGraphicsView;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QKeySequence;
 import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QShortcut;
@@ -464,7 +465,7 @@ public class QTSpeelveld extends GSpeelveld {
 	@SuppressWarnings("unused")
 	private void cameraUp() {
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
-				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
+				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
 						.getZ());
 		if (camera.isBewegingGeldig(nieuwePositie))
 			camera.veranderStandpunt(nieuwePositie);
@@ -475,7 +476,7 @@ public class QTSpeelveld extends GSpeelveld {
 	@SuppressWarnings("unused")
 	private void cameraDown() {
 		Vector3D nieuwePositie = new Vector3D(camera.getHuidigeVector().getX(),
-				camera.getHuidigeVector().getY() - 1, camera.getHuidigeVector()
+				camera.getHuidigeVector().getY() + 1, camera.getHuidigeVector()
 						.getZ());
 		if (camera.isBewegingGeldig(nieuwePositie))
 			camera.veranderStandpunt(nieuwePositie);
@@ -486,7 +487,7 @@ public class QTSpeelveld extends GSpeelveld {
 	@SuppressWarnings("unused")
 	private void cameraLeft() {
 		Vector3D nieuwePositie = new Vector3D(
-				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
+				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
 		if (camera.isBewegingGeldig(nieuwePositie))
 			camera.veranderStandpunt(nieuwePositie);
@@ -497,7 +498,7 @@ public class QTSpeelveld extends GSpeelveld {
 	@SuppressWarnings("unused")
 	private void cameraRight() {
 		Vector3D nieuwePositie = new Vector3D(
-				camera.getHuidigeVector().getX() - 1, camera.getHuidigeVector()
+				camera.getHuidigeVector().getX() + 1, camera.getHuidigeVector()
 						.getY(), camera.getHuidigeVector().getZ());
 		if (camera.isBewegingGeldig(nieuwePositie))
 			camera.veranderStandpunt(nieuwePositie);
@@ -563,6 +564,21 @@ public class QTSpeelveld extends GSpeelveld {
 					voegTegelToeNaAIZet(result.get(i));
 					result.get(i).toggleProcessed();
 				}
+		} else if (((String) arg1).compareTo(Spel.SPELGEDAAN) == 0) {
+			char w = spel.geefWinnaar();
+			long score = spel.geefSpelerScore(w);
+			String naam = spel.geefSpelerNaam(w);
+
+			String text = "";
+			if (score == 0)
+				text += "Er zijn geen winnaars in dit spel.";
+			else
+				text += "Proficiat " + naam + ", U heeft gewonnen !";
+
+			QMessageBox box = new QMessageBox();
+			box.setWindowTitle("Einde Spel");
+			box.setText(text);
+			box.show();
 		}
 	}
 }

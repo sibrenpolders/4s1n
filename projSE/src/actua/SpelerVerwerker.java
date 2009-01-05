@@ -72,6 +72,25 @@ public class SpelerVerwerker implements Serializable {
 		return 0;
 	}
 
+	public void setSpelerScore(char kleur, long score) {
+		for (int i = 0; i < spelers.size(); ++i)
+			if (spelers.get(i).getKleur() == kleur) {
+				spelers.get(i).setScore(score);
+			}
+	}
+
+	public char geefWinnaar() {
+		char c = 0;
+		long temp = -1;
+		for (int i = 0; i < spelers.size(); ++i)
+			if (spelers.get(i).getScore() > temp) {
+				temp = spelers.get(i).getScore();
+				c = spelers.get(i).getKleur();
+			}
+
+		return c;
+	}
+
 	public short geefAantalOngeplaatstePionnen(char kleur) {
 		for (int i = 0; i < spelers.size(); ++i)
 			if (spelers.get(i).getKleur() == kleur) {
