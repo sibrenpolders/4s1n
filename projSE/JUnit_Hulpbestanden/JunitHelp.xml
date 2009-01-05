@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<help>
+	<item id="1">
+		<tag>tegel</tag>
+		<tag>speler</tag>
+		<tag>spel</tag>
+		<uitleg>Dit is heel tof allemaal. Ja, je kent er dus niks van. Ik moet hier 100 tekens gaan neerzetten, om 't allemaal te testen. Hoeveel zijn dit er al ?
+		Ff checken... hmm, nog ff verdertypen blijkbaar. Nog ff... en... ja... we hebben er nu... 100 ! Meer dan 100 zelfs.
+		</uitleg>
+	</item>
+	<item id="2">
+		<tag>tafel</tag>
+		<tag>speler</tag>
+		<tag>spel</tag>
+		<uitleg>Dit is zeer tof allemaal. Ja, je kent er dus niks van. Ik moet hier 100 tekens gaan neerzetten, om 't allemaal te testen. Hoeveel zijn dit er al ? 
+				Ff checken... hmm, nog ff verdertypen blijkbaar. Nog ff... en... ja... we hebben er nu... 100 ! Meer dan 100 zelfs.
+		</uitleg>
+	</item>
+	<item id="3">
+		<tag>speler</tag>
+		<uitleg>Dit is enorm tof allemaal. Ja, je kent er dus niks van. Ik moet hier 100 tekens gaan neerzetten, om 't allemaal te testen. Hoeveel zijn dit er al ?
+		Ff checken... hmm, nog ff verdertypen blijkbaar. Nog ff... en... ja... we hebben er nu... 100 ! Meer dan 100 zelfs.
+		</uitleg>
+	</item>
+</help>
