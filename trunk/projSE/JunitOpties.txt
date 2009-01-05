@@ -1,5 +1,0 @@
-e1:BOOL:true
-e3:TEXT:hg
-e4:TEXT:4g
-e5:NUM:45
-e6:NUM:234
