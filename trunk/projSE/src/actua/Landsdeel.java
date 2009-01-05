@@ -31,8 +31,10 @@ public class Landsdeel {
 		this.pion = pion;
 	}
 
-	public void verwijderPion() {
+	public char verwijderPion() {
+		char result = pion;
 		this.pion = 0;
+		return result;
 	}
 
 	public boolean isPionGeplaatst() {

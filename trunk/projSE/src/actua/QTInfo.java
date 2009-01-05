@@ -52,9 +52,7 @@ public class QTInfo extends GInfo {
 			tegelIcon = new QLabel(this);
 			setSize(tegelIcon, 90, 90);
 
-			String[] tegel = mSpel.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/"
-					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
+			updatePixmap();
 		}
 
 		public boolean isTegelGenomen() {
@@ -66,9 +64,13 @@ public class QTInfo extends GInfo {
 		}
 
 		private void updatePixmap() {
-			String[] tegel = mSpel.vraagNieuweTegel();
-			tegelIcon.setPixmap(new QPixmap("src/icons/"
-					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
+			if (mSpel.isUitgespeeld())
+				tegelIcon.setPixmap(new QPixmap("src/icons/background.xpm"));
+			else {
+				String[] tegel = mSpel.vraagNieuweTegel();
+				tegelIcon.setPixmap(new QPixmap("src/icons/"
+						+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
+			}
 		}
 
 		public void roteerRechts() {
@@ -158,7 +160,8 @@ public class QTInfo extends GInfo {
 		}
 
 		protected void mousePressEvent(QMouseEvent event) {
-			if (!mSpel.heeftHuidigeSpelerTegelGeplaatst()) {
+			if (!mSpel.heeftHuidigeSpelerTegelGeplaatst()
+					&& !mSpel.isUitgespeeld()) {
 				QLabel child = (QLabel) childAt(0, 0);
 				if (child == null)
 					return;
@@ -276,7 +279,18 @@ public class QTInfo extends GInfo {
 		beurt.clicked.connect(this, "updateVoorVolgendeSpeler()");
 	}
 
+	private void disconnect() {
+		roteerR.hide();
+		roteerL.hide();
+		nieuweTegel.hide();
+		beurt.hide();
+	}
+
 	public synchronized void updateInfo() {
+		roteerR.show();
+		roteerL.show();
+		nieuweTegel.show();
+		beurt.show();
 		verwijderSpelers();
 		updateSpelers();
 		stapel.toonNieuweTegel();
@@ -330,9 +344,14 @@ public class QTInfo extends GInfo {
 		}
 	}
 
-	public synchronized void update(Observable o, Object arg) {
+	public void update(Observable o, Object arg) {
 		if (arg.equals(true))
 			updateInfo();
+		else if (((String) arg).compareTo(Spel.SPELGEDAAN) == 0) {
+			verwijderSpelers();
+			updateSpelers();
+			disconnect();
+		}
 	}
 
 	@SuppressWarnings("unused")

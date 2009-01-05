@@ -168,6 +168,16 @@ public class TafelVerwerker implements Serializable {
 		return tafel.getUniekeLandsdeelPosities(tegelCoord);
 	}
 
+	public ArrayList<Character> updateScore(Vector2D coord,
+			PuntenVerwerker puntenVerwerker) {
+		if (puntenVerwerker != null && tafel != null) {
+			ArrayList<Character> result = tafel.updateScore(coord,
+					puntenVerwerker);
+			return result;
+		} else
+			return null;
+	}
+
 	public void undo() {
 		tafel.undo();
 	}

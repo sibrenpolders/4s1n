@@ -10,9 +10,11 @@ public class Spel extends Observable implements Serializable {
 	private static final long serialVersionUID = 2689906234458876556L;
 	private TafelVerwerker tafelVerwerker;
 	private SpelerVerwerker spelerVerwerker;
+	private PuntenVerwerker puntenVerwerker;
 	private StatusBijhouder statusBijhouder;
 	private boolean pionGeplaatst = false;
 	private Vector2D tegelGeplaatst;
+	private boolean isUitgespeeld;
 	private ArrayList<SpelBeurtResultaat> laatsteAIZet;
 
 	public static final char ROOD = 'r';
@@ -28,32 +30,37 @@ public class Spel extends Observable implements Serializable {
 
 	// OBSERVERBERICHTEN
 
-	public static final String SPELERVERANDERD = "Speler veranderd";
 	public static final String HUIDIGESPELERVERANDERD = "Huidige speler veranderd";
 	public static final String SPELERVERWIJDERD = "Speler verwijderd";
 	public static final String SPELERTOEGEVOEGD = "Speler toegevoegd";
-	public static final String TEGELGEPLAATST = "Tegel toegevoegd";
-	public static final String PIONGEPLAATST = "Pion toegevoegd";
-	public static final String PIONTERUGGENOMEN = "Pion verwijderd";
+	public static final String SPELGEDAAN = "Spel is gedaan";
 
 	public Spel() {
 		pionGeplaatst = false;
+		isUitgespeeld = false;
 		tegelGeplaatst = null;
 		tafelVerwerker = new TafelVerwerker();
+		puntenVerwerker = new PuntenVerwerker();
 		spelerVerwerker = new SpelerVerwerker();
 		statusBijhouder = new StatusBijhouder();
 		laatsteAIZet = new ArrayList<SpelBeurtResultaat>();
 	}
 
-	public void restart() {
+	public void restart(int aantalTegels) {
 		pionGeplaatst = false;
+		isUitgespeeld = false;
 		tegelGeplaatst = null;
 		laatsteAIZet.clear();
 		spelerVerwerker.verwijderSpelers();
-		tafelVerwerker.restart();
+		tafelVerwerker.restart(aantalTegels);
+		puntenVerwerker = new PuntenVerwerker();
 		statusBijhouder = new StatusBijhouder();
 		setChanged();
 		notifyObservers(SPELERVERWIJDERD);
+	}
+
+	public boolean isUitgespeeld() {
+		return isUitgespeeld;
 	}
 
 	// SPELERSGROEP
@@ -61,17 +68,59 @@ public class Spel extends Observable implements Serializable {
 	// Alle AI-spelers doen hun zet, om dan bij de eerste
 	// menselijke speler te stoppen.
 	public void volgendeSpeler() {
-		pionGeplaatst = false;
-		tegelGeplaatst = null;
-		laatsteAIZet.clear();
-		spelerVerwerker.gaNaarVolgendeSpeler();
-		while (spelerVerwerker.isHuidigeSpelerAI()) {
-			laatsteAIZet.add(spelerVerwerker.geefResultaatAI(tafelVerwerker));
+		updateScore(tegelGeplaatst);
+
+		if (tafelVerwerker.getStapelSize() > 0) {
+
+			pionGeplaatst = false;
+			tegelGeplaatst = null;
+			laatsteAIZet.clear();
 			spelerVerwerker.gaNaarVolgendeSpeler();
+			while (spelerVerwerker.isHuidigeSpelerAI() && !isUitgespeeld) {
+				laatsteAIZet.add(spelerVerwerker
+						.geefResultaatAI(tafelVerwerker));
+				if (tafelVerwerker.getStapelSize() == 0)
+					isUitgespeeld = true;
+
+				spelerVerwerker.gaNaarVolgendeSpeler();
+			}
+
+			for (int i = 0; i < laatsteAIZet.size(); ++i)
+				updateScore(laatsteAIZet.get(i).getPlaatsTegel());
+		} else {
+			isUitgespeeld = true;
 		}
 
-		this.setChanged();
-		notifyObservers(HUIDIGESPELERVERANDERD);
+		if (isUitgespeeld) {
+			this.setChanged();
+			notifyObservers(SPELGEDAAN);
+		} else {
+			this.setChanged();
+			notifyObservers(HUIDIGESPELERVERANDERD);
+		}
+	}
+
+	private void updateScore(Vector2D coord) {
+		if (this.tegelGeplaatst != null) {
+			ArrayList<Character> updates = tafelVerwerker.updateScore(coord,
+					puntenVerwerker);
+			for (int i = 0; i < updates.size(); ++i)
+				spelerVerwerker.neemPionTerugVan(updates.get(i));
+
+			spelerVerwerker.setSpelerScore(BLAUW, puntenVerwerker
+					.getSpelerBlauw());
+			spelerVerwerker.setSpelerScore(GEEL, puntenVerwerker
+					.getSpelerGeel());
+			spelerVerwerker.setSpelerScore(WIT, puntenVerwerker.getSpelerWit());
+			spelerVerwerker.setSpelerScore(ORANJE, puntenVerwerker
+					.getSpelerOranje());
+			spelerVerwerker.setSpelerScore(ROOD, puntenVerwerker
+					.getSpelerRood());
+		}
+	}
+
+	public char geefWinnaar() {
+		return spelerVerwerker.geefWinnaar();
 	}
 
 	public void voegSpelerToe(short s, String naam, char kleur, int i) {

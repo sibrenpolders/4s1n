@@ -74,7 +74,6 @@ public class QTInitSpel extends GInitSpel {
 	}
 
 	public void begin() {
-		// TODO QTInitSpel.begin(): checks worden beter in Spel gedaan.
 		if (!spel.isAantalSpelersGeldig(getNamenIngevoerdeSpelers())) {
 			foutDialoog("Te weinig spelers !");
 			return;
@@ -88,7 +87,7 @@ public class QTInitSpel extends GInitSpel {
 			return;
 		}
 
-		spel.restart();
+		spel.restart(Integer.parseInt(tegels.text()));
 
 		for (int i = 0; i < soort.size(); ++i) {
 			int niveau = 0;

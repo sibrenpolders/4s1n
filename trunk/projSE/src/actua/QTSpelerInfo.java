@@ -1,6 +1,5 @@
 package actua;
 
-import java.util.Observable;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QFont;
@@ -51,7 +50,7 @@ public class QTSpelerInfo extends GSpelerInfo {
 
 	private void resize() {
 		setSize(naam, 150, TEXT_HOOGTE);
-		setSize(punten, 10, TEXT_HOOGTE);
+		setSize(punten, 40, TEXT_HOOGTE);
 		setSize(color, 40, TEXT_HOOGTE);
 		setSize(score, 40, TEXT_HOOGTE);
 		setSize(spelerInfoveld, 150, 75);
@@ -77,7 +76,7 @@ public class QTSpelerInfo extends GSpelerInfo {
 
 	private void addPionnen() {
 		QHBoxLayout hBox = new QHBoxLayout();
-		boolean flag = spel.geefHuidigeSpeler() == this.kleur;
+		boolean flag = spel.geefHuidigeSpeler() == this.kleur && !spel.isUitgespeeld();
 
 		for (int i = 0; i < spel.geefAantalOngeplaatstePionnenVanSpeler(kleur); ++i)
 			hBox.addWidget(new QTPion(kleur, flag));
@@ -120,11 +119,5 @@ public class QTSpelerInfo extends GSpelerInfo {
 		if (kleur == spel.geefHuidigeSpeler())
 			naam.setText(naam_.toUpperCase());
 		addPionnen();
-	}
-
-	public void update(Observable o, Object arg) {
-		if (arg.equals(Spel.SPELERVERANDERD)) {
-			updateSpeler();
-		}
 	}
 }
