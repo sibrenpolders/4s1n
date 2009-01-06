@@ -27,16 +27,14 @@ public class JunitBestandTest extends TestCase {
 	
 	public void testSchrijfNaarBestand() {
 		Spel spel = new Spel();
-		TafelVerwerker t = spel.getTafelVerwerker();
-		Tegel start = t.getLaatstGeplaatsteTegel();
+		Spel spel2=null;
 
-		bestand.schrijfNaarBestand(spel, null, "test");
-		Spel spel2 = new Spel();
-		Memento me2 = new Memento();
+		bestand.schrijfNaarBestand(spel,"test");
 		
-		bestand.leesVanBestand(spel2, me2, "test");
+		bestand.leesVanBestand(spel2, "test");
+		spel2=bestand.getSpel();
 		
-		assertTrue(start == spel2.getTafelVerwerker().getLaatstGeplaatsteTegel());
+		assertEquals(spel,spel2);
 	}
 	
 	public void testLeesVanBestand() {
