@@ -1,6 +1,0 @@
-tegelPlaatsing gefixed (hopelijk)
---This line, and those below, will be ignored--
-
-M    src/actua/QTSpeelveld.java
-M    src/actua/Tafel.java
-M    src/testcases/JunitTafelTest.java
