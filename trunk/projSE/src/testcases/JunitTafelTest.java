@@ -64,46 +64,47 @@ public class JunitTafelTest extends TestCase {
 	private void maakLandsDelen() {
 		tegels = new ArrayList<Tegel>();
 		
-		tegels.add(new Tegel("swwwssswwwssw", "0111222111001"));
-		tegels.add(new Tegel("wsssssswwwwww", "0111111000000"));
-		tegels.add(new Tegel("swwwssssswwws", "0111000222000"));
-		tegels.add(new Tegel("wwwwwwwwwwwwk", "0000000000001"));
-		tegels.add(new Tegel("swwwssswwwsss", "0111000222000"));
+		
+		tegels.add(new Tegel("swwwssswwwssw", "0111222111001",(short) 0));
+		tegels.add(new Tegel("wsssssswwwwww", "0111111000000",(short) 0));
+		tegels.add(new Tegel("swwwssssswwws", "0111000222000",(short) 0));
+		tegels.add(new Tegel("wwwwwwwwwwwwk", "0000000000001",(short) 0));
+		tegels.add(new Tegel("swwwssswwwsss", "0111000222000",(short) 0));
 	}
 
 	public void testPlaatsPion() {
 		tafel.clear();
 		Pion p = new Pion();
 		// testen van plaatsen van starttegels, en de tegels daarond
-		tafel.plaatsTegel(tegels.get(0), coords.get(0));
-		assertTrue(tafel.plaatsPion(coords.get(0), Tegel.NOORD, p));
-		tafel.plaatsTegel(tegels.get(1), coords.get(1));
-		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.ZUID, p));
+		tafel.plaatsTegel(tegels.get(0).getTegelString(), coords.get(0));
+		assertTrue(tafel.plaatsPion(coords.get(0), Tegel.NOORD, p.getKleur()));
+		tafel.plaatsTegel(tegels.get(1).getTegelString(), coords.get(1));
+		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.ZUID, p.getKleur()));
 		
 		for (int i = 2; i < 4; ++i) {
-			tafel.plaatsTegel(tegels.get(i), coords.get(i));
+			tafel.plaatsTegel(tegels.get(i).getTegelString(), coords.get(i));
 		}
 						
-		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.OOST, p));
-		assertFalse(tafel.plaatsPion(coords.get(3), Tegel.OOST, p));
+		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.OOST, p.getKleur()));
+		assertFalse(tafel.plaatsPion(coords.get(3), Tegel.OOST, p.getKleur()));
 	}
 
 	public void testIsTegelPlaatsingGeldig() {
 		tafel.clear();
 		
-		tafel.plaatsTegel(tegels.get(0), coords.get(0));
+		tafel.plaatsTegel(tegels.get(0).getTegelString(), coords.get(0));
 		
 		// op dezelfde plek opnieuw zetten mag niet
-		assertFalse(tafel.isTegelPlaatsingGeldig(tegels.get(0), coords.get(0)));
+		assertFalse(tafel.isTegelPlaatsingGeldig(tegels.get(0).getTegelString(), coords.get(0)));
 		
 		// in het wilde weg zetten mag niet (tegels moeten aansluiten)
-		assertFalse(tafel.isTegelPlaatsingGeldig(tegels.get(0), new Vector2D(10, 10)));
+		assertFalse(tafel.isTegelPlaatsingGeldig(tegels.get(0).getTegelString(), new Vector2D(10, 10)));
 		
 		// landsdelen komen niet overeen
-		assertFalse(tafel.isTegelPlaatsingGeldig(tegels.get(1), coords.get(2)));
+		assertFalse(tafel.isTegelPlaatsingGeldig(tegels.get(1).getTegelString(), coords.get(2)));
 	
 		// en natuurlijk nog een juiste plaatsing testen
-		assertTrue(tafel.isTegelPlaatsingGeldig(tegels.get(1), coords.get(1)));
+		assertTrue(tafel.isTegelPlaatsingGeldig(tegels.get(1).getTegelString(), coords.get(1)));
 	}
 
 	public void testIsLaatste() {
