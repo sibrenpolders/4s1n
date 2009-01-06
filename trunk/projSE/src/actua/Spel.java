@@ -123,8 +123,8 @@ public class Spel extends Observable implements Serializable {
 		return spelerVerwerker.geefWinnaar();
 	}
 
-	public void voegSpelerToe(short s, String naam, char kleur, int i) {
-		spelerVerwerker.voegSpelerToe(s, naam, kleur, i);
+	public void voegSpelerToe(short s, String naam, char kleur, int score) {
+		spelerVerwerker.voegSpelerToe(s, naam, kleur, score);
 		setChanged();
 		notifyObservers(SPELERTOEGEVOEGD);
 	}
