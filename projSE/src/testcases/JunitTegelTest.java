@@ -17,41 +17,41 @@ public class JunitTegelTest extends TestCase {
 	}
 
 	public void testBepaalLandsdeel() {
-		Tegel tegel = new Tegel("wsssswwswwwws", "0111100100001");
+		Tegel tegel = new Tegel("wsssssswwwwww", "0111111000000",(short)0);
 		
 		assertEquals("getLandsDeel 0", Landsdeel.WEI, tegel.bepaalLandsdeel(0).getType());
 		assertEquals("getLandsDeel 1", Landsdeel.STAD, tegel.bepaalLandsdeel(1).getType());
 		assertEquals("getLandsDeel 2", Landsdeel.STAD, tegel.bepaalLandsdeel(2).getType());
 		assertEquals("getLandsDeel 3", Landsdeel.STAD, tegel.bepaalLandsdeel(3).getType());
 		assertEquals("getLandsDeel 4", Landsdeel.STAD, tegel.bepaalLandsdeel(4).getType());
-		assertEquals("getLandsDeel 5", Landsdeel.WEI, tegel.bepaalLandsdeel(5).getType());
-		assertEquals("getLandsDeel 6", Landsdeel.WEI, tegel.bepaalLandsdeel(6).getType());
-		assertEquals("getLandsDeel 7", Landsdeel.STAD, tegel.bepaalLandsdeel(7).getType());
+		assertEquals("getLandsDeel 5", Landsdeel.STAD, tegel.bepaalLandsdeel(5).getType());
+		assertEquals("getLandsDeel 6", Landsdeel.STAD, tegel.bepaalLandsdeel(6).getType());
+		assertEquals("getLandsDeel 7", Landsdeel.WEI, tegel.bepaalLandsdeel(7).getType());
 		assertEquals("getLandsDeel 8", Landsdeel.WEI, tegel.bepaalLandsdeel(8).getType());
 		assertEquals("getLandsDeel 9", Landsdeel.WEI, tegel.bepaalLandsdeel(9).getType());
 		assertEquals("getLandsDeel 10", Landsdeel.WEI, tegel.bepaalLandsdeel(10).getType());
 		assertEquals("getLandsDeel 11", Landsdeel.WEI, tegel.bepaalLandsdeel(11).getType());
-		assertEquals("getLandsDeel 12", Landsdeel.STAD, tegel.bepaalLandsdeel(12).getType());
+		assertEquals("getLandsDeel 12", Landsdeel.WEI, tegel.bepaalLandsdeel(12).getType());
 	}
 
 	public void testPlaatsPion() {
 //		Tegel tegel = new Tegel("wsssswwswwwws");
-		Tegel tegel = new Tegel("wssswgggwwwww", "0111022233333");
+		Tegel tegel = new Tegel("wssswgwwwwwgg", "0111020000022",(short)0);
 		Landsdeel landsDeel;
 		
 		// een eerste pion plaatsen op een stadsdeel
-		assertTrue("Plaatsting eerste pion", tegel.plaatsPion(0, new Pion()));
+		assertTrue("Plaatsting eerste pion", tegel.plaatsPion(0, 'r'));
 		
 		// een tweede pion plaatsten op hetzelfde stadsdeel?
 		landsDeel = tegel.bepaalLandsdeel(4);
 		assertTrue("Staat er al een pion?", landsDeel.isPionGeplaatst());
 		
 		// een tweede pion plaatsen op het andere landsdeel?
-		landsDeel = tegel.bepaalLandsdeel(6);
+		landsDeel = tegel.bepaalLandsdeel(2);
 		assertFalse("Staat er al een pion?", landsDeel.isPionGeplaatst());
 		
 		// mag blijkbaar wel
-		assertTrue("Plaatsting tweede pion", tegel.plaatsPion(6, new Pion()));		
+		assertTrue("Plaatsting tweede pion", tegel.plaatsPion(2, 'r'));		
 		// staat hij er wel?
 		assertTrue("Staat er al een pion?", landsDeel.isPionGeplaatst());
 	}
@@ -88,7 +88,7 @@ public class JunitTegelTest extends TestCase {
 	}
 
 	private void draaiTegel270() {
-		Tegel tegel = new Tegel("0123456789abc", "0123456789abc");
+		Tegel tegel = new Tegel("0123456789abc", "0123456789abc",(short)0);
 		
 		for (int i = 0; i < 3; ++i) {
 			tegel.draaiTegel(true);
@@ -111,7 +111,7 @@ public class JunitTegelTest extends TestCase {
 	}
 
 	private void draaiTegel180() {
-		Tegel tegel = new Tegel("0123456789abc", "0123456789abc");
+		Tegel tegel = new Tegel("0123456789abc", "0123456789abc",(short)0);
 
 		for (int i = 0; i < 2; ++i) {
 			tegel.draaiTegel(true);
@@ -133,7 +133,7 @@ public class JunitTegelTest extends TestCase {
 	}
 
 	private void draaiTegel90() {
-		Tegel tegel = new Tegel("0123456789abc", "0123456789abc");
+		Tegel tegel = new Tegel("0123456789abc", "0123456789abc",(short)0);
 		tegel.draaiTegel(true);
 
 		assertEquals(tegel.bepaalLandsdeel(Tegel.WEST_NOORD).getType(), '9');

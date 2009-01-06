@@ -12,7 +12,9 @@ public class JunitCameraTest extends TestCase {
 		Vector3D max = new Vector3D(100, 100, 100);
 		Vector3D min = new Vector3D(-100, -100, -100);
 		
-		camera = new Camera(min, max);
+		camera = new Camera();
+		camera.setMinVector(min);
+		camera.setMaxVector(max);
 	}
 
 	protected void tearDown() throws Exception {
