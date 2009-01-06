@@ -1,9 +1,9 @@
--collab nakijken (vergelijken met contracten en code) -> deels OK
--klasse nakijken -> deels OK
+-collab nakijken (vergelijken met contracten en code) -> deels OK -> OK
+-klasse nakijken -> deels OK -> OK
 -design patterns  + afbeeldingen
 -UML maken
 -unit tests
--AI uitleggen -> Sibren ging er 's naar kijken
+-AI uitleggen -> Sibren ging er 's naar kijken -> OK
 -logboek
 -alles in een doc steken
 -alles in mapkes steken en indien
