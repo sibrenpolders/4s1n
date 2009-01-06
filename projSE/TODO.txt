@@ -5,6 +5,7 @@
 -unit tests
 -AI uitleggen -> Sibren ging er 's naar kijken -> OK
 -logboek
+-stukken foute code inactief maken
 -alles in een doc steken
 -alles in mapkes steken en indien
 -verslag afdrukken + UML op A3
