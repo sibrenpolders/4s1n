@@ -39,6 +39,7 @@ public class Bestand {
 	public void leesVanBestand(Spel spel, String naam) {
 		FileInputStream fis;
 		ObjectInputStream in;
+		//spel = new Spel();
 
 		try {
 			fis = new FileInputStream(naam);
@@ -55,6 +56,7 @@ public class Bestand {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		System.out.println(spel);
 	}
 
 	// SCHRIJVEN
