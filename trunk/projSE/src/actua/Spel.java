@@ -311,6 +311,4 @@ public class Spel extends Observable implements Serializable {
 	public TafelVerwerker getTafelVerwerker() {
 		return tafelVerwerker;
 	}
-	
-	
 }
