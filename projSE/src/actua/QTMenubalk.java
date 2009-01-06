@@ -65,9 +65,9 @@ public class QTMenubalk extends GMenubalk {
 		QAction afsluiten = addActionItem(spel, "Afsluiten");
 
 		nSpel.triggered.connect(this.gInitSpel, "show()");
-		opslaan.triggered.connect(this, "opslaan()");
+		opslaan.triggered.connect(this, "startOpslaan()");
 		opslaanAls.triggered.connect(this, "opslaanAls()");
-		laden.triggered.connect(this, "laden()");
+		laden.triggered.connect(this, "startLaden()");
 		afsluiten.triggered.connect(QApplication.instance(), "quit()");
 	}
 
