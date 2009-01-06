@@ -25,25 +25,18 @@ public class JunitTafelTest extends TestCase {
 	protected void tearDown() throws Exception {
 	}
 
-//	public void testBeweegCamera() {
-//		Vector3D v = new Vector3D(3, 3, 3);
-//
-//		tafel.beweegCamera(v);
-//		assertEquals(v, tafel.getOogpunt().getHuidigeVector());
-//	}
-
 	public void testPlaatsTegel() {
 		tafel.clear();
 		
 		// testen van plaatsen van starttegels, en de tegels daarond
-		assertTrue("Plaatsing tegel faalt", tafel.plaatsTegel(tegels.get(0), coords.get(0)));
+		assertTrue("Plaatsing tegel faalt", tafel.plaatsTegel(tegels.get(0).getTegelString(), coords.get(0)));
 		Vector2D coord;
 		for (int i = 1; i < 5; ++i) {
 			coord = coords.get(i);
 			assertTrue("Plaatsing tegel " + (i+1) + " faalt. coord: (" + coord.getX() + ", " + coord.getY() + ")", 
-					tafel.plaatsTegel(tegels.get(i), coord));
+					tafel.plaatsTegel(tegels.get(i).getTegelString(), coord));
 		}
-		assertFalse("Plaatsing zelfde tegel faalt", tafel.plaatsTegel(tegels.get(0), coords.get(0)));		
+		assertFalse("Plaatsing zelfde tegel faalt", tafel.plaatsTegel(tegels.get(0).getTegelString(), coords.get(0)));		
 				
 		Tegel t;
 		// testen of de tegels goed zijn opgeslagen
@@ -117,11 +110,11 @@ public class JunitTafelTest extends TestCase {
 		tafel.clear();
 				
 		Vector2D coord = coords.get(0);
-		tafel.plaatsTegel(tegels.get(0), coord);
+		tafel.plaatsTegel(tegels.get(0).getTegelString(), coord);
 		assertTrue(tafel.isLaatstGeplaatsteTegel(coord.getX(), coord.getY()));
 		
 		coord = coords.get(1);
-		tafel.plaatsTegel(tegels.get(1), coord);
+		tafel.plaatsTegel(tegels.get(1).getTegelString(), coord);
 		assertTrue(tafel.isLaatstGeplaatsteTegel(coord.getX(), coord.getY()));
 	}
 
@@ -157,7 +150,7 @@ public class JunitTafelTest extends TestCase {
 		Tafel t = new Tafel();
 		
 		for (int i = 0; i < tegels.size(); ++i) {
-			assertTrue(t.plaatsTegel(tegels.get(i), coords.get(i)));
+			assertTrue(t.plaatsTegel(tegels.get(i).getTegelString(), coords.get(i)));
 		}
 	}
 
@@ -195,33 +188,33 @@ public class JunitTafelTest extends TestCase {
 	private ArrayList<Tegel> maaktegelsFail() {
 		ArrayList<Tegel> tegels = new ArrayList<Tegel>();
 		
-		tegels.add(new Tegel("wssswgwwgwwwg", "0111023320002"));
-		tegels.add(new Tegel("wwwwwgwwgwwgr", "0000012234456"));
-		Tegel t = new Tegel("sssssssssssss", "0000000000000");
+		tegels.add(new Tegel("wssswgwwgwwwg", "0111023320002",(short)0));
+		tegels.add(new Tegel("wwwwwgwwgwwgr", "0000012234456",(short)0));
+		Tegel t = new Tegel("sssssssssssss", "0000000000000",(short)0);
 		t.draaiTegel(false);
 		tegels.add(t);
-		t = new Tegel("wwwwwgwwgwwgr", "0000012234456");
+		t = new Tegel("wwwwwgwwgwwgr", "0000012234456",(short)0);
 		t.draaiTegel(true);
 		t.draaiTegel(true);
 		tegels.add(t);
-		t = new Tegel("wwgwwwwwgwwwg", "0012222210002");
+		t = new Tegel("wwgwwwwwgwwwg", "0012222210002",(short)0);
 		t.draaiTegel(false);
 		tegels.add(t);
-		t = new Tegel("swwwssswwwsss", "0111000222000");
+		t = new Tegel("swwwssswwwsss", "0111000222000",(short)0);
 		tegels.add(t);
-		t = new Tegel("sssssssssssss", "0000000000000");
+		t = new Tegel("sssssssssssss", "0000000000000",(short)0);
 		t.draaiTegel(false);
 		tegels.add(t);
-		t = new Tegel("ssssssswgwsss", "0000000123000");
+		t = new Tegel("ssssssswgwsss", "0000000123000",(short)0);
 		t.draaiTegel(true);
-		t = new Tegel("swwwssswwwsss", "0111000222000");
+		t = new Tegel("swwwssswwwsss", "0111000222000",(short)0);
 		t.draaiTegel(false);
 		tegels.add(t);
-		t = new Tegel("wssswgwwgwwgr", "0111023345567");
+		t = new Tegel("wssswgwwgwwgr", "0111023345567",(short)0);
 		t.draaiTegel(true);
 		t.draaiTegel(true);
 		tegels.add(t);
-		t = new Tegel("wwwwwgwwgwwgr", "0000012234456");
+		t = new Tegel("wwwwwgwwgwwgr", "0000012234456",(short)0);
 		t.draaiTegel(true);
 		tegels.add(t);
 		//		Tegel t = new Tegel("swwwssswwwsss.png", "0111000222000");
