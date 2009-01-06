@@ -125,7 +125,7 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	@SuppressWarnings("unused")
-	private void opslaan() {
+	public void startOpslaan() {
 		if (bestand.getNaam() != null) {
 			bestand.slaSpelToestandOp(spel);
 		} else {
@@ -141,8 +141,12 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	@SuppressWarnings("unused")
-	private void laden() {
+	public void startLaden() {
 		String naam = QFileDialog.getOpenFileName();
 		bestand.startLaden(spel, naam);
+	}
+
+	public void verwijderHuidigeSpeler() {
+
 	}
 }

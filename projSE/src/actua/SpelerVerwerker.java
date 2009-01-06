@@ -153,11 +153,21 @@ public class SpelerVerwerker implements Serializable {
 			}
 	}
 
-	public void maakAI(Speler mens, short niveau) {
+	@SuppressWarnings("unused")
+	private void maakAI(Speler mens, short niveau) {
 		for (int i = 0; i < spelers.size(); ++i)
 			if (spelers.get(i) == mens) {
 				spelers.remove(i);
 				spelers.add(i, new AI(mens, niveau));
+				return;
+			}
+	}
+
+	public void maakAI(char kleur, short niveau) {
+		for (int i = 0; i < spelers.size(); ++i)
+			if (spelers.get(i).getKleur() == kleur) {
+				Speler s = spelers.remove(i);
+				spelers.add(i, new AI(s, niveau));
 				return;
 			}
 	}
