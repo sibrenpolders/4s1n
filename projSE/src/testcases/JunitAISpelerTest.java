@@ -3,6 +3,7 @@ package testcases;
 import junit.framework.TestCase;
 import actua.Easy;
 import actua.Spel;
+import actua.Strategy;
 import actua.Tafel;
 import actua.Tegel;
 import actua.AI;
@@ -12,42 +13,12 @@ import actua.Vector2D;
 
 public class JunitAISpelerTest extends TestCase {
 	Spel spel;
+	Strategy ai;
 
 	protected void setUp() throws Exception {
 		spel = new Spel();
-		spel.getSpelerVerwerker().voegSpelerToe(AI.EASY, "test",
-				Speler.SPELER_GEEL, 0, spel.getTafelVerwerker());
+		spel.voegSpelerToe(AI.EASY, "test",Spel.GEEL, 0);
 	}
 
-	public void testPlaatsPion() {
-		Tegel tegel = spel.getTafelVerwerker().neemTegelVanStapel();
-		Vector2D v = spel.getSpelerVerwerker().geefHuidigeSpeler().
-
-		p = ai.neemPion(tafel);
-
-		if (p != null) {
-			geplaatst = ai.setPion(p);
-			assertTrue(geplaatst);
-		}
-	}
-
-	public void testNeemPionTerug() {
-		boolean terug;
-		long prevScore = ai.getScore();
-
-		terug = ai.neemPionTerug();
-
-		if (terug)
-			assertNotSame(prevScore, ai.getScore());
-	}
-
-	public void testPlaatsTegel() {
-		Tafel tafel = new Tafel();
-		Tegel tegel = new Tegel();
-		boolean geplaatst;
-
-		geplaatst = ai.plaatsTegel(tegel, tafel);
-
-		assertTrue(geplaatst);
-	}
+	// moet nog een unit test komen van doeZet() maar ik heb geen idee hoe die functie werkt
 }
