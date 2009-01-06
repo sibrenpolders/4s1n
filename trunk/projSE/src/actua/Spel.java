@@ -100,8 +100,8 @@ public class Spel extends Observable implements Serializable {
 		}
 	}
 
-	private void updateScore(Vector2D coord) {
-		if (this.tegelGeplaatst != null) {
+	public void updateScore(Vector2D coord) {
+		if (coord != null) {
 			ArrayList<Character> updates = tafelVerwerker.updateScore(coord,
 					puntenVerwerker);
 			for (int i = 0; i < updates.size(); ++i)
@@ -127,6 +127,10 @@ public class Spel extends Observable implements Serializable {
 		spelerVerwerker.voegSpelerToe(s, naam, kleur, i);
 		setChanged();
 		notifyObservers(SPELERTOEGEVOEGD);
+	}
+
+	public void verwijderHuidigeSpeler(short niveau) {
+		spelerVerwerker.maakAI(spelerVerwerker.geefHuidigeSpeler(), niveau);
 	}
 
 	public boolean zijnKleurenVoorNieuweSpelersGeldig(Vector<Character> kleur) {

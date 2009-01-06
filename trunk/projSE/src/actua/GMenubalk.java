@@ -51,6 +51,12 @@ public abstract class GMenubalk {
 		this.bestand = bestand;
 	}
 
+	public abstract void startLaden();
+
+	public abstract void startOpslaan();
+	
+	public abstract void verwijderHuidigeSpeler();
+
 	public abstract void show();
 
 	public abstract void hide();

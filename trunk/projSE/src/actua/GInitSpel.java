@@ -9,6 +9,8 @@ public abstract class GInitSpel extends Observable {
 		this.spel = spel;
 	}
 
+	// Deze functie gaat spel-instantie instellen (spelers, aantal tegels, ...)
+	// a.h.v. de gebruiker heeft ingegeven.
 	public abstract void begin();
 
 	public abstract void show();
