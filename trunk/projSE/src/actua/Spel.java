@@ -306,4 +306,11 @@ public class Spel extends Observable implements Serializable {
 		tafelVerwerker = (TafelVerwerker) in.readObject();
 		spelerVerwerker = (SpelerVerwerker) in.readObject();
 	}
+
+	// elke voor unittesten
+	public TafelVerwerker getTafelVerwerker() {
+		return tafelVerwerker;
+	}
+	
+	
 }

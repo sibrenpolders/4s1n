@@ -3,14 +3,18 @@ package testcases;
 import java.util.Vector;
 
 import actua.Hard;
+import actua.Spel;
 import actua.Tegel;
 import actua.Vector2D;
 
 
 public class JunitHardTest extends JunitAITest {
+	Spel spel;
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 		super.ai = new Hard();
+		spel = new Spel();
 	}
 	protected void tearDown() throws Exception {
 		super.tearDown();
@@ -40,9 +44,10 @@ public class JunitHardTest extends JunitAITest {
 		Tegel plaatsTegel = new Tegel();
 		Vector2D gewensteTegelPositie = new Vector2D();
 		Vector2D berekendePositie;
+		String[] t = new String[3];
 		
 		maakEnkelVeld(veld, plaatsTegel, gewensteTegelPositie);
-		berekendePositie = ai.BerekenTegel(veld, stapel, plaatsTegel);
+		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
 		assertEquals("Fout bij 1 mogelijke plaatsing", gewensteTegelPositie, berekendePositie);
 		
 	}
@@ -54,9 +59,10 @@ public class JunitHardTest extends JunitAITest {
 		Tegel plaatsTegel = new Tegel();
 		Vector2D gewensteTegelPositie = new Vector2D();
 		Vector2D berekendePositie;
+		String[] t = new String[3];
 		
 		maakOvervloedigVeld(veld, plaatsTegel, gewensteTegelPositie);
-		berekendePositie = ai.BerekenTegel(veld, stapel, plaatsTegel);
+		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
 		assertEquals("Fout bij meerdere mogelijke plaatsingen", gewensteTegelPositie, berekendePositie);
 		
 	}
@@ -68,9 +74,10 @@ public class JunitHardTest extends JunitAITest {
 		Vector<Tegel> stapel = new Vector<Tegel>();
 		Tegel plaatsTegel = new Tegel();		
 		Vector2D berekendePositie;
+		String[] t = new String[3];
 		
 		maakOngeldigVeld(veld, plaatsTegel);
-		berekendePositie = ai.BerekenTegel(veld, stapel, plaatsTegel);
+		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
 		assertEquals("Fout bij ongeldige plaatsing", null, berekendePositie);
 		
 	}
@@ -81,11 +88,12 @@ public class JunitHardTest extends JunitAITest {
 		Vector<Tegel> stapel = new Vector<Tegel>();
 		Tegel plaatsTegel = new Tegel();
 		Vector2D gewensteTegelPositie = new Vector2D();
-		Vector2D berekendePositie;	
+		Vector2D berekendePositie;
+		String[] t = new String[3];
 		
 		maakStartVeld(veld, plaatsTegel, gewensteTegelPositie);				
 		maakStapelTegels(stapel);		
-		berekendePositie = ai.BerekenTegel(veld, stapel, plaatsTegel);
+		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
 		assertEquals("Fout bij plaatsing met enkel starttegel", gewensteTegelPositie, berekendePositie);						
 	}	
 

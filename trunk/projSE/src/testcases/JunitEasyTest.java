@@ -3,13 +3,18 @@ package testcases;
 import java.util.Vector;
 
 import actua.Easy;
+import actua.Spel;
+import actua.TafelVerwerker;
 import actua.Tegel;
 import actua.Vector2D;
 
 public class JunitEasyTest extends JunitAITest {
+	Spel spel;
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 		super.ai = new Easy();
+		spel = new Spel();
 	}
 
 	protected void tearDown() throws Exception {
@@ -41,11 +46,11 @@ public class JunitEasyTest extends JunitAITest {
 	protected void geenPionPlaatsingTest() {
 		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
 		Vector2D laatstGeplaatst = new Vector2D();
-		Vector2D berekendePositie;
+		int berekendePositie;
 
 		maakVeldGeenPion(veld, laatstGeplaatst);
-		berekendePositie = ai.BerekenPion(veld, laatstGeplaatst);
-		assertEquals("Fout bij geen pion plaatsing mogelijk", null,
+		berekendePositie = ai.berekenPlaatsPion(laatstGeplaatst,spel.getTafelVerwerker());
+		assertEquals("Fout bij geen pion plaatsing mogelijk", 0,
 				berekendePositie);
 	}
 
@@ -54,11 +59,11 @@ public class JunitEasyTest extends JunitAITest {
 		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
 		Vector2D laatstGeplaatst = new Vector2D();
 		Vector2D gewenstePositie = new Vector2D();
-		Vector2D berekendePositie;
+		int berekendePositie, gewenst = 0;
 
 		maakVeldPion(veld, laatstGeplaatst, gewenstePositie);
-		berekendePositie = ai.BerekenPion(veld, laatstGeplaatst);
-		assertEquals("Fout bij pion plaatsing mogelijk", gewenstePositie,
+		berekendePositie = ai.berekenPlaatsPion(laatstGeplaatst,spel.getTafelVerwerker());
+		assertEquals("Fout bij pion plaatsing mogelijk", gewenst,
 				berekendePositie);
 	}
 
@@ -67,11 +72,12 @@ public class JunitEasyTest extends JunitAITest {
 		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
 		Vector<Tegel> stapel = new Vector<Tegel>();
 		Tegel plaatsTegel = new Tegel();
+		String[] t = new String[3];
 		Vector2D gewensteTegelPositie = new Vector2D();
 		Vector2D berekendePositie;
 
 		maakEnkelVeld(veld, plaatsTegel, gewensteTegelPositie);
-		berekendePositie = ai.BerekenTegel(veld, stapel, plaatsTegel);
+		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
 		// TODO functie moet nog ergens bijkomen?
 		// assert("Fout bij 1 mogelijke plaatsing",
 		// geldigeZet(berekendePositie));
@@ -84,11 +90,12 @@ public class JunitEasyTest extends JunitAITest {
 		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
 		Vector<Tegel> stapel = new Vector<Tegel>();
 		Tegel plaatsTegel = new Tegel();
+		String[] t = new String[3];
 		Vector2D gewensteTegelPositie = new Vector2D();
 		Vector2D berekendePositie;
 
 		maakOvervloedigVeld(veld, plaatsTegel, gewensteTegelPositie);
-		berekendePositie = ai.BerekenTegel(veld, stapel, plaatsTegel);
+		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
 
 		// TODO functie moet nog ergens bijkomen?
 		// assert("Fout bij 1 mogelijke plaatsing",
@@ -103,10 +110,11 @@ public class JunitEasyTest extends JunitAITest {
 		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
 		Vector<Tegel> stapel = new Vector<Tegel>();
 		Tegel plaatsTegel = new Tegel();
+		String[] t = new String[3];
 		Vector2D berekendePositie;
 
 		maakOngeldigVeld(veld, plaatsTegel);
-		berekendePositie = ai.BerekenTegel(veld, stapel, plaatsTegel);
+		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
 		assertEquals("Fout bij ongeldige plaatsing", null, berekendePositie);
 
 	}
@@ -116,12 +124,13 @@ public class JunitEasyTest extends JunitAITest {
 		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
 		Vector<Tegel> stapel = new Vector<Tegel>();
 		Tegel plaatsTegel = new Tegel();
+		String[] t = new String[3];
 		Vector2D gewensteTegelPositie = new Vector2D();
 		Vector2D berekendePositie =  null;
 
 		maakStartVeld(veld, plaatsTegel, gewensteTegelPositie);
 		maakStapelTegels(stapel);
-		berekendePositie = ai.berekenPlaatsTegel(plaatsTegel);
+		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
 		// TODO functie moet nog ergens bijkomen?
 		// assert("Fout bij 1 mogelijke plaatsing",
 		// geldigeZet(berekendePositie));
