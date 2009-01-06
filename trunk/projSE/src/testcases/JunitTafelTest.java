@@ -6,7 +6,6 @@ import actua.Pion;
 import actua.Tafel;
 import actua.Tegel;
 import actua.Vector2D;
-import actua.Vector3D;
 import junit.framework.TestCase;
 
 public class JunitTafelTest extends TestCase {
