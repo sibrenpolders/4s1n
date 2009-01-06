@@ -14,8 +14,10 @@ public class JunitOptiesTest extends TestCase {
 	}
 
 	public void testOptieVerwerkerString() {
-		OptieVerwerker op = new OptieVerwerker("JunitOpties.txt");
-		assertEquals("JunitOpties.txt", op.getOptieBestand());
+		OptieVerwerker op = new OptieVerwerker(
+				"JUnit_Hulpbestanden/JunitOpties.txt");
+		assertEquals("JUnit_Hulpbestanden/JunitOpties.txt", op
+				.getOptieBestand());
 		assertNull(op.getWaarde("random"));
 		op = new OptieVerwerker(null);
 		assertEquals(OptieVerwerker.getDefaultOptieBestand(), op
@@ -78,7 +80,8 @@ public class JunitOptiesTest extends TestCase {
 	}
 
 	public void testSchrijfNaarBestand() throws Exception {
-		OptieVerwerker op = new OptieVerwerker("JunitOpties.txt");
+		OptieVerwerker op = new OptieVerwerker(
+				"JUnit_Hulpbestanden/JunitOpties.txt");
 		op.addOptie("e1", Optie.TYPE.BOOL, "false");
 		op.addOptie("e2", Optie.TYPE.BOOL, "FAlSe");
 		op.addOptie("e3", Optie.TYPE.TEXT, "hg");
@@ -93,7 +96,7 @@ public class JunitOptiesTest extends TestCase {
 		assertEquals("4g", op.getWaarde("e4"));
 		op.schrijfNaarBestand();
 
-		op = new OptieVerwerker("JunitOpties.txt");
+		op = new OptieVerwerker("JUnit_Hulpbestanden/JunitOpties.txt");
 		assertEquals("true", op.getWaarde("e1"));
 		assertEquals("45", op.getWaarde("e5"));
 		assertEquals("4g", op.getWaarde("e4"));
