@@ -1,0 +1,9 @@
+score & pion plaatsing
+--This line, and those below, will be ignored--
+
+M    src/actua/Landsdeel.java
+M    src/actua/Tegel.java
+A    src/actua/svn-commit.tmp~
+A    src/actua/Score.java
+M    src/actua/Tafel.java
+A    src/testcases/JunitScoreTest.java

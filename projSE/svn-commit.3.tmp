@@ -1,0 +1,8 @@
+draaing van de tegel!
+--This line, and those below, will be ignored--
+
+M    src/actua/Tegel.java
+M    src/actua/TafelVerwerker.java
+M    src/actua/Tafel.java
+M    src/testcases/JunitTegelTest.java
+M    src/testcases/JunitScoreTest.java
