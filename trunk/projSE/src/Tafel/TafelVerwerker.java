@@ -22,7 +22,7 @@ public class TafelVerwerker implements Serializable {
 	private String[] startTegel;
 
 	public TafelVerwerker() {
-		tafel = new Tafel();
+		tafel = new Tafel();		
 	}
 
 	public TafelVerwerker(int aantalTegels) {
