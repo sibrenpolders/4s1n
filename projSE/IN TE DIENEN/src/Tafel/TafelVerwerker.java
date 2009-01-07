@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+
+
 import Core.PuntenVerwerker;
 import Core.Vector2D;
 
@@ -20,6 +22,11 @@ public class TafelVerwerker implements Serializable {
 	private String[] startTegel;
 
 	public TafelVerwerker() {
+		// om de unit tests van ai te kunnen laten slagen moet
+		// deze lijn uit de commentaar gehaald worden en de andere lijnen
+		// in commentaar gezet worden.
+//		tafel = new Tafel();
+		
 		this(AANTAL_TEGELS);
 	}
 

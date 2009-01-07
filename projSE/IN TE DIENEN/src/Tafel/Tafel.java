@@ -3,6 +3,8 @@ package Tafel;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+
 import Core.PuntenVerwerker;
 import Core.Vector2D;
 
@@ -70,6 +72,8 @@ public class Tafel implements Serializable {
 		return veld.isLaatstGeplaatsteTegel(rij, kolom);
 	}
 
+	// verkrijg de tegelPresentatie van de tegel op positie coord
+	// Coord is relatief van de startTegel die op positie (0, 0) staat.
 	public String[] getTegelPresentatie(Vector2D coord) {
 		if (coord == null) {
 			return null;
@@ -88,12 +92,15 @@ public class Tafel implements Serializable {
 	}
 
 	@SuppressWarnings( { "unused" })
+	// verkrijg de tegel op positie coord
+	// Coord is relatief van de startTegel die op positie (0, 0) staat.
 	public Tegel bepaalTegel(Vector2D coord) {
 		return (Tegel) veld.getTegelAtRelativeCoords(coord);
 	}
 
 	// TEGELPLAATSING
 
+	// geef de mogelijke plaatsen waar t kan staan
 	public ArrayList<Vector2D> geefMogelijkeZetten(String[] t) {
 		ArrayList<Vector2D> mogelijkeZetten = new ArrayList<Vector2D>();
 
@@ -189,6 +196,8 @@ public class Tafel implements Serializable {
 				&& t.plaatsPion(pionCoord, pion);
 	}
 
+	// is er al een pion geplaatst op tegel coord, op landsdeel
+	// pionCoord?
 	public boolean isPionGeplaatst(Vector2D tegelCoord, int pionCoord) {
 		Tegel t = bepaalTegel(tegelCoord);
 		if (t != null)

@@ -70,10 +70,10 @@ public class QTInfo extends GInfo {
 
 		private void updatePixmap() {
 			if (mSpel.isUitgespeeld())
-				tegelIcon.setPixmap(new QPixmap("icons/background.xpm"));
+				tegelIcon.setPixmap(new QPixmap("src/icons/background.xpm"));
 			else {
 				String[] tegel = mSpel.vraagNieuweTegel();
-				tegelIcon.setPixmap(new QPixmap("icons/"
+				tegelIcon.setPixmap(new QPixmap("src/icons/"
 						+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 			}
 		}
@@ -114,7 +114,7 @@ public class QTInfo extends GInfo {
 			QLabel child = (QLabel) childAt(0, 0);
 			tegel = mSpel.vraagNieuweTegel();
 			child.clear();
-			child.setPixmap(new QPixmap("icons/"
+			child.setPixmap(new QPixmap("src/icons/"
 					+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 
 		}
@@ -130,7 +130,7 @@ public class QTInfo extends GInfo {
 				QLabel child = (QLabel) childAt(0, 0);
 				tegel = mSpel.vraagNieuweTegel();
 				child.clear();
-				child.setPixmap(new QPixmap("icons/"
+				child.setPixmap(new QPixmap("src/icons/"
 						+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 			}
 		}
@@ -205,11 +205,11 @@ public class QTInfo extends GInfo {
 
 					if (gedaan || tegel == null) {
 						child.show();
-						child.setPixmap(new QPixmap("icons/test.gif"));
+						child.setPixmap(new QPixmap("src/icons/test.gif"));
 						tegelGenomen = true;
 					} else {
 						child.show();
-						child.setPixmap(new QPixmap("icons/"
+						child.setPixmap(new QPixmap("src/icons/"
 								+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 					}
 				} else {
@@ -217,7 +217,7 @@ public class QTInfo extends GInfo {
 					// orientatie resetten
 					tegel[Spel.ORIENTATIE] = new String("0");
 					child.show();
-					child.setPixmap(new QPixmap("icons/"
+					child.setPixmap(new QPixmap("src/icons/"
 							+ tegel[Spel.TEGEL_PRESENTATIE] + ".png"));
 				}
 			}

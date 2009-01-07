@@ -1,10 +1,8 @@
 package UnitTests;
 
-import java.util.Vector;
 import Core.Spel;
 import Core.Vector2D;
 import Spelers.Easy;
-import Tafel.Tegel;
 
 public class JunitEasyTest extends JunitAITest {
 	Spel spel;
@@ -33,8 +31,9 @@ public class JunitEasyTest extends JunitAITest {
 
 	public void testBerekenPion() {
 		// Easy AI gaat een pion plaatsen als deze te plaatsen is
-		// 2 cases 1: Er kan een pion geplaatst worden.
-		// 2: Er kan geen pion geplaatst worden.
+		// 2 cases:
+		// -- 1: Er kan een pion geplaatst worden.
+		// -- 2: Er kan geen pion geplaatst worden.
 
 		geenPionPlaatsingTest();
 		pionPlaatsingTest();
@@ -42,98 +41,75 @@ public class JunitEasyTest extends JunitAITest {
 
 	// 1: Er kan een pion geplaatst worden.
 	protected void geenPionPlaatsingTest() {
-		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
-		Vector2D laatstGeplaatst = new Vector2D();
 		int berekendePositie;
+		spel = new Spel();
 
-		maakVeldGeenPion(veld, laatstGeplaatst);
+		maakVeldGeenPion(spel.getTafelVerwerker());
+		gewenstePionPos = -1;
+		Vector2D laatstGeplaatst = new Vector2D(0, 0);
 		berekendePositie = ai.berekenPlaatsPion(laatstGeplaatst, spel
 				.getTafelVerwerker());
-		assertEquals("Fout bij geen pion plaatsing mogelijk", 0,
+		assertEquals("Fout bij geen pion plaatsing mogelijk", gewenstePionPos,
 				berekendePositie);
 	}
 
 	// 2: Er kan geen pion geplaatst worden.
 	protected void pionPlaatsingTest() {
-		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
-		Vector2D laatstGeplaatst = new Vector2D();
-		Vector2D gewenstePositie = new Vector2D();
-		int berekendePositie, gewenst = 0;
+		int berekendePositie;
+		spel = new Spel();
 
-		maakVeldPion(veld, laatstGeplaatst, gewenstePositie);
+		maakVeldPion(spel.getTafelVerwerker());
+		gewenstePionPos = 0;
+		Vector2D laatstGeplaatst = new Vector2D(0, 0);
 		berekendePositie = ai.berekenPlaatsPion(laatstGeplaatst, spel
 				.getTafelVerwerker());
-		assertEquals("Fout bij pion plaatsing mogelijk", gewenst,
+		assertEquals("Fout bij geen pion plaatsing mogelijk", gewenstePionPos,
 				berekendePositie);
 	}
 
 	protected void enkelVeldTest() {
-		// * veld met x tegels en de huidige tegel kan op 1 plaats gezet worden
-		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
-		Vector<Tegel> stapel = new Vector<Tegel>();
-		Tegel plaatsTegel = new Tegel();
-		String[] t = new String[3];
-		Vector2D gewensteTegelPositie = new Vector2D();
-		Vector2D berekendePositie = null;
-
-		maakEnkelVeld(veld, plaatsTegel, gewensteTegelPositie);
-		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
-		// TODO functie moet nog ergens bijkomen?
-		// assert("Fout bij 1 mogelijke plaatsing",
-		// geldigeZet(berekendePositie));
-
 	}
 
 	protected void overvloedigVeldTest() {
 		// * veld met x tegels en de huidige tegel kan op meerdere plaatsen
 		// gezet worden
-		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
-		Vector<Tegel> stapel = new Vector<Tegel>();
-		Tegel plaatsTegel = new Tegel();
-		String[] t = new String[3];
-		Vector2D gewensteTegelPositie = new Vector2D();
-		Vector2D berekendePositie;
-
-		maakOvervloedigVeld(veld, plaatsTegel, gewensteTegelPositie);
-		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
-
-		// TODO functie moet nog ergens bijkomen?
-		// assert("Fout bij 1 mogelijke plaatsing",
-		// geldigeZet(berekendePositie));
+		spel = new Spel();
+		maakOvervloedigVeld(spel.getTafelVerwerker());
+		Vector2D berekendePositie = ai.berekenPlaatsTegel(gewensteTegel, spel
+				.getTafelVerwerker());
+		assertEquals(berekendePositie.getX(), gewenstePositie.getX());
+		assertEquals(berekendePositie.getY(), gewenstePositie.getY());
 	}
 
 	protected void ongeldigVeldTest() {
 		// voor een veld met x tegels waarbij de huidige tegel niet geplaatst
-		// kan worden
-		// de functie BerekenTegel geeft null terug als er geen geldige positie
-		// is gevonden
-		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
-		Vector<Tegel> stapel = new Vector<Tegel>();
-		Tegel plaatsTegel = new Tegel();
-		String[] t = new String[3];
-		Vector2D berekendePositie;
-
-		maakOngeldigVeld(veld, plaatsTegel);
-		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
-		assertEquals("Fout bij ongeldige plaatsing", null, berekendePositie);
+		// kan worden de functie BerekenTegel geeft null terug als er geen
+		// geldige positie is gevonden
+		spel = new Spel();
+		maakOngeldigVeld(spel.getTafelVerwerker());
+		gewensteTegel = new String[3];
+		gewensteTegel[0] = "wwwwwwwwwwwww";
+		gewensteTegel[1] = "0000000000000";
+		gewensteTegel[2] = "0";
+		Vector2D berekendePositie = ai.berekenPlaatsTegel(gewensteTegel, spel
+				.getTafelVerwerker());
+		assertNull("Fout bij ongeldige plaatsing", berekendePositie);
 
 	}
 
 	protected void startVeldTest() {
 		// voor een veld met 1 tegel
-		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
-		Vector<Tegel> stapel = new Vector<Tegel>();
-		Tegel plaatsTegel = new Tegel();
-		String[] t = new String[3];
-		Vector2D gewensteTegelPositie = new Vector2D();
-		Vector2D berekendePositie = null;
+		spel = new Spel();
+		maakStartVeld(spel.getTafelVerwerker());
+		gewensteTegel = new String[3];
+		gewensteTegel[0] = "kkkkwwwkkkkkk";
+		gewensteTegel[1] = "0000111000000";
+		gewensteTegel[2] = "0";
 
-		maakStartVeld(veld, plaatsTegel, gewensteTegelPositie);
-		maakStapelTegels(stapel);
-		berekendePositie = ai.berekenPlaatsTegel(t, spel.getTafelVerwerker());
-		// TODO functie moet nog ergens bijkomen?
-		// assert("Fout bij 1 mogelijke plaatsing",
-		// geldigeZet(berekendePositie));
+		gewenstePositie = new Vector2D(0, -1);
+		Vector2D berekendePositie = ai.berekenPlaatsTegel(gewensteTegel, spel
+				.getTafelVerwerker());
+		assertEquals(berekendePositie.getX(), gewenstePositie.getX());
+		assertEquals(berekendePositie.getY(), gewenstePositie.getY());
 	}
-
 }

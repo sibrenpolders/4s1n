@@ -1,5 +1,3 @@
-
-
 import Core.BestandsVerwerker;
 import Core.Spel;
 import GUI.GFactory;
@@ -27,7 +25,7 @@ public class Applicatie {
 		}
 
 		GWindow window = f.getWindow(new Spel(), new OptieVerwerker(
-				"xml/opties.txt"), new HelpVerwerker(),
+				"src/xml/opties.txt"), new HelpVerwerker(),
 				new BestandsVerwerker());
 		window.show();
 	}

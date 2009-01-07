@@ -454,12 +454,14 @@ public class TegelVeld implements Serializable {
 		startTegel = (Vector2D) in.readObject();
 		veld = (ArrayList<ArrayList<Tegel>>) in.readObject();
 
-		int x = coordLaatstGeplaatsteTegel.getX();
-		int y = coordLaatstGeplaatsteTegel.getY();
+		if (coordLaatstGeplaatsteTegel != null) {
+			int x = coordLaatstGeplaatsteTegel.getX();
+			int y = coordLaatstGeplaatsteTegel.getY();
 
-		if (coordLaatstGeplaatsteTegel != null && x >= 0 && x < veld.size()
-				&& y >= 0 && y < veld.get(x).size()) {
-			laatstGeplaatsteTegel = veld.get(x).get(y);
+			if (coordLaatstGeplaatsteTegel != null && x >= 0 && x < veld.size()
+					&& y >= 0 && y < veld.get(x).size()) {
+				laatstGeplaatsteTegel = veld.get(x).get(y);
+			}
 		}
 	}
 }
