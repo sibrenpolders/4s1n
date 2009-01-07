@@ -7,8 +7,7 @@ public class AllTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for testcases");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(JunitAISpelerTest.class);
+		// $JUnit-BEGIN$
 		suite.addTestSuite(JunitAITest.class);
 		suite.addTestSuite(JunitBestandTest.class);
 		suite.addTestSuite(JunitCameraTest.class);
@@ -22,7 +21,7 @@ public class AllTests {
 		suite.addTestSuite(JunitTegelTest.class);
 		suite.addTestSuite(JunitTegelFabriekBestandLezerTest.class);
 		suite.addTestSuite(JunitTegelFabriekTest.class);
-		//$JUnit-END$
+		// $JUnit-END$
 		return suite;
 	}
 }
