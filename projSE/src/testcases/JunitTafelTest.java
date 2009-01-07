@@ -25,7 +25,7 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testPlaatsTegel() {
-		tafel.clear();
+		tafel = new Tafel();
 		
 		// testen van plaatsen van starttegels, en de tegels daarond
 		assertTrue("Plaatsing tegel faalt", tafel.plaatsTegel(tegels.get(0).getTegelString(), coords.get(0)));
@@ -72,25 +72,26 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testPlaatsPion() {
-		tafel.clear();
-		Pion p = new Pion();
-		// testen van plaatsen van starttegels, en de tegels daarond
+		tafel = new Tafel();
+		char pion = 'r';
+
 		tafel.plaatsTegel(tegels.get(0).getTegelString(), coords.get(0));
-		assertTrue(tafel.plaatsPion(coords.get(0), Tegel.NOORD, p.getKleur()));
+		// plaats een pion op de starttegel
+		assertTrue(tafel.plaatsPion(coords.get(0), Tegel.NOORD, pion));
 		tafel.plaatsTegel(tegels.get(1).getTegelString(), coords.get(1));
-		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.ZUID, p.getKleur()));
+		// probeer een pion op hetzelfde lansdeel te plaatsen
+		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.ZUID, pion));
 		
 		for (int i = 2; i < 4; ++i) {
 			tafel.plaatsTegel(tegels.get(i).getTegelString(), coords.get(i));
 		}
 						
-		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.OOST, p.getKleur()));
-		assertFalse(tafel.plaatsPion(coords.get(3), Tegel.OOST, p.getKleur()));
+		assertFalse(tafel.plaatsPion(coords.get(1), Tegel.OOST, pion));
+		assertFalse(tafel.plaatsPion(coords.get(3), Tegel.OOST, pion));
 	}
 
 	public void testIsTegelPlaatsingGeldig() {
-		tafel.clear();
-		
+		tafel = new Tafel();
 		tafel.plaatsTegel(tegels.get(0).getTegelString(), coords.get(0));
 		
 		// op dezelfde plek opnieuw zetten mag niet
@@ -107,7 +108,7 @@ public class JunitTafelTest extends TestCase {
 	}
 
 	public void testIsLaatste() {
-		tafel.clear();
+		tafel = new Tafel();
 				
 		Vector2D coord = coords.get(0);
 		tafel.plaatsTegel(tegels.get(0).getTegelString(), coord);
@@ -130,115 +131,11 @@ public class JunitTafelTest extends TestCase {
 //		assertTrue(tegels.get(0) == tafel.bepaalTegel(new Vector2D(0, 0)));
 	}
 
-	public void testIsGebiedGeldig() {
-		fail("Not yet implemented");
-	}
-
 	public void testUndo() {
-		tafel.clear();
-		
-		
+		fail("Not yet implemented");
 	}
 
 	public void testRedo() {
 		fail("Not yet implemented");
-	}
-	
-	public void testFail() {
-		ArrayList<Tegel> tegels = maaktegelsFail();
-		ArrayList<Vector2D> coord = maakCoordsFail();
-		Tafel t = new Tafel();
-		
-		for (int i = 0; i < tegels.size(); ++i) {
-			assertTrue(t.plaatsTegel(tegels.get(i).getTegelString(), coords.get(i)));
-		}
-	}
-
-	private ArrayList<Vector2D> maakCoordsFail() {
-		ArrayList<Vector2D> coords = new ArrayList<Vector2D>();
-		
-//		coords.add(new Vector2D(0, 0));
-//		coords.add(new Vector2D(-1, 0));
-//		coords.add(new Vector2D(-2, 0));
-//		coords.add(new Vector2D(-2, 1));
-//		coords.add(new Vector2D(-2, 2));
-//		coords.add(new Vector2D(-1, -1));
-//		coords.add(new Vector2D(-1, -2));
-//		coords.add(new Vector2D(0, 1));
-//		coords.add(new Vector2D(1, 0));
-//		coords.add(new Vector2D(1, 1));
-//		coords.add(new Vector2D(0, 2));
-		
-		coords.add(new Vector2D(new Vector2D(0, 0)));
-		coords.add(new Vector2D(new Vector2D(0, 1)));
-		coords.add(new Vector2D(new Vector2D(-1, 0)));
-		coords.add(new Vector2D(new Vector2D(1, 1)));
-		coords.add(new Vector2D(new Vector2D(0, 2)));
-		coords.add(new Vector2D(new Vector2D(-1, -1)));
-		coords.add(new Vector2D(new Vector2D(0, -2)));
-		coords.add(new Vector2D(new Vector2D(0, 3)));
-		coords.add(new Vector2D(new Vector2D(-1, 3)));
-		coords.add(new Vector2D(new Vector2D(0, 1)));
-		coords.add(new Vector2D(new Vector2D(0, -1)));
-		coords.add(new Vector2D(new Vector2D(1, 3)));
-		
-		return coords;
-	}
-
-	private ArrayList<Tegel> maaktegelsFail() {
-		ArrayList<Tegel> tegels = new ArrayList<Tegel>();
-		
-		tegels.add(new Tegel("wssswgwwgwwwg", "0111023320002",(short)0));
-		tegels.add(new Tegel("wwwwwgwwgwwgr", "0000012234456",(short)0));
-		Tegel t = new Tegel("sssssssssssss", "0000000000000",(short)0);
-		t.draaiTegel(false);
-		tegels.add(t);
-		t = new Tegel("wwwwwgwwgwwgr", "0000012234456",(short)0);
-		t.draaiTegel(true);
-		t.draaiTegel(true);
-		tegels.add(t);
-		t = new Tegel("wwgwwwwwgwwwg", "0012222210002",(short)0);
-		t.draaiTegel(false);
-		tegels.add(t);
-		t = new Tegel("swwwssswwwsss", "0111000222000",(short)0);
-		tegels.add(t);
-		t = new Tegel("sssssssssssss", "0000000000000",(short)0);
-		t.draaiTegel(false);
-		tegels.add(t);
-		t = new Tegel("ssssssswgwsss", "0000000123000",(short)0);
-		t.draaiTegel(true);
-		t = new Tegel("swwwssswwwsss", "0111000222000",(short)0);
-		t.draaiTegel(false);
-		tegels.add(t);
-		t = new Tegel("wssswgwwgwwgr", "0111023345567",(short)0);
-		t.draaiTegel(true);
-		t.draaiTegel(true);
-		tegels.add(t);
-		t = new Tegel("wwwwwgwwgwwgr", "0000012234456",(short)0);
-		t.draaiTegel(true);
-		tegels.add(t);
-		//		Tegel t = new Tegel("swwwssswwwsss.png", "0111000222000");
-//		t.draaiTegel(true);
-//		tegels.add(t);		
-//		tegels.add(new Tegel("sssssssssssss.png", "0000000000000"));
-//		tegels.add(new Tegel("sssssssssssss.png", "0000000000000"));
-//		t = new Tegel("wssswwwwwwwww.png", "0111000000000");
-//		t.draaiTegel(false);
-//		tegels.add(t);
-//		t = new Tegel("wwwwwgwwgwwgr.png", "0000012234456");
-//		t.draaiTegel(true);
-//		tegels.add(t);
-//		tegels.add(new Tegel("sssswgwwgwssg.png", "0000123321002"));
-//		tegels.add(new Tegel("wwgwwgwwgwwgr.png", "0012234456678"));
-//		t = new Tegel("wwgwwgwwgwwgr.png", "0012234456678");
-//		t.draaiTegel(false);
-//		tegels.add(t);
-//		t = new Tegel("wssswwwwgwwgg.png", "0111000012211");
-//		t.draaiTegel(true);
-//		t.draaiTegel(true);
-//		tegels.add(t);
-//		tegels.add(new Tegel("wwgwwgwwgwwgr.png", "0012234456678"));
-		
-		return tegels;
-	}
+	}	
 }
