@@ -73,8 +73,9 @@ public class QTMenubalk extends GMenubalk {
 
 	private void createSpelerMenu() {
 		QMenu spel = addMenuItem("Spelers");
-		addActionItem(spel, "Huidige speler verwijderen");
-		addActionItem(spel, "Huidige speler naar AI omzetten");
+		QAction omzetten = addActionItem(spel,
+				"Huidige speler naar AI omzetten");
+		omzetten.triggered.connect(this, "verwijderHuidigeSpeler()");
 	}
 
 	private void createBewerkenMenu() {
@@ -119,7 +120,7 @@ public class QTMenubalk extends GMenubalk {
 
 	@SuppressWarnings("unused")
 	private void infoVenster() {
-		QMessageBox.about(menubar, "Over applicatie",
+		QMessageBox.about(menubar, "Over Actua",
 				"<b>Actua Tungrorum</b> is mogelijk gemaakt door "
 						+ "Sam, Sam, Sibrand en Sibren");
 	}
@@ -147,6 +148,5 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	public void verwijderHuidigeSpeler() {
-
 	}
 }

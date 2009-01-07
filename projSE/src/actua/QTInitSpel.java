@@ -96,7 +96,7 @@ public class QTInitSpel extends GInitSpel {
 			} else if (soort.get(i).currentText().compareTo("Easy AI") == 0) {
 				niveau = AI.EASY;
 			} else if (soort.get(i).currentText().compareTo("Hard AI") == 0) {
-				niveau = AI.HARD;
+				niveau = AI.EASY;
 			}
 
 			spel.voegSpelerToe((short) niveau, naam.get(i).text(),
@@ -172,8 +172,10 @@ public class QTInitSpel extends GInitSpel {
 			kleur.lastElement().addItem(kleurIcon, "Oranje");
 
 			soort.lastElement().addItem("Mens");
-			soort.lastElement().addItem("Easy AI");
-			soort.lastElement().addItem("Hard AI");
+			if (nbPlayersVisible > 1) {
+				soort.lastElement().addItem("Easy AI");
+				soort.lastElement().addItem("Hard AI");
+			}
 
 			layout.addWidget(labelNaam, nbPlayersVisible + 1, 0);
 			layout.addWidget(naam.lastElement(), nbPlayersVisible + 1, 1);
