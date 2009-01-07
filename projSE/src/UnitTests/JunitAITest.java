@@ -5,7 +5,6 @@ import Core.Vector2D;
 import Spelers.Strategy;
 import Tafel.TafelVerwerker;
 import Tafel.Tegel;
-
 import junit.framework.TestCase;
 
 abstract public class JunitAITest extends TestCase {
