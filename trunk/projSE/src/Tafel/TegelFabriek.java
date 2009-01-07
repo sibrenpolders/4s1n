@@ -33,7 +33,6 @@ public class TegelFabriek {
 	 *            aantal Tegel instanties die de vector moet bevatten
 	 * @return De tegelStapel
 	 */
-	// TODO maakTegelDeque bekijken op randomness
 	public ArrayDeque<String[]> maakTegelDeque(int aantal) {
 		TegelFabriekBestandLezer tfbl = new TegelFabriekBestandLezer(
 				tegelsBestand);

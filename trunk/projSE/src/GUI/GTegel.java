@@ -85,7 +85,6 @@ public abstract class GTegel {
 		return null;
 	}
 
-	// TODO Gebruik gemaakt van de klasse Tegel: niet echt ok.
 	protected short getLandsdeelZoneVoorRowCol(int row, int col) {
 		if (row == 0 && col == 0) {
 			return Tegel.NOORD_WEST;
