@@ -1,13 +1,10 @@
-// TODO PuntenVerwerker: WEG berekenen!!!!
 package Core;
 
 import java.util.ArrayList;
 
-
 import Tafel.Landsdeel;
 import Tafel.Tegel;
 import Tafel.TegelVeld;
-
 
 public class PuntenVerwerker {
 	private static final int WEG_PUNTEN = 1;

@@ -4,7 +4,7 @@ public class HelpVerwerker {
 	private Help help;
 
 	public HelpVerwerker() {
-		this.help = new Help("xml/Help.xml");
+		this.help = new Help("src/xml/Help.xml");
 	}
 
 	public String[][] geefBeknopteMatchingResultaten(String zoekterm,

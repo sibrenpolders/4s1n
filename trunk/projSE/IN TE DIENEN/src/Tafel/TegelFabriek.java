@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class TegelFabriek {
-	private static final String TEGELS_BESTAND = "xml/Tegels.xml";
+	private static final String TEGELS_BESTAND = "src/xml/Tegels.xml";
 	private String tegelsBestand;
 	private String[][] startTegels = {
 			{ "wssswgwwwwwgg", "0111023333322", "0" },
@@ -33,7 +33,6 @@ public class TegelFabriek {
 	 *            aantal Tegel instanties die de vector moet bevatten
 	 * @return De tegelStapel
 	 */
-	// TODO maakTegelDeque bekijken op randomness
 	public ArrayDeque<String[]> maakTegelDeque(int aantal) {
 		TegelFabriekBestandLezer tfbl = new TegelFabriekBestandLezer(
 				tegelsBestand);
@@ -68,6 +67,7 @@ public class TegelFabriek {
 		return queue;
 	}
 
+	// voeg x aantal van tegel tegelNummer toe aan de stapel
 	private void voegTegelsToe(ArrayList<String[]> stapel, int tegelNummer,
 			int aantalTegels, TegelFabriekBestandLezer tfbl) {
 		String[] tegelStrings = tfbl.getTegelStrings(tegelNummer);
@@ -85,6 +85,7 @@ public class TegelFabriek {
 		}
 	}
 
+	// zorg ervoor dat de tegels random geplaatst zijn in de arraydeque
 	private ArrayDeque<String[]> shakeNotStir(ArrayList<String[]> stapel) {
 		ArrayDeque<String[]> queue = new ArrayDeque<String[]>();
 

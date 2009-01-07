@@ -42,7 +42,7 @@ public class QTMenubalk extends GMenubalk {
 	}
 
 	private QAction addActionItem(QMenu menu, String titel) {
-		return menu.addAction(new QIcon(new QPixmap("icons/" + titel
+		return menu.addAction(new QIcon(new QPixmap("src/icons/" + titel
 				+ ".png")), titel);
 	}
 

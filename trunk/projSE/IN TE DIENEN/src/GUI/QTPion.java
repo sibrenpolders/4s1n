@@ -22,7 +22,7 @@ public class QTPion extends QLabel {
 	public QTPion(char kleur, boolean flag) {
 		super();
 		isDraggable = flag;
-		setPixmap(new QPixmap("icons/" + kleur + ".png"));
+		setPixmap(new QPixmap("src/icons/" + kleur + ".png"));
 		setMaximumSize(12, 12);
 		setMinimumSize(12, 12);
 	}

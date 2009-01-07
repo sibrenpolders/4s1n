@@ -7,7 +7,7 @@ import Core.Spel;
 import Core.Vector2D;
 
 public abstract class GSpeelveld implements Observer {
-	protected static String DEFAULT_BACKGROUND = "icons/background.xpm";
+	protected static String DEFAULT_BACKGROUND = "src/icons/background.xpm";
 	protected String achtergrond;
 	protected Spel spel;
 	protected Vector2D startGTegel;

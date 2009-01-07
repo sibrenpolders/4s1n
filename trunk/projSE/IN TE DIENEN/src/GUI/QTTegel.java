@@ -152,7 +152,7 @@ public class QTTegel extends GTegel {
 		}
 
 		private QPixmap getPionPixmap(char kleur) {
-			return new QPixmap("icons/" + kleur + ".png");
+			return new QPixmap("src/icons/" + kleur + ".png");
 		}
 	}
 
@@ -194,7 +194,7 @@ public class QTTegel extends GTegel {
 	 * Stad = s Wei = w Weg = g Klooster = k Kruispunt = r
 	 */
 	private void kiesAfbeelding() {
-		pixmap.load("icons/" + tegel[TEGEL_PRESENTATIE] + ".png");
+		pixmap.load("src/icons/" + tegel[TEGEL_PRESENTATIE] + ".png");
 		pixmap = pixmap.scaled(90, 90);
 	}
 
