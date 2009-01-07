@@ -31,7 +31,7 @@ public class TegelFabriekBestandLezerTest extends TestCase {
 	// ook nog testen met corrupte files
 	public void testGetTegelStrings() {
 		String[] string = tfbl.getTegelStrings(0);
-		assertEquals("wsssswwswwww", string[0]);	
+		assertEquals("wsssssswwwwww", string[0]);	
 	}
 
 }
