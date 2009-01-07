@@ -3,14 +3,14 @@ package UnitTests;
 import Tafel.TegelFabriekBestandLezer;
 import junit.framework.TestCase;
 
-public class TegelFabriekBestandLezerTest extends TestCase {
+public class JunitTegelFabriekBestandLezerTest extends TestCase {
 	private TegelFabriekBestandLezer tfbl;
 	private static final char WEI = 'w';
 	private static final char WEG = 'g';
 	private static final char KLOOSTER = 'k';
 	private static final char STAD = 's';
 	
-	public TegelFabriekBestandLezerTest() {
+	public JunitTegelFabriekBestandLezerTest() {
 		super();
 	}
 

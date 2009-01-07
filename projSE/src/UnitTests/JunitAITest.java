@@ -60,11 +60,6 @@ abstract public class JunitAITest extends TestCase {
 		tegel[2] = "0";
 		
 		tafel.plaatsTegel(tegel, new Vector2D(0, 0));
-		
-		gewensteTegel = new String[3];
-		gewensteTegel[0] = "wwwwwwwwwwwww";
-		gewensteTegel[1] = "0000000000000";
-		gewensteTegel[2] = "0";
 	}
 
 	// Deze methode zal een stapel slim gekozen tegels aanmaken.
@@ -82,13 +77,6 @@ abstract public class JunitAITest extends TestCase {
 		
 		tafel.plaatsTegel(tegel, 
 				new Vector2D(0, 0));
-		
-		gewensteTegel = new String[3];
-		gewensteTegel[0] = "kkkkwwwkkkkkk";
-		gewensteTegel[1] = "0000111000000";
-		gewensteTegel[2] = "0";
-		
-		gewenstePositie = new Vector2D(0, -1);
 	}
 	
 	// maak een veld aan waarbij de pion niet op de laatste tegel mag staan
@@ -101,7 +89,7 @@ abstract public class JunitAITest extends TestCase {
 		tafel.plaatsTegel(tegel, 
 				new Vector2D(0, 0));
 		tafel.plaatsPion(new Vector2D(0, 0), 0, 'r');
-		gewenstePionPos = -1;
+		
 	}
 	
 	// maakt een veld aan waarbij een pion op de laatste tegel mag staan
@@ -113,7 +101,6 @@ abstract public class JunitAITest extends TestCase {
 		
 		tafel.plaatsTegel(tegel, 
 				new Vector2D(0, 0));
-		gewenstePionPos = 0;
 	}
 
 }
