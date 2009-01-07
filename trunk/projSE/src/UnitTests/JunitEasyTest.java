@@ -42,28 +42,27 @@ public class JunitEasyTest extends JunitAITest {
 
 	// 1: Er kan een pion geplaatst worden.
 	protected void geenPionPlaatsingTest() {
-		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
-		Vector2D laatstGeplaatst = new Vector2D();
 		int berekendePositie;
-
-		maakVeldGeenPion(veld, laatstGeplaatst);
+		spel = new Spel();
+		
+		maakVeldGeenPion(spel.getTafelVerwerker());
+		Vector2D laatstGeplaatst = new Vector2D(0, 0);
 		berekendePositie = ai.berekenPlaatsPion(laatstGeplaatst, spel
 				.getTafelVerwerker());
-		assertEquals("Fout bij geen pion plaatsing mogelijk", 0,
+		assertEquals("Fout bij geen pion plaatsing mogelijk", gewenstePionPos,
 				berekendePositie);
 	}
 
 	// 2: Er kan geen pion geplaatst worden.
 	protected void pionPlaatsingTest() {
-		Vector<Vector<Tegel>> veld = new Vector<Vector<Tegel>>();
-		Vector2D laatstGeplaatst = new Vector2D();
-		Vector2D gewenstePositie = new Vector2D();
-		int berekendePositie, gewenst = 0;
-
-		maakVeldPion(veld, laatstGeplaatst, gewenstePositie);
+		int berekendePositie;
+		spel = new Spel();
+		
+		maakVeldPion(spel.getTafelVerwerker());
+		Vector2D laatstGeplaatst = new Vector2D(0, 0);
 		berekendePositie = ai.berekenPlaatsPion(laatstGeplaatst, spel
 				.getTafelVerwerker());
-		assertEquals("Fout bij pion plaatsing mogelijk", gewenst,
+		assertEquals("Fout bij geen pion plaatsing mogelijk", gewenstePionPos,
 				berekendePositie);
 	}
 
@@ -73,6 +72,7 @@ public class JunitEasyTest extends JunitAITest {
 	protected void overvloedigVeldTest() {
 		// * veld met x tegels en de huidige tegel kan op meerdere plaatsen
 		// gezet worden
+		spel = new Spel();
 		maakOvervloedigVeld(spel.getTafelVerwerker());
 		Vector2D berekendePositie = ai.berekenPlaatsTegel(gewensteTegel, 
 				spel.getTafelVerwerker());
@@ -85,6 +85,7 @@ public class JunitEasyTest extends JunitAITest {
 		// kan worden
 		// de functie BerekenTegel geeft null terug als er geen geldige positie
 		// is gevonden
+		spel = new Spel();
 		maakOngeldigVeld(spel.getTafelVerwerker());
 		Vector2D berekendePositie = ai.berekenPlaatsTegel(gewensteTegel, spel.getTafelVerwerker());
 		assertNull("Fout bij ongeldige plaatsing", berekendePositie);
@@ -93,6 +94,7 @@ public class JunitEasyTest extends JunitAITest {
 
 	protected void startVeldTest() {
 		// voor een veld met 1 tegel
+		spel = new Spel();
 		maakStartVeld(spel.getTafelVerwerker());
 		Vector2D berekendePositie = ai.berekenPlaatsTegel(
 				gewensteTegel, spel.getTafelVerwerker());
