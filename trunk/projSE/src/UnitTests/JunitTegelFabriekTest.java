@@ -27,7 +27,5 @@ public class JunitTegelFabriekTest extends TestCase {
 			assertEquals("0", stapel.peekFirst()[2]);
 			assertNotNull(stapel.pop());
 		}
-
 	}
-
 }
