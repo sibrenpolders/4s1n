@@ -44,7 +44,7 @@ public class Bestand {
 			fis = new FileInputStream(naam);
 			in = new ObjectInputStream(fis);
 
-			spel = (Spel) in.readObject();
+			this.spel = (Spel) in.readObject();
 
 			in.close();
 			fis.close();
