@@ -22,7 +22,12 @@ public class TafelVerwerker implements Serializable {
 	private String[] startTegel;
 
 	public TafelVerwerker() {
-		tafel = new Tafel();		
+		// om de unit tests van ai te kunnen laten slagen moet
+		// deze lijn uit de commentaar gehaald worden en de andere lijnen
+		// in commentaar gezet worden.
+//		tafel = new Tafel();
+		
+		this(AANTAL_TEGELS);
 	}
 
 	public TafelVerwerker(int aantalTegels) {
