@@ -1,0 +1,365 @@
+<?xml version="1.0"?>
+<tegels>
+	<aantal>19</aantal>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><stad id="0" /></oostNoord>
+		<oost><stad id="0" /></oost>
+		<oostZuid><stad id="0" /></oostZuid>
+
+		<zuidOost><wei id="1" /></zuidOost>
+		<zuid><wei id="1" /></zuid>
+		<zuidWest><wei id="1" /></zuidWest>
+
+		<westZuid><wei id="1" /></westZuid>
+		<west><wei id="1" /></west>
+		<westNoord><wei id="1" /></westNoord>
+			
+		<midden><wei id="1" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><wei id="0" /></noordWest>
+		<noord><wei id="0" /></noord>
+		<noordOost><wei id="0" /></noordOost>
+
+		<oostNoord><stad id="1" /></oostNoord>
+		<oost><stad id="1" /></oost>
+		<oostZuid><stad id="1" /></oostZuid>
+
+		<zuidOost><wei id="0" /></zuidOost>
+		<zuid><wei id="0" /></zuid>
+		<zuidWest><wei id="0" /></zuidWest>
+
+		<westZuid><stad id="2" /></westZuid>
+		<west><stad id="2" /></west>
+		<westNoord><stad id="2" /></westNoord>
+			
+		<midden><wei id="0" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><wei id="1" /></oostNoord>
+		<oost><wei id="1" /></oost>
+		<oostZuid><wei id="1" /></oostZuid>
+
+		<zuidOost><wei id="1" /></zuidOost>
+		<zuid><wei id="1" /></zuid>
+		<zuidWest><wei id="1" /></zuidWest>
+
+		<westZuid><wei id="1" /></westZuid>
+		<west><wei id="1" /></west>
+		<westNoord><wei id="1" /></westNoord>
+			
+		<midden><wei id="1" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><wei id="1" /></oostNoord>
+		<oost><weg id="2" /></oost>
+		<oostZuid><wei id="3" /></oostZuid>
+
+		<zuidOost><wei id="3" /></zuidOost>
+		<zuid><weg id="2" /></zuid>
+		<zuidWest><wei id="1" /></zuidWest>
+
+		<westZuid><wei id="1" /></westZuid>
+		<west><wei id="1" /></west>
+		<westNoord><wei id="1" /></westNoord>
+			
+		<midden><weg id="2" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><wei id="1" /></oostNoord>
+		<oost><weg id="2" /></oost>
+		<oostZuid><wei id="3" /></oostZuid>
+
+		<zuidOost><wei id="3" /></zuidOost>
+		<zuid><weg id="4" /></zuid>
+		<zuidWest><wei id="5" /></zuidWest>
+
+		<westZuid><wei id="5" /></westZuid>
+		<west><weg id="6" /></west>
+		<westNoord><wei id="1" /></westNoord>
+			
+		<midden><kruispunt id="7" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><wei id="1" /></oostNoord>
+		<oost><wei id="1" /></oost>
+		<oostZuid><wei id="1" /></oostZuid>
+
+		<zuidOost><wei id="1" /></zuidOost>
+		<zuid><weg id="2" /></zuid>
+		<zuidWest><wei id="3" /></zuidWest>
+
+		<westZuid><wei id="3" /></westZuid>
+		<west><weg id="2" /></west>
+		<westNoord><wei id="1" /></westNoord>
+			
+		<midden><weg id="2" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><wei id="1" /></oostNoord>
+		<oost><weg id="2" /></oost>
+		<oostZuid><wei id="3" /></oostZuid>
+
+		<zuidOost><wei id="3" /></zuidOost>
+		<zuid><wei id="3" /></zuid>
+		<zuidWest><wei id="3" /></zuidWest>
+
+		<westZuid><wei id="3" /></westZuid>
+		<west><weg id="2" /></west>
+		<westNoord><wei id="1" /></westNoord>
+			
+		<midden><weg id="2" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><wei id="1" /></oostNoord>
+		<oost><wei id="1" /></oost>
+		<oostZuid><wei id="1" /></oostZuid>
+
+		<zuidOost><wei id="1" /></zuidOost>
+		<zuid><wei id="1" /></zuid>
+		<zuidWest><wei id="1" /></zuidWest>
+
+		<westZuid><stad id="0" /></westZuid>
+		<west><stad id="0" /></west>
+		<westNoord><stad id="0" /></westNoord>
+			
+		<midden><wei id="1" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><wei id="1" /></oostNoord>
+		<oost><weg id="2" /></oost>
+		<oostZuid><wei id="3" /></oostZuid>
+
+		<zuidOost><wei id="3" /></zuidOost>
+		<zuid><weg id="2" /></zuid>
+		<zuidWest><wei id="1" /></zuidWest>
+
+		<westZuid><stad id="0" /></westZuid>
+		<west><stad id="0" /></west>
+		<westNoord><stad id="0" /></westNoord>
+			
+		<midden><weg id="2" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><wei id="0" /></noordWest>
+		<noord><wei id="0" /></noord>
+		<noordOost><wei id="0" /></noordOost>
+
+		<oostNoord><stad id="1" /></oostNoord>
+		<oost><stad id="1" /></oost>
+		<oostZuid><stad id="1" /></oostZuid>
+
+		<zuidOost><wei id="2" /></zuidOost>
+		<zuid><wei id="2" /></zuid>
+		<zuidWest><wei id="2" /></zuidWest>
+
+		<westZuid><stad id="1" /></westZuid>
+		<west><stad id="1" /></west>
+		<westNoord><stad id="1" /></westNoord>
+			
+		<midden><stad id="1" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><stad id="0" /></oostNoord>
+		<oost><stad id="0" /></oost>
+		<oostZuid><stad id="0" /></oostZuid>
+
+		<zuidOost><wei id="1" /></zuidOost>
+		<zuid><wei id="1" /></zuid>
+		<zuidWest><wei id="1" /></zuidWest>
+
+		<westZuid><stad id="0" /></westZuid>
+		<west><stad id="0" /></west>
+		<westNoord><stad id="0" /></westNoord>
+			
+		<midden><stad id="0" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><stad id="0" /></oostNoord>
+		<oost><stad id="0" /></oost>
+		<oostZuid><stad id="0" /></oostZuid>
+
+		<zuidOost><wei id="1" /></zuidOost>
+		<zuid><weg id="2" /></zuid>
+		<zuidWest><wei id="3" /></zuidWest>
+
+		<westZuid><stad id="0" /></westZuid>
+		<west><stad id="0" /></west>
+		<westNoord><stad id="0" /></westNoord>
+			
+		<midden><stad id="0" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><stad id="0" /></noordWest>
+		<noord><stad id="0" /></noord>
+		<noordOost><stad id="0" /></noordOost>
+
+		<oostNoord><stad id="0" /></oostNoord>
+		<oost><stad id="0" /></oost>
+		<oostZuid><stad id="0" /></oostZuid>
+
+		<zuidOost><stad id="0" /></zuidOost>
+		<zuid><stad id="0" /></zuid>
+		<zuidWest><stad id="0" /></zuidWest>
+
+		<westZuid><stad id="0" /></westZuid>
+		<west><stad id="0" /></west>
+		<westNoord><stad id="0" /></westNoord>
+			
+		<midden><stad id="0" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><wei id="0" /></noordWest>
+		<noord><wei id="0" /></noord>
+		<noordOost><wei id="0" /></noordOost>
+
+		<oostNoord><wei id="0" /></oostNoord>
+		<oost><wei id="0" /></oost>
+		<oostZuid><wei id="0" /></oostZuid>
+
+		<zuidOost><wei id="0" /></zuidOost>
+		<zuid><wei id="0" /></zuid>
+		<zuidWest><wei id="0" /></zuidWest>
+
+		<westZuid><wei id="0" /></westZuid>
+		<west><wei id="0" /></west>
+		<westNoord><wei id="0" /></westNoord>
+			
+		<midden><klooster id="1" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><wei id="0" /></noordWest>
+		<noord><wei id="0" /></noord>
+		<noordOost><wei id="0" /></noordOost>
+
+		<oostNoord><wei id="0" /></oostNoord>
+		<oost><wei id="0" /></oost>
+		<oostZuid><wei id="0" /></oostZuid>
+
+		<zuidOost><wei id="0" /></zuidOost>
+		<zuid><weg id="1" /></zuid>
+		<zuidWest><wei id="0" /></zuidWest>
+
+		<westZuid><wei id="0" /></westZuid>
+		<west><wei id="0" /></west>
+		<westNoord><wei id="0" /></westNoord>
+			
+		<midden><klooster id="2" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><wei id="0" /></noordWest>
+		<noord><weg id="1" /></noord>
+		<noordOost><wei id="2" /></noordOost>
+
+		<oostNoord><wei id="2" /></oostNoord>
+		<oost><wei id="2" /></oost>
+		<oostZuid><wei id="2" /></oostZuid>
+
+		<zuidOost><wei id="2" /></zuidOost>
+		<zuid><weg id="1" /></zuid>
+		<zuidWest><wei id="0" /></zuidWest>
+
+		<westZuid><wei id="0" /></westZuid>
+		<west><wei id="0" /></west>
+		<westNoord><wei id="0" /></westNoord>
+			
+		<midden><weg id="1" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><wei id="0" /></noordWest>
+		<noord><wei id="0" /></noord>
+		<noordOost><wei id="0" /></noordOost>
+
+		<oostNoord><wei id="0" /></oostNoord>
+		<oost><wei id="0" /></oost>
+		<oostZuid><wei id="0" /></oostZuid>
+
+		<zuidOost><wei id="0" /></zuidOost>
+		<zuid><weg id="1" /></zuid>
+		<zuidWest><wei id="2" /></zuidWest>
+
+		<westZuid><wei id="2" /></westZuid>
+		<west><weg id="1" /></west>
+		<westNoord><wei id="0" /></westNoord>
+			
+		<midden><weg id="1" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><wei id="0" /></noordWest>
+		<noord><wei id="0" /></noord>
+		<noordOost><wei id="0" /></noordOost>
+
+		<oostNoord><wei id="0" /></oostNoord>
+		<oost><weg id="1" /></oost>
+		<oostZuid><wei id="2" /></oostZuid>
+
+		<zuidOost><wei id="2" /></zuidOost>
+		<zuid><weg id="3" /></zuid>
+		<zuidWest><wei id="4" /></zuidWest>
+
+		<westZuid><wei id="4" /></westZuid>
+		<west><weg id="5" /></west>
+		<westNoord><wei id="0" /></westNoord>
+			
+		<midden><kruispunt id="6" /></midden>
+	</tegel>
+	<tegel>
+		<noordWest><wei id="0" /></noordWest>
+		<noord><weg id="1" /></noord>
+		<noordOost><wei id="2" /></noordOost>
+
+		<oostNoord><wei id="2" /></oostNoord>
+		<oost><weg id="3" /></oost>
+		<oostZuid><wei id="4" /></oostZuid>
+
+		<zuidOost><wei id="4" /></zuidOost>
+		<zuid><weg id="5" /></zuid>
+		<zuidWest><wei id="6" /></zuidWest>
+
+		<westZuid><wei id="6" /></westZuid>
+		<west><weg id="7" /></west>
+		<westNoord><wei id="0" /></westNoord>
+			
+		<midden><kruispunt id="8" /></midden>
+	</tegel>
+</tegels>

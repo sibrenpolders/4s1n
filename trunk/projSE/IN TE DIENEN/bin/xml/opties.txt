@@ -1,0 +1,5 @@
+Optie 1:BOOL:true
+Optie 2:TEXT:Voorbeeldwaarde
+Optie 3:TEXT:Actua Tungrorum
+Optie 4:NUM:7
+Optie 5:NUM:90

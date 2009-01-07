@@ -10,7 +10,8 @@
  Tafel (+ verwerker), Core (Memento + Spel + Puntenverwerker + Bestandverwerker + Vector), GUI 
  (G + QTKlassen +  Camera)) -> sowieso zorgen dat, als 't kan, ge geen imports doet in niet-Core-klassen van Core-klassen.
  Alleen in GUI zou ge dat mogen doen. -> OK
--executable maken
--alles in een doc steken
--alles in mapkes steken en indienen
+-executable maken -> OK
+-alles in een doc steken -> OK
+-alles in mapkes steken -> OK
+-indienen
 -verslag afdrukken + UML op A3 -> nadien pas

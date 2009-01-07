@@ -1,5 +1,3 @@
-
-
 import Core.BestandsVerwerker;
 import Core.Spel;
 import GUI.GFactory;
