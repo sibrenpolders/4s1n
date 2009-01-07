@@ -1,11 +1,16 @@
--collab nakijken (vergelijken met contracten en code) -> deels OK -> OK
--klasse nakijken -> deels OK -> OK
--design patterns  + afbeeldingen
+-collab nakijken (vergelijken met contracten en code) -> volledig OK
+-klassediagram nakijken -> volledig OK
+-design patterns + afbeeldingen -> volledig OK
 -UML maken
 -unit tests
 -AI uitleggen -> Sibren ging er 's naar kijken -> OK
 -logboek
--stukken foute code inactief maken
+-stukken foute code inactief maken -> OK
+-packages maken (ik gok op Help (+ verwerker), Opties (+ verwerker), Spelers (+ verwerker + spelbeurtresultaat ),
+ Tafel (+ verwerker), Core (Memento + Spel + Puntenverwerker + Bestandverwerker + Vector), GUI 
+ (G + QTKlassen +  Camera)) -> sowieso zorgen dat, als 't kan, ge geen imports doet in niet-Core-klassen van Core-klassen.
+ Alleen in GUI zou ge dat mogen doen.
+-executable maken
 -alles in een doc steken
--alles in mapkes steken en indien
--verslag afdrukken + UML op A3
+-alles in mapkes steken en indienen
+-verslag afdrukken + UML op A3 -> nadien pas

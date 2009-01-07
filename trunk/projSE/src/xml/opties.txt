@@ -1,5 +1,5 @@
-e1:BOOL:true
-e3:TEXT:hrae
-e4:TEXT:4g
-e5:NUM:66
-e6:NUM:99
+Optie 1:BOOL:true
+Optie 2:TEXT:Voorbeeldwaarde
+Optie 3:TEXT:Actua Tungrorum
+Optie 4:NUM:7
+Optie 5:NUM:90
