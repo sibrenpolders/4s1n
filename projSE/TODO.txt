@@ -4,7 +4,7 @@
 -UML maken
 -unit tests
 -AI uitleggen -> Sibren ging er 's naar kijken -> OK
--logboek
+-logboek -> Sibrand: OK
 -stukken foute code inactief maken -> OK
 -packages maken (ik gok op Help (+ verwerker), Opties (+ verwerker), Spelers (+ verwerker + spelbeurtresultaat ),
  Tafel (+ verwerker), Core (Memento + Spel + Puntenverwerker + Bestandverwerker + Vector), GUI 
