@@ -158,60 +158,6 @@ public class Tegel implements Serializable {
 		return true;
 	}
 
-	public void updateLandsdeel(int zijde, Tegel nieuweTegel) {
-		switch (zijde) {
-		case NOORD:
-			updateLd(landsdelen[NOORD_WEST], nieuweTegel.landsdelen[ZUID_WEST]);
-			updateLd(landsdelen[NOORD], nieuweTegel.landsdelen[ZUID]);
-			updateLd(landsdelen[NOORD_OOST], nieuweTegel.landsdelen[ZUID_OOST]);
-			break;
-		case OOST:
-			updateLd(landsdelen[OOST_NOORD], nieuweTegel.landsdelen[WEST_NOORD]);
-			updateLd(landsdelen[OOST], nieuweTegel.landsdelen[WEST]);
-			updateLd(landsdelen[OOST_ZUID], nieuweTegel.landsdelen[WEST_ZUID]);
-			break;
-		case ZUID:
-			updateLd(landsdelen[ZUID_OOST], nieuweTegel.landsdelen[NOORD_OOST]);
-			updateLd(landsdelen[ZUID], nieuweTegel.landsdelen[NOORD]);
-			updateLd(landsdelen[ZUID_WEST], nieuweTegel.landsdelen[NOORD_WEST]);
-			break;
-		case WEST:
-			updateLd(landsdelen[WEST_ZUID], nieuweTegel.landsdelen[OOST_ZUID]);
-			updateLd(landsdelen[WEST], nieuweTegel.landsdelen[OOST]);
-			updateLd(landsdelen[WEST_NOORD], nieuweTegel.landsdelen[OOST_NOORD]);
-			break;
-		}
-	}
-
-	public void updateLandsdeel(Landsdeel changeTo, int pos, boolean[] changed) {
-		Landsdeel changeFrom = bepaalLandsdeel(pos);
-
-		for (int i = 0; i < MAX_GROOTTE; ++i) {
-			if (landsdelen[i] == changeFrom) {
-				landsdelen[i] = changeTo;
-				changed[i] = true;
-			}
-		}
-	}
-
-	/**
-	 * Deze functie zal elk voorkomen van huidigLd vervangen door nieuwLd.
-	 * 
-	 * @param huidigLd
-	 *            Het landsdeel dat vervangen moet worden.
-	 * @param nieuwLd
-	 *            Het landsdeel dat we willen hebben.
-	 */
-	private void updateLd(Landsdeel huidigLd, Landsdeel nieuwLd) {
-		for (int i = 0; i < MAX_GROOTTE; ++i) {
-			if (landsdelen[i] == huidigLd) {
-				landsdelen[i] = nieuwLd;
-			}
-		}
-	}
-
-	// PIONNEN
-
 	public boolean plaatsPion(int pos, char kleur) {
 		if (pos < 0 || pos >= MAX_GROOTTE || landsdelen[pos].isKruispunt()
 				|| bepaalLandsdeel(pos).isPionGeplaatst()) {
