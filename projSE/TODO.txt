@@ -1,7 +1,7 @@
 -collab nakijken (vergelijken met contracten en code) -> volledig OK
 -klassediagram nakijken -> volledig OK
 -design patterns + afbeeldingen -> volledig OK
--UML maken
+-UML maken -> OK
 -unit tests
 -AI uitleggen -> Sibren ging er 's naar kijken -> OK
 -logboek -> Sibrand: OK
@@ -9,7 +9,7 @@
 -packages maken (ik gok op Help (+ verwerker), Opties (+ verwerker), Spelers (+ verwerker + spelbeurtresultaat ),
  Tafel (+ verwerker), Core (Memento + Spel + Puntenverwerker + Bestandverwerker + Vector), GUI 
  (G + QTKlassen +  Camera)) -> sowieso zorgen dat, als 't kan, ge geen imports doet in niet-Core-klassen van Core-klassen.
- Alleen in GUI zou ge dat mogen doen.
+ Alleen in GUI zou ge dat mogen doen. -> OK
 -executable maken
 -alles in een doc steken
 -alles in mapkes steken en indienen
