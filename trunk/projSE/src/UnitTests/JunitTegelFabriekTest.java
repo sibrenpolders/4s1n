@@ -4,8 +4,8 @@ import java.util.ArrayDeque;
 import Tafel.TegelFabriek;
 import junit.framework.TestCase;
 
-public class TegelFabriekTest extends TestCase {
-	public TegelFabriekTest(String name) {
+public class JunitTegelFabriekTest extends TestCase {
+	public JunitTegelFabriekTest(String name) {
 		super(name);
 	}
 
