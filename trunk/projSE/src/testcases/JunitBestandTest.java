@@ -34,7 +34,9 @@ public class JunitBestandTest extends TestCase {
 		bestand.leesVanBestand(spel2, "test");
 		spel2=bestand.getSpel();
 		
-		assertEquals(spel,spel2);
+		assertNotNull(spel2);
+		assertEquals(spel.geefAantalSpelers(), spel2.geefAantalSpelers());
+		assertEquals(spel.geefHuidigeSpeler(), spel2.geefHuidigeSpeler());
 	}
 	
 	public void testLeesVanBestand() {

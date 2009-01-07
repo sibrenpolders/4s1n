@@ -21,11 +21,12 @@ abstract public class JunitAITest extends TestCase {
 	abstract protected void enkelVeldTest();
 	abstract protected void geenPionPlaatsingTest();
 	abstract protected void pionPlaatsingTest();
+	
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
 
-	// Deze methode zal een gveld enereren zodat de te plaatsen tegel (plaatsTegel) maar op 1 positie
+	// Deze methode zal een veld enereren zodat de te plaatsen tegel (plaatsTegel) maar op 1 positie
 	// geplaatst kan worden. GewensteTegelPositie is deze positie.
 	protected void maakEnkelVeld(Vector<Vector<Tegel>> veld,
 			Tegel plaatsTegel, Vector2D gewensteTegelPositie) {
