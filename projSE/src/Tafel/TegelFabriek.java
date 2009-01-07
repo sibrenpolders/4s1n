@@ -68,6 +68,7 @@ public class TegelFabriek {
 		return queue;
 	}
 
+	// voeg x aantal van tegel tegelNummer toe aan de stapel
 	private void voegTegelsToe(ArrayList<String[]> stapel, int tegelNummer,
 			int aantalTegels, TegelFabriekBestandLezer tfbl) {
 		String[] tegelStrings = tfbl.getTegelStrings(tegelNummer);
@@ -85,6 +86,7 @@ public class TegelFabriek {
 		}
 	}
 
+	// zorg ervoor dat de tegels random geplaatst zijn in de arraydeque
 	private ArrayDeque<String[]> shakeNotStir(ArrayList<String[]> stapel) {
 		ArrayDeque<String[]> queue = new ArrayDeque<String[]>();
 
