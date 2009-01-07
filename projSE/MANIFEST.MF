@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Sealed: true
+Main-Class: Applicatie
+Class-Path: lib/junit.jar lib/qtjambi-4.4.3_01.jar lib/qtjambi-win32-msvc2005-4.4.3_01.jar

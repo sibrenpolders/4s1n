@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<help>
+	<item id="1">
+		<tag>tegel</tag>
+		<tag>speler</tag>
+		<tag>spel</tag>
+		<uitleg>Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... . Random uitleg goes here... .
+		</uitleg>
+	</item>
+	<item id="2">
+		<tag>tafel</tag>
+		<tag>speler</tag>
+		<tag>spel</tag>
+		<uitleg>Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... .
+		</uitleg>
+	</item>
+	<item id="3">
+		<tag>speler</tag>
+		<tag>score</tag>
+		<tag>Actua</tag>
+		<tag>zicht</tag>
+		<tag>veranderen</tag>
+		<uitleg>Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... . Random uitleg goes here too... .
+		</uitleg>
+	</item>
+</help>
